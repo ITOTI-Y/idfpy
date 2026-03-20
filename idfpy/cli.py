@@ -1,0 +1,39 @@
+"""idfpy command-line interface."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Annotated
+
+from typer import Option, Typer
+
+app = Typer(name='idfpy', help='EnergyPlus IDF toolkit')
+
+
+@app.command()
+def codegen(
+    schema: Annotated[Path, Option('--schema', '-s', help='Path to Energy+.schema.epJSON')],
+    output: Annotated[Path, Option('--output', '-o', help='Output directory')] = Path('idfpy/models'),
+) -> None:
+    """Generate Pydantic models from EnergyPlus schema."""
+    from idfpy.codegen import ModelGenerator, SchemaParser
+
+    parser = SchemaParser(schema_path=schema)
+    specs = parser.parse()
+    schema_version = parser.get_version()
+    generator = ModelGenerator(output_dir=output)
+    generator.generate_all(specs, schema_version=schema_version)
+
+
+@app.command()
+def run(
+    idf: Annotated[Path, Option('--idf', '-i', help='Path to IDF file')],
+    weather: Annotated[Path, Option('--weather', '-w', help='Path to EPW weather file')],
+    output: Annotated[Path | None, Option('--output', '-o', help='Output directory')] = None,
+) -> None:
+    """Run EnergyPlus simulation."""
+    from idfpy.idf import IDF
+
+    idf_runner = IDF()
+    rc = idf_runner.run(idf_path=idf, weather_path=weather, output_dir=output)
+    raise SystemExit(rc)
