@@ -7,10 +7,14 @@ on:
 
 permissions:
   contents: write
+  id-token: write # Required for PyPI trusted publishing
 
 jobs:
   update-models:
     runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.push.outputs.updated }}
+      version: ${{ steps.ep.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -99,6 +103,7 @@ jobs:
           sed -i "s/\*\*[0-9]* reference types\*\*/\*\*${REF_COUNT} reference types\*\*/" README.md
 
       - name: Commit, tag and push
+        id: push
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
@@ -109,6 +114,7 @@ jobs:
           git add -A
           if git diff --cached --quiet; then
             echo "No changes detected"
+            echo "updated=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -121,3 +127,23 @@ jobs:
           git push origin HEAD
           git push origin "$TAG"
           git push origin latest --force
+
+          echo "updated=true" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: update-models
+    if: needs.update-models.outputs.updated == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: v${{ needs.update-models.outputs.version }}
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Build
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
