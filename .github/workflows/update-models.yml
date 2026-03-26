@@ -47,7 +47,7 @@ jobs:
         id: check
         run: |
           EP="${{ steps.ep.outputs.version }}"
-          TAG="ep${EP}"
+          TAG="v${EP}"
           if git tag -l "$TAG" | grep -q "$TAG"; then
             echo "Tag $TAG already exists, skipping"
             echo "skip=true" >> "$GITHUB_OUTPUT"
@@ -81,6 +81,12 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: uv run pytest tests/ -v
 
+      - name: Update package version
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          EP_VERSION="${{ steps.ep.outputs.version }}"
+          sed -i "s/^version = .*/version = \"${EP_VERSION}\"/" pyproject.toml
+
       - name: Commit, tag and push
         if: steps.check.outputs.skip == 'false'
         run: |
@@ -97,11 +103,8 @@ jobs:
 
           git commit -m "feat(models): update to EnergyPlus ${EP_VERSION}"
 
-          # Create version tag
-          TAG="ep${EP_VERSION}"
+          TAG="v${EP_VERSION}"
           git tag -a "$TAG" -m "EnergyPlus ${EP_VERSION} models"
-
-          # Move latest tag to this commit
           git tag -f latest -m "Latest EnergyPlus models (${EP_VERSION})"
 
           git push origin HEAD
