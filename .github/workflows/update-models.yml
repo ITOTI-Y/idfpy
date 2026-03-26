@@ -70,10 +70,11 @@ jobs:
       - name: Generate models
         if: steps.check.outputs.skip == 'false'
         run: |
-          uv sync
+          uv sync --all-groups
           uv run idfpy codegen --schema 'Energy+.schema.epJSON' --output idfpy/models
           uv run ruff check --fix .
           uv run ruff format .
+          uv run ty check .
           rm 'Energy+.schema.epJSON'
 
       - name: Run tests
