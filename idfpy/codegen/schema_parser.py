@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -133,8 +134,8 @@ class SchemaParser:
             return
 
         logger.debug(f'Loading schema from {self.schema_path}')
-        content = self.schema_path.read_text(encoding='utf-8')
-        self._raw_schema = json.loads(content)
+        with self.schema_path.open(encoding='utf-8') as fh:
+            self._raw_schema = json.load(fh)
 
         version = self._raw_schema.get('epJSON_schema_version', 'unknown')
         logger.info(f'Loaded EnergyPlus schema version: {version}')
@@ -314,11 +315,8 @@ class SchemaParser:
         """
         specs = self.parse()
 
-        groups: dict[str, list[str]] = {}
+        groups: dict[str, list[str]] = defaultdict(list)
         for name, spec in specs.items():
-            group = spec.group
-            if group not in groups:
-                groups[group] = []
-            groups[group].append(name)
+            groups[spec.group].append(name)
 
-        return groups
+        return dict(groups)

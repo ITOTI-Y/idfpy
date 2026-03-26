@@ -20,7 +20,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "pydantic>=2.12.5",
+    "pydantic>=2.0",
     "loguru>=0.7.3",
     "jinja2>=3.1.6",
     "typer>=0.21.1",
@@ -32,6 +32,9 @@ idfpy = "idfpy.cli:app"
 [project.urls]
 Repository = "https://github.com/ITOTI-Y/idfpy"
 Issues = "https://github.com/ITOTI-Y/idfpy/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["idfpy"]
 
 [tool.ruff]
 line-length = 88
@@ -58,3 +61,8 @@ ignore = [
 quote-style = "single"
 indent-style = "space"
 docstring-code-format = true
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

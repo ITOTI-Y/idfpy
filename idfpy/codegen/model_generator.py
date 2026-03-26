@@ -38,130 +38,68 @@ class ModelGenerator:
         >>> generator.generate_all(specs, schema_version='24.2.0')
     """
 
-    # Mapping from EnergyPlus group names to output file names
     GROUP_FILE_MAPPING: ClassVar[dict[str, str]] = {
-        # Simulation Parameters
         'Simulation Parameters': 'simulation',
-        # Location and Climate
         'Location and Climate': 'location',
-        # Schedules
         'Schedules': 'schedules',
-        # Surface Construction Elements
         'Surface Construction Elements': 'constructions',
-        # Thermal Zones and Surfaces
         'Thermal Zones and Surfaces': 'thermal_zones',
-        # Advanced Construction, Surface, Zone Concepts
+        # Both short and full names map to the same file
         'Advanced Construction': 'advanced_construction',
         'Advanced Construction, Surface, Zone Concepts': 'advanced_construction',
-        # Room Air Models
         'Room Air Models': 'room_air',
-        # Internal Gains
         'Internal Gains': 'internal_gains',
-        # Daylighting
         'Daylighting': 'daylighting',
-        # Zone Airflow
         'Zone Airflow': 'zone_airflow',
-        # Natural Ventilation and Duct Leakage
         'Natural Ventilation and Duct Leakage': 'ventilation',
-        # Exterior Equipment
         'Exterior Equipment': 'exterior',
-        # HVAC Templates
         'HVAC Templates': 'hvac_templates',
-        # HVAC Design Objects
         'HVAC Design Objects': 'hvac_design',
-        # Zone HVAC Controls and Thermostats
         'Zone HVAC Controls and Thermostats': 'zone_controls',
-        # Zone HVAC Air Loop Terminal Units
         'Zone HVAC Air Loop Terminal Units': 'zone_terminals',
-        # Zone HVAC Equipment Connections
         'Zone HVAC Equipment Connections': 'zone_equipment',
-        # Zone HVAC Forced Air Units
         'Zone HVAC Forced Air Units': 'zone_forced_air',
-        # Zone HVAC Radiative/Convective Units
         'Zone HVAC Radiative/Convective Units': 'zone_radiative',
-        # Fans
         'Fans': 'fans',
-        # Coils
         'Coils': 'coils',
-        # Evaporative Coolers
         'Evaporative Coolers': 'evap_coolers',
-        # Humidifiers and Dehumidifiers
         'Humidifiers and Dehumidifiers': 'humidifiers',
-        # Heat Recovery
         'Heat Recovery': 'heat_recovery',
-        # Unitary Equipment
         'Unitary Equipment': 'unitary',
-        # Variable Refrigerant Flow Equipment
         'Variable Refrigerant Flow Equipment': 'vrf',
-        # Air Distribution
         'Air Distribution': 'air_distribution',
-        # Pumps
         'Pumps': 'pumps',
-        # Plant Heating and Cooling Equipment
         'Plant Heating and Cooling Equipment': 'plant_equipment',
-        # Condenser Equipment and Heat Exchangers
         'Condenser Equipment and Heat Exchangers': 'condensers',
-        # Water Heaters and Thermal Storage
         'Water Heaters and Thermal Storage': 'water_heaters',
-        # Plant-Condenser Loops
         'Plant-Condenser Loops': 'plant_loops',
-        # Plant-Condenser Control
         'Plant-Condenser Control': 'plant_control',
-        # Non-Zone Equipment
         'Non-Zone Equipment': 'non_zone',
-        # Solar Collectors
         'Solar Collectors': 'solar',
-        # Refrigeration
         'Refrigeration': 'refrigeration',
-        # Demand Limiting Controls
         'Demand Limiting Controls': 'demand_limiting',
-        # Electric Load Center-Generator Specifications
         'Electric Load Center-Generator Specifications': 'electric_load',
-        # Water Systems
         'Water Systems': 'water_systems',
-        # Operational Faults
         'Operational Faults': 'faults',
-        # Performance Curves and Tables
+        # Both short and full names map to the same file
         'Performance Curves': 'curves',
         'Performance Curves and Tables': 'curves',
-        # Fluid Properties
         'Fluid Properties': 'fluids',
-        # Economics
         'Economics': 'economics',
-        # Parametrics
         'Parametrics': 'parametrics',
-        # Output Reporting
         'Output Reporting': 'outputs',
-        # Hybrid Model
         'Hybrid Model': 'hybrid',
-        # Python Plugin System
         'Python Plugin System': 'python_plugins',
-        # Compliance Objects
         'Compliance Objects': 'compliance',
-        # User Defined HVAC and Plant Component Models
         'User Defined HVAC and Plant Component Models': 'user_defined',
-        # Energy Management System (EMS)
         'Energy Management System (EMS)': 'ems',
-        # External Interface
         'External Interface': 'external_interface',
-        # Setpoint Managers
         'Setpoint Managers': 'setpoint_managers',
-        # System Availability Managers
         'System Availability Managers': 'availability_managers',
-        # Controllers
         'Controllers': 'controllers',
-        # Air Path
         'Air Path': 'air_path',
-        # Node-Branch Management
         'Node-Branch Management': 'node_branch',
-        # Plant-Condenser Flow Control
         'Plant-Condenser Flow Control': 'plant_flow_control',
-    }
-
-    # Pre-computed lowercase mapping for partial match optimization
-    # Avoids repeated .lower() calls during group lookups
-    _GROUP_LOWERCASE_MAPPING: ClassVar[dict[str, str]] = {
-        pattern.lower(): file_name for pattern, file_name in GROUP_FILE_MAPPING.items()
     }
 
     # Minimum number of objects to create a separate file
@@ -306,23 +244,14 @@ class ModelGenerator:
     def _get_file_for_group(self, group: str) -> str | None:
         """Find the output file name for an EnergyPlus group.
 
-        Uses exact match first, then partial match with pre-computed
-        lowercase keys to avoid repeated .lower() calls.
-
-        Args:
-            group: EnergyPlus group name.
-
-        Returns:
-            File name or None if no mapping found.
+        Uses exact match first, then case-insensitive partial match.
         """
-        # Exact match
         if group in self.GROUP_FILE_MAPPING:
             return self.GROUP_FILE_MAPPING[group]
 
-        # Partial match using pre-computed lowercase mapping
         group_lower = group.lower()
-        for pattern_lower, file_name in self._GROUP_LOWERCASE_MAPPING.items():
-            if pattern_lower in group_lower:
+        for pattern, file_name in self.GROUP_FILE_MAPPING.items():
+            if pattern.lower() in group_lower:
                 return file_name
 
         return None
@@ -630,7 +559,6 @@ class ModelGenerator:
             'from typing import Annotated, Any',
             '',
             'from pydantic import BeforeValidator',
-            'from pydantic_core import core_schema',
             '',
             '',
         ]
@@ -696,13 +624,6 @@ class ModelGenerator:
             '        if v is None:',
             '            return None',
             '        return str(v)',
-            '',
-            '    def __get_pydantic_core_schema__(self, source_type, handler):',
-            '        """Generate Pydantic core schema for this validator."""',
-            '        return core_schema.no_info_before_validator_function(',
-            '            self,',
-            '            core_schema.str_schema(),',
-            '        )',
             '',
             '    def __repr__(self) -> str:',
             '        return f"RefValidator({self.object_list!r})"',

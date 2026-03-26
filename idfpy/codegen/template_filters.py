@@ -158,25 +158,20 @@ def _get_base_type_annotation(spec: FieldSpec) -> str:
     return _json_type_to_python(spec.field_type)
 
 
+_JSON_TYPE_TO_PYTHON: dict[str, str] = {
+    'number': 'float',
+    'integer': 'int',
+    'string': 'str',
+    'boolean': 'bool',
+    'object': 'dict[str, Any]',
+    'null': 'None',
+    'array': 'list[Any]',
+}
+
+
 def _json_type_to_python(field_type: str) -> str:
-    """Map JSON schema type to Python type.
-
-    Args:
-        field_type: JSON schema type string.
-
-    Returns:
-        Python type string.
-    """
-    type_mapping = {
-        'number': 'float',
-        'integer': 'int',
-        'string': 'str',
-        'boolean': 'bool',
-        'object': 'dict[str, Any]',
-        'null': 'None',
-        'array': 'list[Any]',
-    }
-    return type_mapping.get(field_type, 'Any')
+    """Map JSON schema type to Python type."""
+    return _JSON_TYPE_TO_PYTHON.get(field_type, 'Any')
 
 
 def _generate_nested_class_name(

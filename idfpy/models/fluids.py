@@ -4,6 +4,7 @@ DO NOT EDIT MANUALLY.
 Generated from Energy+.schema.epJSON version 25.1.
 Group: Fluid Properties
 """
+
 from __future__ import annotations
 
 from typing import Any, ClassVar, Literal  # noqa: F401
@@ -18,15 +19,41 @@ from ._refs import (
 )
 
 
-
 class FluidPropertiesConcentration(IDFBaseModel):
     """fluid properties for water/other fluid mixtures"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:Concentration"
-    fluid_name: FluidNamesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidNames'], 'note': 'should not be any of the defaults (Water, EthyleneGlycol, or PropyleneGlycol)'})
-    fluid_property_type: Literal['Conductivity', 'Density', 'SpecificHeat', 'Viscosity'] | None = Field(default=None, json_schema_extra={'note': 'Density Units are kg/m3 SpecificHeat Units are J/kg-K Conductivity Units are W/m-K Viscosity Units are N-s/m2'})
-    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidPropertyTemperatures'], 'note': 'Enter the name of a FluidProperties:Temperatures object.'})
-    concentration: float | None = Field(default=None, ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless', 'note': 'Glycol concentration for this list of properties entered as a fraction'})
+    _idf_object_type: ClassVar[str] = 'FluidProperties:Concentration'
+    fluid_name: FluidNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['FluidNames'],
+            'note': 'should not be any of the defaults (Water, EthyleneGlycol, or PropyleneGlycol)',
+        },
+    )
+    fluid_property_type: (
+        Literal['Conductivity', 'Density', 'SpecificHeat', 'Viscosity'] | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'Density Units are kg/m3 SpecificHeat Units are J/kg-K Conductivity Units are W/m-K Viscosity Units are N-s/m2'
+        },
+    )
+    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['FluidPropertyTemperatures'],
+            'note': 'Enter the name of a FluidProperties:Temperatures object.',
+        },
+    )
+    concentration: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'units': 'dimensionless',
+            'note': 'Glycol concentration for this list of properties entered as a fraction',
+        },
+    )
     property_value_1: float | None = Field(default=None)
     property_value_2: float | None = Field(default=None)
     property_value_3: float | None = Field(default=None)
@@ -282,18 +309,27 @@ class FluidPropertiesConcentration(IDFBaseModel):
 class FluidPropertiesGlycolConcentration(IDFBaseModel):
     """glycol and what concentration it is"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:GlycolConcentration"
+    _idf_object_type: ClassVar[str] = 'FluidProperties:GlycolConcentration'
     name: str = Field(...)
-    glycol_type: Literal['EthyleneGlycol', 'PropyleneGlycol', 'UserDefinedGlycolType'] = Field(..., json_schema_extra={'note': 'or UserDefined Fluid (must show up as a glycol in FluidProperties:Name object)'})
-    user_defined_glycol_name: FluidAndGlycolNamesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidAndGlycolNames']})
+    glycol_type: Literal[
+        'EthyleneGlycol', 'PropyleneGlycol', 'UserDefinedGlycolType'
+    ] = Field(
+        ...,
+        json_schema_extra={
+            'note': 'or UserDefined Fluid (must show up as a glycol in FluidProperties:Name object)'
+        },
+    )
+    user_defined_glycol_name: FluidAndGlycolNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['FluidAndGlycolNames']}
+    )
     glycol_concentration: float | None = Field(default=None, ge=0.0, le=1.0)
 
 
 class FluidPropertiesName(IDFBaseModel):
     """potential fluid name/type in the input file repeat this object for each
-fluid"""
+    fluid"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:Name"
+    _idf_object_type: ClassVar[str] = 'FluidProperties:Name'
     fluid_name: str = Field(...)
     fluid_type: Literal['Glycol', 'Refrigerant'] = Field(...)
 
@@ -301,11 +337,29 @@ fluid"""
 class FluidPropertiesSaturated(IDFBaseModel):
     """fluid properties for the saturated region"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:Saturated"
-    fluid_name: FluidNamesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidNames']})
-    fluid_property_type: Literal['Density', 'Enthalpy', 'Pressure', 'SpecificHeat'] | None = Field(default=None, json_schema_extra={'note': 'Enthalpy Units are J/kg Density Units are kg/m3 SpecificHeat Units are J/kg-K Pressure Units are Pa'})
-    fluid_phase: Literal['Fluid', 'FluidGas'] | None = Field(default=None, json_schema_extra={'note': 'Fluid=saturated fluid FluidGas=saturated vapor'})
-    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidPropertyTemperatures'], 'note': 'Enter the name of a FluidProperties:Temperatures object.'})
+    _idf_object_type: ClassVar[str] = 'FluidProperties:Saturated'
+    fluid_name: FluidNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['FluidNames']}
+    )
+    fluid_property_type: (
+        Literal['Density', 'Enthalpy', 'Pressure', 'SpecificHeat'] | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'Enthalpy Units are J/kg Density Units are kg/m3 SpecificHeat Units are J/kg-K Pressure Units are Pa'
+        },
+    )
+    fluid_phase: Literal['Fluid', 'FluidGas'] | None = Field(
+        default=None,
+        json_schema_extra={'note': 'Fluid=saturated fluid FluidGas=saturated vapor'},
+    )
+    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['FluidPropertyTemperatures'],
+            'note': 'Enter the name of a FluidProperties:Temperatures object.',
+        },
+    )
     property_value_1: float | None = Field(default=None)
     property_value_2: float | None = Field(default=None)
     property_value_3: float | None = Field(default=None)
@@ -561,11 +615,29 @@ class FluidPropertiesSaturated(IDFBaseModel):
 class FluidPropertiesSuperheated(IDFBaseModel):
     """fluid properties for the superheated region"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:Superheated"
-    fluid_name: FluidNamesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidNames']})
-    fluid_property_type: Literal['Density', 'Enthalpy'] | None = Field(default=None, json_schema_extra={'note': 'Enthalpy Units are J/kg Density Units are kg/m3'})
-    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(default=None, json_schema_extra={'object_list': ['FluidPropertyTemperatures'], 'note': 'Enter the name of a FluidProperties:Temperatures object.'})
-    pressure: float | None = Field(default=None, gt=0.0, json_schema_extra={'units': 'Pa', 'note': 'pressure for this list of properties'})
+    _idf_object_type: ClassVar[str] = 'FluidProperties:Superheated'
+    fluid_name: FluidNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['FluidNames']}
+    )
+    fluid_property_type: Literal['Density', 'Enthalpy'] | None = Field(
+        default=None,
+        json_schema_extra={'note': 'Enthalpy Units are J/kg Density Units are kg/m3'},
+    )
+    temperature_values_name: FluidPropertyTemperaturesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['FluidPropertyTemperatures'],
+            'note': 'Enter the name of a FluidProperties:Temperatures object.',
+        },
+    )
+    pressure: float | None = Field(
+        default=None,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'Pa',
+            'note': 'pressure for this list of properties',
+        },
+    )
     property_value_1: float | None = Field(default=None)
     property_value_2: float | None = Field(default=None)
     property_value_3: float | None = Field(default=None)
@@ -820,12 +892,12 @@ class FluidPropertiesSuperheated(IDFBaseModel):
 
 class FluidPropertiesTemperatures(IDFBaseModel):
     """property values for fluid properties list of up to 250 temperatures, note
-that number of property values must match the number of properties in other
-words, there must be a one-to-one correspondence between the property values
-in this list and the actual properties list in other syntax degrees C (for
-all temperature inputs)"""
+    that number of property values must match the number of properties in other
+    words, there must be a one-to-one correspondence between the property values
+    in this list and the actual properties list in other syntax degrees C (for
+    all temperature inputs)"""
 
-    _idf_object_type: ClassVar[str] = "FluidProperties:Temperatures"
+    _idf_object_type: ClassVar[str] = 'FluidProperties:Temperatures'
     name: str | None = Field(default=None)
     temperature_1: float | None = Field(default=None, json_schema_extra={'units': 'C'})
     temperature_2: float | None = Field(default=None, json_schema_extra={'units': 'C'})
@@ -926,155 +998,456 @@ all temperature inputs)"""
     temperature_97: float | None = Field(default=None, json_schema_extra={'units': 'C'})
     temperature_98: float | None = Field(default=None, json_schema_extra={'units': 'C'})
     temperature_99: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_100: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_101: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_102: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_103: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_104: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_105: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_106: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_107: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_108: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_109: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_110: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_111: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_112: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_113: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_114: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_115: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_116: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_117: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_118: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_119: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_120: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_121: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_122: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_123: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_124: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_125: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_126: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_127: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_128: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_129: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_130: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_131: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_132: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_133: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_134: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_135: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_136: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_137: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_138: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_139: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_140: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_141: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_142: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_143: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_144: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_145: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_146: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_147: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_148: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_149: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_150: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_151: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_152: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_153: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_154: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_155: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_156: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_157: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_158: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_159: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_160: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_161: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_162: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_163: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_164: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_165: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_166: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_167: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_168: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_169: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_170: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_171: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_172: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_173: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_174: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_175: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_176: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_177: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_178: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_179: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_180: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_181: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_182: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_183: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_184: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_185: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_186: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_187: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_188: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_189: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_190: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_191: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_192: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_193: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_194: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_195: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_196: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_197: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_198: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_199: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_200: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_201: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_202: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_203: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_204: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_205: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_206: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_207: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_208: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_209: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_210: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_211: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_212: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_213: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_214: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_215: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_216: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_217: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_218: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_219: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_220: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_221: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_222: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_223: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_224: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_225: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_226: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_227: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_228: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_229: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_230: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_231: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_232: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_233: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_234: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_235: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_236: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_237: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_238: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_239: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_240: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_241: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_242: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_243: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_244: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_245: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_246: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_247: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_248: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_249: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-    temperature_250: float | None = Field(default=None, json_schema_extra={'units': 'C'})
-
+    temperature_100: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_101: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_102: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_103: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_104: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_105: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_106: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_107: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_108: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_109: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_110: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_111: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_112: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_113: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_114: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_115: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_116: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_117: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_118: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_119: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_120: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_121: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_122: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_123: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_124: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_125: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_126: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_127: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_128: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_129: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_130: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_131: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_132: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_133: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_134: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_135: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_136: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_137: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_138: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_139: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_140: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_141: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_142: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_143: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_144: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_145: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_146: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_147: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_148: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_149: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_150: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_151: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_152: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_153: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_154: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_155: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_156: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_157: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_158: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_159: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_160: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_161: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_162: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_163: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_164: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_165: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_166: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_167: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_168: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_169: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_170: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_171: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_172: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_173: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_174: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_175: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_176: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_177: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_178: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_179: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_180: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_181: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_182: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_183: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_184: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_185: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_186: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_187: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_188: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_189: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_190: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_191: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_192: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_193: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_194: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_195: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_196: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_197: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_198: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_199: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_200: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_201: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_202: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_203: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_204: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_205: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_206: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_207: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_208: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_209: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_210: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_211: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_212: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_213: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_214: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_215: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_216: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_217: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_218: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_219: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_220: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_221: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_222: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_223: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_224: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_225: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_226: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_227: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_228: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_229: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_230: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_231: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_232: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_233: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_234: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_235: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_236: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_237: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_238: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_239: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_240: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_241: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_242: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_243: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_244: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_245: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_246: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_247: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_248: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_249: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    temperature_250: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )

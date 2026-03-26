@@ -49,6 +49,20 @@ class IDFBaseModel(BaseModel):
     )
 
     _idf_object_type: ClassVar[str] = ''
+    # Cached per-class: field_name -> {lowercase_value: canonical_value}
+    _literal_case_maps: ClassVar[dict[str, dict[str, str]]] = {}
+
+    @classmethod
+    def _get_literal_case_maps(cls) -> dict[str, dict[str, str]]:
+        """Get or build the literal case-mapping cache for this class."""
+        if '_literal_case_maps' not in cls.__dict__:
+            maps: dict[str, dict[str, str]] = {}
+            for field_name, field_info in cls.model_fields.items():
+                literal_values = _extract_literal_values(field_info.annotation)
+                if literal_values:
+                    maps[field_name] = {v.lower(): v for v in literal_values}
+            cls._literal_case_maps = maps
+        return cls._literal_case_maps
 
     @model_validator(mode='before')
     @classmethod
@@ -62,18 +76,14 @@ class IDFBaseModel(BaseModel):
         if not isinstance(data, dict):
             return data
 
-        for field_name, field_info in cls.model_fields.items():
-            if field_name not in data:
-                continue
-            value = data[field_name]
+        literal_maps = cls._get_literal_case_maps()
+        if not literal_maps:
+            return data
+
+        for field_name, lower_map in literal_maps.items():
+            value = data.get(field_name)
             if not isinstance(value, str):
                 continue
-
-            literal_values = _extract_literal_values(field_info.annotation)
-            if not literal_values:
-                continue
-
-            lower_map = {v.lower(): v for v in literal_values}
             matched = lower_map.get(value.lower())
             if matched is not None:
                 data[field_name] = matched
