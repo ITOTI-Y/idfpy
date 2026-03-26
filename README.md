@@ -2,7 +2,7 @@
 
 Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution.
 
-Auto-generated from `Energy+.schema.epJSON` version **25.1.0**.
+Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 
 ## Features
 
