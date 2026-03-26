@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write # Required for PyPI trusted publishing
 
 jobs:
   update-models:
@@ -133,17 +132,8 @@ jobs:
   publish:
     needs: update-models
     if: needs.update-models.outputs.updated == 'true'
-    runs-on: ubuntu-latest
-    environment: pypi
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: v${{ needs.update-models.outputs.version }}
-
-      - uses: astral-sh/setup-uv@v4
-
-      - name: Build
-        run: uv build
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag: v${{ needs.update-models.outputs.version }}
+    permissions:
+      id-token: write
