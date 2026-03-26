@@ -2,12 +2,12 @@
 
 Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution.
 
-Auto-generated from `Energy+.schema.epJSON` version **25.1**.
+Auto-generated from `Energy+.schema.epJSON` version **25.1.0**.
 
 ## Features
 
-- **849 object types** as Pydantic v2 models with full validation
-- **273 reference types** with cross-object validation
+- **858 object types** as Pydantic v2 models with full validation
+- **275 reference types** with cross-object validation
 - **Case-insensitive** Literal field matching (EnergyPlus IDF is case-insensitive)
 - **Extensible field** support (vertices, schedule data, etc.)
 - **IDF read/write** with positional field ordering

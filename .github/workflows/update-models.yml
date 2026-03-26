@@ -81,11 +81,22 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: uv run pytest tests/ -v
 
-      - name: Update package version
+      - name: Update version and README
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
+
+          # Update pyproject.toml version
           sed -i "s/^version = .*/version = \"${EP_VERSION}\"/" pyproject.toml
+
+          # Count object types and ref types from generated code
+          OBJ_COUNT=$(grep -r '_idf_object_type: ClassVar' idfpy/models/*.py | grep -cv '_base.py')
+          REF_COUNT=$(grep -c 'Ref = Annotated' idfpy/models/_refs.py)
+
+          # Update README
+          sed -i "s/version \*\*[0-9.]*\*\*/version **${EP_VERSION}**/" README.md
+          sed -i "s/\*\*[0-9]* object types\*\*/\*\*${OBJ_COUNT} object types\*\*/" README.md
+          sed -i "s/\*\*[0-9]* reference types\*\*/\*\*${REF_COUNT} reference types\*\*/" README.md
 
       - name: Commit, tag and push
         if: steps.check.outputs.skip == 'false'
