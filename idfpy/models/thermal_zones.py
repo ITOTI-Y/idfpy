@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Thermal Zones and Surfaces
 """
 
@@ -900,7 +900,7 @@ class InternalMass(IDFBaseModel):
         default=None,
         json_schema_extra={
             'object_list': ['ZoneAndZoneListNames'],
-            'note': 'Zone(s) the surface is a part of.  This field is ignored when a Space or SpaceList Name is specified.',
+            'note': 'Zone(s) the surface is a part of. This field is ignored when a Space or SpaceList Name is specified.',
         },
     )
     space_or_spacelist_name: SpaceAndSpaceListNamesRef | None = Field(

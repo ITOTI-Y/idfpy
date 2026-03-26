@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Air Distribution
 """
 
@@ -199,7 +199,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
     number_of_airloophvac: int = Field(
         ...,
         json_schema_extra={
-            'note': 'Enter the number of the AirLoopHAVC served by AirLoopHVAC:DedicatedOutdoorAirSystem'
+            'note': 'Enter the number of the AirLoopHVAC served by AirLoopHVAC:DedicatedOutdoorAirSystem'
         },
     )
     airloophvacs: list[AirLoopHVACDedicatedOutdoorAirSystemAirloophvacsItem] | None = (

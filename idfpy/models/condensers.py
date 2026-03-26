@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Condenser Equipment and Heat Exchangers
 """
 
@@ -18,7 +18,9 @@ from ._refs import (
     GroundHeatExchangerVerticalPropertiesNamesRef,
     GroundHeatExchangerVerticalResponseFactorNamesRef,
     GroundHeatExchangerVerticalSingleNamesRef,
+    GroundHeatExchangerVerticalSizingNamesRef,
     ScheduleNamesRef,
+    SizingPeriodWeatherFileDaysRef,
     UndisturbedGroundTempModelsRef,
     UnivariateFunctionsRef,
     VariableSpeedTowerCoefficientRef,
@@ -1318,16 +1320,15 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
             'note': 'Only used for Performance Input Method = UserSpecifiedDesignCapacity; for other Performance Input Methods, this field is ignored.',
         },
     )
-    design_entering_water_temperature: float | None = Field(
-        default=None,
-        gt=0.0,
+    design_entering_water_temperature: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
         json_schema_extra={
             'units': 'C',
             'note': 'Only used for Performance Input Method = UserSpecifiedDesignCapacity; for other Performance Input Methods, this field is ignored. Design Entering Water Temperature must be greater than Design Enter...',
         },
     )
     design_entering_air_temperature: float | None = Field(
-        default=None,
+        default=35.0,
         gt=0.0,
         json_schema_extra={
             'units': 'C',
@@ -1335,7 +1336,7 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
         },
     )
     design_entering_air_wet_bulb_temperature: float | None = Field(
-        default=None,
+        default=25.6,
         gt=0.0,
         json_schema_extra={
             'units': 'C',
@@ -1533,16 +1534,15 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
             'note': 'This field is only used if the previous field is set to autocalculate'
         },
     )
-    design_entering_water_temperature: float | None = Field(
-        default=None,
-        gt=0.0,
+    design_entering_water_temperature: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
         json_schema_extra={
             'units': 'C',
             'note': 'Only used for Performance Input Method = UserSpecifiedDesignCapacity; for other Performance Input Methods, this field is ignored. Design Entering Water Temperature must be greater than Design Enter...',
         },
     )
     design_entering_air_temperature: float | None = Field(
-        default=None,
+        default=35.0,
         gt=0.0,
         json_schema_extra={
             'units': 'C',
@@ -1550,7 +1550,7 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
         },
     )
     design_entering_air_wet_bulb_temperature: float | None = Field(
-        default=None,
+        default=25.6,
         gt=0.0,
         json_schema_extra={
             'units': 'C',
@@ -2119,8 +2119,20 @@ class GroundHeatExchangerSystem(IDFBaseModel):
             'object_list': ['GroundHeatExchangerVerticalResponseFactorNames']
         },
     )
-    g_function_calculation_method: Literal['', 'UBHWTcalc', 'UHFcalc'] | None = Field(
-        default='UHFcalc'
+    g_function_calculation_method: (
+        Literal['', 'FullDesign', 'UBHWTcalc', 'UHFcalc'] | None
+    ) = Field(default='UHFcalc')
+    ghe_vertical_sizing_object_type: (
+        Literal['GroundHeatExchanger:Vertical:Sizing:Rectangle'] | None
+    ) = Field(default=None)
+    ghe_vertical_sizing_object_name: (
+        GroundHeatExchangerVerticalSizingNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['GroundHeatExchangerVerticalSizingNames'],
+            'note': 'Only needed when g-function calculation method is FullDesign',
+        },
     )
     ghe_vertical_array_object_name: GroundHeatExchangerVerticalArrayNamesRef | None = (
         Field(
@@ -2191,6 +2203,98 @@ class GroundHeatExchangerVerticalSingle(IDFBaseModel):
     )
     x_location: float = Field(..., json_schema_extra={'units': 'm'})
     y_location: float = Field(..., json_schema_extra={'units': 'm'})
+
+
+class GroundHeatExchangerVerticalSizingRectangle(IDFBaseModel):
+    """Specifies parameters to be used for Ground Heat Exchanger borehole field
+    design and sizing."""
+
+    _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Vertical:Sizing:Rectangle'
+    name: str = Field(...)
+    sizingperiod_weatherfiledays_name: SizingPeriodWeatherFileDaysRef = Field(
+        ...,
+        json_schema_extra={
+            'object_list': ['SizingPeriodWeatherFileDays'],
+            'note': 'Specifies the SizingPeriod:WeatherFileDays required to perform GHE sizing',
+        },
+    )
+    design_flow_rate_per_borehole: float | None = Field(
+        default=0.0005,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm3/s',
+            'note': 'Design flow rate per borehole used to size borehole field',
+        },
+    )
+    available_borehole_field_length: float = Field(
+        ...,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Available length of the area available for designing the borehole field',
+        },
+    )
+    available_borehole_field_width: float = Field(
+        ...,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Available width of the area available for designing the borehole field',
+        },
+    )
+    maximum_number_of_boreholes: float = Field(
+        ...,
+        gt=0.0,
+        json_schema_extra={'note': 'User specified maximum number of boreholes'},
+    )
+    minimum_borehole_spacing: float | None = Field(
+        default=4.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Minimum borehole-to-borehole spacing',
+        },
+    )
+    maximum_borehole_spacing: float | None = Field(
+        default=6.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Maximum borehole-to-borehole spacing',
+        },
+    )
+    minimum_borehole_vertical_length: float | None = Field(
+        default=60.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Minimum drilled depth of the vertical borehole',
+        },
+    )
+    maximum_borehole_vertical_length: float | None = Field(
+        default=135.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Maximum drilled depth of the vertical borehole',
+        },
+    )
+    minimum_exiting_fluid_temperature_for_sizing: float | None = Field(
+        default=5.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Minimum ground heat exchanger exiting fluid temperature used when designing the borehole field',
+        },
+    )
+    maximum_exiting_fluid_temperature_for_sizing: float | None = Field(
+        default=35.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Maximum ground heat exchanger exiting fluid temperature used when designing the borehole field',
+        },
+    )
 
 
 class HeatExchangerFluidToFluid(IDFBaseModel):

@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Plant Heating and Cooling Equipment
 """
 
@@ -13,7 +13,6 @@ from pydantic import Field
 
 from ._base import IDFBaseModel
 from ._refs import (
-    BiVariateFunctionsRef,
     BivariateFunctionsRef,
     ChillerHeaterEIRNamesRef,
     HeatPumpAirToWaterFuelFiredCoolingNamesRef,
@@ -25,7 +24,6 @@ from ._refs import (
     QuadvariateFunctionsRef,
     ScheduleNamesRef,
     TrivariateFunctionsRef,
-    UniVariateFunctionsRef,
     UnivariateFunctionsRef,
     WWHPCoolingNamesRef,
     WWHPHeatingNamesRef,
@@ -961,10 +959,10 @@ class ChillerConstantCOP(IDFBaseModel):
             'note': 'This field is only used for Condenser Type = EvaporativelyCooled. Schedule values greater than 0 allow the basin heater to operate whenever the outdoor air dry-bulb temperature is below the basin h...',
         },
     )
-    thermosiphon_capacity_fraction_curve_name: UniVariateFunctionsRef | None = Field(
+    thermosiphon_capacity_fraction_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b * (Tevap, out - Tcond, in) is typical, other univariate curves may be used Tevap, out = evaporator outlet temperature Tcond, in = condenser inlet temperature If this field i...',
         },
     )
@@ -1108,10 +1106,10 @@ class ChillerElectric(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
-    thermosiphon_capacity_fraction_curve_name: UniVariateFunctionsRef | None = Field(
+    thermosiphon_capacity_fraction_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b * (Tevap, out - Tcond, in) is typical, other univariate curves may be used Tevap, out = evaporator outlet temperature Tcond, in = condenser inlet temperature If this field i...',
         },
     )
@@ -1446,7 +1444,7 @@ class ChillerElectricEIR(IDFBaseModel):
         default=None,
         json_schema_extra={
             'object_list': ['UnivariateFunctions'],
-            'note': 'Condenser loop flow rate fraction as a function of loop part load ratio CWFR = C * PLR + D  Where: CWFR is the condenser water flow fraction (actual/design) C and D are coefficients, see "Optimizin...',
+            'note': 'Condenser loop flow rate fraction as a function of loop part load ratio CWFR = C * PLR + D Where: CWFR is the condenser water flow fraction (actual/design) C and D are coefficients, see "Optimizing...',
         },
     )
     temperature_difference_across_condenser_schedule_name: ScheduleNamesRef | None = (
@@ -1454,7 +1452,7 @@ class ChillerElectricEIR(IDFBaseModel):
             default=None,
             json_schema_extra={
                 'object_list': ['ScheduleNames'],
-                'note': 'A schedule that defines the temperature difference across the condenser. This input is used to  calculate the condenser flow. This input is only used when "Condenser Flow Control" is set to "Modula...',
+                'note': 'A schedule that defines the temperature difference across the condenser. This input is used to calculate the condenser flow. This input is only used when "Condenser Flow Control" is set to "Modulat...',
             },
         )
     )
@@ -1466,10 +1464,10 @@ class ChillerElectricEIR(IDFBaseModel):
             'note': 'This input corresponds to the minimum flow fraction to be simulated. The minimum condenser flow corresponds to this fraction multiplied by the maximum condenser flow rate. This input is only used w...'
         },
     )
-    thermosiphon_capacity_fraction_curve_name: UniVariateFunctionsRef | None = Field(
+    thermosiphon_capacity_fraction_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b * (Tevap, out - Tcond, in) is typical, other univariate curves may be used Tevap, out = evaporator outlet temperature Tcond, in = condenser inlet temperature If this field i...',
         },
     )
@@ -1664,7 +1662,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
         default=None,
         json_schema_extra={
             'object_list': ['UnivariateFunctions'],
-            'note': 'Condenser loop flow rate fraction as a function of loop part load ratio CWFR = C * PLR + D  Where: CWFR is the condenser water flow fraction (actual/design) C and D are coefficients, see "Optimizin...',
+            'note': 'Condenser loop flow rate fraction as a function of loop part load ratio CWFR = C * PLR + D Where: CWFR is the condenser water flow fraction (actual/design) C and D are coefficients, see "Optimizing...',
         },
     )
     temperature_difference_across_condenser_schedule_name: ScheduleNamesRef | None = (
@@ -1672,7 +1670,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
             default=None,
             json_schema_extra={
                 'object_list': ['ScheduleNames'],
-                'note': 'A schedule that defines the temperature difference across the condenser. This input is used to  calculate the condenser flow. This input is only used when "Condenser Flow Control" is set to "Modula...',
+                'note': 'A schedule that defines the temperature difference across the condenser. This input is used to calculate the condenser flow. This input is only used when "Condenser Flow Control" is set to "Modulat...',
             },
         )
     )
@@ -1684,10 +1682,10 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
             'note': 'This input corresponds to the minimum flow fraction to be simulated. The minimum condenser flow corresponds to this fraction multiplied by the maximum condenser flow rate. This input is only used w...'
         },
     )
-    thermosiphon_capacity_fraction_curve_name: UniVariateFunctionsRef | None = Field(
+    thermosiphon_capacity_fraction_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b * (Tevap, out - Tcond, in) is typical, other univariate curves may be used Tevap, out = evaporator outlet temperature Tcond, in = condenser inlet temperature If this field i...',
         },
     )
@@ -2541,6 +2539,694 @@ class DistrictHeatingWater(IDFBaseModel):
     )
 
 
+class HeatPumpAirToWater(IDFBaseModel):
+    """air-to-water heat pump system which provides either chilled or hot water
+    with single- or variable speed compressors."""
+
+    _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater'
+    name: str = Field(...)
+    availability_schedule_name_heating: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Enter the name of a schedule that defines the availability of the unit in heating mode Schedule values of 0 denote the unit is off. All other values denote the unit is available If this field is le...',
+        },
+    )
+    availability_schedule_name_cooling: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Enter the name of a schedule that defines the availability of the unit in cooling mode Schedule values of 0 denote the unit is off. All other values denote the unit is available If this field is le...',
+        },
+    )
+    operating_mode_control_method: (
+        Literal['', 'EMSControlled', 'Load', 'ScheduledModes'] | None
+    ) = Field(default='Load')
+    operating_mode_control_option_for_multiple_unit: (
+        Literal['', 'Balanced', 'CoolingPriority', 'HeatingPriority', 'SingleMode']
+        | None
+    ) = Field(
+        default='SingleMode',
+        json_schema_extra={
+            'note': 'this determines how the operation mode is assigned when the load is too large to be met by multiple heat pump units SingleMode: all units will operate in the same mode (either all cooling or all he...'
+        },
+    )
+    operating_mode_control_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'This field is used if the control method is set to ScheduledModes Schedule values control operating mode: 0=off, 1=cooling, 2=heating',
+        },
+    )
+    minimum_part_load_ratio: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        json_schema_extra={
+            'note': 'Below this operating limit compressor cycling will occur'
+        },
+    )
+    rated_inlet_air_temperature_in_heating_mode: float | None = Field(
+        default=8.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'inlet air dry-bulb temperature corresponding to rated heat pump performance (capacity, COP).',
+        },
+    )
+    rated_air_flow_rate_in_heating_mode: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
+        json_schema_extra={
+            'units': 'm3/s',
+            'note': 'air flow rate corresponding to rated heat pump performance (capacity, COP).',
+        },
+    )
+    rated_leaving_water_temperature_in_heating_mode: float | None = Field(
+        default=40.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'outlet water temperature corresponding to rated heat pump performance (heating capacity, COP).',
+        },
+    )
+    rated_water_flow_rate_in_heating_mode: float | Literal['', 'Autosize'] | None = (
+        Field(
+            default='Autosize',
+            json_schema_extra={
+                'units': 'm3/s',
+                'note': 'Condenser water flow rate corresponding to rated heat pump performance (capacity, COP).',
+            },
+        )
+    )
+    minimum_outdoor_air_temperature_in_heating_mode: float | None = Field(
+        default=-30.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Enter the minimum outdoor temperature allowed for heating operation Heating is disabled below this temperature',
+        },
+    )
+    maximum_outdoor_air_temperature_in_heating_mode: float | None = Field(
+        default=100.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Enter the maximum outdoor temperature allowed for heating operation Heating is disabled above this temperature',
+        },
+    )
+    minimum_leaving_water_temperature_curve_name_in_heating_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
+        },
+    )
+    maximum_leaving_water_temperature_curve_name_in_heating_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
+        },
+    )
+    sizing_factor_for_heating: float | None = Field(
+        default=1.0,
+        gt=0.0,
+        json_schema_extra={'note': 'Multiplies the autosized capacity and flow rates'},
+    )
+    rated_inlet_air_temperature_in_cooling_mode: float | None = Field(
+        default=30.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'inlet air dry-bulb temperature corresponding to rated heat pump performance (capacity, COP).',
+        },
+    )
+    rated_air_flow_rate_in_cooling_mode: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
+        json_schema_extra={
+            'units': 'm3/s',
+            'note': 'air flow rate corresponding to rated heat pump performance (capacity, COP).',
+        },
+    )
+    rated_leaving_water_temperature_in_cooling_mode: float | None = Field(
+        default=8.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'inlet water temperature corresponding to rated performance (heating capacity, COP).',
+        },
+    )
+    rated_water_flow_rate_in_cooling_mode: float | Literal['', 'Autosize'] | None = (
+        Field(
+            default='Autosize',
+            json_schema_extra={
+                'units': 'm3/s',
+                'note': 'Condenser water flow rate corresponding to rated heat pump performance (capacity, COP).',
+            },
+        )
+    )
+    minimum_outdoor_air_temperature_in_cooling_mode: float | None = Field(
+        default=-30.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Enter the minimum outdoor temperature allowed for cooling operation Cooling is disabled below this temperature',
+        },
+    )
+    maximum_outdoor_air_temperature_in_cooling_mode: float | None = Field(
+        default=100.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'Enter the maximum outdoor temperature allowed for cooling operation Cooling is disabled above this temperature',
+        },
+    )
+    minimum_leaving_water_temperature_curve_name_in_cooling_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
+        },
+    )
+    maximum_leaving_water_temperature_curve_name_in_cooling_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
+        },
+    )
+    sizing_factor_for_cooling: float | None = Field(
+        default=1.0,
+        gt=0.0,
+        json_schema_extra={'note': 'Multiplies the autosized capacity and flow rates'},
+    )
+    air_inlet_node_name: str = Field(
+        ...,
+        json_schema_extra={
+            'note': 'The node from which the heat pump draws its inlet air.'
+        },
+    )
+    air_outlet_node_name: str = Field(
+        ...,
+        json_schema_extra={
+            'note': 'The node to which the heat pump sends its outlet air.'
+        },
+    )
+    hot_water_inlet_node_name: str | None = Field(
+        default=None,
+        json_schema_extra={'note': 'The node connects to the hot water loop'},
+    )
+    hot_water_outlet_node_name: str | None = Field(
+        default=None,
+        json_schema_extra={'note': 'The node connects to the hot water loop'},
+    )
+    chilled_water_inlet_node_name: str | None = Field(
+        default=None,
+        json_schema_extra={'note': 'The node connects to the chilled water loop'},
+    )
+    chilled_water_outlet_node_name: str | None = Field(
+        default=None,
+        json_schema_extra={'note': 'The node connects to the chilled water loop'},
+    )
+    maximum_outdoor_dry_bulb_temperature_for_defrost_operation: float | None = Field(
+        default=10.0,
+        json_schema_extra={
+            'note': 'defrost operation will not be active above this outdoor temperature'
+        },
+    )
+    heat_pump_defrost_control: (
+        Literal['', 'None', 'OnDemand', 'Timed', 'TimedEmpirical'] | None
+    ) = Field(default='None')
+    heat_pump_defrost_time_period_fraction: float | None = Field(
+        default=0.058333,
+        ge=0.0,
+        json_schema_extra={
+            'note': 'Fraction of time in defrost mode only applicable if timed defrost control is specified'
+        },
+    )
+    resistive_defrost_heater_capacity: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        json_schema_extra={
+            'units': 'W',
+            'note': 'only applicable if resistive defrost strategy is specified',
+        },
+    )
+    defrost_energy_input_ratio_function_of_temperature_curve_name: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'univariate curve = a + b*OAT is typical, other univariate curves may be used bivariate curve = a + b*WB + c*WB**2 + d*OAT + e*OAT**2 + f*WB*OAT OAT = outdoor air dry-bulb temperature (C) WB = wet-b...',
+        },
+    )
+    heat_pump_multiplier: int | None = Field(
+        default=1, json_schema_extra={'note': 'intend to model modular heat pumps'}
+    )
+    control_type: Literal['', 'FixedSpeed', 'VariableSpeed'] | None = Field(
+        default='VariableSpeed'
+    )
+    crankcase_heater_capacity: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        json_schema_extra={
+            'units': 'W',
+            'note': 'The compressor crankcase heater only operates when the dry-bulb temperature of air surrounding the compressor is below the Maximum Ambient Temperature for Crankcase Heater Operation and the heat pu...',
+        },
+    )
+    crankcase_heater_capacity_function_of_temperature_curve_name: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the crankcase heater capacity and the outdoor air temperature. When this field is missing or empty, constant crankcase heater capa...',
+        },
+    )
+    maximum_ambient_temperature_for_crankcase_heater_operation: float | None = Field(
+        default=10.0,
+        ge=0.0,
+        json_schema_extra={
+            'units': 'C',
+            'note': 'The compressor crankcase heater only operates when the dry-bulb temperature of air surrounding the compressor is below the Maximum Outdoor Temperature for Crankcase Heater Operation and the unit is...',
+        },
+    )
+    number_of_speeds_for_heating: int | None = Field(
+        default=1,
+        ge=0,
+        le=5,
+        json_schema_extra={
+            'note': "the number of speed levels in heating mode if there's only cooling component, set this field to 0"
+        },
+    )
+    rated_heating_capacity_at_speed_1: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_heating_at_speed_1: float | None = Field(
+        default=3.0, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_at_speed_1: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_1: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_at_speed_1: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_heating_capacity_at_speed_2: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_heating_at_speed_2: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_at_speed_2: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_2: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_at_speed_2: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_heating_capacity_at_speed_3: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_heating_at_speed_3: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_at_speed_3: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_3: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_at_speed_3: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_heating_capacity_at_speed_4: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_heating_at_speed_4: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_at_speed_4: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_4: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_at_speed_4: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_heating_capacity_at_speed_5: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_heating_at_speed_5: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_at_speed_5: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_5: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_at_speed_5: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    booster_mode_on_heating: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    rated_heating_capacity_in_booster_mode: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W'}
+    )
+    rated_heating_cop_in_booster_mode: float | None = Field(
+        default=3.0, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_heating_capacity_function_of_temperature_curve_name_in_booster_mode: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    heating_energy_input_ratio_function_of_plr_curve_name_in_booster_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    number_of_speeds_for_cooling: int | None = Field(
+        default=1,
+        ge=0,
+        le=5,
+        json_schema_extra={
+            'note': "the number of speed levels in cooling mode if there's only heating component, set this field to 0"
+        },
+    )
+    rated_cooling_capacity_at_speed_1: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_cooling_at_speed_1: float | None = Field(
+        default=3.0, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_1: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_1: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_1: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_cooling_capacity_at_speed_2: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_cooling_at_speed_2: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_2: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_2: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_2: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_cooling_capacity_at_speed_3: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_cooling_at_speed_3: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_3: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_3: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_3: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_cooling_capacity_at_speed_4: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_cooling_at_speed_4: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_4: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_4: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_4: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    rated_cooling_capacity_at_speed_5: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    rated_cop_for_cooling_at_speed_5: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_5: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_5: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_5: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+    booster_mode_on_cooling: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    rated_cooling_capacity_in_booster_mode: float | None = Field(
+        default=None, gt=0.0, json_schema_extra={'units': 'W'}
+    )
+    rated_cooling_cop_in_booster_mode: float | None = Field(
+        default=3.0, gt=0.0, json_schema_extra={'units': 'W/W'}
+    )
+    normalized_cooling_capacity_function_of_temperature_curve_name_in_booster_mode: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode: (
+        BivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['BivariateFunctions'],
+            'note': 'EIRFT - Fuel Energy Input Ratio Function of Temperature Curve Name, which is a biquadratic curve or a lookup table of air and water temperature.',
+        },
+    )
+    cooling_energy_input_ratio_function_of_plr_curve_name_in_booster_mode: (
+        UnivariateFunctionsRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'EIRFPLR - Fuel Energy Input Ratio Function of Part Load Ratio(PLR) Curve Name, which is a cubic curve or a lookup table.',
+        },
+    )
+
+
 class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     """The object defines a fuel-fired absorption heat pump based on equation-fit
     models."""
@@ -2638,7 +3324,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     )
     sizing_factor: float | None = Field(
         default=1.0,
-        ge=1.0,
+        ge=0.0,
         json_schema_extra={'note': 'Sizing Factor for equipment sizing'},
     )
     flow_mode: (
@@ -2669,7 +3355,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['BivariateFunctions'],
-            'note': ': CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table.',
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table.',
         },
     )
     fuel_energy_input_ratio_function_of_temperature_curve_name: BivariateFunctionsRef = Field(
@@ -2735,6 +3421,14 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         default=0.0,
         ge=0.0,
         json_schema_extra={'units': 'W', 'note': 'Standby Electric Power in [W]'},
+    )
+    minimum_unloading_ratio: float | None = Field(
+        default=0.25,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'Minimum modulation level of the gas-fired heat pump. Typically less than 1.0 and slightly higher than the minimum part load ratio.'
+        },
     )
 
 
@@ -2835,7 +3529,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     )
     sizing_factor: float | None = Field(
         default=1.0,
-        ge=1.0,
+        ge=0.0,
         json_schema_extra={'note': 'Sizing Factor for equipment sizing'},
     )
     flow_mode: (
@@ -2866,7 +3560,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['BivariateFunctions'],
-            'note': ': CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table.',
+            'note': 'CAPFT - Normalized Capacity Function of Temperature Curve Name, which is a biquadratic curve or a lookup table.',
         },
     )
     fuel_energy_input_ratio_function_of_temperature_curve_name: BivariateFunctionsRef = Field(
@@ -2971,6 +3665,14 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         ge=0.0,
         json_schema_extra={'units': 'W', 'note': 'Standby Electric Power in [W]'},
     )
+    minimum_unloading_ratio: float | None = Field(
+        default=0.25,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'Minimum modulation level of the gas-fired heat pump. Typically less than 1.0 and slightly higher than the minimum part load ratio.'
+        },
+    )
 
 
 class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
@@ -3044,10 +3746,10 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
             'note': 'Electric Input Ratio (EIR) modifier as a function of temperature EIR = 1/COP curve = a + b*CWS + c*CWS**2 + d*ECT + e*ECT**2 + f*CWS*ECT CWS = supply (leaving) chilled water temperature(C) ECT = en...',
         },
     )
-    electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name: UniVariateFunctionsRef = Field(
+    electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name: UnivariateFunctionsRef = Field(
         ...,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'Electric Input Ratio (EIR) modifier as a function of Part Load Ratio (PLR) EIR = 1/COP quadratic curve = a + b*PLR + c*PLR**2 is typical, other univariate curves may be used PLR = part load ratio (...',
         },
     )
@@ -3084,17 +3786,17 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
             'note': 'Enter the maximum inlet outdoor air dry-bulb temperature for air-cooled units or maximum inlet water temperature for water-cooled units. The unit is disabled above this temperature.',
         },
     )
-    minimum_supply_water_temperature_curve_name: UniVariateFunctionsRef | None = Field(
+    minimum_supply_water_temperature_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
         },
     )
-    maximum_supply_water_temperature_curve_name: UniVariateFunctionsRef | None = Field(
+    maximum_supply_water_temperature_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
         },
     )
@@ -3123,10 +3825,10 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
             'note': 'Electric Input Ratio (EIR) modifier as a function of temperature EIR = 1/COP curve = a + b*CWS + c*CWS**2 + d*ECT + e*ECT**2 + f*CWS*ECT CWS = supply (leaving) chilled water temperature(C) ECT = en...',
         },
     )
-    thermosiphon_capacity_fraction_curve_name: UniVariateFunctionsRef | None = Field(
+    thermosiphon_capacity_fraction_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b * (Tevap, out - Tcond, in) is typical, other univariate curves may be used Tevap, out = evaporator outlet temperature Tcond, in = condenser inlet temperature If this field i...',
         },
     )
@@ -3203,10 +3905,10 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
             'note': 'Heating capacity modifier as a function of CW supply temp and entering condenser temp curve = a + b*CWS + c*CWS**2 + d*ECT + e*ECT**2 + f*CWS*ECT CWS = supply (leaving) hot water temperature(C) ECT...',
         },
     )
-    electric_input_to_output_ratio_modifier_function_of_temperature_curve_name: BiVariateFunctionsRef = Field(
+    electric_input_to_output_ratio_modifier_function_of_temperature_curve_name: BivariateFunctionsRef = Field(
         ...,
         json_schema_extra={
-            'object_list': ['BiVariateFunctions'],
+            'object_list': ['BivariateFunctions'],
             'note': 'Electric Input Ratio (EIR) modifier as a function of temperature EIR = 1/COP curve = a + b*CWS + c*CWS**2 + d*ECT + e*ECT**2 + f*CWS*ECT CWS = supply (leaving) hot water temperature(C) ECT = enteri...',
         },
     )
@@ -3264,22 +3966,22 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
             'note': 'Enter the maximum inlet outdoor air dry-bulb temperature for air-cooled units or maximum inlet water temperature for water-cooled units. The unit is disabled above this temperature.',
         },
     )
-    minimum_supply_water_temperature_curve_name: UniVariateFunctionsRef | None = Field(
+    minimum_supply_water_temperature_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
         },
     )
-    maximum_supply_water_temperature_curve_name: UniVariateFunctionsRef | None = Field(
+    maximum_supply_water_temperature_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'quadratic curve = a + b*OAT is typical, other univariate curves may be used OAT = Outdoor Dry-Bulb Temperature',
         },
     )
-    dry_outdoor_correction_factor_curve_name: UniVariateFunctionsRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['UniVariateFunctions']}
+    dry_outdoor_correction_factor_curve_name: UnivariateFunctionsRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['UnivariateFunctions']}
     )
     maximum_outdoor_dry_bulb_temperature_for_defrost_operation: float | None = Field(
         default=10.0,
@@ -3308,28 +4010,28 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
             'note': 'univariate curve = a + b*OAT is typical, other univariate curves may be used bivariate curve = a + b*WB + c*WB**2 + d*OAT + e*OAT**2 + f*WB*OAT OAT = outdoor air dry-bulb temperature (C) WB = wet-b...',
         },
     )
-    timed_empirical_defrost_frequency_curve_name: UniVariateFunctionsRef | None = Field(
+    timed_empirical_defrost_frequency_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['UniVariateFunctions'],
+            'object_list': ['UnivariateFunctions'],
             'note': 'univariate curve = a + b*OAT is typical, other univariate curves may be used OAT = outdoor air dry-bulb temperature (C) Timed Empirical Defrost Frequency fraction in hours = curve output only appli...',
         },
     )
     timed_empirical_defrost_heat_load_penalty_curve_name: (
-        BivariateFunctionsRef | UniVariateFunctionsRef
+        BivariateFunctionsRef | UnivariateFunctionsRef
     ) | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['BivariateFunctions', 'UniVariateFunctions'],
+            'object_list': ['BivariateFunctions', 'UnivariateFunctions'],
             'note': 'univariate curve = a + b*OAT is typical, other univariate curves may be used bivariate curve = a + b*WB + c*WB**2 + d*OAT + e*OAT**2 + f*WB*OAT OAT = outdoor air dry-bulb temperature (C) WB = wet-b...',
         },
     )
     timed_empirical_defrost_heat_input_energy_fraction_curve_name: (
-        BivariateFunctionsRef | UniVariateFunctionsRef
+        BivariateFunctionsRef | UnivariateFunctionsRef
     ) | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['BivariateFunctions', 'UniVariateFunctions'],
+            'object_list': ['BivariateFunctions', 'UnivariateFunctions'],
             'note': 'univariate curve = a + b*OAT is typical, other univariate curves may be used bivariate curve = a + b*WB + c*WB**2 + d*OAT + e*OAT**2 + f*WB*OAT OAT = outdoor air dry-bulb temperature (C) WB = wet-b...',
         },
     )
@@ -3350,11 +4052,11 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         },
     )
     heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve_name: (
-        BiVariateFunctionsRef | None
+        BivariateFunctionsRef | None
     ) = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['BiVariateFunctions'],
+            'object_list': ['BivariateFunctions'],
             'note': 'Electric Input Ratio (EIR) modifier as a function of temperature EIR = 1/COP curve = a + b*HWS + c*HWS**2 + d*ECT + e*ECT**2 + f*HWS*ECT HWS = supply (leaving) hot water temperature(C) ECT = enteri...',
         },
     )

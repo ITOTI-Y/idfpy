@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Zone HVAC Radiative/Convective Units
 """
 
@@ -14,7 +14,6 @@ from pydantic import Field
 from ._base import IDFBaseModel
 from ._refs import (
     AllHeatTranSurfNamesRef,
-    BaseboardDesignObjectRef,
     CoolingCoilsWaterRef,
     DesignSpecificationZoneHVACSizingNameRef,
     FansCVRef,
@@ -251,8 +250,8 @@ class ZoneHVACBaseboardRadiantConvectiveSteam(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Steam'
     name: str = Field(...)
-    design_object: RadiantDesignObjectRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['RadiantDesignObject']}
+    design_object: RadiantDesignObjectRef = Field(
+        ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
     )
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -330,8 +329,8 @@ class ZoneHVACBaseboardRadiantConvectiveWater(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Water'
     name: str = Field(...)
-    design_object: BaseboardDesignObjectRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['BaseboardDesignObject']}
+    design_object: RadiantDesignObjectRef = Field(
+        ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
     )
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -619,7 +618,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['ScheduleNames'],
-            'note': 'This setpoint is a "mean air temperature", a "mean radiant temperature" or an  "operative temperature" setpoint depending on the control type',
+            'note': 'This setpoint is a "mean air temperature", a "mean radiant temperature" or an "operative temperature" setpoint depending on the control type',
         },
     )
     fraction_of_radiant_energy_incident_on_people: float | None = Field(
@@ -642,8 +641,8 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:ConstantFlow'
     name: str = Field(...)
-    design_object: RadiantDesignObjectRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['RadiantDesignObject']}
+    design_object: RadiantDesignObjectRef = Field(
+        ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
     )
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -921,8 +920,8 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:VariableFlow'
     name: str = Field(...)
-    design_object: RadiantDesignObjectRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['RadiantDesignObject']}
+    design_object: RadiantDesignObjectRef = Field(
+        ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
     )
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

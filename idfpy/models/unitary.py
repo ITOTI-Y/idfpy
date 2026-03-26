@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Unitary Equipment
 """
 
@@ -818,6 +818,13 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
             'note': 'None = meet sensible load only Multimode = activate enhanced dehumidification mode as needed and meet sensible load. Valid only with cooling coil type CoilSystem:Cooling:DX:HeatExchangerAssisted. T...'
         },
     )
+    dx_heating_coil_sizing_ratio: float | None = Field(
+        default=1.0,
+        gt=0.0,
+        json_schema_extra={
+            'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
+        },
+    )
 
 
 class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
@@ -892,11 +899,11 @@ class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
             ]
         },
     )
-    minimum_outdoor_dry_bulb_temperature_for_compressor_operation: float | None = Field(
-        default=-8.0,
+    dx_heating_coil_sizing_ratio: float | None = Field(
+        default=1.0,
+        gt=0.0,
         json_schema_extra={
-            'units': 'C',
-            'note': 'Needs to match the corresponding minimum outdoor temperature defined in the DX heating coil object.',
+            'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
     cooling_coil_object_type: Literal['Coil:Cooling:DX:MultiSpeed'] = Field(
@@ -1156,6 +1163,13 @@ class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
         default='Cycling',
         json_schema_extra={
             'note': 'used only when the heat pump coils are of the type WaterToAirHeatPump:EquationFit Constant results in 100% water flow regardless of compressor PLR Cycling results in water flow that matches compres...'
+        },
+    )
+    dx_heating_coil_sizing_ratio: float | None = Field(
+        default=1.0,
+        gt=0.0,
+        json_schema_extra={
+            'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
 

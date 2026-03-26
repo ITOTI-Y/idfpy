@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: External Interface
 """
 
@@ -87,8 +87,11 @@ class ExternalInterfaceFunctionalMockupUnitExportToActuator(IDFBaseModel):
     actuated_component_type: str = Field(...)
     actuated_component_control_type: str = Field(...)
     fmu_variable_name: str = Field(...)
-    initial_value: float = Field(
-        ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
+    initial_value: float | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'Used during EnergyPlus sizing and warm-up. If no value is specified, then the actuated component will only be updated after sizing and warm-up.'
+        },
     )
 
 
@@ -104,8 +107,9 @@ class ExternalInterfaceFunctionalMockupUnitExportToSchedule(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
     )
     fmu_variable_name: str = Field(...)
-    initial_value: float = Field(
-        ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
+    initial_value: float | None = Field(
+        default=None,
+        json_schema_extra={'note': 'Used during EnergyPlus sizing and warm-up.'},
     )
 
 
@@ -124,7 +128,7 @@ class ExternalInterfaceFunctionalMockupUnitExportToVariable(IDFBaseModel):
     )
     fmu_variable_name: str = Field(...)
     initial_value: float = Field(
-        ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
+        ..., json_schema_extra={'note': 'Used during EnergyPlus sizing and warm-up.'}
     )
 
 

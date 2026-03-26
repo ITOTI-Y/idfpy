@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Coils
 """
 
@@ -2756,6 +2756,13 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:VariableSpeed'
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     indoor_air_inlet_node_name: str = Field(...)
     indoor_air_outlet_node_name: str = Field(...)
     number_of_speeds: int | None = Field(
@@ -3331,7 +3338,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
             'note': 'Enter the evaporator fan power per air volume flow rate at the rated test conditions as defined in the 2023 version of ANSI/AHRI Standard 210/240. The test conditions vary external static pressure ...',
         },
     )
-    speed_6_reference_unit_condenser_air_flow_rate: float | None = Field(
+    speed_6_reference_unit_rated_condenser_air_flow_rate: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm3/s'}
     )
     speed_6_reference_unit_rated_pad_effectiveness_of_evap_precooling: float | None = (
@@ -3412,7 +3419,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
             'note': 'Enter the evaporator fan power per air volume flow rate at the rated test conditions as defined in the 2023 version of ANSI/AHRI Standard 210/240. The test conditions vary external static pressure ...',
         },
     )
-    speed_7_reference_unit_condenser_flow_rate: float | None = Field(
+    speed_7_reference_unit_rated_condenser_air_flow_rate: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm3/s'}
     )
     speed_7_reference_unit_rated_pad_effectiveness_of_evap_precooling: float | None = (
@@ -3493,7 +3500,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
             'note': 'Enter the evaporator fan power per air volume flow rate at the rated test conditions as defined in the 2023 version of ANSI/AHRI Standard 210/240. The test conditions vary external static pressure ...',
         },
     )
-    speed_8_reference_unit_condenser_air_flow_rate: float | None = Field(
+    speed_8_reference_unit_rated_condenser_air_flow_rate: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm3/s'}
     )
     speed_8_reference_unit_rated_pad_effectiveness_of_evap_precooling: float | None = (
@@ -3574,7 +3581,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
             'note': 'Enter the evaporator fan power per air volume flow rate at the rated test conditions as defined in the 2023 version of ANSI/AHRI Standard 210/240. The test conditions vary external static pressure ...',
         },
     )
-    speed_9_reference_unit_condenser_air_flow_rate: float | None = Field(
+    speed_9_reference_unit_rated_condenser_air_flow_rate: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm3/s', 'note': 'optional'}
     )
     speed_9_reference_unit_rated_pad_effectiveness_of_evap_precooling: float | None = (
@@ -3662,7 +3669,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
             },
         )
     )
-    speed_10_reference_unit_condenser_air_flow_rate: float | None = Field(
+    speed_10_reference_unit_rated_condenser_air_flow_rate: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm3/s', 'note': 'optional'}
     )
     speed_10_reference_unit_rated_pad_effectiveness_of_evap_precooling: float | None = (
@@ -3873,6 +3880,13 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:WaterToAirHeatPump:EquationFit'
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     water_inlet_node_name: str = Field(...)
     water_outlet_node_name: str = Field(...)
     air_inlet_node_name: str = Field(...)
@@ -4001,6 +4015,13 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         'Coil:Cooling:WaterToAirHeatPump:ParameterEstimation'
     )
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     compressor_type: Literal['Reciprocating', 'Rotary', 'Scroll'] = Field(
         ...,
         json_schema_extra={
@@ -4187,6 +4208,13 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit'
     )
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     water_to_refrigerant_hx_water_inlet_node_name: str = Field(...)
     water_to_refrigerant_hx_water_outlet_node_name: str = Field(...)
     indoor_air_inlet_node_name: str = Field(...)
@@ -5107,6 +5135,41 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         json_schema_extra={
             'object_list': ['BivariateFunctions'],
             'note': 'optional curve = a + b*wb + c*wb**2 + d*ewt + e*ewt**2 + f*wb*ewt wb = entering wet-bulb temperature (C) ewt = water entering temperature seen by the condenser (C)',
+        },
+    )
+
+
+class CoilDXASHRAE205Performance(IDFBaseModel):
+    """DX coil performance specification referencing an ASHRAE Standard 205
+    compliant representation for air-to-air direct expansion refrigerant system
+    (Representation Specification RS0004). As RS0004 files are intended to
+    support both heating and cooling performance, this object may referenced by
+    the Coil:Cooling:DX and the corresponding Coil:Heating:DX object (planned
+    for future addition)."""
+
+    _idf_object_type: ClassVar[str] = 'Coil:DX:ASHRAE205:Performance'
+    name: str = Field(...)
+    representation_file_name: str = Field(
+        ...,
+        json_schema_extra={
+            'note': 'The name of the ASHRAE 205 RS0004 (air-to-air direct expansion refrigerant system) representation file'
+        },
+    )
+    performance_interpolation_method: Literal['', 'Cubic', 'Linear'] | None = Field(
+        default='Linear'
+    )
+    rated_total_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
+        json_schema_extra={
+            'units': 'W',
+            'note': 'Not yet implemented / reserved for future use. Full load cooling capacity at AHRI 210/240 "A" test conditions. Used to scale representation data.',
+        },
+    )
+    rated_steady_state_heating_capacity: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize',
+        json_schema_extra={
+            'units': 'W',
+            'note': 'Not yet implemented / reserved for future use. Full load heating capacity at AHRI 210/240 "H1" test conditions. Used to scale representation data.',
         },
     )
 
@@ -6106,6 +6169,13 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:DX:VariableSpeed'
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     indoor_air_inlet_node_name: str = Field(...)
     indoor_air_outlet_node_name: str = Field(...)
     number_of_speeds: int | None = Field(
@@ -6431,7 +6501,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_4_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6501,7 +6571,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_5_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6571,7 +6641,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_6_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6641,7 +6711,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_7_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6711,7 +6781,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_8_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6781,7 +6851,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_9_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -6855,7 +6925,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
             'note': 'curve = a + b*db + c*db**2 + d*oat + e*oat**2 + f*db*oat db = entering air dry-bulb temperature (C) oat = air entering temperature seen by the evaporator (C)',
         },
     )
-    speed_10_heating_capacity_function_of_air_flow_fraction_curve_name: (
+    speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name: (
         UnivariateFunctionsRef | None
     ) = Field(
         default=None,
@@ -7294,6 +7364,13 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:WaterToAirHeatPump:EquationFit'
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     water_inlet_node_name: str = Field(...)
     water_outlet_node_name: str = Field(...)
     air_inlet_node_name: str = Field(...)
@@ -7366,6 +7443,13 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         'Coil:Heating:WaterToAirHeatPump:ParameterEstimation'
     )
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     compressor_type: Literal['Reciprocating', 'Rotary', 'Scroll'] = Field(
         ...,
         json_schema_extra={
@@ -7504,6 +7588,13 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit'
     )
     name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     water_to_refrigerant_hx_water_inlet_node_name: str = Field(...)
     water_to_refrigerant_hx_water_outlet_node_name: str = Field(...)
     indoor_air_inlet_node_name: str = Field(...)
@@ -7545,7 +7636,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     speed_1_reference_unit_gross_rated_heating_cop: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/W'}
     )
-    speed_1_reference_unit_rated_air_flow: float = Field(
+    speed_1_reference_unit_rated_air_flow_rate: float = Field(
         ..., ge=0.0, json_schema_extra={'units': 'm3/s'}
     )
     speed_1_reference_unit_rated_water_flow_rate: float = Field(
@@ -8902,6 +8993,13 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
             'note': 'Unique name for this instance of a heat pump water heater DX coil.'
         },
     )
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     rated_heating_capacity: float = Field(
         ...,
         gt=0.0,
@@ -9135,6 +9233,13 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Unique name for this instance of a variable-speed heat pump water heater DX coil.'
         },
     )
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
     number_of_speeds: int | None = Field(
         default=1, ge=1, le=10, json_schema_extra={'units': 'dimensionless'}
     )
@@ -9283,7 +9388,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used Part Load Fraction Correlation (function of part load ratio) should be quadratic or cubic. Quadratic curve = a + b(PLR) + c(PLR)^2. Cubic curve = a + b(PLR) + c...',
         },
     )
-    rated_water_heating_capacity_at_speed_1: float = Field(
+    speed_1_rated_water_heating_capacity: float = Field(
         ...,
         gt=0.0,
         json_schema_extra={
@@ -9291,7 +9396,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_1: float | None = Field(
+    speed_1_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9299,7 +9404,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_1: float | None = Field(
+    speed_1_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9358,7 +9463,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_2: float | None = Field(
+    speed_2_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9366,7 +9471,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_2: float | None = Field(
+    speed_2_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9374,7 +9479,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_2: float | None = Field(
+    speed_2_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9445,7 +9550,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_3: float | None = Field(
+    speed_3_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9453,7 +9558,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_3: float | None = Field(
+    speed_3_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9461,7 +9566,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_3: float | None = Field(
+    speed_3_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9532,7 +9637,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_4: float | None = Field(
+    speed_4_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9540,7 +9645,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_4: float | None = Field(
+    speed_4_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9548,7 +9653,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_4: float | None = Field(
+    speed_4_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9619,7 +9724,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_5: float | None = Field(
+    speed_5_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9627,7 +9732,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_5: float | None = Field(
+    speed_5_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9635,7 +9740,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_5: float | None = Field(
+    speed_5_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9706,7 +9811,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_6: float | None = Field(
+    speed_6_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9714,7 +9819,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_6: float | None = Field(
+    speed_6_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9722,7 +9827,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_6: float | None = Field(
+    speed_6_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9793,7 +9898,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_7: float | None = Field(
+    speed_7_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9801,7 +9906,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_7: float | None = Field(
+    speed_7_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9809,7 +9914,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_7: float | None = Field(
+    speed_7_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9880,7 +9985,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_8: float | None = Field(
+    speed_8_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9888,7 +9993,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_8: float | None = Field(
+    speed_8_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9896,7 +10001,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_8: float | None = Field(
+    speed_8_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -9967,7 +10072,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_9: float | None = Field(
+    speed_9_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -9975,7 +10080,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_9: float | None = Field(
+    speed_9_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -9983,7 +10088,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_9: float | None = Field(
+    speed_9_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -10054,7 +10159,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Table:Lookup object can also be used quadratic curve = a + b*ffw + c*ffw**2 cubic curve = a + b*ffw + c*ffw**2 + d*ffw**3 ffw = Fraction of the full load Water Flow',
         },
     )
-    rated_water_heating_capacity_at_speed_10: float | None = Field(
+    speed_10_rated_water_heating_capacity: float | None = Field(
         default=None,
         gt=0.0,
         json_schema_extra={
@@ -10062,7 +10167,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating capacity at the rated inlet air temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include condenser pump heat.',
         },
     )
-    rated_water_heating_cop_at_speed_10: float | None = Field(
+    speed_10_rated_water_heating_cop: float | None = Field(
         default=3.2,
         gt=0.0,
         json_schema_extra={
@@ -10070,7 +10175,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
             'note': 'Heating coefficient of performance at the rated inlet air and water temperatures, rated condenser inlet water temperature, rated air flow rate, and rated water flow rate. Can optionally include con...',
         },
     )
-    rated_sensible_heat_ratio_at_speed_10: float | None = Field(
+    speed_10_rated_sensible_heat_ratio: float | None = Field(
         default=0.85,
         ge=0.5,
         le=1.0,
@@ -10154,6 +10259,13 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
         ...,
         json_schema_extra={
             'note': 'Unique name for this instance of a heat pump water heater DX coil.'
+        },
+    )
+    availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
         },
     )
     rated_heating_capacity: float = Field(

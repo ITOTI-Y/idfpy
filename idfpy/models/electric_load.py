@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Electric Load Center-Generator Specifications
 """
 
@@ -653,14 +653,14 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
         ...,
         ge=1,
         json_schema_extra={
-            'note': 'Battery voltage is calculated by multiplying this field by the nominal cell voltage (N13, default 3.342V)'
+            'note': 'Battery voltage is calculated by multiplying this field by the nominal cell voltage (Numeric Field 13, default 3.342V)'
         },
     )
     number_of_strings_in_parallel: int = Field(
         ...,
         ge=1,
         json_schema_extra={
-            'note': 'Capacity (Ah) is determined by multiplying this field by the cell capacity (N14, default 3.2 Ah)'
+            'note': 'Capacity (Ah) is determined by multiplying this field by the cell capacity (Numeric Field 14, default 3.2 Ah)'
         },
     )
     initial_fractional_state_of_charge: float | None = Field(

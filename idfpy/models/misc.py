@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Variable Refrigerant Flow Equipment
 """
 
@@ -18,11 +18,13 @@ from ._refs import (
     AFNReliefAirFlowNamesRef,
     AFNTerminalUnitNamesRef,
     AirflowNetworkComponentNamesRef,
+    AirflowNetworkDistributionLinkageNamesRef,
     AirFlowNetworkMultizoneZonesRef,
     AirflowNetworkNodeAndZoneNamesRef,
     AirflowNetworkNodeNamesRef,
     AirflowNetworkOccupantVentilationControlNamesRef,
     AirLoopControllersRef,
+    AirPrimaryLoopsRef,
     AllHeatTranSurfNamesRef,
     BivariateFunctionsRef,
     BranchListsRef,
@@ -2110,6 +2112,7 @@ class AirflowNetworkDistributionNode(IDFBaseModel):
             'Other',
             'OutdoorAir:Node',
             'OutdoorAir:NodeList',
+            'Zone',
         ]
         | None
     ) = Field(
@@ -4496,6 +4499,58 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
     )
 
 
+class DuctLossConduction(IDFBaseModel):
+    """Duct:Loss:Conduction"""
+
+    _idf_object_type: ClassVar[str] = 'Duct:Loss:Conduction'
+    name: str = Field(...)
+    airloophvac_name: AirPrimaryLoopsRef = Field(
+        ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
+    )
+    airflownetwork_distribution_linkage_name: AirflowNetworkDistributionLinkageNamesRef = Field(
+        ...,
+        json_schema_extra={'object_list': ['AirflowNetworkDistributionLinkageNames']},
+    )
+    environment_type: Literal['', 'Schedule', 'Zone'] | None = Field(default='Zone')
+    ambient_zone_name: ZoneNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ZoneNames']}
+    )
+    ambient_temperature_schedule_name: ScheduleNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+    ambient_humidity_ratio_schedule_name: ScheduleNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+
+
+class DuctLossLeakage(IDFBaseModel):
+    """Duct:Loss:Leakage"""
+
+    _idf_object_type: ClassVar[str] = 'Duct:Loss:Leakage'
+    name: str = Field(...)
+    airloophvac_name: AirPrimaryLoopsRef = Field(
+        ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
+    )
+    airflownetwork_distribution_linkage_name: AirflowNetworkDistributionLinkageNamesRef = Field(
+        ...,
+        json_schema_extra={'object_list': ['AirflowNetworkDistributionLinkageNames']},
+    )
+
+
+class DuctLossMakeupAir(IDFBaseModel):
+    """Duct:Loss:MakeupAir"""
+
+    _idf_object_type: ClassVar[str] = 'Duct:Loss:MakeupAir'
+    name: str = Field(...)
+    airloophvac_name: AirPrimaryLoopsRef = Field(
+        ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
+    )
+    airflownetwork_distribution_linkage_name: AirflowNetworkDistributionLinkageNamesRef = Field(
+        ...,
+        json_schema_extra={'object_list': ['AirflowNetworkDistributionLinkageNames']},
+    )
+
+
 class ExteriorFuelEquipment(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
@@ -5574,7 +5629,7 @@ class HeatExchangerDesiccantBalancedFlow(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['DesiccantHXPerfData']}
     )
     economizer_lockout: Literal['', 'No', 'Yes'] | None = Field(
-        default='No',
+        default='Yes',
         json_schema_extra={
             'note': 'Yes means that the heat exchanger will be locked out (off) when the economizer is operating or high humidity control is active'
         },

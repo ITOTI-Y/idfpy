@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Water Heaters and Thermal Storage
 """
 
@@ -20,7 +20,10 @@ from ._refs import (
     HeatPumpWaterHeaterDXCoilsVariableSpeedRef,
     HeatPumpWaterHeaterDXCoilsWrappedRef,
     IntegratedHeatPumpsRef,
+    MaterialNameRef,
     ScheduleNamesRef,
+    ThermalStorageSizingRef,
+    ThermalStorageWaterNamesRef,
     UnivariateFunctionsRef,
     WaterHeaterNamesRef,
     WaterHeaterStratifiedNamesRef,
@@ -136,7 +139,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
     deadband_temperature_difference: float | None = Field(
-        default=0.0, ge=0.0, json_schema_extra={'units': 'deltaC'}
+        default=0.0001, ge=0.0001, json_schema_extra={'units': 'deltaC'}
     )
     temperature_sensor_height: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm'}
@@ -144,8 +147,8 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     minimum_temperature_limit: float | None = Field(
         default=None, json_schema_extra={'units': 'C'}
     )
-    nominal_cooling_capacity: float | None = Field(
-        default=None, json_schema_extra={'units': 'W'}
+    nominal_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
     )
     ambient_temperature_indicator: Literal['Outdoors', 'Schedule', 'Zone'] = Field(...)
     ambient_temperature_schedule_name: ScheduleNamesRef | None = Field(
@@ -266,6 +269,180 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     )
 
 
+class ThermalStorageHotWaterStratified(IDFBaseModel):
+    """ThermalStorage:HotWater:Stratified"""
+
+    _idf_object_type: ClassVar[str] = 'ThermalStorage:HotWater:Stratified'
+    name: str = Field(...)
+    tank_volume: float = Field(..., gt=0.0, json_schema_extra={'units': 'm3'})
+    tank_height: float = Field(
+        ...,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'm',
+            'note': 'Height is measured in the axial direction for horizontal cylinders',
+        },
+    )
+    tank_shape: (
+        Literal['', 'HorizontalCylinder', 'Other', 'VerticalCylinder'] | None
+    ) = Field(default='VerticalCylinder')
+    tank_perimeter: float | None = Field(
+        default=None,
+        ge=0.0,
+        json_schema_extra={'units': 'm', 'note': 'Only used if Tank Shape is Other'},
+    )
+    top_setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+    bottom_setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+    deadband_temperature_difference: float | None = Field(
+        default=0.0001, ge=0.0001, json_schema_extra={'units': 'deltaC'}
+    )
+    top_temperature_sensor_height: float | None = Field(
+        default=None, ge=0.0, json_schema_extra={'units': 'm'}
+    )
+    bottom_temperature_sensor_height: float | None = Field(
+        default=None, ge=0.0, json_schema_extra={'units': 'm'}
+    )
+    maximum_temperature_limit: float | None = Field(
+        default=None, json_schema_extra={'units': 'C'}
+    )
+    nominal_heating_capacity: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'W'}
+    )
+    ambient_temperature_indicator: Literal['Outdoors', 'Schedule', 'Zone'] = Field(...)
+    ambient_temperature_schedule_name: ScheduleNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+    ambient_temperature_zone_name: ZoneNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ZoneNames']}
+    )
+    ambient_temperature_outdoor_air_node_name: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'required for Ambient Temperature Indicator=Outdoors'
+        },
+    )
+    uniform_skin_loss_coefficient_per_unit_area_to_ambient_temperature: float | None = (
+        Field(default=None, ge=0.0, json_schema_extra={'units': 'W/m2-K'})
+    )
+    use_side_inlet_node_name: str | None = Field(default=None)
+    use_side_outlet_node_name: str | None = Field(default=None)
+    use_side_flow_direction_schedule: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'allowed value is -1 and 1. When the value is 1, water flows in from the inlet and flows out from the outlet node. When the value is -1, water flows in from the outlet node and flows out from the in...'
+        },
+    )
+    use_side_heat_transfer_effectiveness: float | None = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': "The use side effectiveness in the stratified tank model is a simplified analogy of a heat exchanger's effectiveness. This effectiveness is equal to the fraction of use mass flow rate that directly ..."
+        },
+    )
+    use_side_availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for use side. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
+    use_side_inlet_height: float | Literal['', 'Autocalculate'] | None = Field(
+        default='Autocalculate',
+        json_schema_extra={'units': 'm', 'note': 'Defaults to top of tank'},
+    )
+    use_side_outlet_height: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        json_schema_extra={'units': 'm', 'note': 'Defaults to bottom of tank'},
+    )
+    use_side_design_flow_rate: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'm3/s'}
+    )
+    source_side_inlet_node_name: str | None = Field(default=None)
+    source_side_outlet_node_name: str | None = Field(default=None)
+    source_side_flow_direction_schedule: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'allowed value is -1 and 1. When the value is 1, water flows in from the inlet and flows out from the outlet node. When the value is -1, water flows in from the outlet node and flows out from the in...'
+        },
+    )
+    source_side_heat_transfer_effectiveness: float | None = Field(
+        default=1.0,
+        le=1.0,
+        gt=0.0,
+        json_schema_extra={
+            'note': "The source side effectiveness in the stratified tank model is a simplified analogy of a heat exchanger's effectiveness. This effectiveness is equal to the fraction of source mass flow rate that dir..."
+        },
+    )
+    source_side_availability_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Availability schedule name for use side. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
+        },
+    )
+    source_side_inlet_height: float | None = Field(
+        default=0.0,
+        ge=0.0,
+        json_schema_extra={'units': 'm', 'note': 'Defaults to bottom of tank'},
+    )
+    source_side_outlet_height: float | Literal['', 'Autocalculate'] | None = Field(
+        default='Autocalculate',
+        json_schema_extra={'units': 'm', 'note': 'Defaults to top of tank'},
+    )
+    source_side_design_flow_rate: float | Literal['', 'Autosize'] | None = Field(
+        default='Autosize', json_schema_extra={'units': 'm3/s'}
+    )
+    tank_recovery_time: float | None = Field(
+        default=4.0,
+        gt=0.0,
+        json_schema_extra={
+            'units': 'hr',
+            'note': 'Parameter for autosizing design flow rates for indirectly cooled water tanks time required to lower temperature of entire tank from 14.4C to 9.0C',
+        },
+    )
+    inlet_mode: Literal['', 'Fixed', 'Seeking'] | None = Field(default='Fixed')
+    number_of_nodes: int | None = Field(default=1, ge=1, le=10)
+    additional_destratification_conductivity: float | None = Field(
+        default=0.0, ge=0.0, json_schema_extra={'units': 'W/m-K'}
+    )
+    node_1_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_2_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_3_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_4_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_5_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_6_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_7_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_8_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_9_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+    node_10_additional_loss_coefficient: float | None = Field(
+        default=0.0, json_schema_extra={'units': 'W/K'}
+    )
+
+
 class ThermalStorageIceDetailed(IDFBaseModel):
     """This input syntax is intended to describe a thermal storage system that
     includes smaller containers filled with water that are placed in a larger
@@ -281,7 +458,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
             'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
         },
     )
-    capacity: float = Field(
+    capacity: float | Literal['Autosize'] = Field(
         ...,
         json_schema_extra={
             'units': 'GJ',
@@ -337,6 +514,13 @@ class ThermalStorageIceDetailed(IDFBaseModel):
             'note': 'This field determines whether the system uses internal or external melt during discharging. This will then have an impact on charging performance.'
         },
     )
+    thermal_storage_sizing_object_name: ThermalStorageSizingRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ThermalStorageSizing'],
+            'note': 'used only when tank capacity is autosized',
+        },
+    )
 
 
 class ThermalStorageIceSimple(IDFBaseModel):
@@ -353,9 +537,70 @@ class ThermalStorageIceSimple(IDFBaseModel):
             'note': 'IceOnCoilInternal = Ice-on-Coil, internal melt IceOnCoilExternal = Ice-on-Coil, external melt'
         },
     )
-    capacity: float = Field(..., json_schema_extra={'units': 'GJ'})
+    capacity: float | Literal['Autosize'] = Field(
+        ..., json_schema_extra={'units': 'GJ'}
+    )
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
+    thermal_storage_sizing_object_name: ThermalStorageSizingRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ThermalStorageSizing'],
+            'note': 'used only when tank capacity is autosized',
+        },
+    )
+
+
+class ThermalStoragePCM(IDFBaseModel):
+    """This thermal storage model is PCM-based It requires PCM material property
+    connection In addition to the object linking, this object needs PCM Latent
+    heat storage capacity and Heat Loss Rate This model needs 4 nodes: 2 plant
+    side nodes and 2 use side nodes."""
+
+    _idf_object_type: ClassVar[str] = 'ThermalStorage:PCM'
+    name: str = Field(...)
+    availability_schedule_name: ScheduleNamesRef = Field(
+        ..., json_schema_extra={'object_list': ['ScheduleNames']}
+    )
+    plant_side_inlet_node_name: str = Field(...)
+    plant_side_outlet_node_name: str = Field(...)
+    use_side_inlet_node_name: str = Field(...)
+    use_side_outlet_node_name: str = Field(...)
+    pcm_material_name: MaterialNameRef = Field(
+        ..., json_schema_extra={'object_list': ['MaterialName']}
+    )
+    tank_capacity: float | Literal['Autosize'] = Field(
+        ..., json_schema_extra={'units': 'kg'}
+    )
+    heat_loss_rate: float | None = Field(default=0.0, json_schema_extra={'units': 'W'})
+    use_side_design_flow_rate: float | Literal['Autosize'] = Field(
+        ..., json_schema_extra={'units': 'm3/s'}
+    )
+    plant_side_design_flow_rate: float | Literal['Autosize'] = Field(
+        ..., json_schema_extra={'units': 'm3/s'}
+    )
+
+
+class ThermalStorageSizing(IDFBaseModel):
+    """Sizing information for thermal energy stoarge capacity."""
+
+    _idf_object_type: ClassVar[str] = 'ThermalStorage:Sizing'
+    name: str = Field(...)
+    on_peak_period_start_time: float = Field(
+        ...,
+        json_schema_extra={
+            'units': 'hr',
+            'note': 'Start time of on peak period in hours',
+        },
+    )
+    on_peak_period_end_time: float = Field(
+        ...,
+        json_schema_extra={
+            'units': 'hr',
+            'note': 'End time of on peak period in hours',
+        },
+    )
+    sizing_factor: float | None = Field(default=1.0, gt=0.0)
 
 
 class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
@@ -1141,8 +1386,11 @@ class WaterHeaterSizing(IDFBaseModel):
     object is not needed if water heaters are not autosized."""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:Sizing'
-    waterheater_name: WaterHeaterNamesRef = Field(
-        ..., json_schema_extra={'object_list': ['WaterHeaterNames']}
+    waterheater_name: ThermalStorageWaterNamesRef | WaterHeaterNamesRef = Field(
+        ...,
+        json_schema_extra={
+            'object_list': ['ThermalStorageWaterNames', 'WaterHeaterNames']
+        },
     )
     design_mode: (
         Literal[
