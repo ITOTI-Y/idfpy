@@ -27,6 +27,12 @@ jobs:
 
       - uses: astral-sh/setup-uv@v4
 
+      - name: Set version from tag
+        run: |
+          VERSION="${{ inputs.tag }}"
+          VERSION="${VERSION#v}"
+          sed -i "s/^version = .*/version = \"${VERSION}\"/" pyproject.toml
+
       - name: Build
         run: uv build
 

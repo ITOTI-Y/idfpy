@@ -313,7 +313,10 @@ class ModelGenerator:
         field_order_registry: dict[str, list[str]],
         schema_version: str,
     ) -> None:
-        """Generate __init__.py with exports and registries.
+        """Generate __init__.py with lazy imports and registries.
+
+        Uses PEP 562 module-level __getattr__ for lazy importing of model
+        classes. Only IDFBaseModel is eagerly imported.
 
         Args:
             all_classes: Mapping of file names to class names.
@@ -325,30 +328,41 @@ class ModelGenerator:
             '"""Auto-generated EnergyPlus IDF models.',
             '',
             'This module exports all EnergyPlus object types as Pydantic models.',
+            'Model classes are lazily imported on first access (PEP 562).',
             f'Generated from Energy+.schema.epJSON version {schema_version}.',
             '"""',
             'from __future__ import annotations',
+            '',
+            'import importlib',
             '',
             'from ._base import IDFBaseModel',
             '',
         ]
 
-        # Generate imports
-        for file_name in sorted(all_classes.keys()):
-            class_names = sorted(all_classes[file_name])
-            if not class_names:
-                continue
+        # Generate _CLASS_TO_MODULE mapping for lazy imports
+        lines.extend(self._format_class_to_module(all_classes))
 
-            # Format imports nicely
-            if len(class_names) <= 3:
-                imports = ', '.join(class_names)
-                lines.append(f'from .{file_name} import {imports}')
-            else:
-                lines.append(f'from .{file_name} import (')
-                for cls_name in class_names:
-                    lines.append(f'    {cls_name},')
-                lines.append(')')
+        lines.append('')
+        lines.append('')
 
+        # Generate __getattr__ for lazy imports
+        lines.extend(
+            [
+                'def __getattr__(name: str):',
+                '    """Lazily import model classes on first access (PEP 562)."""',
+                '    module_name = _CLASS_TO_MODULE.get(name)',
+                '    if module_name is None:',
+                '        raise AttributeError(',
+                '            f"module {__name__!r} has no attribute {name!r}"',
+                '        )',
+                '    module = importlib.import_module(f".{module_name}", __name__)',
+                '    value = getattr(module, name)',
+                '    globals()[name] = value',
+                '    return value',
+            ]
+        )
+
+        lines.append('')
         lines.append('')
 
         # Generate OBJECT_TYPE_REGISTRY
@@ -377,7 +391,17 @@ class ModelGenerator:
                 '    class_name = OBJECT_TYPE_REGISTRY.get(object_type)',
                 '    if class_name is None:',
                 '        return None',
-                '    return globals().get(class_name)',
+                '    cls = globals().get(class_name)',
+                '    if cls is not None:',
+                '        return cls',
+                '    module_name = _CLASS_TO_MODULE.get(class_name)',
+                '    if module_name is None:',
+                '        return None',
+                '    module = importlib.import_module(f".{module_name}", __name__)',
+                '    cls = getattr(module, class_name, None)',
+                '    if cls is not None:',
+                '        globals()[class_name] = cls',
+                '    return cls',
                 '',
                 '',
                 'def get_field_order(object_type: str) -> list[str]:',
@@ -455,6 +479,30 @@ class ModelGenerator:
                 for field_name in fields:
                     lines.append(f'        "{field_name}",')
                 lines.append('    ],')
+        lines.append('}')
+        return lines
+
+    def _format_class_to_module(self, all_classes: dict[str, list[str]]) -> list[str]:
+        """Format _CLASS_TO_MODULE mapping for lazy imports.
+
+        Args:
+            all_classes: Mapping of file names to class names.
+
+        Returns:
+            List of code lines.
+        """
+        # Invert: file_name -> [class_names] to class_name -> file_name
+        mapping: dict[str, str] = {}
+        for file_name, class_names in all_classes.items():
+            for cls_name in class_names:
+                mapping[cls_name] = file_name
+
+        lines = [
+            '# Class name to submodule mapping for lazy imports',
+            '_CLASS_TO_MODULE: dict[str, str] = {',
+        ]
+        for cls_name in sorted(mapping.keys()):
+            lines.append(f'    "{cls_name}": "{mapping[cls_name]}",')
         lines.append('}')
         return lines
 
