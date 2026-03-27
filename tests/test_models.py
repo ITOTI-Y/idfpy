@@ -183,3 +183,86 @@ def test_ref_validator():
     assert v(None) is None
     assert v(123) == '123'
     assert 'ZoneNames' in repr(v)
+
+
+def test_to_dict():
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0))
+    idf.add(Zone(name='Office'))
+
+    d = idf.to_dict()
+
+    # Version is unnamed → key should be "Version 1"
+    assert 'Version 1' in d['Version']
+    assert 'name' not in d['Version']['Version 1']
+
+    # Zone is named → key should be the name value
+    assert 'Office' in d['Zone']
+    assert 'name' not in d['Zone']['Office']
+
+    # Building has default name 'NONE'
+    assert 'NONE' in d['Building']
+    assert 'name' not in d['Building']['NONE']
+
+
+def test_from_dict():
+    from idfpy import IDF
+
+    data = {
+        'Version': {'Version 1': {'version_identifier': '25.2'}},
+        'Zone': {'TestZone': {'direction_of_relative_north': 0.0}},
+    }
+    idf = IDF.from_dict(data)
+
+    assert idf.has('Zone', 'TestZone')
+    zone = idf.get('Zone', 'TestZone')
+    assert zone is not None
+    assert zone.name == 'TestZone'
+    assert zone.direction_of_relative_north == 0.0
+
+    # Version has no name field, should still load
+    assert len(idf.all_of_type('Version')) == 1
+
+
+def test_epjson_roundtrip():
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0, terrain='Suburbs'))
+    idf.add(Zone(name='Office', direction_of_relative_north=45.0))
+
+    d = idf.to_dict()
+    loaded = IDF.from_dict(d)
+
+    assert loaded.has('Zone', 'Office')
+    zone = loaded.get('Zone', 'Office')
+    assert zone.direction_of_relative_north == 45.0
+
+    building = loaded.get('Building', 'NONE')
+    assert building is not None
+    assert building.north_axis == 0.0
+    assert building.terrain == 'Suburbs'
+
+
+def test_epjson_save_load(tmp_path):
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0))
+    idf.add(Zone(name='Office'))
+
+    path = tmp_path / 'test.epjson'
+    idf.save(path, output_type='epjson')
+    assert path.exists()
+
+    loaded = IDF.load(path)
+    assert loaded.has('Zone', 'Office')
+    assert len(loaded.all_of_type('Version')) == 1
