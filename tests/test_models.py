@@ -79,7 +79,7 @@ def test_literal_case_normalization():
     """IDF files are case-insensitive; Literal fields should accept any case."""
     from idfpy.models import Building
 
-    b = Building(north_axis=0.0, terrain='SUBURBS')  # ty: ignore[invalid-argument-type]
+    b = Building(north_axis=0.0, terrain='SUBURBS')
     assert b.terrain == 'Suburbs'
 
 
@@ -183,3 +183,130 @@ def test_ref_validator():
     assert v(None) is None
     assert v(123) == '123'
     assert 'ZoneNames' in repr(v)
+
+
+def test_to_dict():
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0))
+    idf.add(Zone(name='Office'))
+
+    d = idf.to_dict()
+
+    # Version is unnamed → key should be "Version 1"
+    assert 'Version 1' in d['Version']
+    assert 'name' not in d['Version']['Version 1']
+
+    # Zone is named → key should be the name value
+    assert 'Office' in d['Zone']
+    assert 'name' not in d['Zone']['Office']
+
+    # Building has default name 'NONE'
+    assert 'NONE' in d['Building']
+    assert 'name' not in d['Building']['NONE']
+
+
+def test_to_dict_preserves_empty_string_name():
+    from idfpy import IDF
+    from idfpy.models import Zone
+
+    idf = IDF()
+    idf.add(Zone(name='', direction_of_relative_north=15.0))
+
+    d = idf.to_dict()
+
+    assert '' in d['Zone']
+    assert 'Zone 1' not in d['Zone']
+    assert d['Zone']['']['direction_of_relative_north'] == 15.0
+
+    loaded = IDF.from_dict(d)
+    assert loaded.to_dict() == d
+
+
+def test_to_dict_skips_existing_synthetic_name_keys():
+    from idfpy import IDF
+    from idfpy.models import ComfortViewFactorAngles
+
+    idf = IDF()
+    idf.add(ComfortViewFactorAngles(name='ComfortViewFactorAngles 1'))
+    idf.add(ComfortViewFactorAngles(name='ComfortViewFactorAngles 2'))
+    idf.add(ComfortViewFactorAngles())
+
+    d = idf.to_dict()
+
+    assert 'ComfortViewFactorAngles 1' in d['ComfortViewFactorAngles']
+    assert 'ComfortViewFactorAngles 2' in d['ComfortViewFactorAngles']
+    assert 'ComfortViewFactorAngles 3' in d['ComfortViewFactorAngles']
+
+
+def test_from_dict():
+    from idfpy import IDF
+
+    data = {
+        'Version': {'Version 1': {'version_identifier': '25.2'}},
+        'Zone': {'TestZone': {'direction_of_relative_north': 0.0}},
+    }
+    idf = IDF.from_dict(data)
+
+    assert idf.has('Zone', 'TestZone')
+    zone = idf.get('Zone', 'TestZone')
+    assert zone is not None
+    assert zone.name == 'TestZone'  # ty: ignore[unresolved-attribute]
+    assert zone.direction_of_relative_north == 0.0  # ty: ignore[unresolved-attribute]
+
+    # Version has no name field, should still load
+    assert len(idf.all_of_type('Version')) == 1
+
+
+def test_epjson_roundtrip():
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0, terrain='Suburbs'))
+    idf.add(Zone(name='Office', direction_of_relative_north=45.0))
+
+    d = idf.to_dict()
+    loaded = IDF.from_dict(d)
+
+    assert loaded.has('Zone', 'Office')
+    zone = loaded.get('Zone', 'Office')
+    assert zone.direction_of_relative_north == 45.0  # ty: ignore[unresolved-attribute]
+
+    building = loaded.get('Building', 'NONE')
+    assert building is not None
+    assert building.north_axis == 0.0  # ty: ignore[unresolved-attribute]
+    assert building.terrain == 'Suburbs'  # ty: ignore[unresolved-attribute]
+
+
+def test_epjson_save_load(tmp_path):
+    from idfpy import IDF
+    from idfpy.models import Building, Version, Zone
+
+    idf = IDF()
+    idf.add(Version())
+    idf.add(Building(north_axis=0.0))
+    idf.add(Zone(name='Office'))
+
+    path = tmp_path / 'test.epjson'
+    idf.save(path, output_type='epjson')
+    assert path.exists()
+
+    loaded = IDF.load(path)
+    assert loaded.has('Zone', 'Office')
+    assert len(loaded.all_of_type('Version')) == 1
+
+
+def test_actual_idf_file(tmp_path):
+    from pathlib import Path
+
+    from idfpy import IDF
+
+    idf = IDF.load(Path('./tests/test.idf'))
+    dict_idf = idf.to_dict()
+    loaded_idf = IDF.from_dict(dict_idf)
+    assert len(idf) == len(loaded_idf)
