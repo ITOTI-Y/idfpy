@@ -213,9 +213,11 @@ class IDF:
                         fields[va] = fields.pop(field_name)
                 has_name_field = 'name' in type(obj).model_fields
                 name_value = getattr(obj, 'name', None)
-                if has_name_field and name_value:
+                if has_name_field and name_value is not None:
                     obj_name = name_value
                 else:
+                    while f'{object_type} {unnamed_counter}' in type_dict:
+                        unnamed_counter += 1
                     obj_name = f'{object_type} {unnamed_counter}'
                     unnamed_counter += 1
                 type_dict[obj_name] = _coerce_numerics(fields)

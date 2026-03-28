@@ -209,6 +209,39 @@ def test_to_dict():
     assert 'name' not in d['Building']['NONE']
 
 
+def test_to_dict_preserves_empty_string_name():
+    from idfpy import IDF
+    from idfpy.models import Zone
+
+    idf = IDF()
+    idf.add(Zone(name='', direction_of_relative_north=15.0))
+
+    d = idf.to_dict()
+
+    assert '' in d['Zone']
+    assert 'Zone 1' not in d['Zone']
+    assert d['Zone']['']['direction_of_relative_north'] == 15.0
+
+    loaded = IDF.from_dict(d)
+    assert loaded.to_dict() == d
+
+
+def test_to_dict_skips_existing_synthetic_name_keys():
+    from idfpy import IDF
+    from idfpy.models import ComfortViewFactorAngles
+
+    idf = IDF()
+    idf.add(ComfortViewFactorAngles(name='ComfortViewFactorAngles 1'))
+    idf.add(ComfortViewFactorAngles(name='ComfortViewFactorAngles 2'))
+    idf.add(ComfortViewFactorAngles())
+
+    d = idf.to_dict()
+
+    assert 'ComfortViewFactorAngles 1' in d['ComfortViewFactorAngles']
+    assert 'ComfortViewFactorAngles 2' in d['ComfortViewFactorAngles']
+    assert 'ComfortViewFactorAngles 3' in d['ComfortViewFactorAngles']
+
+
 def test_from_dict():
     from idfpy import IDF
 
