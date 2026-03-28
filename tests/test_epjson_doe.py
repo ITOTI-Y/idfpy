@@ -92,8 +92,8 @@ class TestDOEepJSON:
         orig_building = doe_idf.get('Building', 'OfficeMedium')
         rt_building = loaded.get('Building', 'OfficeMedium')
         assert rt_building is not None
-        assert orig_building.north_axis == rt_building.north_axis
-        assert orig_building.terrain == rt_building.terrain
+        assert orig_building.north_axis == rt_building.north_axis  # ty: ignore[unresolved-attribute]
+        assert orig_building.terrain == rt_building.terrain  # ty: ignore[unresolved-attribute]
 
         # Zone fields
         orig_zones = doe_idf.all_of_type('Zone')
@@ -127,9 +127,11 @@ class TestDOEepJSON:
         # Print output for debugging
         if result.returncode != 0:
             print('=== STDOUT ===')
-            print(result.stdout[-3000:] if len(result.stdout) > 3000 else result.stdout)
+            print(result.stdout[-3000:] if len(result.stdout)
+                  > 3000 else result.stdout)
             print('=== STDERR ===')
-            print(result.stderr[-3000:] if len(result.stderr) > 3000 else result.stderr)
+            print(result.stderr[-3000:] if len(result.stderr)
+                  > 3000 else result.stderr)
 
             # Check error file for details
             err_file = output_dir / 'eplusout.err'

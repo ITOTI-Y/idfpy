@@ -79,7 +79,7 @@ def test_literal_case_normalization():
     """IDF files are case-insensitive; Literal fields should accept any case."""
     from idfpy.models import Building
 
-    b = Building(north_axis=0.0, terrain='SUBURBS')  # ty: ignore[invalid-argument-type]
+    b = Building(north_axis=0.0, terrain='SUBURBS')
     assert b.terrain == 'Suburbs'
 
 
@@ -221,8 +221,8 @@ def test_from_dict():
     assert idf.has('Zone', 'TestZone')
     zone = idf.get('Zone', 'TestZone')
     assert zone is not None
-    assert zone.name == 'TestZone'
-    assert zone.direction_of_relative_north == 0.0
+    assert zone.name == 'TestZone'  # ty: ignore[unresolved-attribute]
+    assert zone.direction_of_relative_north == 0.0  # ty: ignore[unresolved-attribute]
 
     # Version has no name field, should still load
     assert len(idf.all_of_type('Version')) == 1
@@ -242,12 +242,12 @@ def test_epjson_roundtrip():
 
     assert loaded.has('Zone', 'Office')
     zone = loaded.get('Zone', 'Office')
-    assert zone.direction_of_relative_north == 45.0
+    assert zone.direction_of_relative_north == 45.0  # ty: ignore[unresolved-attribute]
 
     building = loaded.get('Building', 'NONE')
     assert building is not None
-    assert building.north_axis == 0.0
-    assert building.terrain == 'Suburbs'
+    assert building.north_axis == 0.0  # ty: ignore[unresolved-attribute]
+    assert building.terrain == 'Suburbs'  # ty: ignore[unresolved-attribute]
 
 
 def test_epjson_save_load(tmp_path):

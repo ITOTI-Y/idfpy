@@ -57,6 +57,7 @@ idf.run(
 ### In-memory dict conversion
 
 ```python
+from pathlib import Path
 from idfpy import IDF
 
 idf = IDF.load(Path('model.idf'))

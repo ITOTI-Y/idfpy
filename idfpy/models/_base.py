@@ -50,7 +50,7 @@ class IDFBaseModel(BaseModel):
 
     _idf_object_type: ClassVar[str] = ''
     # Cached per-class: field_name -> {lowercase_value: canonical_value}
-    _literal_case_maps: ClassVar[dict[str, dict[str, str]]] = {}
+    _literal_case_maps: ClassVar[dict[str, dict[str, str | int]]] = {}
 
     @classmethod
     def _get_literal_case_maps(cls) -> dict[str, dict[str, str | int]]:
