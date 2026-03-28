@@ -204,7 +204,7 @@ class IDF:
                         fields[va] = fields.pop(field_name)
                 has_name_field = 'name' in type(obj).model_fields
                 name_value = getattr(obj, 'name', None)
-                if has_name_field and name_value is not None:
+                if has_name_field and name_value not in (None, ''):
                     obj_name = name_value
                 else:
                     while f'{object_type} {unnamed_counter}' in type_dict:
