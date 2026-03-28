@@ -10,7 +10,7 @@ import json
 import subprocess
 import sys
 import types
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import Annotated, Any, Literal, Union, cast, get_args, get_origin
 
@@ -224,14 +224,33 @@ class IDF:
 
         Returns:
             IDF instance with parsed objects.
+
+        Raises:
+            ValueError: If *data* is not a dict, any object-type value is not
+                a dict, or any fields entry is not a mapping.
         """
+        if not isinstance(data, dict):
+            raise ValueError(
+                f'from_dict expects a top-level dict, got {type(data).__name__}'
+            )
+
         idf = cls()
         for object_type, objects in data.items():
+            if not isinstance(objects, dict):
+                raise ValueError(
+                    f'Expected a dict of objects for object type '
+                    f'"{object_type}", got {type(objects).__name__}'
+                )
             model_class = get_model_class(object_type)
             if model_class is None:
                 logger.warning(f'Unknown object type: {object_type}')
                 continue
             for obj_name, fields in objects.items():
+                if not isinstance(fields, Mapping):
+                    raise ValueError(
+                        f'Expected a mapping of fields for {object_type} '
+                        f'"{obj_name}", got {type(fields).__name__}'
+                    )
                 field_dict = dict(fields)
                 if 'name' in model_class.model_fields:
                     field_dict['name'] = obj_name
