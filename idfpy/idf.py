@@ -6,12 +6,13 @@ and IDF file read/write functionality.
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import types
 from collections.abc import Iterator
 from pathlib import Path
-from typing import Annotated, Any, Union, get_args, get_origin
+from typing import Annotated, Any, Literal, Union, get_args, get_origin
 
 from loguru import logger
 
@@ -48,6 +49,30 @@ def _find_list_item_class(annotation: Any) -> type[IDFBaseModel] | None:
         return _find_list_item_class(args[0])
 
     return None
+
+
+def _coerce_numerics(fields: dict[str, Any]) -> dict[str, Any]:
+    """Coerce numeric strings to numbers in extensible (list) fields for epJSON."""
+    result = {}
+    for k, v in fields.items():
+        if isinstance(v, list):
+            result[k] = [_coerce_list_item(item) for item in v]
+        else:
+            result[k] = v
+    return result
+
+
+def _coerce_list_item(obj: Any) -> Any:
+    """Recursively coerce numeric strings in extensible field items."""
+    if isinstance(obj, dict):
+        return {k: _coerce_list_item(v) for k, v in obj.items()}
+    if isinstance(obj, str):
+        try:
+            f = float(obj)
+            return int(f) if f == int(f) else f
+        except ValueError:
+            return obj
+    return obj
 
 
 class IDF:
@@ -88,7 +113,8 @@ class IDF:
             ValueError: If a named object with same type and name already exists.
         """
         object_type = obj.idf_object_type()
-        name = getattr(obj, 'name', None) or getattr(obj, 'zone_name', None) or ''
+        name = getattr(obj, 'name', None) or getattr(
+            obj, 'zone_name', None) or ''
 
         if object_type not in self._objects:
             self._objects[object_type] = {}
@@ -96,7 +122,8 @@ class IDF:
         objects = self._objects[object_type]
 
         if name and name in objects:
-            raise ValueError(f"Duplicate object: {object_type} '{name}' already exists")
+            raise ValueError(
+                f"Duplicate object: {object_type} '{name}' already exists")
 
         if not name or name in objects:
             idx = len(objects)
@@ -159,14 +186,84 @@ class IDF:
         """
         return sum(len(objects) for objects in self._objects.values())
 
+    def to_dict(self) -> dict[str, dict[str, dict[str, Any]]]:
+        """Convert IDF container to epJSON-style nested dictionary.
+
+        Returns:
+            Nested dict: object_type → object_name → fields (without name).
+        """
+        result: dict[str, dict[str, dict[str, Any]]] = {}
+        for object_type, objects in self._objects.items():
+            type_dict: dict[str, dict[str, Any]] = {}
+            unnamed_counter = 1
+            for obj in objects.values():
+                fields = obj.model_dump(
+                    exclude_none=True, exclude_unset=True, by_alias=True
+                )
+                fields.pop('name', None)
+                # Rename fields using validation_alias where alias is not set
+                for field_name, field_info in type(obj).model_fields.items():
+                    va = field_info.validation_alias
+                    if (
+                        isinstance(va, str)
+                        and va != field_name
+                        and not field_info.alias
+                        and field_name in fields
+                    ):
+                        fields[va] = fields.pop(field_name)
+                has_name_field = 'name' in type(obj).model_fields
+                name_value = getattr(obj, 'name', None)
+                if has_name_field and name_value is not None:
+                    obj_name = name_value
+                else:
+                    while f'{object_type} {unnamed_counter}' in type_dict:
+                        unnamed_counter += 1
+                    obj_name = f'{object_type} {unnamed_counter}'
+                    unnamed_counter += 1
+                type_dict[obj_name] = _coerce_numerics(fields)
+            result[object_type] = type_dict
+        return result
+
+    @classmethod
+    def from_dict(cls, data: dict[str, dict[str, dict[str, Any]]]) -> IDF:
+        """Construct IDF from epJSON-style nested dictionary.
+
+        Args:
+            data: Nested dict: object_type → object_name → fields.
+
+        Returns:
+            IDF instance with parsed objects.
+        """
+        idf = cls()
+        for object_type, objects in data.items():
+            model_class = get_model_class(object_type)
+            if model_class is None:
+                logger.warning(f'Unknown object type: {object_type}')
+                continue
+            for obj_name, fields in objects.items():
+                field_dict = dict(fields)
+                if 'name' in model_class.model_fields:
+                    field_dict['name'] = obj_name
+                try:
+                    obj = model_class(**field_dict)
+                    idf.add(obj)
+                except Exception as e:
+                    logger.warning(
+                        f'Failed to parse {object_type} "{obj_name}": {e}')
+        return idf
+
     @classmethod
     def load(cls, path: Path) -> IDF:
-        """Load IDF file and parse into object container.
+        """Load IDF/epJSON file and parse into object container.
+
+        File format is auto-detected by extension:
+        - .epjson / .json → epJSON format
+        - others → IDF text format
 
         Objects that fail validation are skipped with a warning log.
 
         Args:
-            path: Path to IDF file.
+            path: Path to IDF or epJSON file.
 
         Returns:
             IDF instance with successfully parsed objects.
@@ -178,8 +275,18 @@ class IDF:
         if not path.exists():
             raise FileNotFoundError(f'IDF file not found: {path}')
 
+        if path.suffix.lower() in ('.epjson', '.json'):
+            return cls._load_epjson(path)
+
         content = path.read_text(encoding='utf-8')
         return cls._parse_idf_content(content)
+
+    @classmethod
+    def _load_epjson(cls, path: Path) -> IDF:
+        """Load epJSON file and parse into object container."""
+        content = path.read_text(encoding='utf-8')
+        data = json.loads(content)
+        return cls.from_dict(data)
 
     @classmethod
     def _parse_idf_content(cls, content: str) -> IDF:
@@ -224,7 +331,8 @@ class IDF:
                 continue
 
             field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
-            field_dict = cls._build_field_dict(model_class, field_order, field_values)
+            field_dict = cls._build_field_dict(
+                model_class, field_order, field_values)
 
             try:
                 obj = model_class(**field_dict)
@@ -260,9 +368,9 @@ class IDF:
 
         for i, value in enumerate(field_values):
             # Once we've hit an extensible field, collect all remaining values
+            # (keep empty values to preserve positional mapping)
             if extensible_field_name is not None:
-                if value:
-                    extensible_values.append(value)
+                extensible_values.append(value)
                 continue
 
             if i >= len(field_order):
@@ -277,8 +385,7 @@ class IDF:
                 if item_class is not None:
                     # Mark as extensible and start collecting
                     extensible_field_name = field_name
-                    if value:
-                        extensible_values.append(value)
+                    extensible_values.append(value)
                     continue
 
             if value:
@@ -294,10 +401,10 @@ class IDF:
 
                 items: list[dict[str, str]] = []
                 for j in range(0, len(extensible_values), item_field_count):
-                    chunk = extensible_values[j : j + item_field_count]
+                    chunk = extensible_values[j: j + item_field_count]
                     item_dict = {}
                     for k, v in enumerate(chunk):
-                        if k < len(item_field_names):
+                        if k < len(item_field_names) and v:
                             item_dict[item_field_names[k]] = v
                     if item_dict:
                         items.append(item_dict)
@@ -306,21 +413,32 @@ class IDF:
 
         return field_dict
 
-    def save(self, path: Path) -> None:
+    def save(self, path: Path, output_type: Literal['idf', 'epjson'] = 'idf') -> None:
         """Save IDF container to file.
-
-        Uses FIELD_ORDER_REGISTRY to ensure correct field ordering.
-        Float values are formatted with 6 significant digits.
 
         Args:
             path: Output file path.
+            output_type: Output format, 'idf' or 'epjson'.
         """
+        if output_type == 'epjson':
+            self._save_epjson(path)
+        elif output_type == 'idf':
+            self._save_idf(path)
+        else:
+            raise ValueError(
+                f"Invalid output_type '{output_type}'. "
+                "Allowed values: 'idf', 'epjson'"
+            )
+
+    def _save_idf(self, path: Path) -> None:
+        """Save IDF container in IDF text format."""
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
 
         lines: list[str] = []
 
-        lines.append(f'!- Generated by idfpy, EnergyPlus Version {self.version}')
+        lines.append(
+            f'!- Generated by idfpy, EnergyPlus Version {self.version}')
         lines.append('')
 
         for object_type in sorted(self._objects.keys()):
@@ -340,6 +458,15 @@ class IDF:
 
         path.write_text('\n'.join(lines), encoding='utf-8')
         logger.info(f'Saved IDF with {len(self)} objects to {path}')
+
+    def _save_epjson(self, path: Path) -> None:
+        """Save IDF container in epJSON format."""
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        data = self.to_dict()
+        path.write_text(json.dumps(
+            data, indent=4, sort_keys=True), encoding='utf-8')
+        logger.info(f'Saved epJSON with {len(self)} objects to {path}')
 
     def _format_object(
         self,
@@ -404,7 +531,8 @@ class IDF:
         if extensible_items:
             for idx, item in enumerate(extensible_items):
                 is_last_item = idx == len(extensible_items) - 1
-                vertex_line = self._format_list_item(item, idx + 1, is_last_item)
+                vertex_line = self._format_list_item(
+                    item, idx + 1, is_last_item)
                 lines.extend(vertex_line)
 
         return lines
@@ -487,7 +615,8 @@ class IDF:
         if return_code == 0:
             logger.info('EnergyPlus simulation completed successfully')
         else:
-            logger.error(f'EnergyPlus simulation failed with return code {return_code}')
+            logger.error(
+                f'EnergyPlus simulation failed with return code {return_code}')
 
         return return_code
 

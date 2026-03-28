@@ -8,8 +8,8 @@ from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origi
 from pydantic import BaseModel, ConfigDict, model_validator
 
 
-def _extract_literal_values(annotation: Any) -> list[str]:
-    """Extract all string Literal values from a type annotation.
+def _extract_literal_values(annotation: Any) -> list[str | int]:
+    """Extract all string and int Literal values from a type annotation.
 
     Handles Union, Optional, Annotated wrappers.
     """
@@ -17,10 +17,10 @@ def _extract_literal_values(annotation: Any) -> list[str]:
     args = get_args(annotation)
 
     if origin is Literal:
-        return [a for a in args if isinstance(a, str)]
+        return [a for a in args if isinstance(a, (str, int))]
 
     if origin is Union or isinstance(annotation, types.UnionType):
-        result: list[str] = []
+        result: list[str | int] = []
         for arg in get_args(annotation):
             result.extend(_extract_literal_values(arg))
         return result
@@ -50,17 +50,24 @@ class IDFBaseModel(BaseModel):
 
     _idf_object_type: ClassVar[str] = ''
     # Cached per-class: field_name -> {lowercase_value: canonical_value}
-    _literal_case_maps: ClassVar[dict[str, dict[str, str]]] = {}
+    _literal_case_maps: ClassVar[dict[str, dict[str, str | int]]] = {}
 
     @classmethod
-    def _get_literal_case_maps(cls) -> dict[str, dict[str, str]]:
+    def _get_literal_case_maps(cls) -> dict[str, dict[str, str | int]]:
         """Get or build the literal case-mapping cache for this class."""
         if '_literal_case_maps' not in cls.__dict__:
-            maps: dict[str, dict[str, str]] = {}
+            maps: dict[str, dict[str, str | int]] = {}
             for field_name, field_info in cls.model_fields.items():
                 literal_values = _extract_literal_values(field_info.annotation)
                 if literal_values:
-                    maps[field_name] = {v.lower(): v for v in literal_values}
+                    case_map: dict[str, str | int] = {}
+                    for v in literal_values:
+                        if isinstance(v, str):
+                            case_map[v.lower()] = v
+                        elif isinstance(v, int):
+                            case_map[str(v)] = v
+                    if case_map:
+                        maps[field_name] = case_map
             cls._literal_case_maps = maps
         return cls._literal_case_maps
 
@@ -80,11 +87,11 @@ class IDFBaseModel(BaseModel):
         if not literal_maps:
             return data
 
-        for field_name, lower_map in literal_maps.items():
+        for field_name, case_map in literal_maps.items():
             value = data.get(field_name)
             if not isinstance(value, str):
                 continue
-            matched = lower_map.get(value.lower())
+            matched = case_map.get(value) or case_map.get(value.lower())
             if matched is not None:
                 data[field_name] = matched
 
