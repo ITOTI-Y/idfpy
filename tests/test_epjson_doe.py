@@ -127,11 +127,9 @@ class TestDOEepJSON:
         # Print output for debugging
         if result.returncode != 0:
             print('=== STDOUT ===')
-            print(result.stdout[-3000:] if len(result.stdout)
-                  > 3000 else result.stdout)
+            print(result.stdout[-3000:] if len(result.stdout) > 3000 else result.stdout)
             print('=== STDERR ===')
-            print(result.stderr[-3000:] if len(result.stderr)
-                  > 3000 else result.stderr)
+            print(result.stderr[-3000:] if len(result.stderr) > 3000 else result.stderr)
 
             # Check error file for details
             err_file = output_dir / 'eplusout.err'

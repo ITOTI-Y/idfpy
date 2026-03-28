@@ -299,3 +299,14 @@ def test_epjson_save_load(tmp_path):
     loaded = IDF.load(path)
     assert loaded.has('Zone', 'Office')
     assert len(loaded.all_of_type('Version')) == 1
+
+
+def test_actual_idf_file(tmp_path):
+    from pathlib import Path
+
+    from idfpy import IDF
+
+    idf = IDF.load(Path('./tests/test.idf'))
+    dict_idf = idf.to_dict()
+    loaded_idf = IDF.from_dict(dict_idf)
+    assert len(idf) == len(loaded_idf)

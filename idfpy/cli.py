@@ -17,7 +17,7 @@ def codegen(
     ],
     output: Annotated[
         Path, Option('--output', '-o', help='Output directory for generated models')
-    ] = Path('generated_models'),
+    ] = Path('idfpy/models'),
 ) -> None:
     """Generate Pydantic models from EnergyPlus schema."""
     from idfpy.codegen import ModelGenerator, SchemaParser
