@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import types
+import weakref
 from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
 
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, PrivateAttr, model_validator
 
 
 def _extract_literal_values(annotation: Any) -> list[str | int]:
@@ -51,6 +52,14 @@ class IDFBaseModel(BaseModel):
     _idf_object_type: ClassVar[str] = ''
     # Cached per-class: field_name -> {lowercase_value: canonical_value}
     _literal_case_maps: ClassVar[dict[str, dict[str, str | int]]] = {}
+    _idf_ref: weakref.ref | None = PrivateAttr(default=None)
+
+    @property
+    def _idf(self) -> Any:
+        """Get bound IDF container, or None if unbound."""
+        if self._idf_ref is None:
+            return None
+        return self._idf_ref()
 
     @classmethod
     def _get_literal_case_maps(cls) -> dict[str, dict[str, str | int]]:
@@ -105,6 +114,32 @@ class IDFBaseModel(BaseModel):
             Original object type name (e.g., "Zone", "BuildingSurface:Detailed").
         """
         return cls._idf_object_type
+
+    def referencing(
+        self,
+        consumer_type: str | type[IDFBaseModel] | None = None,
+    ) -> list[IDFBaseModel]:
+        """Find objects that reference this object.
+
+        Args:
+            consumer_type: EnergyPlus object type string
+                (e.g., "BuildingSurface:Detailed"), model class, or None.
+                When None, returns all objects across every type.
+
+        Returns:
+            List of objects whose ref fields point to this object.
+
+        Raises:
+            RuntimeError: If not bound to an IDF container.
+        """
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF container')
+        if consumer_type is None:
+            return idf._find_all_referencing(self)
+        if isinstance(consumer_type, type):
+            consumer_type = consumer_type._idf_object_type
+        return idf._find_referencing(self, consumer_type)
 
     def to_idf_dict(self) -> dict[str, Any]:
         """Convert model to IDF-compatible dictionary.

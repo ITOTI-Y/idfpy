@@ -142,6 +142,7 @@ class ModelGenerator:
 
         # Track all generated classes for __init__.py
         all_classes: dict[str, list[str]] = {}  # file_name -> [class_names]
+        all_nested_classes: dict[str, list[dict]] = {}  # file_name -> nested dicts
         object_type_registry: dict[str, str] = {}  # "Zone" -> "Zone"
         # "Zone" -> ["field1", ...]
         field_order_registry: dict[str, list[str]] = {}
@@ -159,7 +160,7 @@ class ModelGenerator:
             group_name = sorted_objects[0].group if sorted_objects else 'Unknown'
 
             # Generate the file
-            class_names = self._generate_model_file(
+            class_names, nested_classes = self._generate_model_file(
                 file_name=file_name,
                 objects=sorted_objects,
                 group_name=group_name,
@@ -167,11 +168,15 @@ class ModelGenerator:
             )
 
             all_classes[file_name] = class_names
+            all_nested_classes[file_name] = nested_classes
 
             # Build registries
             for obj in sorted_objects:
                 object_type_registry[obj.name] = obj.class_name
                 field_order_registry[obj.name] = [f.python_name for f in obj.fields]
+
+        # Generate _ref_meta.py
+        self._generate_ref_meta_file(specs, all_nested_classes, schema_version)
 
         # Generate __init__.py
         self._generate_init_file(
@@ -262,7 +267,7 @@ class ModelGenerator:
         objects: list[ObjectSpec],
         group_name: str,
         schema_version: str,
-    ) -> list[str]:
+    ) -> tuple[list[str], list[dict]]:
         """Generate a single model file.
 
         Args:
@@ -272,7 +277,7 @@ class ModelGenerator:
             schema_version: Schema version for documentation.
 
         Returns:
-            List of generated class names.
+            Tuple of (class_names, nested_classes).
         """
         env = self._get_jinja_env()
         template = env.get_template('idf_model_py.jinja2')
@@ -304,7 +309,102 @@ class ModelGenerator:
         class_names = [obj.class_name for obj in objects]
         class_names.extend(nc['name'] for nc in nested_classes)
 
-        return class_names
+        return class_names, nested_classes
+
+    def _generate_ref_meta_file(
+        self,
+        specs: dict[str, ObjectSpec],
+        all_nested_classes: dict[str, list[dict]],
+        schema_version: str,
+    ) -> None:
+        """Generate _ref_meta.py with REF_PROVIDERS, REF_GROUP_PROVIDERS, REF_CONSUMERS.
+
+        Args:
+            specs: All object specifications.
+            all_nested_classes: file_name -> list of nested class dicts,
+                each with 'name' and 'fields' keys.
+            schema_version: Schema version for docs.
+        """
+        providers: dict[str, list[tuple[str, list[str]]]] = {}
+        group_providers: dict[str, set[str]] = {}
+        consumers: dict[str, dict[str, list[str]]] = {}
+
+        for obj_name, obj_spec in specs.items():
+            # Providers: fields with reference attribute
+            obj_providers: list[tuple[str, list[str]]] = []
+            for field in obj_spec.fields:
+                if field.reference:
+                    obj_providers.append((field.python_name, field.reference))
+                    for group in field.reference:
+                        group_providers.setdefault(group, set()).add(obj_name)
+            if obj_providers:
+                providers[obj_name] = obj_providers
+
+            # Consumers: fields with object_list attribute (top-level only)
+            cls_fields: dict[str, list[str]] = {}
+            for field in obj_spec.fields:
+                if field.object_list:
+                    cls_fields[field.python_name] = field.object_list
+            if cls_fields:
+                consumers[obj_spec.class_name] = cls_fields
+
+        # Consumers from extensible item classes
+        for _file_name, nested_list in all_nested_classes.items():
+            for nc in nested_list:
+                item_fields: dict[str, list[str]] = {}
+                for field in nc['fields']:
+                    if field.object_list:
+                        item_fields[field.python_name] = field.object_list
+                if item_fields:
+                    consumers[nc['name']] = item_fields
+
+        # Write _ref_meta.py
+        lines = [
+            '"""Auto-generated reference metadata for EnergyPlus validation.',
+            '',
+            'DO NOT EDIT MANUALLY.',
+            f'Generated from Energy+.schema.epJSON version {schema_version}.',
+            '"""',
+            'from __future__ import annotations',
+            '',
+            '',
+        ]
+
+        # REF_PROVIDERS
+        lines.append('REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {')
+        for obj_type in sorted(providers):
+            entries = providers[obj_type]
+            formatted = ', '.join(f'("{fn}", {gl!r})' for fn, gl in entries)
+            lines.append(f'    "{obj_type}": [{formatted}],')
+        lines.append('}')
+        lines.append('')
+        lines.append('')
+
+        # REF_GROUP_PROVIDERS
+        lines.append('REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {')
+        for group in sorted(group_providers):
+            types_str = ', '.join(f'"{t}"' for t in sorted(group_providers[group]))
+            lines.append(f'    "{group}": frozenset({{{types_str}}}),')
+        lines.append('}')
+        lines.append('')
+        lines.append('')
+
+        # REF_CONSUMERS
+        lines.append('REF_CONSUMERS: dict[str, dict[str, list[str]]] = {')
+        for cls_name in sorted(consumers):
+            lines.append(f'    "{cls_name}": {{')
+            for fn, groups in consumers[cls_name].items():
+                lines.append(f'        "{fn}": {groups!r},')
+            lines.append('    },')
+        lines.append('}')
+        lines.append('')
+
+        output_path = self.output_dir / '_ref_meta.py'
+        output_path.write_text('\n'.join(lines), encoding='utf-8')
+        logger.info(
+            f'Generated _ref_meta.py: {len(providers)} providers, '
+            f'{len(group_providers)} groups, {len(consumers)} consumers'
+        )
 
     def _generate_init_file(
         self,
