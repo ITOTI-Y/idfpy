@@ -1306,7 +1306,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def surface_name_angle_factor_list(self) -> IDFBaseModel | None:
+    def surface_angle_factor_list(self) -> IDFBaseModel | None:
         v = self.surface_name_angle_factor_list_name
         if not v:
             return None

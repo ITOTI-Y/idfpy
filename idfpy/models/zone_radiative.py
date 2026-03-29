@@ -925,7 +925,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_name_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1220,7 +1220,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_name_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1355,7 +1355,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_name_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1764,7 +1764,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_name_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None

@@ -316,7 +316,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_fan_static_efficiency_curve_name_non_stall_region_ref(
+    def normalized_fan_static_efficiency_curve_non_stall_region_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.normalized_fan_static_efficiency_curve_name_non_stall_region
@@ -328,7 +328,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_fan_static_efficiency_curve_name_stall_region_ref(
+    def normalized_fan_static_efficiency_curve_stall_region_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.normalized_fan_static_efficiency_curve_name_stall_region
@@ -340,7 +340,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_dimensionless_airflow_curve_name_non_stall_region_ref(
+    def normalized_dimensionless_airflow_curve_non_stall_region_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.normalized_dimensionless_airflow_curve_name_non_stall_region
@@ -352,7 +352,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_dimensionless_airflow_curve_name_stall_region_ref(
+    def normalized_dimensionless_airflow_curve_stall_region_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.normalized_dimensionless_airflow_curve_name_stall_region
@@ -374,7 +374,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_name_region_1_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_1_ref(self) -> IDFBaseModel | None:
         v = self.normalized_belt_efficiency_curve_name_region_1
         if not v:
             return None
@@ -384,7 +384,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_name_region_2_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_2_ref(self) -> IDFBaseModel | None:
         v = self.normalized_belt_efficiency_curve_name_region_2
         if not v:
             return None
@@ -394,7 +394,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_name_region_3_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_3_ref(self) -> IDFBaseModel | None:
         v = self.normalized_belt_efficiency_curve_name_region_3
         if not v:
             return None

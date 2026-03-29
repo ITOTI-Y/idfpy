@@ -1159,7 +1159,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_name_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
+    def zone_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_for_master_thermostat_location
         if not v:
             return None

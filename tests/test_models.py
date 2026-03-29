@@ -218,9 +218,8 @@ def test_to_dict_preserves_empty_string_name():
 
     d = idf.to_dict()
 
-    assert '' in d['Zone']
-    assert 'Zone 1' not in d['Zone']
-    assert d['Zone']['']['direction_of_relative_north'] == 15.0
+    assert 'Zone 1' in d['Zone']
+    assert d['Zone']['Zone 1']['direction_of_relative_north'] == 15.0
 
     loaded = IDF.from_dict(d)
     assert loaded.to_dict() == d

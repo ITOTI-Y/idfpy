@@ -16683,10 +16683,6 @@ def get_field_order(object_type: str) -> list[str]:
     return FIELD_ORDER_REGISTRY.get(object_type, [])
 
 
-# Reverse mapping: class_name -> object_type (pre-computed once at import time)
-_CLASS_TO_OBJ_TYPE: dict[str, str] = {v: k for k, v in OBJECT_TYPE_REGISTRY.items()}
-
-
 __all__ = [
     'AirConditionerVariableRefrigerantFlow',
     'AirConditionerVariableRefrigerantFlowFluidTemperatureControl',

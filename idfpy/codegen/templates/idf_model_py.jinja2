@@ -36,7 +36,7 @@ class {{ class_info.name }}(IDFBaseModel):
 {{ render_field(spec) }}
 {% endfor %}
 {% for spec in class_info.fields %}
-{% if spec.object_list %}
+{% if spec.object_list and not spec | is_class_name_ref %}
 
     @property
     def {{ spec | nav_name }}(self) -> IDFBaseModel | None:
@@ -63,7 +63,7 @@ class {{ obj.class_name }}(IDFBaseModel):
 {{ render_field(spec) }}
 {% endfor %}
 {% for spec in obj.fields %}
-{% if spec.object_list %}
+{% if spec.object_list and not spec | is_class_name_ref %}
 
     @property
     def {{ spec | nav_name }}(self) -> IDFBaseModel | None:

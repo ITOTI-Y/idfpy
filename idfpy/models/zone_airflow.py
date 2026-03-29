@@ -1029,7 +1029,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
     )
 
     @property
-    def zone_or_space_name_1_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_1
         if not v:
             return None
@@ -1039,7 +1039,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_2_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_2
         if not v:
             return None
@@ -1349,7 +1349,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_or_space_name_1_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_1
         if not v:
             return None
@@ -1359,7 +1359,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_2_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_2
         if not v:
             return None
@@ -1369,7 +1369,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_3_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_3_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_3
         if not v:
             return None
@@ -1379,7 +1379,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_4_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_4_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_4
         if not v:
             return None
@@ -1389,7 +1389,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_5_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_5_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_5
         if not v:
             return None
@@ -1399,7 +1399,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_6_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_6_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_6
         if not v:
             return None
@@ -1409,7 +1409,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_7_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_7_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_7
         if not v:
             return None
@@ -1419,7 +1419,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_8_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_8_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_8
         if not v:
             return None
@@ -1429,7 +1429,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_9_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_9_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_9
         if not v:
             return None
@@ -1439,7 +1439,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_10_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_10_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_10
         if not v:
             return None
@@ -1449,7 +1449,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_11_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_11_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_11
         if not v:
             return None
@@ -1459,7 +1459,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_12_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_12_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_12
         if not v:
             return None
@@ -1469,7 +1469,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_13_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_13_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_13
         if not v:
             return None
@@ -1479,7 +1479,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_14_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_14_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_14
         if not v:
             return None
@@ -1489,7 +1489,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_15_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_15_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_15
         if not v:
             return None
@@ -1499,7 +1499,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_16_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_16_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_16
         if not v:
             return None
@@ -1509,7 +1509,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_17_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_17_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_17
         if not v:
             return None
@@ -1519,7 +1519,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_18_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_18_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_18
         if not v:
             return None
@@ -1529,7 +1529,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_19_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_19_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_19
         if not v:
             return None
@@ -1539,7 +1539,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_name_20_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_20_ref(self) -> IDFBaseModel | None:
         v = self.zone_or_space_name_20
         if not v:
             return None

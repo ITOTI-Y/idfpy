@@ -41,16 +41,6 @@ class CondenserEquipmentListEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def equipment_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.equipment_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validCondenserEquipmentTypes'])
-
-    @property
     def equipment(self) -> IDFBaseModel | None:
         v = self.equipment_name
         if not v:
@@ -70,16 +60,6 @@ class PlantEquipmentListEquipmentItem(IDFBaseModel):
     equipment_name: ValidPlantEquipmentNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['validPlantEquipmentNames']}
     )
-
-    @property
-    def equipment_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.equipment_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validPlantEquipmentTypes'])
 
     @property
     def equipment(self) -> IDFBaseModel | None:

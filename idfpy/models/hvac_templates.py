@@ -5355,7 +5355,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_name_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
+    def zone_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_for_master_thermostat_location
         if not v:
             return None
@@ -6147,7 +6147,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def design_specification_outdoor_air_object_name_for_sizing_ref(
+    def design_specification_outdoor_air_object_for_sizing_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing
@@ -6171,7 +6171,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def design_specification_outdoor_air_object_name_for_control_ref(
+    def design_specification_outdoor_air_object_for_control_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.design_specification_outdoor_air_object_name_for_control
@@ -8222,7 +8222,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object_name_for_control_ref(
+    def design_specification_outdoor_air_object_for_control_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.design_specification_outdoor_air_object_name_for_control
@@ -8266,7 +8266,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object_name_for_sizing_ref(
+    def design_specification_outdoor_air_object_for_sizing_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing
@@ -8856,7 +8856,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def design_specification_outdoor_air_object_name_for_sizing_ref(
+    def design_specification_outdoor_air_object_for_sizing_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing

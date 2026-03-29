@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 # ============================================================
 
 _OBJECT_LIST_REF_TYPES: dict[str, str] = {}
+_REFERENCE_CLASS_NAME_GROUPS: set[str] = set()
 
 
 def set_object_list_ref_types(mapping: dict[str, str]) -> None:
@@ -33,6 +34,15 @@ def set_object_list_ref_types(mapping: dict[str, str]) -> None:
     """
     global _OBJECT_LIST_REF_TYPES
     _OBJECT_LIST_REF_TYPES = mapping
+
+
+def set_reference_class_name_groups(groups: set[str]) -> None:
+    """Set reference-class-name groups collected from schema.
+
+    Called by ModelGenerator before template rendering.
+    """
+    global _REFERENCE_CLASS_NAME_GROUPS
+    _REFERENCE_CLASS_NAME_GROUPS = groups
 
 
 def get_ref_type_for_object_list(object_lists: list[str] | None) -> str | None:
@@ -537,19 +547,28 @@ def nav_name_filter(spec: FieldSpec) -> str:
     """Derive navigation property name from field name.
 
     Rules:
+    - strip '_name_' segments from the middle of the name
     - field_name ends with '_name' -> strip it: zone_name -> zone
     - field_name ends with '_names' -> strip it
     - otherwise -> append '_ref': outside_layer -> outside_layer_ref
 
     Verified: 0 collisions with existing fields, Python keywords, or reserved names
-    across all 2857 consumer fields in the schema.
+    across all consumer fields in the schema.
     """
     name = spec.python_name
+    name = name.replace('_name_', '_')
     if name.endswith('_name'):
         return name[:-5]
     if name.endswith('_names'):
         return name[:-6]
     return f'{name}_ref'
+
+
+def is_class_name_ref_filter(spec: FieldSpec) -> bool:
+    """Check if a field's object_list references only reference-class-name groups."""
+    if not spec.object_list:
+        return False
+    return all(ol in _REFERENCE_CLASS_NAME_GROUPS for ol in spec.object_list)
 
 
 # Registry of all template filters
@@ -559,4 +578,5 @@ TEMPLATE_FILTERS: dict[str, Any] = {
     'field_definition': field_definition_filter,
     'format_docstring': format_docstring_filter,
     'nav_name': nav_name_filter,
+    'is_class_name_ref': is_class_name_ref_filter,
 }

@@ -287,7 +287,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['GeneratorLists'])
 
     @property
-    def generator_track_schedule_name_scheme_schedule(self) -> IDFBaseModel | None:
+    def generator_track_schedule_scheme_schedule(self) -> IDFBaseModel | None:
         v = self.generator_track_schedule_name_scheme_schedule_name
         if not v:
             return None
@@ -755,7 +755,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def voltage_change_curve_name_for_charging_ref(self) -> IDFBaseModel | None:
+    def voltage_change_curve_for_charging_ref(self) -> IDFBaseModel | None:
         v = self.voltage_change_curve_name_for_charging
         if not v:
             return None
@@ -765,7 +765,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def voltage_change_curve_name_for_discharging_ref(self) -> IDFBaseModel | None:
+    def voltage_change_curve_for_discharging_ref(self) -> IDFBaseModel | None:
         v = self.voltage_change_curve_name_for_discharging
         if not v:
             return None
@@ -1686,7 +1686,7 @@ class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     )
 
     @property
-    def zone_name_to_receive_skin_losses_ref(self) -> IDFBaseModel | None:
+    def zone_to_receive_skin_losses_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_to_receive_skin_losses
         if not v:
             return None

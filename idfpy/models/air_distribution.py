@@ -474,16 +474,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
     )
 
     @property
-    def component_1_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_1_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
-
-    @property
     def component_1(self) -> IDFBaseModel | None:
         v = self.component_1_name
         if not v:
@@ -492,16 +482,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
-
-    @property
-    def component_2_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_2_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
 
     @property
     def component_2(self) -> IDFBaseModel | None:
@@ -514,16 +494,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_3_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_3_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
-
-    @property
     def component_3(self) -> IDFBaseModel | None:
         v = self.component_3_name
         if not v:
@@ -532,16 +502,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
-
-    @property
-    def component_4_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_4_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
 
     @property
     def component_4(self) -> IDFBaseModel | None:
@@ -554,16 +514,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_5_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_5_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
-
-    @property
     def component_5(self) -> IDFBaseModel | None:
         v = self.component_5_name
         if not v:
@@ -572,16 +522,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
-
-    @property
-    def component_6_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_6_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
 
     @property
     def component_6(self) -> IDFBaseModel | None:
@@ -594,16 +534,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_7_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_7_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
-
-    @property
     def component_7(self) -> IDFBaseModel | None:
         v = self.component_7_name
         if not v:
@@ -614,16 +544,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_8_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_8_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
-
-    @property
     def component_8(self) -> IDFBaseModel | None:
         v = self.component_8_name
         if not v:
@@ -632,16 +552,6 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
-
-    @property
-    def component_9_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_9_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validOASysEquipmentTypes'])
 
     @property
     def component_9(self) -> IDFBaseModel | None:

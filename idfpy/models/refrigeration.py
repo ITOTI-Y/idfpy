@@ -91,7 +91,7 @@ class RefrigerationTransferLoadListTransferLoadsItem(IDFBaseModel):
     )
 
     @property
-    def cascade_condenser_name_or_secondary_system(self) -> IDFBaseModel | None:
+    def cascade_condenser_or_secondary_system(self) -> IDFBaseModel | None:
         v = self.cascade_condenser_name_or_secondary_system_name
         if not v:
             return None
@@ -193,7 +193,7 @@ class RefrigerationWalkInZoneDataItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def glass_reach_in_door_opening_schedule_name_facing_zone_ref(
+    def glass_reach_in_door_opening_schedule_facing_zone_ref(
         self,
     ) -> IDFBaseModel | None:
         v = self.glass_reach_in_door_opening_schedule_name_facing_zone
@@ -205,9 +205,7 @@ class RefrigerationWalkInZoneDataItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def stocking_door_opening_schedule_name_facing_zone_ref(
-        self,
-    ) -> IDFBaseModel | None:
+    def stocking_door_opening_schedule_facing_zone_ref(self) -> IDFBaseModel | None:
         v = self.stocking_door_opening_schedule_name_facing_zone
         if not v:
             return None
@@ -1141,9 +1139,7 @@ class RefrigerationCompressorRack(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def refrigeration_case_name_or_walkin_name_or_caseandwalkinlist(
-        self,
-    ) -> IDFBaseModel | None:
+    def refrigeration_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
         v = self.refrigeration_case_name_or_walkin_name_or_caseandwalkinlist_name
         if not v:
             return None

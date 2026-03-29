@@ -42,16 +42,6 @@ class BranchComponentsItem(IDFBaseModel):
     component_outlet_node_name: str = Field(...)
 
     @property
-    def component_object_type_ref(self) -> IDFBaseModel | None:
-        v = self.component_object_type
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['validBranchEquipmentTypes'])
-
-    @property
     def component(self) -> IDFBaseModel | None:
         v = self.component_name
         if not v:

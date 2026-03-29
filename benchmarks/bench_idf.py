@@ -6,7 +6,12 @@ Usage:
 
 from __future__ import annotations
 
-import resource
+try:
+    import resource
+
+    HAS_RESOURCE = True
+except ImportError:
+    HAS_RESOURCE = False
 import statistics
 import tempfile
 import time
@@ -138,8 +143,9 @@ def bench_to_dict_roundtrip(idf: IDF) -> None:
 def main() -> None:
     print(f'=== idfpy benchmark ({TEST_IDF.name}, {ITERATIONS} iterations) ===\n')
 
-    # Memory before
-    ru_before = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    ru_before = (
+        resource.getrusage(resource.RUSAGE_SELF).ru_maxrss if HAS_RESOURCE else 0
+    )
 
     idf = bench_load()
     print(f'  (loaded {len(idf)} objects)\n')
@@ -152,9 +158,11 @@ def main() -> None:
     bench_save_epjson(idf)
     bench_to_dict_roundtrip(idf)
 
-    # Memory after
-    ru_after = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print(f'\n  Peak RSS: {ru_after} KB  (delta: +{ru_after - ru_before} KB)')
+    if HAS_RESOURCE:
+        ru_after = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        print(f'\n  Peak RSS: {ru_after} KB  (delta: +{ru_after - ru_before} KB)')
+    else:
+        print('\n  Peak RSS: [unavailable on this platform]')
 
 
 if __name__ == '__main__':

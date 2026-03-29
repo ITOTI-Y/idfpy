@@ -1869,7 +1869,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def zone_name_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None
@@ -2257,7 +2257,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_name_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None
@@ -4034,7 +4034,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_name_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None

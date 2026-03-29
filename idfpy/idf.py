@@ -100,8 +100,8 @@ class IDF:
     def __init__(self) -> None:
         """Initialize empty IDF container."""
         self._objects: dict[str, dict[str, IDFBaseModel]] = {}
-        # ref_group -> {UPPER(name) -> (object_type, original_name)}
-        self._ref_registry: dict[str, dict[str, tuple[str, str]]] = {}
+        # ref_group -> {UPPER(name) -> [(object_type, original_name), ...]}
+        self._ref_registry: dict[str, dict[str, list[tuple[str, str]]]] = {}
         # Reverse index: ref_group -> UPPER(value) -> [(consumer_obj_type, obj_name)]
         self._reverse_index: dict[str, dict[str, list[tuple[str, str]]]] = {}
 
@@ -256,11 +256,14 @@ class IDF:
             if not value or not isinstance(value, str):
                 continue
             key = value.upper()
+            entry = (object_type, value)
             for group in ref_groups:
-                self._ref_registry.setdefault(group, {})[key] = (
-                    object_type,
-                    value,
-                )
+                bucket = self._ref_registry.setdefault(group, {})
+                candidates = bucket.get(key)
+                if candidates is None:
+                    bucket[key] = [entry]
+                else:
+                    candidates.append(entry)
 
     def _unregister_refs(self, obj: IDFBaseModel) -> None:
         """Remove an object's provided references from the registry."""
@@ -272,8 +275,11 @@ class IDF:
             key = value.upper()
             for group in ref_groups:
                 registry = self._ref_registry.get(group)
-                if registry:
-                    registry.pop(key, None)
+                if registry and key in registry:
+                    entries = registry[key]
+                    registry[key] = [e for e in entries if e[0] != object_type]
+                    if not registry[key]:
+                        del registry[key]
 
     # ── Consumer reverse index ──────────────────────────────
 
@@ -333,19 +339,31 @@ class IDF:
         self,
         value: str,
         ref_groups: list[str],
+        expected_type: str | None = None,
     ) -> IDFBaseModel | None:
         """Resolve a reference string to the target object.
 
         Uses _ref_registry for O(1) type + original_name determination,
         then direct dict lookup in _objects.
+
+        Args:
+            value: The reference name string.
+            ref_groups: Candidate reference groups to search.
+            expected_type: If provided, only match providers of this
+                object type (e.g. ``"Zone"``).  When *None* the first
+                candidate found is returned (backward-compatible).
         """
         key = value.upper()
         for group in ref_groups:
-            registry = self._ref_registry.get(group, {})
-            entry = registry.get(key)
-            if entry is not None:
-                obj_type, original_name = entry
-                return self._objects.get(obj_type, {}).get(original_name)
+            candidates = self._ref_registry.get(group, {}).get(key)
+            if candidates is None:
+                continue
+            for obj_type, original_name in candidates:
+                if expected_type is not None and obj_type != expected_type:
+                    continue
+                obj = self._objects.get(obj_type, {}).get(original_name)
+                if obj is not None:
+                    return obj
         return None
 
     # ── Reverse navigation ───────────────────────────────────
@@ -430,8 +448,9 @@ class IDF:
         Multiple object_list groups per field have OR semantics.
         """
         errors: list[RefError] = []
-        for obj in self:
-            self._validate_obj_refs(obj, errors)
+        for objects_by_name in self._objects.values():
+            for key, obj in objects_by_name.items():
+                self._validate_obj_refs(key, obj, errors)
         return errors
 
     def validate_or_raise(self) -> None:
@@ -442,6 +461,7 @@ class IDF:
 
     def _validate_obj_refs(
         self,
+        key: str,
         obj: IDFBaseModel,
         errors: list[RefError],
         *,
@@ -451,7 +471,7 @@ class IDF:
         """Check one object's reference fields against the registry."""
         cls_name = type(obj).__name__
         object_type = parent_type or obj.idf_object_type()
-        object_name = parent_name or getattr(obj, 'name', '') or ''
+        object_name = parent_name or key or ''
 
         consumer_fields = REF_CONSUMERS.get(cls_name, {})
         for field_name, ref_groups in consumer_fields.items():
@@ -474,6 +494,7 @@ class IDF:
                 for item in value:
                     if isinstance(item, IDFBaseModel):
                         self._validate_obj_refs(
+                            '',
                             item,
                             errors,
                             parent_type=object_type,
@@ -498,13 +519,12 @@ class IDF:
 
         # Phase 1: find the value in any group
         found_in_group: str | None = None
-        found_provider_type: str | None = None
+        found_provider_types: list[str] = []
         for group in ref_groups:
-            registry = self._ref_registry.get(group, {})
-            entry = registry.get(key)
-            if entry is not None:
+            candidates = self._ref_registry.get(group, {}).get(key)
+            if candidates:
                 found_in_group = group
-                found_provider_type = entry[0]
+                found_provider_types = [c[0] for c in candidates]
                 break
 
         # Not found in ANY group -> missing
@@ -523,24 +543,27 @@ class IDF:
             )
             return
 
-        # Phase 2: type compatibility
+        # Phase 2: type compatibility – at least one provider must be allowed
         allowed_types = REF_GROUP_PROVIDERS.get(found_in_group)
-        if allowed_types and found_provider_type not in allowed_types:
-            errors.append(
-                RefError(
-                    object_type=object_type,
-                    object_name=object_name,
-                    field_name=field_name,
-                    ref_group=found_in_group,
-                    referenced_name=value,
-                    error_type='type_mismatch',
-                    detail=(
-                        f'"{value}" is provided by {found_provider_type}, '
-                        f'but {found_in_group} only accepts '
-                        f'{sorted(allowed_types)}'
-                    ),
+        if allowed_types:
+            valid = [t for t in found_provider_types if t in allowed_types]
+            if not valid:
+                errors.append(
+                    RefError(
+                        object_type=object_type,
+                        object_name=object_name,
+                        field_name=field_name,
+                        ref_group=found_in_group,
+                        referenced_name=value,
+                        error_type='type_mismatch',
+                        detail=(
+                            f'"{value}" is provided by '
+                            f'{sorted(set(found_provider_types))}, '
+                            f'but {found_in_group} only accepts '
+                            f'{sorted(allowed_types)}'
+                        ),
+                    )
                 )
-            )
 
     def to_dict(self) -> dict[str, dict[str, dict[str, Any]]]:
         """Convert IDF container to epJSON-style nested dictionary.
@@ -672,29 +695,30 @@ class IDF:
             if not line:
                 continue
 
-            # Check for object terminator
+            # Consume all ';'-terminated objects on this line
             semi = line.find(';')
             if semi < 0:
                 chunks.append(line)
                 continue
 
-            # Everything before ';' belongs to current object
-            before = line[:semi].strip()
-            if before:
-                chunks.append(before)
+            while semi >= 0:
+                before = line[:semi].strip()
+                if before:
+                    chunks.append(before)
 
-            # Process complete block
-            if chunks:
-                block = ' '.join(chunks)
-                fields = [f.strip() for f in block.split(',')]
-                if fields and fields[0]:
-                    cls._process_block(idf, fields)
-                chunks = []
+                if chunks:
+                    block = ' '.join(chunks)
+                    fields = [f.strip() for f in block.split(',')]
+                    if fields and fields[0]:
+                        cls._process_block(idf, fields)
+                    chunks = []
 
-            # Remainder after ';' starts next object (rare: multiple objects per line)
-            after = line[semi + 1 :].strip()
-            if after:
-                chunks.append(after)
+                line = line[semi + 1 :]
+                semi = line.find(';')
+
+            remainder = line.strip()
+            if remainder:
+                chunks.append(remainder)
 
         # Handle trailing block without terminator
         if chunks:

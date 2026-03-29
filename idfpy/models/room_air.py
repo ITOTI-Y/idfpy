@@ -204,7 +204,7 @@ class RoomAirTemperaturePatternSurfaceMappingSurfaceDeltasItem(IDFBaseModel):
     )
 
     @property
-    def surface_name_pair_ref(self) -> IDFBaseModel | None:
+    def surface_pair_ref(self) -> IDFBaseModel | None:
         v = self.surface_name_pair
         if not v:
             return None

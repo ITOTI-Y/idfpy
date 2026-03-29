@@ -21,6 +21,7 @@ from .template_filters import (
     collect_used_ref_types,
     extract_nested_classes,
     set_object_list_ref_types,
+    set_reference_class_name_groups,
 )
 
 
@@ -136,6 +137,10 @@ class ModelGenerator:
             ol: self._object_list_to_type_name(ol) for ol in object_lists
         }
         set_object_list_ref_types(self._object_list_to_ref_type)
+
+        # Collect reference-class-name groups to skip _ref property generation
+        rcn_groups = self._collect_reference_class_name_groups(specs)
+        set_reference_class_name_groups(rcn_groups)
 
         # Group objects by output file
         file_groups = self._group_objects_by_file(specs)
@@ -665,6 +670,17 @@ class ModelGenerator:
                 collect_from_field(field)
 
         return object_lists
+
+    def _collect_reference_class_name_groups(
+        self, specs: dict[str, ObjectSpec]
+    ) -> set[str]:
+        """Collect all reference-class-name group names from specifications."""
+        groups: set[str] = set()
+        for spec in specs.values():
+            for field in spec.fields:
+                if field.reference_class_name:
+                    groups.update(field.reference_class_name)
+        return groups
 
     def _object_list_to_type_name(self, object_list: str) -> str:
         """Convert object_list name to type alias name.
