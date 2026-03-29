@@ -52,6 +52,8 @@ class IDFBaseModel(BaseModel):
     _idf_object_type: ClassVar[str] = ''
     # Cached per-class: field_name -> {lowercase_value: canonical_value}
     _literal_case_maps: ClassVar[dict[str, dict[str, str | int]]] = {}
+    # Cached per-class: field names whose type is list (extensible fields)
+    _list_field_names: ClassVar[frozenset[str]] = frozenset()
     _idf_ref: weakref.ref | None = PrivateAttr(default=None)
 
     @property
@@ -60,6 +62,30 @@ class IDFBaseModel(BaseModel):
         if self._idf_ref is None:
             return None
         return self._idf_ref()
+
+    @classmethod
+    def _get_list_field_names(cls) -> frozenset[str]:
+        """Get or build the cached set of list-typed field names."""
+        if '_list_field_names' not in cls.__dict__:
+            names: set[str] = set()
+            for field_name, field_info in cls.model_fields.items():
+                origin = get_origin(field_info.annotation)
+                if origin is list:
+                    names.add(field_name)
+                    continue
+                # Handle list[X] | None, Annotated[list[X], ...], etc.
+                args = get_args(field_info.annotation)
+                if origin is Union or isinstance(
+                    field_info.annotation, types.UnionType
+                ):
+                    for arg in args:
+                        if get_origin(arg) is list:
+                            names.add(field_name)
+                            break
+                elif origin is Annotated and args and get_origin(args[0]) is list:
+                    names.add(field_name)
+            cls._list_field_names = frozenset(names)
+        return cls._list_field_names
 
     @classmethod
     def _get_literal_case_maps(cls) -> dict[str, dict[str, str | int]]:
