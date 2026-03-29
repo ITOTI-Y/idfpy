@@ -112,6 +112,16 @@ class ExternalInterfaceFunctionalMockupUnitExportToSchedule(IDFBaseModel):
         json_schema_extra={'note': 'Used during EnergyPlus sizing and warm-up.'},
     )
 
+    @property
+    def schedule_type_limits(self) -> IDFBaseModel | None:
+        v = self.schedule_type_limits_names
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
+
 
 class ExternalInterfaceFunctionalMockupUnitExportToVariable(IDFBaseModel):
     """Declares Erl variable as having global scope No spaces allowed in names used
@@ -157,6 +167,16 @@ class ExternalInterfaceFunctionalMockupUnitImportFromVariable(IDFBaseModel):
     fmu_instance_name: str = Field(...)
     fmu_variable_name: str = Field(...)
 
+    @property
+    def fmu_file(self) -> IDFBaseModel | None:
+        v = self.fmu_file_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FMUFileName'])
+
 
 class ExternalInterfaceFunctionalMockupUnitImportToActuator(IDFBaseModel):
     """Hardware portion of EMS used to set up actuators in the model that are
@@ -183,6 +203,16 @@ class ExternalInterfaceFunctionalMockupUnitImportToActuator(IDFBaseModel):
         ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
     )
 
+    @property
+    def fmu_file(self) -> IDFBaseModel | None:
+        v = self.fmu_file_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FMUFileName'])
+
 
 class ExternalInterfaceFunctionalMockupUnitImportToSchedule(IDFBaseModel):
     """This objects contains only one value, which is used during the first call of
@@ -203,6 +233,26 @@ class ExternalInterfaceFunctionalMockupUnitImportToSchedule(IDFBaseModel):
     initial_value: float = Field(
         ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
     )
+
+    @property
+    def schedule_type_limits(self) -> IDFBaseModel | None:
+        v = self.schedule_type_limits_names
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
+
+    @property
+    def fmu_file(self) -> IDFBaseModel | None:
+        v = self.fmu_file_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FMUFileName'])
 
 
 class ExternalInterfaceFunctionalMockupUnitImportToVariable(IDFBaseModel):
@@ -227,6 +277,16 @@ class ExternalInterfaceFunctionalMockupUnitImportToVariable(IDFBaseModel):
         ..., json_schema_extra={'note': 'Used during the first call of EnergyPlus.'}
     )
 
+    @property
+    def fmu_file(self) -> IDFBaseModel | None:
+        v = self.fmu_file_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FMUFileName'])
+
 
 class ExternalInterfaceSchedule(IDFBaseModel):
     """A ExternalInterface:Schedule contains only one value, which is used during
@@ -240,6 +300,16 @@ class ExternalInterfaceSchedule(IDFBaseModel):
     initial_value: float = Field(
         ..., json_schema_extra={'note': 'Used during warm-up and system sizing.'}
     )
+
+    @property
+    def schedule_type_limits(self) -> IDFBaseModel | None:
+        v = self.schedule_type_limits_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
 
 
 class ExternalInterfaceVariable(IDFBaseModel):

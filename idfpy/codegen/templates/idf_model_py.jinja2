@@ -35,6 +35,20 @@ class {{ class_info.name }}(IDFBaseModel):
 {% for spec in class_info.fields %}
 {{ render_field(spec) }}
 {% endfor %}
+{% for spec in class_info.fields %}
+{% if spec.object_list and not spec | is_class_name_ref %}
+
+    @property
+    def {{ spec | nav_name }}(self) -> IDFBaseModel | None:
+        v = self.{{ spec.python_name }}
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError("Not bound to IDF")
+        return idf._resolve_forward(v, {{ spec.object_list }})
+{% endif %}
+{% endfor %}
 {%- endmacro %}
 
 
@@ -47,6 +61,20 @@ class {{ obj.class_name }}(IDFBaseModel):
     _idf_object_type: ClassVar[str] = "{{ obj.name }}"
 {% for spec in obj.fields %}
 {{ render_field(spec) }}
+{% endfor %}
+{% for spec in obj.fields %}
+{% if spec.object_list and not spec | is_class_name_ref %}
+
+    @property
+    def {{ spec | nav_name }}(self) -> IDFBaseModel | None:
+        v = self.{{ spec.python_name }}
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError("Not bound to IDF")
+        return idf._resolve_forward(v, {{ spec.object_list }})
+{% endif %}
 {% endfor %}
 {%- endmacro %}
 """Auto-generated EnergyPlus IDF models.

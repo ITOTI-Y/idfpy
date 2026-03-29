@@ -45,6 +45,16 @@ class AvailabilityManagerAssignmentListManagersItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['SystemAvailabilityManagers']}
     )
 
+    @property
+    def availability_manager(self) -> IDFBaseModel | None:
+        v = self.availability_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SystemAvailabilityManagers'])
+
 
 class AvailabilityManagerAssignmentList(IDFBaseModel):
     """Defines the applicable managers used for an AirLoopHVAC or PlantLoop. The
@@ -258,6 +268,86 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         },
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops', 'HVACTemplateSystems'])
+
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def ventilation_control_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.ventilation_control_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_outdoor_ventilation_air_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_outdoor_ventilation_air_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def opening_factor_function_of_wind_speed_curve(self) -> IDFBaseModel | None:
+        v = self.opening_factor_function_of_wind_speed_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def airflownetwork_control_type_schedule(self) -> IDFBaseModel | None:
+        v = self.airflownetwork_control_type_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def simple_airflow_control_type_schedule(self) -> IDFBaseModel | None:
+        v = self.simple_airflow_control_type_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zoneventilation_object(self) -> IDFBaseModel | None:
+        v = self.zoneventilation_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['VentilationNames'])
+
 
 class AvailabilityManagerLowTemperatureTurnOff(IDFBaseModel):
     """Overrides fan/pump schedules depending on temperature at sensor node."""
@@ -273,6 +363,16 @@ class AvailabilityManagerLowTemperatureTurnOff(IDFBaseModel):
             'note': 'If blank, defaults to always active',
         },
     )
+
+    @property
+    def applicability_schedule(self) -> IDFBaseModel | None:
+        v = self.applicability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class AvailabilityManagerLowTemperatureTurnOn(IDFBaseModel):
@@ -342,6 +442,66 @@ class AvailabilityManagerNightCycle(IDFBaseModel):
         Field(default=None, json_schema_extra={'object_list': ['ZoneAndZoneListNames']})
     )
 
+    @property
+    def applicability_schedule(self) -> IDFBaseModel | None:
+        v = self.applicability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan_schedule(self) -> IDFBaseModel | None:
+        v = self.fan_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_zone_or_zone_list(self) -> IDFBaseModel | None:
+        v = self.control_zone_or_zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def cooling_control_zone_or_zone_list(self) -> IDFBaseModel | None:
+        v = self.cooling_control_zone_or_zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def heating_control_zone_or_zone_list(self) -> IDFBaseModel | None:
+        v = self.heating_control_zone_or_zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def heating_zone_fans_only_zone_or_zone_list(self) -> IDFBaseModel | None:
+        v = self.heating_zone_fans_only_zone_or_zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
 
 class AvailabilityManagerNightVentilation(IDFBaseModel):
     """depending on zone and outdoor conditions overrides fan schedule to do
@@ -390,6 +550,46 @@ class AvailabilityManagerNightVentilation(IDFBaseModel):
             'note': 'When AvailabilityManager:NightVentilation is used in the zone component availability manager assignment list, the Control Zone Name should be the name of the zone in which the zone component is.',
         },
     )
+
+    @property
+    def applicability_schedule(self) -> IDFBaseModel | None:
+        v = self.applicability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan_schedule(self) -> IDFBaseModel | None:
+        v = self.fan_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ventilation_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ventilation_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class AvailabilityManagerOptimumStart(IDFBaseModel):
@@ -458,6 +658,46 @@ class AvailabilityManagerOptimumStart(IDFBaseModel):
         },
     )
 
+    @property
+    def applicability_schedule(self) -> IDFBaseModel | None:
+        v = self.applicability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan_schedule(self) -> IDFBaseModel | None:
+        v = self.fan_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def zone_list(self) -> IDFBaseModel | None:
+        v = self.zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneListNames'])
+
 
 class AvailabilityManagerScheduled(IDFBaseModel):
     """Determines the availability of a loop or system: whether it is on or off.
@@ -468,6 +708,16 @@ class AvailabilityManagerScheduled(IDFBaseModel):
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class AvailabilityManagerScheduledOff(IDFBaseModel):
@@ -480,6 +730,16 @@ class AvailabilityManagerScheduledOff(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
     )
 
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class AvailabilityManagerScheduledOn(IDFBaseModel):
     """Determines the availability of a loop or system: only controls the turn on
@@ -490,3 +750,13 @@ class AvailabilityManagerScheduledOn(IDFBaseModel):
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

@@ -10,14 +10,21 @@ import json
 import subprocess
 import sys
 import types
+import weakref
 from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import Annotated, Any, Literal, Union, cast, get_args, get_origin
 
 from loguru import logger
 
-from idfpy.models import FIELD_ORDER_REGISTRY, OBJECT_TYPE_REGISTRY, get_model_class
+from idfpy.models import (
+    FIELD_ORDER_REGISTRY,
+    OBJECT_TYPE_REGISTRY,
+    get_model_class,
+)
 from idfpy.models._base import IDFBaseModel
+from idfpy.models._ref_errors import RefError, RefValidationError
+from idfpy.models._ref_meta import REF_CONSUMERS, REF_GROUP_PROVIDERS, REF_PROVIDERS
 from idfpy.models.simulation import Version
 
 
@@ -51,19 +58,32 @@ def _find_list_item_class(annotation: Any) -> type[IDFBaseModel] | None:
     return None
 
 
-def _coerce_numerics(fields: dict[str, Any], obj: IDFBaseModel) -> dict[str, Any]:
-    """Coerce numeric strings to numbers in extensible (list) fields for epJSON."""
-    result = {}
+def _finalize_fields(fields: dict[str, Any], obj: IDFBaseModel) -> dict[str, Any]:
+    """Coerce numerics and apply validation_alias remapping in a single pass."""
+    model_fields = type(obj).model_fields
+    result: dict[str, Any] = {}
     for k, v in fields.items():
         if isinstance(v, list):
-            result[k] = [
-                _coerce_numerics(cast(dict[str, Any], item), getattr(obj, k)[i])
+            obj_list = getattr(obj, k)
+            coerced = [
+                _finalize_fields(cast(dict[str, Any], item), obj_list[i])
                 if isinstance(item, dict)
                 else item
                 for i, item in enumerate(v)
             ]
+            out_key = k
         else:
-            result[k] = getattr(obj, k)
+            coerced = getattr(obj, k)
+            out_key = k
+
+        # Apply validation_alias remapping
+        fi = model_fields.get(k)
+        if fi is not None:
+            va = fi.validation_alias
+            if isinstance(va, str) and va != k and not fi.alias:
+                out_key = va
+
+        result[out_key] = coerced
     return result
 
 
@@ -80,6 +100,10 @@ class IDF:
     def __init__(self) -> None:
         """Initialize empty IDF container."""
         self._objects: dict[str, dict[str, IDFBaseModel]] = {}
+        # ref_group -> {UPPER(name) -> [(object_type, original_name), ...]}
+        self._ref_registry: dict[str, dict[str, list[tuple[str, str]]]] = {}
+        # Reverse index: ref_group -> UPPER(value) -> [(consumer_obj_type, obj_name)]
+        self._reverse_index: dict[str, dict[str, list[tuple[str, str]]]] = {}
 
     @property
     def version(self) -> str:
@@ -122,6 +146,9 @@ class IDF:
             name = f'_{idx}'
 
         objects[name] = obj
+        self._bind_recursive(obj)
+        self._register_refs(obj)
+        self._index_consumer_refs(obj, object_type, name)
         logger.debug(f'Added {object_type}: {name}')
 
     def get(self, object_type: str, name: str) -> IDFBaseModel | None:
@@ -147,6 +174,10 @@ class IDF:
             True if object exists, False otherwise.
         """
         return name in self._objects.get(object_type, {})
+
+    def _objects_of_type(self, object_type: str) -> dict[str, IDFBaseModel]:
+        """Get internal dict for a type (no copy, for internal use only)."""
+        return self._objects.get(object_type, {})
 
     def all_of_type(self, object_type: str) -> dict[str, IDFBaseModel]:
         """Get all objects of a specific type.
@@ -176,6 +207,364 @@ class IDF:
         """
         return sum(len(objects) for objects in self._objects.values())
 
+    def remove(self, object_type: str, name: str) -> IDFBaseModel | None:
+        """Remove an object and unregister its references.
+
+        Args:
+            object_type: EnergyPlus object type.
+            name: Object name.
+
+        Returns:
+            Removed object, or None if not found.
+        """
+        obj = self._objects.get(object_type, {}).pop(name, None)
+        if obj is not None:
+            self._unbind_recursive(obj)
+            self._unregister_refs(obj)
+            self._unindex_consumer_refs(obj, object_type, name)
+        return obj
+
+    # ── Binding ──────────────────────────────────────────────
+
+    def _bind_recursive(self, obj: IDFBaseModel) -> None:
+        """Bind object and its extensible children to this IDF."""
+        obj._idf_ref = weakref.ref(self)
+        for field_name in type(obj)._get_list_field_names():
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                for item in value:
+                    if isinstance(item, IDFBaseModel):
+                        self._bind_recursive(item)
+
+    def _unbind_recursive(self, obj: IDFBaseModel) -> None:
+        """Unbind object and its extensible children."""
+        obj._idf_ref = None
+        for field_name in type(obj)._get_list_field_names():
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                for item in value:
+                    if isinstance(item, IDFBaseModel):
+                        self._unbind_recursive(item)
+
+    # ── Reference registration ───────────────────────────────
+
+    def _register_refs(self, obj: IDFBaseModel) -> None:
+        """Register an object's provided references into the registry."""
+        object_type = obj.idf_object_type()
+        for field_name, ref_groups in REF_PROVIDERS.get(object_type, []):
+            value = getattr(obj, field_name, None)
+            if not value or not isinstance(value, str):
+                continue
+            key = value.upper()
+            entry = (object_type, value)
+            for group in ref_groups:
+                bucket = self._ref_registry.setdefault(group, {})
+                candidates = bucket.get(key)
+                if candidates is None:
+                    bucket[key] = [entry]
+                else:
+                    candidates.append(entry)
+
+    def _unregister_refs(self, obj: IDFBaseModel) -> None:
+        """Remove an object's provided references from the registry."""
+        object_type = obj.idf_object_type()
+        for field_name, ref_groups in REF_PROVIDERS.get(object_type, []):
+            value = getattr(obj, field_name, None)
+            if not value or not isinstance(value, str):
+                continue
+            key = value.upper()
+            for group in ref_groups:
+                registry = self._ref_registry.get(group)
+                if registry and key in registry:
+                    entries = registry[key]
+                    registry[key] = [e for e in entries if e[0] != object_type]
+                    if not registry[key]:
+                        del registry[key]
+
+    # ── Consumer reverse index ──────────────────────────────
+
+    def _index_consumer_refs(
+        self, obj: IDFBaseModel, obj_type: str, obj_name: str
+    ) -> None:
+        """Index an object's consumer references into the reverse index."""
+        cls_name = type(obj).__name__
+        consumer_fields = REF_CONSUMERS.get(cls_name, {})
+        for field_name, ref_groups in consumer_fields.items():
+            value = getattr(obj, field_name, None)
+            if not value or not isinstance(value, str):
+                continue
+            key = value.upper()
+            for group in ref_groups:
+                bucket = self._reverse_index.setdefault(group, {})
+                bucket.setdefault(key, []).append((obj_type, obj_name))
+
+        # Also index extensible list items
+        for field_name in type(obj)._get_list_field_names():
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                for item in value:
+                    if isinstance(item, IDFBaseModel):
+                        self._index_consumer_refs(item, obj_type, obj_name)
+
+    def _unindex_consumer_refs(
+        self, obj: IDFBaseModel, obj_type: str, obj_name: str
+    ) -> None:
+        """Remove an object's consumer references from the reverse index."""
+        cls_name = type(obj).__name__
+        consumer_fields = REF_CONSUMERS.get(cls_name, {})
+        for field_name, ref_groups in consumer_fields.items():
+            value = getattr(obj, field_name, None)
+            if not value or not isinstance(value, str):
+                continue
+            key = value.upper()
+            for group in ref_groups:
+                bucket = self._reverse_index.get(group)
+                if bucket and key in bucket:
+                    entries = bucket[key]
+                    bucket[key] = [e for e in entries if e != (obj_type, obj_name)]
+                    if not bucket[key]:
+                        del bucket[key]
+
+        # Also unindex extensible list items
+        for field_name in type(obj)._get_list_field_names():
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                for item in value:
+                    if isinstance(item, IDFBaseModel):
+                        self._unindex_consumer_refs(item, obj_type, obj_name)
+
+    # ── Forward resolution ───────────────────────────────────
+
+    def _resolve_forward(
+        self,
+        value: str,
+        ref_groups: list[str],
+        expected_type: str | None = None,
+    ) -> IDFBaseModel | None:
+        """Resolve a reference string to the target object.
+
+        Uses _ref_registry for O(1) type + original_name determination,
+        then direct dict lookup in _objects.
+
+        Args:
+            value: The reference name string.
+            ref_groups: Candidate reference groups to search.
+            expected_type: If provided, only match providers of this
+                object type (e.g. ``"Zone"``).  When *None* the first
+                candidate found is returned (backward-compatible).
+        """
+        key = value.upper()
+        for group in ref_groups:
+            candidates = self._ref_registry.get(group, {}).get(key)
+            if candidates is None:
+                continue
+            for obj_type, original_name in candidates:
+                if expected_type is not None and obj_type != expected_type:
+                    continue
+                obj = self._objects.get(obj_type, {}).get(original_name)
+                if obj is not None:
+                    return obj
+        return None
+
+    # ── Reverse navigation ───────────────────────────────────
+
+    def _find_referencing(
+        self,
+        target: IDFBaseModel,
+        consumer_type: str,
+    ) -> list[IDFBaseModel]:
+        """Find all objects of consumer_type that reference target.
+
+        Uses _reverse_index for O(R) lookup where R = referencing objects.
+        """
+        provisions = self._target_provisions(target)
+        if not provisions:
+            return []
+
+        seen: set[tuple[str, str]] = set()
+        results: list[IDFBaseModel] = []
+        for group, key in provisions:
+            bucket = self._reverse_index.get(group, {})
+            for entry_type, entry_name in bucket.get(key, ()):
+                if entry_type != consumer_type:
+                    continue
+                pair = (entry_type, entry_name)
+                if pair in seen:
+                    continue
+                seen.add(pair)
+                obj = self._objects.get(entry_type, {}).get(entry_name)
+                if obj is not None:
+                    results.append(obj)
+        return results
+
+    def _find_all_referencing(
+        self,
+        target: IDFBaseModel,
+    ) -> list[IDFBaseModel]:
+        """Find all objects across every type that reference target.
+
+        Uses _reverse_index for O(R) lookup.
+        """
+        provisions = self._target_provisions(target)
+        if not provisions:
+            return []
+
+        seen: set[tuple[str, str]] = set()
+        results: list[IDFBaseModel] = []
+        for group, key in provisions:
+            bucket = self._reverse_index.get(group, {})
+            for entry_type, entry_name in bucket.get(key, ()):
+                pair = (entry_type, entry_name)
+                if pair in seen:
+                    continue
+                seen.add(pair)
+                obj = self._objects.get(entry_type, {}).get(entry_name)
+                if obj is not None:
+                    results.append(obj)
+        return results
+
+    @staticmethod
+    def _target_provisions(target: IDFBaseModel) -> list[tuple[str, str]]:
+        """Collect (group, UPPER(value)) pairs that target provides."""
+        target_type = target.idf_object_type()
+        provisions: list[tuple[str, str]] = []
+        for field_name, groups in REF_PROVIDERS.get(target_type, []):
+            val = getattr(target, field_name, None)
+            if val and isinstance(val, str):
+                key = val.upper()
+                for group in groups:
+                    provisions.append((group, key))
+        return provisions
+
+    # ── Validation ───────────────────────────────────────────
+
+    def validate(self) -> list[RefError]:
+        """Validate all cross-object references.
+
+        Checks:
+        1. Existence: referenced name exists in at least one ref group
+        2. Type compatibility: provider type is valid for the matched group
+
+        Multiple object_list groups per field have OR semantics.
+        """
+        errors: list[RefError] = []
+        for objects_by_name in self._objects.values():
+            for key, obj in objects_by_name.items():
+                self._validate_obj_refs(key, obj, errors)
+        return errors
+
+    def validate_or_raise(self) -> None:
+        """Validate references, raise RefValidationError if broken."""
+        errors = self.validate()
+        if errors:
+            raise RefValidationError(errors)
+
+    def _validate_obj_refs(
+        self,
+        key: str,
+        obj: IDFBaseModel,
+        errors: list[RefError],
+        *,
+        parent_type: str | None = None,
+        parent_name: str | None = None,
+    ) -> None:
+        """Check one object's reference fields against the registry."""
+        cls_name = type(obj).__name__
+        object_type = parent_type or obj.idf_object_type()
+        object_name = parent_name or key or ''
+
+        consumer_fields = REF_CONSUMERS.get(cls_name, {})
+        for field_name, ref_groups in consumer_fields.items():
+            value = getattr(obj, field_name, None)
+            if value is None or not isinstance(value, str):
+                continue
+            self._check_ref(
+                object_type,
+                object_name,
+                field_name,
+                value,
+                ref_groups,
+                errors,
+            )
+
+        # Recurse into extensible items
+        for field_name in type(obj)._get_list_field_names():
+            value = getattr(obj, field_name, None)
+            if value is not None:
+                for item in value:
+                    if isinstance(item, IDFBaseModel):
+                        self._validate_obj_refs(
+                            '',
+                            item,
+                            errors,
+                            parent_type=object_type,
+                            parent_name=object_name,
+                        )
+
+    def _check_ref(
+        self,
+        object_type: str,
+        object_name: str,
+        field_name: str,
+        value: str,
+        ref_groups: list[str],
+        errors: list[RefError],
+    ) -> None:
+        """Check a single reference value against its ref groups.
+
+        Multiple ref_groups have OR semantics (186 fields affected).
+        A value is valid if found in ANY of the groups.
+        """
+        key = value.upper()
+
+        # Phase 1: find the value in any group
+        found_in_group: str | None = None
+        found_provider_types: list[str] = []
+        for group in ref_groups:
+            candidates = self._ref_registry.get(group, {}).get(key)
+            if candidates:
+                found_in_group = group
+                found_provider_types = [c[0] for c in candidates]
+                break
+
+        # Not found in ANY group -> missing
+        if found_in_group is None:
+            all_groups = ', '.join(ref_groups)
+            errors.append(
+                RefError(
+                    object_type=object_type,
+                    object_name=object_name,
+                    field_name=field_name,
+                    ref_group=all_groups,
+                    referenced_name=value,
+                    error_type='missing',
+                    detail=f'"{value}" not found in any of [{all_groups}]',
+                )
+            )
+            return
+
+        # Phase 2: type compatibility – at least one provider must be allowed
+        allowed_types = REF_GROUP_PROVIDERS.get(found_in_group)
+        if allowed_types:
+            valid = [t for t in found_provider_types if t in allowed_types]
+            if not valid:
+                errors.append(
+                    RefError(
+                        object_type=object_type,
+                        object_name=object_name,
+                        field_name=field_name,
+                        ref_group=found_in_group,
+                        referenced_name=value,
+                        error_type='type_mismatch',
+                        detail=(
+                            f'"{value}" is provided by '
+                            f'{sorted(set(found_provider_types))}, '
+                            f'but {found_in_group} only accepts '
+                            f'{sorted(allowed_types)}'
+                        ),
+                    )
+                )
+
     def to_dict(self) -> dict[str, dict[str, dict[str, Any]]]:
         """Convert IDF container to epJSON-style nested dictionary.
 
@@ -191,17 +580,7 @@ class IDF:
                     exclude_none=True, exclude_unset=True, by_alias=True
                 )
                 fields.pop('name', None)
-                fields = _coerce_numerics(fields, obj)
-                # Rename fields using validation_alias where alias is not set
-                for field_name, field_info in type(obj).model_fields.items():
-                    va = field_info.validation_alias
-                    if (
-                        isinstance(va, str)
-                        and va != field_name
-                        and not field_info.alias
-                        and field_name in fields
-                    ):
-                        fields[va] = fields.pop(field_name)
+                fields = _finalize_fields(fields, obj)
                 has_name_field = 'name' in type(obj).model_fields
                 name_value = getattr(obj, 'name', None)
                 if has_name_field and name_value not in (None, ''):
@@ -301,54 +680,78 @@ class IDF:
     def _parse_idf_content(cls, content: str) -> IDF:
         """Parse IDF content string into objects.
 
-        Args:
-            content: IDF file content.
-
-        Returns:
-            IDF instance with parsed objects.
+        Single-pass parser: accumulates text chunks line by line,
+        processes each complete object block when ';' is encountered.
+        Avoids the large intermediate string from join+split.
         """
         idf = cls()
+        chunks: list[str] = []  # accumulated text between ';' terminators
 
-        lines = []
-        for line in content.splitlines():
-            if '!' in line:
-                line = line.split('!')[0]
-            lines.append(line)
-
-        full_content = '\n'.join(lines)
-        object_blocks = full_content.split(';')
-
-        for block in object_blocks:
-            block = block.strip()
-            if not block:
+        for raw_line in content.splitlines():
+            # Strip comments
+            bang = raw_line.find('!')
+            line = raw_line[:bang] if bang >= 0 else raw_line
+            line = line.strip()
+            if not line:
                 continue
 
+            # Consume all ';'-terminated objects on this line
+            semi = line.find(';')
+            if semi < 0:
+                chunks.append(line)
+                continue
+
+            while semi >= 0:
+                before = line[:semi].strip()
+                if before:
+                    chunks.append(before)
+
+                if chunks:
+                    block = ' '.join(chunks)
+                    fields = [f.strip() for f in block.split(',')]
+                    if fields and fields[0]:
+                        cls._process_block(idf, fields)
+                    chunks = []
+
+                line = line[semi + 1 :]
+                semi = line.find(';')
+
+            remainder = line.strip()
+            if remainder:
+                chunks.append(remainder)
+
+        # Handle trailing block without terminator
+        if chunks:
+            block = ' '.join(chunks)
             fields = [f.strip() for f in block.split(',')]
-            if not fields:
-                continue
-
-            object_type = fields[0]
-            field_values = fields[1:]
-
-            if object_type not in OBJECT_TYPE_REGISTRY:
-                logger.warning(f'Unknown object type: {object_type}')
-                continue
-
-            model_class = get_model_class(object_type)
-            if model_class is None:
-                logger.warning(f'No model class for: {object_type}')
-                continue
-
-            field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
-            field_dict = cls._build_field_dict(model_class, field_order, field_values)
-
-            try:
-                obj = model_class(**field_dict)
-                idf.add(obj)
-            except Exception as e:
-                logger.warning(f'Failed to parse {object_type}: {e}')
+            if fields and fields[0]:
+                cls._process_block(idf, fields)
 
         return idf
+
+    @classmethod
+    def _process_block(cls, idf: IDF, fields: list[str]) -> None:
+        """Parse a single object block from accumulated fields."""
+        object_type = fields[0]
+        field_values = fields[1:]
+
+        if object_type not in OBJECT_TYPE_REGISTRY:
+            logger.warning(f'Unknown object type: {object_type}')
+            return
+
+        model_class = get_model_class(object_type)
+        if model_class is None:
+            logger.warning(f'No model class for: {object_type}')
+            return
+
+        field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
+        field_dict = cls._build_field_dict(model_class, field_order, field_values)
+
+        try:
+            obj = model_class(**field_dict)
+            idf.add(obj)
+        except Exception as e:
+            logger.warning(f'Failed to parse {object_type}: {e}')
 
     @classmethod
     def _build_field_dict(
@@ -498,23 +901,20 @@ class IDF:
         lines: list[str] = []
         obj_dict = obj.model_dump(by_alias=True)
 
-        # Separate regular fields and extensible fields (like vertices)
+        # Separate regular fields and extensible fields; track last non-empty
         regular_fields: list[tuple[str, str]] = []
         extensible_items: list[dict] = []
+        last_non_empty_idx = -1
 
         for field_name in field_order:
             value = obj_dict.get(field_name)
-            # Check if this is an extensible field (list of vertex items)
             if isinstance(value, list) and value and isinstance(value[0], dict):
                 extensible_items = value
             else:
                 formatted = self._format_value(value)
                 regular_fields.append((field_name, formatted))
-
-        last_non_empty_idx = -1
-        for i, (_, value) in enumerate(regular_fields):
-            if value:
-                last_non_empty_idx = i
+                if formatted:
+                    last_non_empty_idx = len(regular_fields) - 1
 
         if last_non_empty_idx < 0 and not extensible_items:
             lines.append(f'{object_type};')

@@ -186,6 +186,78 @@ class AirLoopHVACUnitaryFurnaceHeatCool(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_fan(self) -> IDFBaseModel | None:
+        v = self.supply_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['CoolingCoilsDXSingleSpeed', 'CoolingCoilsDXVariableSpeed']
+        )
+
+    @property
+    def reheat_coil(self) -> IDFBaseModel | None:
+        v = self.reheat_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
 
 class AirLoopHVACUnitaryFurnaceHeatOnly(IDFBaseModel):
     """Unitary system, heating-only with constant volume supply fan (continuous or
@@ -249,6 +321,56 @@ class AirLoopHVACUnitaryFurnaceHeatOnly(IDFBaseModel):
     heating_coil_name: HeatingCoilNameRef = Field(
         ..., json_schema_extra={'object_list': ['HeatingCoilName']}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_fan(self) -> IDFBaseModel | None:
+        v = self.supply_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
 
 
 class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
@@ -379,6 +501,78 @@ class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
             'note': 'Only required if dehumidification control type is "CoolReheat"',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_fan(self) -> IDFBaseModel | None:
+        v = self.supply_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['CoolingCoilsDXSingleSpeed', 'CoolingCoilsDXVariableSpeed']
+        )
+
+    @property
+    def reheat_coil(self) -> IDFBaseModel | None:
+        v = self.reheat_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
 
 
 class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
@@ -607,6 +801,80 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def outdoor_air_flow_rate_multiplier_schedule(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_flow_rate_multiplier_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_mixer_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutdoorAirMixers'])
+
+    @property
+    def supply_air_fan(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff', 'FansSystemModel'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['CoolingCoilsDXMultiModeOrSingleSpeed', 'CoolingCoilsDXVariableSpeed']
+        )
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['HeatingCoilName', 'HeatingCoilsDXVariableSpeed']
+        )
+
 
 class AirLoopHVACUnitaryHeatOnly(IDFBaseModel):
     """Unitary system, heating-only with constant volume supply fan (continuous or
@@ -670,6 +938,56 @@ class AirLoopHVACUnitaryHeatOnly(IDFBaseModel):
     heating_coil_name: HeatingCoilNameRef = Field(
         ..., json_schema_extra={'object_list': ['HeatingCoilName']}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_fan(self) -> IDFBaseModel | None:
+        v = self.supply_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
 
 
 class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
@@ -825,6 +1143,90 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
             'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_air_fan(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'HeatingCoilsDXSingleSpeed',
+                'HeatingCoilsDXVariableSpeed',
+                'IntegratedHeatPumps',
+            ],
+        )
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'CoolingCoilsDXSingleSpeed',
+                'CoolingCoilsDXVariableSpeed',
+                'IntegratedHeatPumps',
+            ],
+        )
+
+    @property
+    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+        v = self.supplemental_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
@@ -1042,6 +1444,83 @@ class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_air_fan(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandOnOff'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'HeatingCoilsDXMultiSpeed',
+                'HeatingCoilsElectricMultiStage',
+                'HeatingCoilsGasMultiStage',
+            ],
+        )
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsDXMultiSpeed'])
+
+    @property
+    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+        v = self.supplemental_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
 
 class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
     """Unitary heat pump system, heating and cooling, single-speed with constant
@@ -1172,6 +1651,80 @@ class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
             'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def supply_air_fan(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansOnOff'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['HeatingCoilsWaterToAirHP', 'HeatingCoilsWaterToAirVSHP']
+        )
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['CoolingCoilsWaterToAirHP', 'CoolingCoilsWaterToAirVSHP']
+        )
+
+    @property
+    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+        v = self.supplemental_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilName'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class AirLoopHVACUnitarySystem(IDFBaseModel):
@@ -1679,6 +2232,120 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
             'note': 'The name of the performance specification object used to describe the multispeed coil.',
         },
     )
+
+    @property
+    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+        v = self.controlling_zone_or_thermostat_location
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_fan(self) -> IDFBaseModel | None:
+        v = self.supply_fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Fans'])
+
+    @property
+    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+        v = self.supply_air_fan_operating_mode_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'HeatingCoilName',
+                'HeatingCoilsDX',
+                'HeatingCoilsDXMultiSpeed',
+                'HeatingCoilsDXVariableSpeed',
+                'HeatingCoilsDesuperheater',
+                'HeatingCoilsElectricMultiStage',
+                'HeatingCoilsGasMultiStage',
+                'HeatingCoilsWaterToAirHP',
+                'HeatingCoilsWaterToAirVSHP',
+                'UserDefinedCoil',
+            ],
+        )
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'CoilCoolingDX',
+                'CoolingCoilsDX',
+                'CoolingCoilsDXMultiSpeed',
+                'CoolingCoilsDXVariableSpeed',
+                'CoolingCoilsWater',
+                'CoolingCoilsWaterToAirHP',
+                'CoolingCoilsWaterToAirVSHP',
+                'UserDefinedCoil',
+            ],
+        )
+
+    @property
+    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+        v = self.supplemental_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'HeatingCoilName',
+                'HeatingCoilsDesuperheater',
+                'HeatingCoilsElectricMultiStage',
+                'UserDefinedCoil',
+            ],
+        )
+
+    @property
+    def design_specification_multispeed_object(self) -> IDFBaseModel | None:
+        v = self.design_specification_multispeed_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnitarySystemPerformanceNames'])
 
 
 class UnitarySystemPerformanceMultispeed(IDFBaseModel):

@@ -45,6 +45,16 @@ class AirLoopHVACDedicatedOutdoorAirSystemAirloophvacsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def airloophvac(self) -> IDFBaseModel | None:
+        v = self.airloophvac_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class AirLoopHVACMixerNodesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -61,6 +71,16 @@ class AirLoopHVACReturnPathComponentsItem(IDFBaseModel):
     component_name: ReturnPathComponentNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ReturnPathComponentNames']}
     )
+
+    @property
+    def component(self) -> IDFBaseModel | None:
+        v = self.component_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ReturnPathComponentNames'])
 
 
 class AirLoopHVACSplitterNodesItem(IDFBaseModel):
@@ -83,6 +103,16 @@ class AirLoopHVACSupplyPathComponentsItem(IDFBaseModel):
     component_name: SupplyPathComponentNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SupplyPathComponentNames']}
     )
+
+    @property
+    def component(self) -> IDFBaseModel | None:
+        v = self.component_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SupplyPathComponentNames'])
 
 
 class AirLoopHVAC(IDFBaseModel):
@@ -153,6 +183,46 @@ class AirLoopHVAC(IDFBaseModel):
         },
     )
 
+    @property
+    def controller_list(self) -> IDFBaseModel | None:
+        v = self.controller_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControllerLists'])
+
+    @property
+    def availability_manager_list(self) -> IDFBaseModel | None:
+        v = self.availability_manager_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
+
+    @property
+    def branch_list(self) -> IDFBaseModel | None:
+        v = self.branch_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BranchLists'])
+
+    @property
+    def connector_list(self) -> IDFBaseModel | None:
+        v = self.connector_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConnectorLists'])
+
 
 class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
     """Defines a central forced air system to provide dedicated outdoor air to
@@ -206,6 +276,46 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
         Field(default=None)
     )
 
+    @property
+    def airloophvac_outdoorairsystem(self) -> IDFBaseModel | None:
+        v = self.airloophvac_outdoorairsystem_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validBranchEquipmentNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def airloophvac_mixer(self) -> IDFBaseModel | None:
+        v = self.airloophvac_mixer_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirLoopHVACMixerNames'])
+
+    @property
+    def airloophvac_splitter(self) -> IDFBaseModel | None:
+        v = self.airloophvac_splitter_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirLoopHVACSplitterNames'])
+
 
 class AirLoopHVACExhaustSystem(IDFBaseModel):
     """Defines a general exhaust system with a central exhaust fan drawing from one
@@ -225,6 +335,26 @@ class AirLoopHVACExhaustSystem(IDFBaseModel):
         ...,
         json_schema_extra={'object_list': ['FansComponentModel', 'FansSystemModel']},
     )
+
+    @property
+    def zone_mixer(self) -> IDFBaseModel | None:
+        v = self.zone_mixer_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneMixers'])
+
+    @property
+    def fan(self) -> IDFBaseModel | None:
+        v = self.fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansComponentModel', 'FansSystemModel'])
 
 
 class AirLoopHVACMixer(IDFBaseModel):
@@ -261,6 +391,26 @@ class AirLoopHVACOutdoorAirSystem(IDFBaseModel):
             'note': 'Enter the name of an AirLoopHVAC:OutdoorAirSystem:EquipmentList object.',
         },
     )
+
+    @property
+    def controller_list(self) -> IDFBaseModel | None:
+        v = self.controller_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControllerLists'])
+
+    @property
+    def outdoor_air_equipment_list(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirLoopOAEquipmentLists'])
 
 
 class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
@@ -323,6 +473,96 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['validOASysEquipmentNames']}
     )
 
+    @property
+    def component_1(self) -> IDFBaseModel | None:
+        v = self.component_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_2(self) -> IDFBaseModel | None:
+        v = self.component_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_3(self) -> IDFBaseModel | None:
+        v = self.component_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_4(self) -> IDFBaseModel | None:
+        v = self.component_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_5(self) -> IDFBaseModel | None:
+        v = self.component_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_6(self) -> IDFBaseModel | None:
+        v = self.component_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_7(self) -> IDFBaseModel | None:
+        v = self.component_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_8(self) -> IDFBaseModel | None:
+        v = self.component_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
+    @property
+    def component_9(self) -> IDFBaseModel | None:
+        v = self.component_9_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validOASysEquipmentNames'])
+
 
 class AirLoopHVACReturnPath(IDFBaseModel):
     """A return air path can only contain one AirLoopHVAC:ZoneMixer and one or more
@@ -348,6 +588,16 @@ class AirLoopHVACReturnPlenum(IDFBaseModel):
     outlet_node_name: str = Field(...)
     induced_air_outlet_node_or_nodelist_name: str | None = Field(default=None)
     nodes: list[AirLoopHVACMixerNodesItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class AirLoopHVACSplitter(IDFBaseModel):
@@ -384,6 +634,16 @@ class AirLoopHVACSupplyPlenum(IDFBaseModel):
     zone_node_name: str = Field(...)
     inlet_node_name: str = Field(...)
     nodes: list[AirLoopHVACSplitterNodesItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class AirLoopHVACZoneMixer(IDFBaseModel):

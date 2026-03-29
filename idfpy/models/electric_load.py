@@ -72,6 +72,26 @@ class ElectricLoadCenterGeneratorsGeneratorOutputsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def generator(self) -> IDFBaseModel | None:
+        v = self.generator_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GeneratorNames'])
+
+    @property
+    def generator_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.generator_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ElectricLoadCenterTransformerMetersItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -256,6 +276,98 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         },
     )
 
+    @property
+    def generator_list(self) -> IDFBaseModel | None:
+        v = self.generator_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GeneratorLists'])
+
+    @property
+    def generator_track_schedule_scheme_schedule(self) -> IDFBaseModel | None:
+        v = self.generator_track_schedule_name_scheme_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inverter(self) -> IDFBaseModel | None:
+        v = self.inverter_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['InverterList'])
+
+    @property
+    def electrical_storage_object(self) -> IDFBaseModel | None:
+        v = self.electrical_storage_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ElecStorageList'])
+
+    @property
+    def transformer_object(self) -> IDFBaseModel | None:
+        v = self.transformer_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TransformerNames'])
+
+    @property
+    def storage_converter_object(self) -> IDFBaseModel | None:
+        v = self.storage_converter_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConverterList'])
+
+    @property
+    def storage_charge_power_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.storage_charge_power_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def storage_discharge_power_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.storage_discharge_power_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def storage_control_utility_demand_target_fraction_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.storage_control_utility_demand_target_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ElectricLoadCenterGenerators(IDFBaseModel):
     """List of electric power generators to include in the simulation including the
@@ -314,6 +426,36 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
         default=None, json_schema_extra={'units': 'W'}
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def efficiency_function_of_power_curve(self) -> IDFBaseModel | None:
+        v = self.efficiency_function_of_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
     """California Energy Commission tests and publishes data on inverters This
@@ -365,6 +507,26 @@ class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
         default=None, ge=0.0, le=1.0
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class ElectricLoadCenterInverterPVWatts(IDFBaseModel):
     """Electric power inverter to convert from direct current (DC) to alternating
@@ -401,6 +563,26 @@ class ElectricLoadCenterInverterSimple(IDFBaseModel):
     )
     radiative_fraction: float | None = Field(default=None, ge=0.0, le=1.0)
     inverter_efficiency: float | None = Field(default=None, ge=0.0, le=1.0)
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class ElectricLoadCenterStorageBattery(IDFBaseModel):
@@ -552,6 +734,56 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def voltage_change_curve_for_charging_ref(self) -> IDFBaseModel | None:
+        v = self.voltage_change_curve_name_for_charging
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def voltage_change_curve_for_discharging_ref(self) -> IDFBaseModel | None:
+        v = self.voltage_change_curve_name_for_discharging
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def battery_life_curve(self) -> IDFBaseModel | None:
+        v = self.battery_life_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class ElectricLoadCenterStorageConverter(IDFBaseModel):
     """This model is for converting AC to DC for grid-supplied charging of DC
@@ -618,6 +850,36 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
             'note': 'fraction of zone heat gains treated as thermal radiation'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def efficiency_function_of_power_curve(self) -> IDFBaseModel | None:
+        v = self.efficiency_function_of_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
@@ -750,6 +1012,26 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class ElectricLoadCenterStorageSimple(IDFBaseModel):
     """Used to model storage of electricity in an electric load center. This is a
@@ -795,6 +1077,26 @@ class ElectricLoadCenterStorageSimple(IDFBaseModel):
     initial_state_of_charge: float | None = Field(
         default=None, json_schema_extra={'units': 'J'}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class ElectricLoadCenterTransformer(IDFBaseModel):
@@ -915,6 +1217,26 @@ class ElectricLoadCenterTransformer(IDFBaseModel):
     )
     meters: list[ElectricLoadCenterTransformerMetersItem] | None = Field(default=None)
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class GeneratorCombustionTurbine(IDFBaseModel):
     """This generator model is the empirical model from the Building Loads and
@@ -1032,6 +1354,66 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         json_schema_extra={'note': 'Enter the name of an outdoor air node'},
     )
 
+    @property
+    def part_load_based_fuel_input_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_based_fuel_input_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def temperature_based_fuel_input_curve(self) -> IDFBaseModel | None:
+        v = self.temperature_based_fuel_input_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_flow_curve(self) -> IDFBaseModel | None:
+        v = self.exhaust_flow_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_based_exhaust_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_based_exhaust_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def temperature_based_exhaust_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.temperature_based_exhaust_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heat_recovery_lube_energy_curve(self) -> IDFBaseModel | None:
+        v = self.heat_recovery_lube_energy_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorFuelCell(IDFBaseModel):
     """This generator model is the FC model from IEA Annex 42"""
@@ -1102,6 +1484,96 @@ class GeneratorFuelCell(IDFBaseModel):
         },
     )
 
+    @property
+    def power_module(self) -> IDFBaseModel | None:
+        v = self.power_module_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCPMNames'])
+
+    @property
+    def air_supply(self) -> IDFBaseModel | None:
+        v = self.air_supply_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCAirSupNames'])
+
+    @property
+    def fuel_supply(self) -> IDFBaseModel | None:
+        v = self.fuel_supply_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GenFuelSupNames'])
+
+    @property
+    def water_supply(self) -> IDFBaseModel | None:
+        v = self.water_supply_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCWaterSupNames'])
+
+    @property
+    def auxiliary_heater(self) -> IDFBaseModel | None:
+        v = self.auxiliary_heater_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCAuxHeatNames'])
+
+    @property
+    def heat_exchanger(self) -> IDFBaseModel | None:
+        v = self.heat_exchanger_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCExhaustHXNames'])
+
+    @property
+    def electrical_storage(self) -> IDFBaseModel | None:
+        v = self.electrical_storage_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCStorageNames'])
+
+    @property
+    def inverter(self) -> IDFBaseModel | None:
+        v = self.inverter_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCInverterNames'])
+
+    @property
+    def stack_cooler(self) -> IDFBaseModel | None:
+        v = self.stack_cooler_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FCStackCoolerNames'])
+
 
 class GeneratorFuelCellAirSupply(IDFBaseModel):
     """Used to define details of the air supply subsystem for a fuel cell power
@@ -1148,6 +1620,36 @@ class GeneratorFuelCellAirSupply(IDFBaseModel):
         list[GeneratorFuelCellAirSupplyConstituentFractionsItem] | None
     ) = Field(default=None)
 
+    @property
+    def blower_power_curve(self) -> IDFBaseModel | None:
+        v = self.blower_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def air_rate_function_of_electric_power_curve(self) -> IDFBaseModel | None:
+        v = self.air_rate_function_of_electric_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def air_rate_function_of_fuel_rate_curve(self) -> IDFBaseModel | None:
+        v = self.air_rate_function_of_fuel_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     """Intended for modeling an auxiliary heater for a fuel cell power generator,
@@ -1182,6 +1684,16 @@ class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     minimum_heating_capacity_in_kmol_per_second: float | None = Field(
         default=None, json_schema_extra={'units': 'kmol/s'}
     )
+
+    @property
+    def zone_to_receive_skin_losses_ref(self) -> IDFBaseModel | None:
+        v = self.zone_name_to_receive_skin_losses
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class GeneratorFuelCellElectricalStorage(IDFBaseModel):
@@ -1276,6 +1788,16 @@ class GeneratorFuelCellInverter(IDFBaseModel):
     efficiency_function_of_dc_power_curve_name: UnivariateFunctionsRef | None = Field(
         default=None, json_schema_extra={'object_list': ['UnivariateFunctions']}
     )
+
+    @property
+    def efficiency_function_of_dc_power_curve(self) -> IDFBaseModel | None:
+        v = self.efficiency_function_of_dc_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class GeneratorFuelCellPowerModule(IDFBaseModel):
@@ -1392,6 +1914,36 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
         default=None, json_schema_extra={'units': 'W'}
     )
 
+    @property
+    def efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def skin_loss_quadratic_curve(self) -> IDFBaseModel | None:
+        v = self.skin_loss_quadratic_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorFuelCellStackCooler(IDFBaseModel):
     """This object is optional and is used to define details needed to model the
@@ -1468,6 +2020,40 @@ class GeneratorFuelCellWaterSupply(IDFBaseModel):
     water_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def reformer_water_flow_rate_function_of_fuel_rate_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.reformer_water_flow_rate_function_of_fuel_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def reformer_water_pump_power_function_of_fuel_rate_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.reformer_water_pump_power_function_of_fuel_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.water_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class GeneratorFuelSupply(IDFBaseModel):
@@ -1738,6 +2324,28 @@ class GeneratorFuelSupply(IDFBaseModel):
     ) = Field(default=None)
     constituent_12_molar_fraction: float | None = Field(default=None, ge=0.0, le=1.0)
 
+    @property
+    def fuel_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.fuel_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def compressor_power_multiplier_function_of_fuel_rate_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.compressor_power_multiplier_function_of_fuel_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorInternalCombustionEngine(IDFBaseModel):
     """This generator model is the empirical model from the Building Loads and
@@ -1837,6 +2445,56 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
         default=80.0, ge=0.0, le=100.0, json_schema_extra={'units': 'C'}
     )
 
+    @property
+    def shaft_power_curve(self) -> IDFBaseModel | None:
+        v = self.shaft_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def jacket_heat_recovery_curve(self) -> IDFBaseModel | None:
+        v = self.jacket_heat_recovery_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def lube_heat_recovery_curve(self) -> IDFBaseModel | None:
+        v = self.lube_heat_recovery_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def total_exhaust_energy_curve(self) -> IDFBaseModel | None:
+        v = self.total_exhaust_energy_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.exhaust_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorMicroCHP(IDFBaseModel):
     """Small-scale combined heat and power (micro CHP) electric generator using the
@@ -1874,6 +2532,46 @@ class GeneratorMicroCHP(IDFBaseModel):
             'note': 'Availability schedule name for this system. Schedule value > 0 means the system is available. If this field is blank, the system is always available.',
         },
     )
+
+    @property
+    def performance_parameters(self) -> IDFBaseModel | None:
+        v = self.performance_parameters_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MicroCHPParametersNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def generator_fuel_supply(self) -> IDFBaseModel | None:
+        v = self.generator_fuel_supply_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GenFuelSupNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
@@ -1961,6 +2659,46 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
     restart_mode: Literal['MandatoryCoolDown', 'OptionalCoolDown'] | None = Field(
         default=None
     )
+
+    @property
+    def electrical_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.electrical_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def thermal_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.thermal_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_water_flow_rate_curve(self) -> IDFBaseModel | None:
+        v = self.cooling_water_flow_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def air_flow_rate_curve(self) -> IDFBaseModel | None:
+        v = self.air_flow_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class GeneratorMicroTurbine(IDFBaseModel):
@@ -2196,6 +2934,160 @@ class GeneratorMicroTurbine(IDFBaseModel):
         },
     )
 
+    @property
+    def electrical_power_function_of_temperature_and_elevation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.electrical_power_function_of_temperature_and_elevation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def electrical_efficiency_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.electrical_efficiency_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def electrical_efficiency_function_of_part_load_ratio_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.electrical_efficiency_function_of_part_load_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def ancillary_power_function_of_fuel_input_curve(self) -> IDFBaseModel | None:
+        v = self.ancillary_power_function_of_fuel_input_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heat_recovery_water_flow_rate_function_of_temperature_and_power_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heat_recovery_water_flow_rate_function_of_temperature_and_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def thermal_efficiency_function_of_temperature_and_elevation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.thermal_efficiency_function_of_temperature_and_elevation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def heat_recovery_rate_function_of_part_load_ratio_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heat_recovery_rate_function_of_part_load_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heat_recovery_rate_function_of_inlet_water_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heat_recovery_rate_function_of_inlet_water_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heat_recovery_rate_function_of_water_flow_rate_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heat_recovery_rate_function_of_water_flow_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_air_flow_rate_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.exhaust_air_flow_rate_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_air_flow_rate_function_of_part_load_ratio_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.exhaust_air_flow_rate_function_of_part_load_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_air_temperature_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.exhaust_air_temperature_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def exhaust_air_temperature_function_of_part_load_ratio_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.exhaust_air_temperature_function_of_part_load_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class GeneratorPVWatts(IDFBaseModel):
     """Describes a simple set of inputs for an array of photovoltaic (PV) modules
@@ -2258,6 +3150,16 @@ class GeneratorPVWatts(IDFBaseModel):
         },
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
+
 
 class GeneratorPhotovoltaic(IDFBaseModel):
     """Describes an array of photovoltaic (PV) modules. A series of different PV
@@ -2316,6 +3218,26 @@ class GeneratorPhotovoltaic(IDFBaseModel):
             'note': 'Number of PV modules wired in series for each string.',
         },
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
+
+    @property
+    def module_performance(self) -> IDFBaseModel | None:
+        v = self.module_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PVModules'])
 
 
 class GeneratorWindTurbine(IDFBaseModel):
@@ -2427,6 +3349,16 @@ class GeneratorWindTurbine(IDFBaseModel):
     power_coefficient_c4: float | None = Field(default=0.0, ge=0.0)
     power_coefficient_c5: float | None = Field(default=5.0, gt=0.0)
     power_coefficient_c6: float | None = Field(default=21.0, gt=0.0)
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class PhotovoltaicPerformanceEquivalentOneDiode(IDFBaseModel):
@@ -2666,3 +3598,13 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
     efficiency_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def efficiency_schedule(self) -> IDFBaseModel | None:
+        v = self.efficiency_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

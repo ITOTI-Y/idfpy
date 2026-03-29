@@ -49,6 +49,16 @@ class SetpointManagerColdest(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class SetpointManagerCondenserEnteringReset(IDFBaseModel):
     """This setpoint manager uses one curve to determine the optimum condenser
@@ -86,6 +96,48 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
     setpoint_node_or_nodelist_name: str = Field(
         ..., json_schema_extra={'note': 'Node(s) at which control variable will be set'}
     )
+
+    @property
+    def default_condenser_entering_water_temperature_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.default_condenser_entering_water_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_design_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.minimum_design_wetbulb_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def minimum_outside_air_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.minimum_outside_air_wetbulb_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def optimized_cond_entering_water_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.optimized_cond_entering_water_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
 
 class SetpointManagerCondenserEnteringResetIdeal(IDFBaseModel):
@@ -261,6 +313,16 @@ class SetpointManagerMultiZoneCoolingAverage(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class SetpointManagerMultiZoneHeatingAverage(IDFBaseModel):
     """This setpoint manager sets the average supply air temperature based on the
@@ -285,6 +347,16 @@ class SetpointManagerMultiZoneHeatingAverage(IDFBaseModel):
     setpoint_node_or_nodelist_name: str = Field(
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
+
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
 
 class SetpointManagerMultiZoneHumidityMaximum(IDFBaseModel):
@@ -313,6 +385,16 @@ class SetpointManagerMultiZoneHumidityMaximum(IDFBaseModel):
         json_schema_extra={'note': 'Node(s) at which the humidity ratio will be set'},
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class SetpointManagerMultiZoneHumidityMinimum(IDFBaseModel):
     """This setpoint manager sets the minimum supply air humidity ratio based on
@@ -339,6 +421,16 @@ class SetpointManagerMultiZoneHumidityMinimum(IDFBaseModel):
         ...,
         json_schema_extra={'note': 'Node(s) at which the humidity ratio will be set'},
     )
+
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
 
 class SetpointManagerMultiZoneMaximumHumidityAverage(IDFBaseModel):
@@ -368,6 +460,16 @@ class SetpointManagerMultiZoneMaximumHumidityAverage(IDFBaseModel):
         json_schema_extra={'note': 'Node(s) at which the humidity ratio will be set'},
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class SetpointManagerMultiZoneMinimumHumidityAverage(IDFBaseModel):
     """This setpoint manager sets the average supply air minimum humidity ratio
@@ -395,6 +497,16 @@ class SetpointManagerMultiZoneMinimumHumidityAverage(IDFBaseModel):
         ...,
         json_schema_extra={'note': 'Node(s) at which the humidity ratio will be set'},
     )
+
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
 
 class SetpointManagerOutdoorAirPretreat(IDFBaseModel):
@@ -523,6 +635,16 @@ class SetpointManagerOutdoorAirReset(IDFBaseModel):
         },
     )
 
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
     """This setpoint manager determines the required mass flow rate through a
@@ -541,6 +663,26 @@ class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
     temperature_setpoint_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
+    @property
+    def temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.temperature_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SetpointManagerReturnTemperatureChilledWater(IDFBaseModel):
@@ -601,6 +743,16 @@ class SetpointManagerReturnTemperatureChilledWater(IDFBaseModel):
         },
     )
 
+    @property
+    def return_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.return_temperature_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SetpointManagerReturnTemperatureHotWater(IDFBaseModel):
     """This setpoint manager is used to place a temperature setpoint on a plant
@@ -660,6 +812,16 @@ class SetpointManagerReturnTemperatureHotWater(IDFBaseModel):
         },
     )
 
+    @property
+    def return_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.return_temperature_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SetpointManagerScheduled(IDFBaseModel):
     """The simplest Setpoint Manager simply uses a schedule to determine one or
@@ -685,6 +847,16 @@ class SetpointManagerScheduled(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which control variable will be set'}
     )
 
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SetpointManagerScheduledDualSetpoint(IDFBaseModel):
     """This setpoint manager places a high and low schedule value on one or more
@@ -702,6 +874,26 @@ class SetpointManagerScheduledDualSetpoint(IDFBaseModel):
     setpoint_node_or_nodelist_name: str = Field(
         ..., json_schema_extra={'note': 'Node(s) at which temperature will be set'}
     )
+
+    @property
+    def high_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.high_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def low_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.low_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SetpointManagerSingleZoneCooling(IDFBaseModel):
@@ -728,6 +920,16 @@ class SetpointManagerSingleZoneCooling(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class SetpointManagerSingleZoneHeating(IDFBaseModel):
     """This setpoint manager detects the control zone load to meet the current
@@ -752,6 +954,16 @@ class SetpointManagerSingleZoneHeating(IDFBaseModel):
     setpoint_node_or_nodelist_name: str = Field(
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
+
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class SetpointManagerSingleZoneHumidityMaximum(IDFBaseModel):
@@ -825,6 +1037,16 @@ class SetpointManagerSingleZoneOneStageCooling(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class SetpointManagerSingleZoneOneStageHeating(IDFBaseModel):
     """This object can be used with CoilSystem:Heating:DX, Coil:Heating:Fuel,
@@ -856,6 +1078,16 @@ class SetpointManagerSingleZoneOneStageHeating(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class SetpointManagerSingleZoneReheat(IDFBaseModel):
     """This setpoint manager detects the control zone load, zone inlet node flow
@@ -880,6 +1112,16 @@ class SetpointManagerSingleZoneReheat(IDFBaseModel):
     setpoint_node_or_nodelist_name: str = Field(
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
+
+    @property
+    def control_zone(self) -> IDFBaseModel | None:
+        v = self.control_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class SetpointManagerSystemNodeResetHumidity(IDFBaseModel):
@@ -973,6 +1215,16 @@ class SetpointManagerWarmest(IDFBaseModel):
         ..., json_schema_extra={'note': 'Node(s) at which the temperature will be set'}
     )
 
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
+
 
 class SetpointManagerWarmestTemperatureFlow(IDFBaseModel):
     """This setpoint manager sets both the supply air temperature and the supply
@@ -1011,3 +1263,13 @@ class SetpointManagerWarmestTemperatureFlow(IDFBaseModel):
             'note': 'Fraction of the maximum supply air flow rate. Used to define the minimum supply flow for the TemperatureFirst strategy.',
         },
     )
+
+    @property
+    def hvac_air_loop(self) -> IDFBaseModel | None:
+        v = self.hvac_air_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])

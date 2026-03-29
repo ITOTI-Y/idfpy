@@ -41,6 +41,16 @@ class BranchComponentsItem(IDFBaseModel):
     component_inlet_node_name: str = Field(...)
     component_outlet_node_name: str = Field(...)
 
+    @property
+    def component(self) -> IDFBaseModel | None:
+        v = self.component_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validBranchEquipmentNames'])
+
 
 class BranchListBranchesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -48,6 +58,16 @@ class BranchListBranchesItem(IDFBaseModel):
     branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
     )
+
+    @property
+    def branch(self) -> IDFBaseModel | None:
+        v = self.branch_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Branches'])
 
 
 class ConnectorMixerBranchesItem(IDFBaseModel):
@@ -57,6 +77,16 @@ class ConnectorMixerBranchesItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['Branches']}
     )
 
+    @property
+    def inlet_branch(self) -> IDFBaseModel | None:
+        v = self.inlet_branch_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Branches'])
+
 
 class ConnectorSplitterBranchesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -64,6 +94,16 @@ class ConnectorSplitterBranchesItem(IDFBaseModel):
     outlet_branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
     )
+
+    @property
+    def outlet_branch(self) -> IDFBaseModel | None:
+        v = self.outlet_branch_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Branches'])
 
 
 class NodeListNodesItem(IDFBaseModel):
@@ -89,6 +129,16 @@ class PipingSystemUndergroundDomainPipeCircuitsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def pipe_circuit_ref(self) -> IDFBaseModel | None:
+        v = self.pipe_circuit
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PipingSystemUndergroundCircuitNames'])
+
 
 class PipingSystemUndergroundPipeCircuitPipeSegmentsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -100,6 +150,16 @@ class PipingSystemUndergroundPipeCircuitPipeSegmentsItem(IDFBaseModel):
             'note': 'Name of a pipe segment to be included in this pipe circuit',
         },
     )
+
+    @property
+    def pipe_segment_ref(self) -> IDFBaseModel | None:
+        v = self.pipe_segment
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PipingSystemUndergroundSegmentNames'])
 
 
 class Branch(IDFBaseModel):
@@ -116,6 +176,16 @@ class Branch(IDFBaseModel):
         },
     )
     components: list[BranchComponentsItem] | None = Field(default=None)
+
+    @property
+    def pressure_drop_curve(self) -> IDFBaseModel | None:
+        v = self.pressure_drop_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class BranchList(IDFBaseModel):
@@ -147,6 +217,26 @@ class ConnectorList(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['PlantConnectors']}
     )
 
+    @property
+    def connector_1(self) -> IDFBaseModel | None:
+        v = self.connector_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantConnectors'])
+
+    @property
+    def connector_2(self) -> IDFBaseModel | None:
+        v = self.connector_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantConnectors'])
+
 
 class ConnectorMixer(IDFBaseModel):
     """Mix N inlet air/water streams into one. Branch names cannot be duplicated
@@ -159,6 +249,16 @@ class ConnectorMixer(IDFBaseModel):
     )
     branches: list[ConnectorMixerBranchesItem] | None = Field(default=None)
 
+    @property
+    def outlet_branch(self) -> IDFBaseModel | None:
+        v = self.outlet_branch_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Branches'])
+
 
 class ConnectorSplitter(IDFBaseModel):
     """Split one air/water stream into N outlet streams. Branch names cannot be
@@ -170,6 +270,16 @@ class ConnectorSplitter(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['Branches']}
     )
     branches: list[ConnectorSplitterBranchesItem] | None = Field(default=None)
+
+    @property
+    def inlet_branch(self) -> IDFBaseModel | None:
+        v = self.inlet_branch_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Branches'])
 
 
 class Duct(IDFBaseModel):
@@ -256,6 +366,56 @@ class OutdoorAirNode(IDFBaseModel):
         },
     )
 
+    @property
+    def drybulb_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.drybulb_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def wetbulb_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.wetbulb_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def wind_speed_schedule(self) -> IDFBaseModel | None:
+        v = self.wind_speed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def wind_direction_schedule(self) -> IDFBaseModel | None:
+        v = self.wind_direction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def wind_pressure_coefficient_curve(self) -> IDFBaseModel | None:
+        v = self.wind_pressure_coefficient_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions', 'WPCValueNames'])
+
 
 class OutdoorAirNodeList(IDFBaseModel):
     """This object sets the temperature and humidity conditions for an outdoor air
@@ -313,6 +473,46 @@ class PipeIndoor(IDFBaseModel):
         default=None, gt=0.0, json_schema_extra={'units': 'm'}
     )
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_air_velocity_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_air_velocity_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class PipeOutdoor(IDFBaseModel):
     """Pipe model with transport delay and heat transfer to the environment."""
@@ -331,6 +531,16 @@ class PipeOutdoor(IDFBaseModel):
     pipe_length: float | None = Field(
         default=None, gt=0.0, json_schema_extra={'units': 'm'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class PipeUnderground(IDFBaseModel):
@@ -365,6 +575,26 @@ class PipeUnderground(IDFBaseModel):
     undisturbed_ground_temperature_model_name: UndisturbedGroundTempModelsRef = Field(
         ..., json_schema_extra={'object_list': ['UndisturbedGroundTempModels']}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+        v = self.undisturbed_ground_temperature_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
 
 class PipingSystemUndergroundDomain(IDFBaseModel):
@@ -528,6 +758,38 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
     pipe_circuits: list[PipingSystemUndergroundDomainPipeCircuitsItem] | None = Field(
         default=None
     )
+
+    @property
+    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+        v = self.undisturbed_ground_temperature_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
+
+    @property
+    def name_of_basement_wall_boundary_condition_model_ref(self) -> IDFBaseModel | None:
+        v = self.name_of_basement_wall_boundary_condition_model
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def name_of_basement_floor_boundary_condition_model_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.name_of_basement_floor_boundary_condition_model
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
 
 
 class PipingSystemUndergroundPipeCircuit(IDFBaseModel):

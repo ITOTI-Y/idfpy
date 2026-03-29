@@ -95,6 +95,56 @@ class CoilCoolingDX(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['WaterStorageTankNames']}
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def condenser_zone(self) -> IDFBaseModel | None:
+        v = self.condenser_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def performance_object(self) -> IDFBaseModel | None:
+        v = self.performance_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingPerformanceNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def evaporative_condenser_supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.evaporative_condenser_supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
     """DX cooling coil performance for a single operating mode which may have one
@@ -213,6 +263,106 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['DXCoolingSpeedNames']}
     )
 
+    @property
+    def speed_1(self) -> IDFBaseModel | None:
+        v = self.speed_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_2(self) -> IDFBaseModel | None:
+        v = self.speed_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_3(self) -> IDFBaseModel | None:
+        v = self.speed_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_4(self) -> IDFBaseModel | None:
+        v = self.speed_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_5(self) -> IDFBaseModel | None:
+        v = self.speed_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_6(self) -> IDFBaseModel | None:
+        v = self.speed_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_7(self) -> IDFBaseModel | None:
+        v = self.speed_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_8(self) -> IDFBaseModel | None:
+        v = self.speed_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_9(self) -> IDFBaseModel | None:
+        v = self.speed_9_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
+    @property
+    def speed_10(self) -> IDFBaseModel | None:
+        v = self.speed_10_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
+
 
 class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
     """DX cooling coil performance specification referencing one or more operating
@@ -311,6 +461,60 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
             'note': 'The alternative operating mode is used for enhanced dehumidification. If this is blank, the coil will always operate in the base operating mode or Alternative Mode 1. If both Alternative Operating ...',
         },
     )
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def evaporative_condenser_basin_heater_operating_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.evaporative_condenser_basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def base_operating_mode_ref(self) -> IDFBaseModel | None:
+        v = self.base_operating_mode
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingOperatingModeNames'])
+
+    @property
+    def alternative_operating_mode_1_ref(self) -> IDFBaseModel | None:
+        v = self.alternative_operating_mode_1
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingOperatingModeNames'])
+
+    @property
+    def alternative_operating_mode_2_ref(self) -> IDFBaseModel | None:
+        v = self.alternative_operating_mode_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DXCoolingOperatingModeNames'])
 
 
 class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
@@ -471,6 +675,98 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
             'note': 'quadratic curve = a + b*ff + c*ff**2 cubic curve = a + b*ff + c*ff**2 + d*ff**3 ff = fraction of the full load flow If this curve is used and the Sensible Heat Ratio Modifier Function of Temperatur...',
         },
     )
+
+    @property
+    def total_cooling_capacity_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def total_cooling_capacity_modifier_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_modifier_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_modifier_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_modifier_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def waste_heat_modifier_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.waste_heat_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilCoolingDXMultiSpeed(IDFBaseModel):
@@ -1248,6 +1544,340 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+        v = self.zone_name_for_condenser_placement
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class CoilCoolingDXSingleSpeed(IDFBaseModel):
     """Direct expansion (DX) cooling coil and condensing unit (includes electric
@@ -1497,6 +2127,144 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
             'note': 'This input field is name of a conditioned or unconditioned zone where the secondary coil (condenser) of DX system or a heat pump is to be placed. This is an optional input field specified only when...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+        v = self.zone_name_for_condenser_placement
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
@@ -2244,6 +3012,558 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def operation_mode_control_schedule(self) -> IDFBaseModel | None:
+        v = self.operation_mode_control_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def user_defined_fluid_type_ref(self) -> IDFBaseModel | None:
+        v = self.user_defined_fluid_type
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidAndGlycolNames'])
+
+    @property
+    def cooling_only_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def cooling_only_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_only_mode_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def cooling_only_mode_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_only_mode_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_only_mode_sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def cooling_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_evaporator_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_evaporator_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_storage_charge_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_storage_charge_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_storage_charge_capacity_function_of_total_evaporator_plr_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_storage_charge_capacity_function_of_total_evaporator_plr_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_storage_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_storage_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_storage_energy_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_storage_energy_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'TrivariateFunctions'])
+
+    @property
+    def cooling_and_charge_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_charge_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_evaporator_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_evaporator_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_discharge_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_discharge_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_discharge_capacity_function_of_total_evaporator_plr_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_total_evaporator_plr_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_storage_energy_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_storage_energy_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'TrivariateFunctions'])
+
+    @property
+    def cooling_and_discharge_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_and_discharge_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def charge_only_mode_storage_charge_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.charge_only_mode_storage_charge_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def charge_only_mode_storage_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.charge_only_mode_storage_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def discharge_only_mode_storage_discharge_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_storage_discharge_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def discharge_only_mode_storage_discharge_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_storage_discharge_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def discharge_only_mode_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def discharge_only_mode_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def discharge_only_mode_part_load_fraction_correlation_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def discharge_only_mode_sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'TrivariateFunctions'])
+
+    @property
+    def discharge_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.discharge_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def basin_heater_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class CoilCoolingDXTwoSpeed(IDFBaseModel):
     """Direct expansion (DX) cooling coil and condensing unit (includes electric
@@ -2549,6 +3869,180 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def low_speed_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.low_speed_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def low_speed_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.low_speed_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def low_speed_sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.low_speed_sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def low_speed_sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.low_speed_sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+        v = self.zone_name_for_condenser_placement
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
     """Direct expansion (DX) cooling coil and condensing unit (includes electric
@@ -2645,6 +4139,98 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normal_mode_stage_1_coil_performance(self) -> IDFBaseModel | None:
+        v = self.normal_mode_stage_1_coil_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoilPerformanceDX'])
+
+    @property
+    def normal_mode_stage_1_2_coil_performance(self) -> IDFBaseModel | None:
+        v = self.normal_mode_stage_1_2_coil_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoilPerformanceDX'])
+
+    @property
+    def dehumidification_mode_1_stage_1_coil_performance(self) -> IDFBaseModel | None:
+        v = self.dehumidification_mode_1_stage_1_coil_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoilPerformanceDX'])
+
+    @property
+    def dehumidification_mode_1_stage_1_2_coil_performance(self) -> IDFBaseModel | None:
+        v = self.dehumidification_mode_1_stage_1_2_coil_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoilPerformanceDX'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     """Variable refrigerant flow (VRF) direct expansion (DX) cooling coil. Used
@@ -2701,6 +4287,52 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['WaterStorageTankNames']}
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_capacity_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_capacity_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def cooling_capacity_modifier_curve_function_of_flow_fraction(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_capacity_modifier_curve_function_of_flow_fraction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def name_of_water_storage_tank_for_condensate_collection_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.name_of_water_storage_tank_for_condensate_collection
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     """This is a key object in the new physics based VRF model applicable for Fluid
@@ -2745,6 +4377,40 @@ class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     ) = Field(
         default=None, json_schema_extra={'object_list': ['WaterStorageTankNames']}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def indoor_unit_evaporating_temperature_function_of_superheating_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.indoor_unit_evaporating_temperature_function_of_superheating_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def name_of_water_storage_tank_for_condensate_collection_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.name_of_water_storage_tank_for_condensate_collection
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
 
 class CoilCoolingDXVariableSpeed(IDFBaseModel):
@@ -3717,6 +5383,548 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_part_load_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+        v = self.basin_heater_operating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilCoolingWater(IDFBaseModel):
     """Chilled water cooling coil, NTU-effectiveness model, with inputs for design
@@ -3775,6 +5983,26 @@ class CoilCoolingWater(IDFBaseModel):
             'note': 'This input field is optional. If specified, it is used for sizing the Design Water Flow Rate. If blank or omitted, the Loop Design Temperature Difference value specified in Sizing:Plant object is u...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
 
 class CoilCoolingWaterDetailedGeometry(IDFBaseModel):
@@ -3869,6 +6097,26 @@ class CoilCoolingWaterDetailedGeometry(IDFBaseModel):
             'note': 'This input field is optional. If specified, it is used for sizing the coil Design Geometry Parameters. If autosized, the Design Loop Exit Temperature value specified in Sizing:Plant object is used ...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.condensate_collection_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
 
 class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
@@ -4001,6 +6249,56 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
             'note': 'Programmed time delay for heat pump fan to shut off after compressor cycle off. Only required when fan operating mode is cycling Enter 0 when fan operating mode is continuous',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def total_cooling_capacity_curve(self) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def sensible_cooling_capacity_curve(self) -> IDFBaseModel | None:
+        v = self.sensible_cooling_capacity_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuintvariateFunctions'])
+
+    @property
+    def cooling_power_consumption_curve(self) -> IDFBaseModel | None:
+        v = self.cooling_power_consumption_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
@@ -4193,6 +6491,36 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
             'note': 'Programmed time delay for heat pump fan to shut off after compressor cycle off. Only required when fan operating mode is cycling Enter 0 when fan operating mode is continuous',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+        v = self.refrigerant_type
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
@@ -5138,6 +7466,846 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_part_load_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_5_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_6_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_7_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_8_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_9_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_total_cooling_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_cooling_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_10_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
 
 class CoilDXASHRAE205Performance(IDFBaseModel):
     """DX coil performance specification referencing an ASHRAE Standard 205
@@ -5859,6 +9027,408 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def defrost_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_1_heating_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_heating_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_2_heating_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_heating_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_3_heating_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_heating_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_4_heating_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_heating_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilHeatingDXSingleSpeed(IDFBaseModel):
     """Direct expansion (DX) heating coil (air-to-air heat pump) and compressor
@@ -6075,6 +9645,114 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def defrost_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
     """Variable refrigerant flow (VRF) direct expansion (DX) heating coil (air-to-
@@ -6123,6 +9801,40 @@ class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.availability_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_capacity_ratio_modifier_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_capacity_ratio_modifier_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_capacity_modifier_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_capacity_modifier_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     """This is a key object in the new physics based VRF model applicable for Fluid
@@ -6159,6 +9871,28 @@ class CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     indoor_unit_condensing_temperature_function_of_subcooling_curve_name: UnivariateFunctionsRef = Field(
         ..., json_schema_extra={'object_list': ['UnivariateFunctions']}
     )
+
+    @property
+    def availability_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.availability_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def indoor_unit_condensing_temperature_function_of_subcooling_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.indoor_unit_condensing_temperature_function_of_subcooling_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilHeatingDXVariableSpeed(IDFBaseModel):
@@ -6953,6 +10687,530 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_part_load_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def defrost_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def speed_3_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilHeatingDesuperheater(IDFBaseModel):
     """Desuperheater air heating coil. The heating energy provided by this coil is
@@ -7005,6 +11263,26 @@ class CoilHeatingDesuperheater(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_source(self) -> IDFBaseModel | None:
+        v = self.heating_source_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DesuperHeatingCoilSources'])
+
 
 class CoilHeatingElectric(IDFBaseModel):
     """Electric heating coil. If the coil is located directly in an air loop branch
@@ -7033,6 +11311,16 @@ class CoilHeatingElectric(IDFBaseModel):
         default=None,
         json_schema_extra={'note': 'Required if coil is temperature controlled.'},
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class CoilHeatingElectricMultiStage(IDFBaseModel):
@@ -7091,6 +11379,16 @@ class CoilHeatingElectricMultiStage(IDFBaseModel):
     stage_4_nominal_capacity: float | Literal['Autosize'] | None = Field(
         default=None, json_schema_extra={'units': 'W'}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class CoilHeatingFuel(IDFBaseModel):
@@ -7158,6 +11456,26 @@ class CoilHeatingFuel(IDFBaseModel):
             'note': 'parasitic fuel load when the coil is not operating (i.e., standing pilot)',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilHeatingGasMultiStage(IDFBaseModel):
@@ -7260,6 +11578,26 @@ class CoilHeatingGasMultiStage(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilHeatingSteam(IDFBaseModel):
     """Steam heating coil. Condenses and sub-cools steam at loop pressure and
@@ -7301,6 +11639,16 @@ class CoilHeatingSteam(IDFBaseModel):
             'note': 'Required if Coil Control Type is TemperatureSetpointControl'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class CoilHeatingWater(IDFBaseModel):
@@ -7355,6 +11703,16 @@ class CoilHeatingWater(IDFBaseModel):
             'note': 'This input field is optional. If specified, it is used for sizing the Design Water Flow Rate. If blank or omitted, the Loop Design Temperature Difference value specified in Sizing:Plant object is u...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
@@ -7431,6 +11789,46 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
             'note': 'quadratic curve = a + b*PLR + c*PLR**2 cubic curve = a + b*PLR + c*PLR**2 + d*PLR**3 PLR = part load ratio (heat load/steady state capacity)',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_capacity_curve(self) -> IDFBaseModel | None:
+        v = self.heating_capacity_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def heating_power_consumption_curve(self) -> IDFBaseModel | None:
+        v = self.heating_power_consumption_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['QuadvariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
@@ -7576,6 +11974,36 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
             'note': 'quadratic curve = a + b*PLR + c*PLR**2 cubic curve = a + b*PLR + c*PLR**2 + d*PLR**3 PLR = part load ratio (heating load/steady state capacity)',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+        v = self.refrigerant_type
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
@@ -8442,6 +12870,846 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_part_load_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_5_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_6_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_7_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_8_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_9_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_energy_input_ratio_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_energy_input_ratio_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_10_waste_heat_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
 
 class CoilPerformanceDXCooling(IDFBaseModel):
     """Used to specify DX cooling coil performance for one mode of operation for a
@@ -8610,6 +13878,82 @@ class CoilPerformanceDXCooling(IDFBaseModel):
         },
     )
 
+    @property
+    def total_cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def total_cooling_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.energy_input_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def sensible_heat_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilSystemCoolingDX(IDFBaseModel):
     """Virtual container component that consists of a DX cooling coil and its
@@ -8686,6 +14030,28 @@ class CoilSystemCoolingDX(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['CoilCoolingDX', 'CoolingCoilsDX', 'CoolingCoilsDXVariableSpeed']
+        )
+
 
 class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
     """Virtual component consisting of a direct expansion (DX) cooling coil and an
@@ -8721,6 +14087,33 @@ class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
             ]
         },
     )
+
+    @property
+    def heat_exchanger(self) -> IDFBaseModel | None:
+        v = self.heat_exchanger_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HXAirToAirNames'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'CoilCoolingDX',
+                'CoolingCoilsDXSingleSpeed',
+                'CoolingCoilsDXVariableSpeed',
+            ],
+        )
 
 
 class CoilSystemCoolingWater(IDFBaseModel):
@@ -8797,6 +14190,36 @@ class CoilSystemCoolingWater(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsWater'])
+
+    @property
+    def companion_coil_used_for_heat_recovery_ref(self) -> IDFBaseModel | None:
+        v = self.companion_coil_used_for_heat_recovery
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsWater'])
+
 
 class CoilSystemCoolingWaterHeatExchangerAssisted(IDFBaseModel):
     """Virtual component consisting of a chilled-water cooling coil and an air-to-
@@ -8817,6 +14240,16 @@ class CoilSystemCoolingWaterHeatExchangerAssisted(IDFBaseModel):
     cooling_coil_name: CoolingCoilsWaterNoHXRef = Field(
         ..., json_schema_extra={'object_list': ['CoolingCoilsWaterNoHX']}
     )
+
+    @property
+    def cooling_coil(self) -> IDFBaseModel | None:
+        v = self.cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsWaterNoHX'])
 
 
 class CoilSystemHeatingDX(IDFBaseModel):
@@ -8848,6 +14281,28 @@ class CoilSystemHeatingDX(IDFBaseModel):
             },
         )
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_coil(self) -> IDFBaseModel | None:
+        v = self.heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['HeatingCoilsDXSingleSpeed', 'HeatingCoilsDXVariableSpeed']
+        )
 
 
 class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
@@ -8978,6 +14433,86 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
     minimum_speed_level_for_shdwh_mode: int | None = Field(
         default=1, gt=0, lt=10, json_schema_extra={'units': 'dimensionless'}
     )
+
+    @property
+    def space_cooling_coil(self) -> IDFBaseModel | None:
+        v = self.space_cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsDXVariableSpeed'])
+
+    @property
+    def space_heating_coil(self) -> IDFBaseModel | None:
+        v = self.space_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilsDXVariableSpeed'])
+
+    @property
+    def dedicated_water_heating_coil(self) -> IDFBaseModel | None:
+        v = self.dedicated_water_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
+
+    @property
+    def scwh_coil(self) -> IDFBaseModel | None:
+        v = self.scwh_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
+
+    @property
+    def scdwh_cooling_coil(self) -> IDFBaseModel | None:
+        v = self.scdwh_cooling_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CoolingCoilsDXVariableSpeed'])
+
+    @property
+    def scdwh_water_heating_coil(self) -> IDFBaseModel | None:
+        v = self.scdwh_water_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
+
+    @property
+    def shdwh_heating_coil(self) -> IDFBaseModel | None:
+        v = self.shdwh_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatingCoilsDXVariableSpeed'])
+
+    @property
+    def shdwh_water_heating_coil(self) -> IDFBaseModel | None:
+        v = self.shdwh_water_heating_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
 
 
 class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
@@ -9216,6 +14751,102 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
             'note': 'Part Load Fraction Correlation (function of part load ratio) should be quadratic or cubic. Quadratic curve = a + b(PLR) + c(PLR)^2. Cubic curve = a + b(PLR) + c(PLR)^2 + d(PLR)^3. PLR = part load r...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.heating_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.heating_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.heating_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
@@ -10247,6 +15878,698 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_1_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_1_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_1_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_1_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_2_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_2_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_2_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_2_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_3_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_3_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_3_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_3_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_4_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_4_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_4_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_4_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_5_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_5_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_5_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_5_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_5_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_5_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_6_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_6_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_6_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_6_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_6_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_6_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_7_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_7_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_7_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_7_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_7_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_7_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_8_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_8_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_8_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_8_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_8_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_8_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_9_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_9_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_9_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_9_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_9_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_9_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_total_wh_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_wh_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_total_wh_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_wh_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_total_wh_capacity_function_of_water_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.speed_10_total_wh_capacity_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.speed_10_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def speed_10_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_10_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def speed_10_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.speed_10_cop_function_of_water_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
     """Heat pump water heater (HPWH) heating coil, air-to-water direct-expansion
@@ -10417,6 +16740,80 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
             'note': 'Part Load Fraction Correlation (function of part load ratio) should be quadratic or cubic. Quadratic curve = a + b(PLR) + c(PLR)^2. Cubic curve = a + b(PLR) + c(PLR)^2 + d(PLR)^3. PLR = part load r...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def crankcase_heater_capacity_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.crankcase_heater_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_capacity_function_of_air_flow_fraction_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_capacity_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def heating_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.heating_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.heating_cop_function_of_air_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_fraction_correlation_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class CoilWaterHeatingDesuperheater(IDFBaseModel):
@@ -10590,3 +16987,64 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
             'note': 'Parasitic electric load consumed when the desuperheater water heating coil is off. Parasitic electric load does not contribute to water heating or the zone air heat balance. Off-cycle parasitic pow...',
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heat_reclaim_efficiency_function_of_temperature_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heat_reclaim_efficiency_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def tank(self) -> IDFBaseModel | None:
+        v = self.tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['WaterHeaterMixedNames', 'WaterHeaterStratifiedNames']
+        )
+
+    @property
+    def heating_source(self) -> IDFBaseModel | None:
+        v = self.heating_source_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'CoilCoolingDX',
+                'DesuperHeatingCoilSources',
+                'DesuperHeatingWaterOnlySources',
+            ],
+        )

@@ -40,6 +40,16 @@ class DemandManagerAssignmentListManagerDataItem(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['DemandManagerNames']}
     )
 
+    @property
+    def demandmanager(self) -> IDFBaseModel | None:
+        v = self.demandmanager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DemandManagerNames'])
+
 
 class DemandManagerElectricEquipmentEquipmentItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -51,6 +61,16 @@ class DemandManagerElectricEquipmentEquipmentItem(IDFBaseModel):
             'note': 'Enter the name of an ElectricEquipment object. if ZoneList option is used on the ElectricEquipment object, a single equipment object from that assignment can be selected by entering <Zone Name><spa...',
         },
     )
+
+    @property
+    def electric_equipment(self) -> IDFBaseModel | None:
+        v = self.electric_equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ElectricEquipmentNames'])
 
 
 class DemandManagerExteriorLightsLightsItem(IDFBaseModel):
@@ -64,6 +84,16 @@ class DemandManagerExteriorLightsLightsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def exterior_lights(self) -> IDFBaseModel | None:
+        v = self.exterior_lights_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ExteriorLightsNames'])
+
 
 class DemandManagerLightsLightsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -75,6 +105,16 @@ class DemandManagerLightsLightsItem(IDFBaseModel):
             'note': 'Enter the name of an Lights object. if ZoneList option is used on the Lights object, a single lights object from that assignment can be selected by entering <Zone Name><space><Global Lights Object ...',
         },
     )
+
+    @property
+    def lights(self) -> IDFBaseModel | None:
+        v = self.lights_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['LightsNames'])
 
 
 class DemandManagerThermostatsThermostatsItem(IDFBaseModel):
@@ -88,6 +128,16 @@ class DemandManagerThermostatsThermostatsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def thermostat(self) -> IDFBaseModel | None:
+        v = self.thermostat_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
+
 
 class DemandManagerVentilationControllersItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -99,6 +149,16 @@ class DemandManagerVentilationControllersItem(IDFBaseModel):
             'note': 'Enter the name of a Controller:OutdoorAir object.',
         },
     )
+
+    @property
+    def controller_outdoor_air(self) -> IDFBaseModel | None:
+        v = self.controller_outdoor_air_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OAControllerNames'])
 
 
 class DemandManagerAssignmentList(IDFBaseModel):
@@ -131,6 +191,36 @@ class DemandManagerAssignmentList(IDFBaseModel):
     manager_data: list[DemandManagerAssignmentListManagerDataItem] | None = Field(
         default=None
     )
+
+    @property
+    def demand_limit_schedule(self) -> IDFBaseModel | None:
+        v = self.demand_limit_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def billing_period_schedule(self) -> IDFBaseModel | None:
+        v = self.billing_period_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def peak_period_schedule(self) -> IDFBaseModel | None:
+        v = self.peak_period_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class DemandManagerElectricEquipment(IDFBaseModel):
@@ -171,6 +261,16 @@ class DemandManagerElectricEquipment(IDFBaseModel):
         default=None
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class DemandManagerExteriorLights(IDFBaseModel):
     """used for demand limiting Exterior:Lights objects."""
@@ -208,6 +308,16 @@ class DemandManagerExteriorLights(IDFBaseModel):
     )
     lights: list[DemandManagerExteriorLightsLightsItem] | None = Field(default=None)
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class DemandManagerLights(IDFBaseModel):
     """used for demand limiting Lights objects."""
@@ -244,6 +354,16 @@ class DemandManagerLights(IDFBaseModel):
         },
     )
     lights: list[DemandManagerLightsLightsItem] | None = Field(default=None)
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class DemandManagerThermostats(IDFBaseModel):
@@ -284,6 +404,16 @@ class DemandManagerThermostats(IDFBaseModel):
     thermostats: list[DemandManagerThermostatsThermostatsItem] | None = Field(
         default=None
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class DemandManagerVentilation(IDFBaseModel):
@@ -340,3 +470,13 @@ class DemandManagerVentilation(IDFBaseModel):
     controllers: list[DemandManagerVentilationControllersItem] | None = Field(
         default=None
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

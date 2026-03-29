@@ -31,6 +31,16 @@ class SolarCollectorUnglazedTranspiredSurfacesItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
+
 
 class SolarCollectorUnglazedTranspiredMultisystemSystemsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -72,6 +82,36 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
         default=None, json_schema_extra={'units': 'm3/s'}
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
+
+    @property
+    def photovoltaic_thermal_model_performance(self) -> IDFBaseModel | None:
+        v = self.photovoltaic_thermal_model_performance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FlatPlatePVTParameters'])
+
+    @property
+    def photovoltaic(self) -> IDFBaseModel | None:
+        v = self.photovoltaic_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PVGeneratorNames'])
+
 
 class SolarCollectorFlatPlateWater(IDFBaseModel):
     """Flat plate water solar collector (single glazed, unglazed, or evacuated
@@ -94,6 +134,26 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
     maximum_flow_rate: float | None = Field(
         default=None, gt=0.0, json_schema_extra={'units': 'm3/s'}
     )
+
+    @property
+    def solarcollectorperformance(self) -> IDFBaseModel | None:
+        v = self.solarcollectorperformance_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FlatPlateSolarCollectorParameters'])
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
 
 class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
@@ -126,6 +186,26 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
     maximum_flow_rate: float | None = Field(
         default=None, gt=0.0, json_schema_extra={'units': 'm3/s'}
     )
+
+    @property
+    def integralcollectorstorageparameters(self) -> IDFBaseModel | None:
+        v = self.integralcollectorstorageparameters_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CollectorStoragePerformance'])
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
 
 class SolarCollectorPerformanceFlatPlate(IDFBaseModel):
@@ -369,6 +449,26 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
         default=4.0, gt=0.0, lt=100.0, json_schema_extra={'units': '1/m'}
     )
 
+    @property
+    def boundary_conditions_model(self) -> IDFBaseModel | None:
+        v = self.boundary_conditions_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SolarCollectorPerformancePhotovoltaicThermalSimple(IDFBaseModel):
     """Thermal performance parameters for a hybrid photovoltaic-thermal (PVT) solar
@@ -396,6 +496,16 @@ class SolarCollectorPerformancePhotovoltaicThermalSimple(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
     front_surface_emittance: float | None = Field(default=0.84, gt=0.0, lt=1.0)
+
+    @property
+    def thermal_conversion_efficiency_schedule(self) -> IDFBaseModel | None:
+        v = self.thermal_conversion_efficiency_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SolarCollectorUnglazedTranspired(IDFBaseModel):
@@ -519,6 +629,36 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
         default=None
     )
 
+    @property
+    def boundary_conditions_model(self) -> IDFBaseModel | None:
+        v = self.boundary_conditions_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def free_heating_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.free_heating_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SolarCollectorUnglazedTranspiredMultisystem(IDFBaseModel):
     """quad-tuples of inlet, outlet, control, and zone nodes for multiple different
@@ -535,3 +675,13 @@ class SolarCollectorUnglazedTranspiredMultisystem(IDFBaseModel):
     systems: list[SolarCollectorUnglazedTranspiredMultisystemSystemsItem] | None = (
         Field(default=None)
     )
+
+    @property
+    def solar_collector(self) -> IDFBaseModel | None:
+        v = self.solar_collector_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UTSCNames'])

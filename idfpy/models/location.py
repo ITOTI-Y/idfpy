@@ -60,6 +60,16 @@ class RoofIrrigation(IDFBaseModel):
         },
     )
 
+    @property
+    def irrigation_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.irrigation_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class RunPeriod(IDFBaseModel):
     """Specify a range of dates and other parameters for a simulation. Multiple run
@@ -296,6 +306,56 @@ class SiteGroundDomainBasement(IDFBaseModel):
     )
     mesh_density_parameter: int | None = Field(default=4, ge=2)
 
+    @property
+    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+        v = self.undisturbed_ground_temperature_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
+
+    @property
+    def basement_floor_boundary_condition_model(self) -> IDFBaseModel | None:
+        v = self.basement_floor_boundary_condition_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def horizontal_insulation_material(self) -> IDFBaseModel | None:
+        v = self.horizontal_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def basement_wall_boundary_condition_model(self) -> IDFBaseModel | None:
+        v = self.basement_wall_boundary_condition_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def basement_wall_vertical_insulation_material(self) -> IDFBaseModel | None:
+        v = self.basement_wall_vertical_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class SiteGroundDomainSlab(IDFBaseModel):
     """Ground-coupled slab model for on-grade and in-grade cases with or without
@@ -413,6 +473,56 @@ class SiteGroundDomainSlab(IDFBaseModel):
     )
     geometric_mesh_coefficient: float | None = Field(default=1.6, ge=1.0, le=2.0)
     mesh_density_parameter: int | None = Field(default=6, ge=4)
+
+    @property
+    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+        v = self.undisturbed_ground_temperature_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
+
+    @property
+    def slab_boundary_condition_model(self) -> IDFBaseModel | None:
+        v = self.slab_boundary_condition_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
+    @property
+    def slab_material(self) -> IDFBaseModel | None:
+        v = self.slab_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def horizontal_insulation_material(self) -> IDFBaseModel | None:
+        v = self.horizontal_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def vertical_insulation_material(self) -> IDFBaseModel | None:
+        v = self.vertical_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
 
 
 class SiteGroundReflectance(IDFBaseModel):
@@ -868,6 +978,16 @@ class SitePrecipitation(IDFBaseModel):
         },
     )
 
+    @property
+    def precipitation_rates_schedule(self) -> IDFBaseModel | None:
+        v = self.precipitation_rates_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     """If this object is omitted, the default solar and visible spectrum data will
@@ -887,6 +1007,26 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     visible_spectrum_data_object_name: SpectrumDataNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['SpectrumDataNames']}
     )
+
+    @property
+    def solar_spectrum_data_object(self) -> IDFBaseModel | None:
+        v = self.solar_spectrum_data_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpectrumDataNames'])
+
+    @property
+    def visible_spectrum_data_object(self) -> IDFBaseModel | None:
+        v = self.visible_spectrum_data_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpectrumDataNames'])
 
 
 class SiteSpectrumData(IDFBaseModel):
@@ -935,6 +1075,36 @@ class SiteVariableLocation(IDFBaseModel):
             'note': 'The name of a schedule that defines the orientation of the building at any time. This orientation is based on a change from the original orientation. -- NEED TO REFINE THIS If not entered, the orig...',
         },
     )
+
+    @property
+    def building_location_latitude_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.building_location_latitude_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def building_location_longitude_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.building_location_longitude_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def building_location_orientation_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.building_location_orientation_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SiteWaterMainsTemperature(IDFBaseModel):
@@ -986,6 +1156,16 @@ class SiteWaterMainsTemperature(IDFBaseModel):
             'note': 'If calculation method is Schedule, this input field is ignored.',
         },
     )
+
+    @property
+    def temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SiteWeatherStation(IDFBaseModel):
@@ -1231,6 +1411,46 @@ class SizingPeriodDesignDay(IDFBaseModel):
         },
     )
 
+    @property
+    def dry_bulb_temperature_range_modifier_day_schedule(self) -> IDFBaseModel | None:
+        v = self.dry_bulb_temperature_range_modifier_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def humidity_condition_day_schedule(self) -> IDFBaseModel | None:
+        v = self.humidity_condition_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def beam_solar_day_schedule(self) -> IDFBaseModel | None:
+        v = self.beam_solar_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def diffuse_solar_day_schedule(self) -> IDFBaseModel | None:
+        v = self.diffuse_solar_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
 
 class SizingPeriodWeatherFileConditionType(IDFBaseModel):
     """Use a weather file period for design sizing calculations. EPW weather files
@@ -1384,3 +1604,23 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
             'note': 'If yes or blank, use Horizontal IR values from weather file when present, otherwise use the specified sky model. If no, always use the specified sky model and ignore the horizontal IR values from t...'
         },
     )
+
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RunPeriodsAndDesignDays'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames', 'ScheduleNames'])

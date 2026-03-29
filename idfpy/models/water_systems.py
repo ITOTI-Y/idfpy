@@ -33,6 +33,16 @@ class WaterUseConnectionsConnectionsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def water_use_equipment(self) -> IDFBaseModel | None:
+        v = self.water_use_equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterUseEquipmentNames'])
+
 
 class WaterUseRainCollectorSurfacesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -40,6 +50,16 @@ class WaterUseRainCollectorSurfacesItem(IDFBaseModel):
     collection_surface_name: AllShadingAndHTSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
     )
+
+    @property
+    def collection_surface(self) -> IDFBaseModel | None:
+        v = self.collection_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
 
 class WaterUseConnections(IDFBaseModel):
@@ -87,6 +107,46 @@ class WaterUseConnections(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'W/K'}
     )
     connections: list[WaterUseConnectionsConnectionsItem] | None = Field(default=None)
+
+    @property
+    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def reclamation_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.reclamation_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def hot_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.hot_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.cold_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class WaterUseEquipment(IDFBaseModel):
@@ -153,6 +213,76 @@ class WaterUseEquipment(IDFBaseModel):
         },
     )
 
+    @property
+    def flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.flow_rate_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def target_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.target_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def hot_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.hot_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.cold_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def sensible_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.sensible_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def latent_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.latent_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class WaterUseRainCollector(IDFBaseModel):
     """Used for harvesting rainwater falling on building surfaces. The rainwater is
@@ -183,6 +313,26 @@ class WaterUseRainCollector(IDFBaseModel):
         json_schema_extra={'units': 'm3/s', 'note': 'Defaults to unlimited flow.'},
     )
     surfaces: list[WaterUseRainCollectorSurfacesItem] | None = Field(default=None)
+
+    @property
+    def storage_tank(self) -> IDFBaseModel | None:
+        v = self.storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def collection_loss_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.collection_loss_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class WaterUseStorage(IDFBaseModel):
@@ -270,6 +420,66 @@ class WaterUseStorage(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['MaterialName']}
     )
 
+    @property
+    def overflow_destination_ref(self) -> IDFBaseModel | None:
+        v = self.overflow_destination
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def other_tank(self) -> IDFBaseModel | None:
+        v = self.other_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def water_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.water_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def tank_outside_surface_material(self) -> IDFBaseModel | None:
+        v = self.tank_outside_surface_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class WaterUseWell(IDFBaseModel):
     """Simulates on-site water supply from a well. Well water is pumped out of the
@@ -308,3 +518,23 @@ class WaterUseWell(IDFBaseModel):
     water_table_depth_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def storage_tank(self) -> IDFBaseModel | None:
+        v = self.storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def water_table_depth_schedule(self) -> IDFBaseModel | None:
+        v = self.water_table_depth_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

@@ -56,6 +56,16 @@ class SpaceListSpacesItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['SpaceNames']}
     )
 
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class WindowShadingControlFenestrationSurfacesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -68,6 +78,16 @@ class WindowShadingControlFenestrationSurfacesItem(IDFBaseModel):
         },
     )
 
+    @property
+    def fenestration_surface(self) -> IDFBaseModel | None:
+        v = self.fenestration_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GlazedExtSubSurfNames'])
+
 
 class ZoneListZonesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -75,6 +95,16 @@ class ZoneListZonesItem(IDFBaseModel):
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
     )
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class BuildingSurfaceDetailed(IDFBaseModel):
@@ -151,6 +181,46 @@ class BuildingSurfaceDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class CeilingAdiabatic(IDFBaseModel):
     """Allows for simplified entry of interior ceilings."""
@@ -215,6 +285,36 @@ class CeilingAdiabatic(IDFBaseModel):
     width: float | None = Field(
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class CeilingInterzone(IDFBaseModel):
@@ -289,6 +389,46 @@ class CeilingInterzone(IDFBaseModel):
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class Door(IDFBaseModel):
     """Allows for simplified entry of opaque Doors."""
@@ -332,6 +472,26 @@ class Door(IDFBaseModel):
     )
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
 
 
 class DoorInterzone(IDFBaseModel):
@@ -384,6 +544,36 @@ class DoorInterzone(IDFBaseModel):
     )
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
 
 class FenestrationSurfaceDetailed(IDFBaseModel):
@@ -457,6 +647,48 @@ class FenestrationSurfaceDetailed(IDFBaseModel):
         default=None, json_schema_extra={'units': 'm', 'note': 'Not used for triangles'}
     )
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['ComplexFenestrationStates', 'ConstructionNames']
+        )
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
+    @property
+    def frame_and_divider(self) -> IDFBaseModel | None:
+        v = self.frame_and_divider_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowFrameAndDividerNames'])
+
 
 class FloorAdiabatic(IDFBaseModel):
     """Allows for simplified entry of exterior floors ignoring ground contact or
@@ -516,6 +748,36 @@ class FloorAdiabatic(IDFBaseModel):
     width: float | None = Field(
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class FloorDetailed(IDFBaseModel):
@@ -590,6 +852,46 @@ class FloorDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class FloorGroundContact(IDFBaseModel):
     """Allows for simplified entry of exterior floors with ground contact. View
@@ -649,6 +951,36 @@ class FloorGroundContact(IDFBaseModel):
     width: float | None = Field(
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class FloorInterzone(IDFBaseModel):
@@ -716,6 +1048,46 @@ class FloorInterzone(IDFBaseModel):
     width: float | None = Field(
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
 
 class GeometryTransform(IDFBaseModel):
@@ -789,6 +1161,36 @@ class GlazedDoor(IDFBaseModel):
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def frame_and_divider(self) -> IDFBaseModel | None:
+        v = self.frame_and_divider_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowFrameAndDividerNames'])
+
 
 class GlazedDoorInterzone(IDFBaseModel):
     """Allows for simplified entry of interzone (glass interior) doors (adjacent to
@@ -840,6 +1242,36 @@ class GlazedDoorInterzone(IDFBaseModel):
     )
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
 
 class GlobalGeometryRules(IDFBaseModel):
@@ -912,6 +1344,36 @@ class InternalMass(IDFBaseModel):
     )
     surface_area: float = Field(..., gt=0.0, json_schema_extra={'units': 'm2'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def space_or_spacelist(self) -> IDFBaseModel | None:
+        v = self.space_or_spacelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceAndSpaceListNames'])
+
 
 class Roof(IDFBaseModel):
     """Allows for simplified entry of roofs (exterior). View Factor to Ground is
@@ -974,6 +1436,36 @@ class Roof(IDFBaseModel):
     width: float | None = Field(
         default=None, json_schema_extra={'units': 'm', 'note': 'Along Y Axis'}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class RoofCeilingDetailed(IDFBaseModel):
@@ -1046,6 +1538,46 @@ class RoofCeilingDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class ShadingBuilding(IDFBaseModel):
     """used for shading elements such as trees, other buildings, parts of this
@@ -1105,6 +1637,16 @@ class ShadingBuildingDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def transmittance_schedule(self) -> IDFBaseModel | None:
+        v = self.transmittance_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ShadingFin(IDFBaseModel):
     """Fins are usually shading surfaces that are perpendicular to a window or
@@ -1153,6 +1695,16 @@ class ShadingFin(IDFBaseModel):
     right_depth: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm'}
     )
+
+    @property
+    def window_or_door(self) -> IDFBaseModel | None:
+        v = self.window_or_door_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
 
 
 class ShadingFinProjection(IDFBaseModel):
@@ -1203,6 +1755,16 @@ class ShadingFinProjection(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'dimensionless'}
     )
 
+    @property
+    def window_or_door(self) -> IDFBaseModel | None:
+        v = self.window_or_door_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
 
 class ShadingOverhang(IDFBaseModel):
     """Overhangs are usually flat shading surfaces that reference a window or door."""
@@ -1229,6 +1791,16 @@ class ShadingOverhang(IDFBaseModel):
         },
     )
     depth: float | None = Field(default=None, ge=0.0, json_schema_extra={'units': 'm'})
+
+    @property
+    def window_or_door(self) -> IDFBaseModel | None:
+        v = self.window_or_door_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
 
 
 class ShadingOverhangProjection(IDFBaseModel):
@@ -1260,6 +1832,16 @@ class ShadingOverhangProjection(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'dimensionless'}
     )
 
+    @property
+    def window_or_door(self) -> IDFBaseModel | None:
+        v = self.window_or_door_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
 
 class ShadingPropertyReflectance(IDFBaseModel):
     """If this object is not defined for a shading surface the default values
@@ -1284,6 +1866,16 @@ class ShadingPropertyReflectance(IDFBaseModel):
             'note': 'Required if Fraction of Shading Surface That Is Glazed > 0.0'
         },
     )
+
+    @property
+    def shading_surface(self) -> IDFBaseModel | None:
+        v = self.shading_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingSurfNames'])
 
 
 class ShadingSite(IDFBaseModel):
@@ -1342,6 +1934,16 @@ class ShadingSiteDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def transmittance_schedule(self) -> IDFBaseModel | None:
+        v = self.transmittance_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ShadingZoneDetailed(IDFBaseModel):
     """used For fins, overhangs, elements that shade the building, are attached to
@@ -1366,6 +1968,26 @@ class ShadingZoneDetailed(IDFBaseModel):
         },
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
+
+    @property
+    def base_surface(self) -> IDFBaseModel | None:
+        v = self.base_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def transmittance_schedule(self) -> IDFBaseModel | None:
+        v = self.transmittance_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class Space(IDFBaseModel):
@@ -1415,6 +2037,16 @@ class Space(IDFBaseModel):
         },
     )
     tags: list[SpaceTagsItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class SpaceList(IDFBaseModel):
@@ -1494,6 +2126,36 @@ class WallAdiabatic(IDFBaseModel):
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class WallDetailed(IDFBaseModel):
     """Allows for detailed entry of wall heat transfer surfaces."""
@@ -1567,6 +2229,46 @@ class WallDetailed(IDFBaseModel):
     )
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class WallExterior(IDFBaseModel):
     """Allows for simplified entry of exterior walls. View Factor to Ground is
@@ -1628,6 +2330,36 @@ class WallExterior(IDFBaseModel):
     )
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class WallInterzone(IDFBaseModel):
@@ -1697,6 +2429,46 @@ class WallInterzone(IDFBaseModel):
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
+
 
 class WallUnderground(IDFBaseModel):
     """Allows for simplified entry of underground walls."""
@@ -1758,6 +2530,36 @@ class WallUnderground(IDFBaseModel):
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class Window(IDFBaseModel):
     """Allows for simplified entry of Windows."""
@@ -1809,6 +2611,36 @@ class Window(IDFBaseModel):
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def frame_and_divider(self) -> IDFBaseModel | None:
+        v = self.frame_and_divider_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowFrameAndDividerNames'])
+
 
 class WindowInterzone(IDFBaseModel):
     """Allows for simplified entry of interzone windows (adjacent to other zones)."""
@@ -1859,6 +2691,36 @@ class WindowInterzone(IDFBaseModel):
     )
     length: float | None = Field(default=None, json_schema_extra={'units': 'm'})
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+        v = self.outside_boundary_condition_object
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
 
 class WindowPropertyAirflowControl(IDFBaseModel):
@@ -1918,6 +2780,26 @@ class WindowPropertyAirflowControl(IDFBaseModel):
             'note': 'Name of the return air node for this airflow window if the Airflow Destination is ReturnAir. If left blank, defaults to the first return air node for the zone of the window surface.'
         },
     )
+
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def airflow_multiplier_schedule(self) -> IDFBaseModel | None:
+        v = self.airflow_multiplier_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class WindowPropertyFrameAndDivider(IDFBaseModel):
@@ -2149,6 +3031,26 @@ class WindowPropertyStormWindow(IDFBaseModel):
     month_that_storm_glass_layer_is_taken_off: int = Field(..., ge=1, le=12)
     day_of_month_that_storm_glass_layer_is_taken_off: int = Field(..., ge=1, le=31)
 
+    @property
+    def window(self) -> IDFBaseModel | None:
+        v = self.window_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def storm_glass_layer(self) -> IDFBaseModel | None:
+        v = self.storm_glass_layer_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GlazingMaterialName'])
+
 
 class WindowShadingControl(IDFBaseModel):
     """Specifies the type, location, and controls for window shades, window blinds,
@@ -2292,6 +3194,66 @@ class WindowShadingControl(IDFBaseModel):
         Field(default=None)
     )
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def construction_with_shading(self) -> IDFBaseModel | None:
+        v = self.construction_with_shading_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def shading_device_material(self) -> IDFBaseModel | None:
+        v = self.shading_device_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowShadesScreensAndBlinds'])
+
+    @property
+    def slat_angle_schedule(self) -> IDFBaseModel | None:
+        v = self.slat_angle_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def daylighting_control_object(self) -> IDFBaseModel | None:
+        v = self.daylighting_control_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DaylightingControlNames'])
+
 
 class Zone(IDFBaseModel):
     """Defines a thermal zone of the building. Every zone contains one or more
@@ -2385,6 +3347,16 @@ class ZoneGroup(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['ZoneListNames']}
     )
     zone_list_multiplier: int | None = Field(default=1, ge=1)
+
+    @property
+    def zone_list(self) -> IDFBaseModel | None:
+        v = self.zone_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneListNames'])
 
 
 class ZoneList(IDFBaseModel):

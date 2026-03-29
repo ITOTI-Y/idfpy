@@ -8,6 +8,9 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 
 - **858 object types** as Pydantic v2 models with full validation
 - **275 reference types** with cross-object validation
+- **Forward navigation** — `surface.zone` resolves a reference field to the target object
+- **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
+- **Reference validation** — `idf.validate()` batch-checks all cross-object references for existence and type compatibility
 - **Case-insensitive** Literal field matching (EnergyPlus IDF is case-insensitive)
 - **Extensible field** support (vertices, schedule data, etc.)
 - **IDF read/write** with positional field ordering
@@ -72,6 +75,57 @@ data = idf.to_dict()
 
 # dict → IDF
 idf = IDF.from_dict(data)
+```
+
+### Object navigation
+
+Every reference field generates a `@property` for forward navigation. Reverse navigation is available via `referencing()`.
+
+```python
+from pathlib import Path
+from idfpy import IDF
+
+idf = IDF.load(Path('model.idf'))
+
+# Forward navigation — resolve reference to target object
+surface = idf.get('BuildingSurface:Detailed', 'Wall1')
+surface.zone_name        # "Zone1" (raw string, always works)
+surface.zone             # Zone object (resolved via IDF)
+surface.construction     # Construction object
+
+# Reverse navigation — find all objects referencing a given object
+zone = idf.get('Zone', 'Zone1')
+zone.referencing('BuildingSurface:Detailed')  # → [Wall1, Wall2, ...]
+zone.referencing('Lights')                     # → [OfficeLights, ...]
+
+# Chained navigation
+zone.referencing('BuildingSurface:Detailed')[0].construction
+```
+
+### Reference validation
+
+```python
+from idfpy import IDF, RefValidationError
+
+idf = IDF.load(Path('model.idf'))
+
+# Batch check all cross-object references
+errors = idf.validate()
+for e in errors:
+    print(e)
+# [missing] Lights/OffLights.schedule_name: "BadSched" not found in any of [ScheduleNames]
+
+# Or raise on first broken reference set
+try:
+    idf.validate_or_raise()
+except RefValidationError as exc:
+    print(f"{len(exc.errors)} broken reference(s)")
+```
+
+### Container mutation
+
+```python
+idf.remove('Zone', 'Zone1')  # unbinds + unregisters references
 ```
 
 ## License

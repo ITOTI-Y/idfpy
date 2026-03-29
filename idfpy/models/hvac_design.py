@@ -34,6 +34,26 @@ class DesignSpecificationOutdoorAirSpaceListSpaceSpecsItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['DesignSpecificationOutdoorAirNames']}
     )
 
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def space_design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+        v = self.space_design_specification_outdoor_air_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DesignSpecificationOutdoorAirNames'])
+
 
 class DesignSpecificationAirTerminalSizing(IDFBaseModel):
     """This object is used to scale the sizing of air terminal units."""
@@ -162,6 +182,28 @@ class DesignSpecificationOutdoorAir(IDFBaseModel):
         },
     )
 
+    @property
+    def outdoor_air_schedule(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def proportional_control_minimum_outdoor_air_flow_rate_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.proportional_control_minimum_outdoor_air_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class DesignSpecificationOutdoorAirSpaceList(IDFBaseModel):
     """Defines a list of DesignSpecification:OutdoorAir names which can be
@@ -203,6 +245,16 @@ class DesignSpecificationZoneAirDistribution(IDFBaseModel):
     minimum_zone_ventilation_efficiency: float | None = Field(
         default=0.0, ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}
     )
+
+    @property
+    def zone_air_distribution_effectiveness_schedule(self) -> IDFBaseModel | None:
+        v = self.zone_air_distribution_effectiveness_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class DesignSpecificationZoneHVACSizing(IDFBaseModel):
@@ -503,6 +555,16 @@ class SizingPlant(IDFBaseModel):
         },
     )
 
+    @property
+    def plant_or_condenser_loop(self) -> IDFBaseModel | None:
+        v = self.plant_or_condenser_loop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantLoops'])
+
 
 class SizingSystem(IDFBaseModel):
     """Specifies the input needed to perform sizing calculations for a central
@@ -763,6 +825,16 @@ class SizingSystem(IDFBaseModel):
             'note': 'The limit of heating coil capacity to cooling coil capacity',
         },
     )
+
+    @property
+    def airloop(self) -> IDFBaseModel | None:
+        v = self.airloop_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
 
 class SizingZone(IDFBaseModel):
@@ -1038,3 +1110,57 @@ class SizingZone(IDFBaseModel):
     maximum_heating_capacity_to_cooling_load_sizing_ratio: float | None = Field(
         default=1.0, ge=1.0, json_schema_extra={'units': 'W/W'}
     )
+
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+        v = self.design_specification_outdoor_air_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['DSOASpaceListNames', 'DesignSpecificationOutdoorAirNames']
+        )
+
+    @property
+    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+        v = self.design_specification_zone_air_distribution_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
+
+    @property
+    def zone_humidistat_dehumidification_set_point_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.zone_humidistat_dehumidification_set_point_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone_humidistat_humidification_set_point_schedule(self) -> IDFBaseModel | None:
+        v = self.zone_humidistat_humidification_set_point_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

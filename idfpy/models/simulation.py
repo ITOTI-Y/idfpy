@@ -30,6 +30,16 @@ class ShadowCalculationShadingZoneGroupsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def shading_zone_group_zonelist(self) -> IDFBaseModel | None:
+        v = self.shading_zone_group_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneListNames'])
+
 
 class Building(IDFBaseModel):
     """Describes parameters that are used during the simulation of the building.
@@ -509,6 +519,26 @@ class ZoneAirContaminantBalance(IDFBaseModel):
         },
     )
 
+    @property
+    def outdoor_carbon_dioxide_schedule(self) -> IDFBaseModel | None:
+        v = self.outdoor_carbon_dioxide_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def outdoor_generic_contaminant_schedule(self) -> IDFBaseModel | None:
+        v = self.outdoor_generic_contaminant_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneAirHeatBalanceAlgorithm(IDFBaseModel):
     """Controls the zone/space air heat balance."""
@@ -625,3 +655,13 @@ class ZoneCapacitanceMultiplierResearchSpecial(IDFBaseModel):
             'note': 'Used to alter the capacitance of zone air with respect to zone air generic contaminant concentration'
         },
     )
+
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])

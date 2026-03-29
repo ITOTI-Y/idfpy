@@ -37,6 +37,26 @@ class ThermostatSetpointDualSetpoint(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
 
+    @property
+    def heating_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.heating_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.cooling_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermostatSetpointSingleCooling(IDFBaseModel):
     """Used for a cooling only thermostat. The setpoint can be scheduled and varied
@@ -47,6 +67,16 @@ class ThermostatSetpointSingleCooling(IDFBaseModel):
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ThermostatSetpointSingleHeating(IDFBaseModel):
@@ -60,6 +90,16 @@ class ThermostatSetpointSingleHeating(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
 
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermostatSetpointSingleHeatingOrCooling(IDFBaseModel):
     """Used for a heating and cooling thermostat with a single setpoint. The
@@ -71,6 +111,16 @@ class ThermostatSetpointSingleHeatingOrCooling(IDFBaseModel):
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
@@ -97,6 +147,26 @@ class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
         },
     )
 
+    @property
+    def fanger_thermal_comfort_heating_schedule(self) -> IDFBaseModel | None:
+        v = self.fanger_thermal_comfort_heating_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fanger_thermal_comfort_cooling_schedule(self) -> IDFBaseModel | None:
+        v = self.fanger_thermal_comfort_cooling_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermostatSetpointThermalComfortFangerSingleCooling(IDFBaseModel):
     """Used for cooling only thermal comfort control. The PMV setpoint can be
@@ -114,6 +184,16 @@ class ThermostatSetpointThermalComfortFangerSingleCooling(IDFBaseModel):
             'note': 'Schedule values should be Predicted Mean Vote (PMV)',
         },
     )
+
+    @property
+    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+        v = self.fanger_thermal_comfort_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ThermostatSetpointThermalComfortFangerSingleHeating(IDFBaseModel):
@@ -133,6 +213,16 @@ class ThermostatSetpointThermalComfortFangerSingleHeating(IDFBaseModel):
         },
     )
 
+    @property
+    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+        v = self.fanger_thermal_comfort_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling(IDFBaseModel):
     """Used for heating and cooling thermal comfort control with a single setpoint.
@@ -150,6 +240,16 @@ class ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling(IDFBaseModel)
             'note': 'Schedule values should be Predicted Mean Vote (PMV)',
         },
     )
+
+    @property
+    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+        v = self.fanger_thermal_comfort_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneControlContaminantController(IDFBaseModel):
@@ -207,6 +307,76 @@ class ZoneControlContaminantController(IDFBaseModel):
         },
     )
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def carbon_dioxide_control_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.carbon_dioxide_control_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def carbon_dioxide_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.carbon_dioxide_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_carbon_dioxide_concentration_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_carbon_dioxide_concentration_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_carbon_dioxide_concentration_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_carbon_dioxide_concentration_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def generic_contaminant_control_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.generic_contaminant_control_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def generic_contaminant_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.generic_contaminant_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneControlHumidistat(IDFBaseModel):
     """Specifies zone relative humidity setpoint schedules for humidifying and
@@ -233,6 +403,36 @@ class ZoneControlHumidistat(IDFBaseModel):
             },
         )
     )
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def humidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.humidifying_relative_humidity_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def dehumidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.dehumidifying_relative_humidity_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneControlThermostat(IDFBaseModel):
@@ -322,6 +522,66 @@ class ZoneControlThermostat(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def control_type_schedule(self) -> IDFBaseModel | None:
+        v = self.control_type_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_1(self) -> IDFBaseModel | None:
+        v = self.control_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlTypeNames'])
+
+    @property
+    def control_2(self) -> IDFBaseModel | None:
+        v = self.control_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlTypeNames'])
+
+    @property
+    def control_3(self) -> IDFBaseModel | None:
+        v = self.control_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlTypeNames'])
+
+    @property
+    def control_4(self) -> IDFBaseModel | None:
+        v = self.control_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlTypeNames'])
+
 
 class ZoneControlThermostatOperativeTemperature(IDFBaseModel):
     """This object can be used with the ZoneList option on a thermostat or with one
@@ -365,6 +625,26 @@ class ZoneControlThermostatOperativeTemperature(IDFBaseModel):
             'note': 'the cooling setpoint temperature schedule of the referenced thermostat will be adjusted based on the selected adaptive comfort model type'
         },
     )
+
+    @property
+    def thermostat(self) -> IDFBaseModel | None:
+        v = self.thermostat_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
+
+    @property
+    def radiative_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.radiative_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
@@ -470,6 +750,36 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def heating_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.heating_temperature_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cooling_temperature_setpoint_base_schedule(self) -> IDFBaseModel | None:
+        v = self.cooling_temperature_setpoint_base_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneControlThermostatTemperatureAndHumidity(IDFBaseModel):
     """This object modifies a ZoneControl:Thermostat object to effect temperature
@@ -520,6 +830,36 @@ class ZoneControlThermostatTemperatureAndHumidity(IDFBaseModel):
             'note': 'The value of this input field is used to adjust the cooling setpoint temperature (established by the associated ZoneControl:Thermostat object) downward based on the difference between the zone air ...',
         },
     )
+
+    @property
+    def thermostat(self) -> IDFBaseModel | None:
+        v = self.thermostat_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
+
+    @property
+    def dehumidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.dehumidifying_relative_humidity_setpoint_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def overcool_range_schedule(self) -> IDFBaseModel | None:
+        v = self.overcool_range_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneControlThermostatThermalComfort(IDFBaseModel):
@@ -620,3 +960,73 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
             'note': 'Control type names are names for individual control type objects. Schedule values in these objects list actual setpoint temperatures for the control types',
         },
     )
+
+    @property
+    def zone_or_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
+
+    @property
+    def specific_people(self) -> IDFBaseModel | None:
+        v = self.specific_people_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PeopleNames'])
+
+    @property
+    def thermal_comfort_control_type_schedule(self) -> IDFBaseModel | None:
+        v = self.thermal_comfort_control_type_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def thermal_comfort_control_1(self) -> IDFBaseModel | None:
+        v = self.thermal_comfort_control_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
+
+    @property
+    def thermal_comfort_control_2(self) -> IDFBaseModel | None:
+        v = self.thermal_comfort_control_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
+
+    @property
+    def thermal_comfort_control_3(self) -> IDFBaseModel | None:
+        v = self.thermal_comfort_control_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
+
+    @property
+    def thermal_comfort_control_4(self) -> IDFBaseModel | None:
+        v = self.thermal_comfort_control_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])

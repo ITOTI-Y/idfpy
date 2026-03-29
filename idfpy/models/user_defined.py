@@ -90,6 +90,56 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
         },
     )
 
+    @property
+    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.overall_model_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.model_setup_and_sizing_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_inlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.collection_outlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def ambient_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class CoilUserDefined(IDFBaseModel):
     """Defines a generic air system component for custom modeling using Energy
@@ -146,6 +196,56 @@ class CoilUserDefined(IDFBaseModel):
             'note': 'Used for modeling device losses to surrounding zone',
         },
     )
+
+    @property
+    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.overall_model_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.model_setup_and_sizing_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_inlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.collection_outlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def ambient_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class PlantComponentUserDefined(IDFBaseModel):
@@ -302,6 +402,142 @@ class PlantComponentUserDefined(IDFBaseModel):
         },
     )
 
+    @property
+    def main_model_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.main_model_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_1_initialization_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_1_initialization_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_1_simulation_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_1_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_2_initialization_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_2_initialization_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_2_simulation_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_2_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_3_initialization_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_3_initialization_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_3_simulation_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_3_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_4_initialization_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_4_initialization_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def plant_connection_4_simulation_program_calling_manager(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.plant_connection_4_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_inlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.collection_outlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def ambient_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class PlantEquipmentOperationUserDefined(IDFBaseModel):
     """Defines a generic plant operation scheme for custom supervisory control
@@ -338,6 +574,26 @@ class PlantEquipmentOperationUserDefined(IDFBaseModel):
     equipment_9_name: str | None = Field(default=None)
     equipment_10_object_type: str | None = Field(default=None)
     equipment_10_name: str | None = Field(default=None)
+
+    @property
+    def main_model_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.main_model_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def initialization_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.initialization_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
 
 
 class ZoneHVACForcedAirUserDefined(IDFBaseModel):
@@ -412,3 +668,53 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
             'note': 'Used for modeling device losses to surrounding zone',
         },
     )
+
+    @property
+    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.overall_model_simulation_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+        v = self.model_setup_and_sizing_program_calling_manager_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ProgramNames'])
+
+    @property
+    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.supply_inlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+        v = self.collection_outlet_water_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def ambient_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])

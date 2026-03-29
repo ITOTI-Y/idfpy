@@ -49,6 +49,16 @@ class EnergyManagementSystemProgramCallingManagerProgramsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def program(self) -> IDFBaseModel | None:
+        v = self.program_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ErlProgramNames'])
+
 
 class EnergyManagementSystemActuator(IDFBaseModel):
     """Hardware portion of EMS used to set up actuators in the model"""
@@ -78,6 +88,16 @@ class EnergyManagementSystemConstructionIndexVariable(IDFBaseModel):
     construction_object_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
     )
+
+    @property
+    def construction_object(self) -> IDFBaseModel | None:
+        v = self.construction_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class EnergyManagementSystemCurveOrTableIndexVariable(IDFBaseModel):
@@ -110,6 +130,26 @@ class EnergyManagementSystemCurveOrTableIndexVariable(IDFBaseModel):
             ]
         },
     )
+
+    @property
+    def curve_or_table_object(self) -> IDFBaseModel | None:
+        v = self.curve_or_table_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'BivariateFunctions',
+                'MultivariateFunctions',
+                'QuadvariateFunctions',
+                'QuintvariateFunctions',
+                'TrivariateFunctions',
+                'UnivariateFunctions',
+            ],
+        )
 
 
 class EnergyManagementSystemGlobalVariable(IDFBaseModel):

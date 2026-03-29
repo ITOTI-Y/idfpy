@@ -52,6 +52,8 @@ class FieldSpec:
     exclusive_minimum: float | None = None
     exclusive_maximum: float | None = None
     object_list: list[str] | None = None
+    reference: list[str] | None = None
+    reference_class_name: list[str] | None = None
     items_spec: FieldSpec | None = None
     item_class_name: str | None = None
     note: str | None = None
@@ -98,6 +100,8 @@ class FieldParser:
             exclusive_minimum=field_schema.get('exclusiveMinimum'),
             exclusive_maximum=field_schema.get('exclusiveMaximum'),
             object_list=field_schema.get('object_list'),
+            reference=field_schema.get('reference'),
+            reference_class_name=field_schema.get('reference-class-name'),
             note=field_schema.get('note'),
             data_type=field_schema.get('data_type'),
         )
@@ -145,6 +149,7 @@ class FieldParser:
             field_type=primary_type,
             default=field_schema.get('default', _UNSET),
             units=field_schema.get('units'),
+            reference=field_schema.get('reference'),
             note=field_schema.get('note'),
             anyof_specs=anyof_specs,
         )

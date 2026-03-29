@@ -41,6 +41,16 @@ class SpaceHVACZoneEquipmentMixerSpacesItem(IDFBaseModel):
         },
     )
 
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class SpaceHVACZoneEquipmentSplitterSpacesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -62,6 +72,16 @@ class SpaceHVACZoneEquipmentSplitterSpacesItem(IDFBaseModel):
         },
     )
 
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class SpaceHVACZoneReturnMixerSpacesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -75,6 +95,16 @@ class SpaceHVACZoneReturnMixerSpacesItem(IDFBaseModel):
             'note': 'Matches a SpaceHVAC:EquipmentConnections Return Air Node Name'
         },
     )
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
 
 
 class ZoneHVACEquipmentListEquipmentItem(IDFBaseModel):
@@ -151,6 +181,40 @@ class ZoneHVACEquipmentListEquipmentItem(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_equipment(self) -> IDFBaseModel | None:
+        v = self.zone_equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneEquipmentNames'])
+
+    @property
+    def zone_equipment_sequential_cooling_fraction_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.zone_equipment_sequential_cooling_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone_equipment_sequential_heating_fraction_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.zone_equipment_sequential_heating_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SpaceHVACEquipmentConnections(IDFBaseModel):
     """Specifies the HVAC equipment connections for a space. Node names are
@@ -183,6 +247,28 @@ class SpaceHVACEquipmentConnections(IDFBaseModel):
             'note': 'The optional basis node(s) used to calculate the base return air flow rate for the first return air node in this space. The return air flow rate is the sum of the flow rates at the basis node(s) mu...'
         },
     )
+
+    @property
+    def space(self) -> IDFBaseModel | None:
+        v = self.space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
+    @property
+    def space_return_air_node_1_flow_rate_fraction_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.space_return_air_node_1_flow_rate_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
@@ -223,6 +309,16 @@ class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
         },
     )
     spaces: list[SpaceHVACZoneEquipmentMixerSpacesItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
@@ -318,6 +414,36 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
     )
     spaces: list[SpaceHVACZoneEquipmentSplitterSpacesItem] | None = Field(default=None)
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def zone_equipment(self) -> IDFBaseModel | None:
+        v = self.zone_equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneEquipmentNames'])
+
+    @property
+    def control_space(self) -> IDFBaseModel | None:
+        v = self.control_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames'])
+
 
 class SpaceHVACZoneReturnMixer(IDFBaseModel):
     """Mixes the return airflow from one or more Spaces into a zone return node.
@@ -341,6 +467,16 @@ class SpaceHVACZoneReturnMixer(IDFBaseModel):
         },
     )
     spaces: list[SpaceHVACZoneReturnMixerSpacesItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class ZoneHVACEquipmentConnections(IDFBaseModel):
@@ -379,6 +515,36 @@ class ZoneHVACEquipmentConnections(IDFBaseModel):
             'note': 'The optional basis node(s) used to calculate the base return air flow rate for the first return air node in this zone. The return air flow rate is the sum of the flow rates at the basis node(s) mul...'
         },
     )
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def zone_conditioning_equipment_list(self) -> IDFBaseModel | None:
+        v = self.zone_conditioning_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneEquipmentLists'])
+
+    @property
+    def zone_return_air_node_1_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.zone_return_air_node_1_flow_rate_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneHVACEquipmentList(IDFBaseModel):

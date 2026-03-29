@@ -116,6 +116,26 @@ class HeaderedPumpsConstantSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class HeaderedPumpsVariableSpeed(IDFBaseModel):
     """This Headered pump object describes a pump bank with more than 1 pump in
@@ -226,6 +246,26 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class PumpConstantSpeed(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit."""
@@ -332,6 +372,36 @@ class PumpConstantSpeed(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
+
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pump_curve(self) -> IDFBaseModel | None:
+        v = self.pump_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class PumpVariableSpeed(IDFBaseModel):
@@ -476,6 +546,86 @@ class PumpVariableSpeed(IDFBaseModel):
         },
     )
 
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pump_curve(self) -> IDFBaseModel | None:
+        v = self.pump_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def pump_rpm_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_rpm_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_pressure_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.minimum_pressure_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_pressure_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.maximum_pressure_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_rpm_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.minimum_rpm_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_rpm_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.maximum_rpm_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class PumpVariableSpeedCondensate(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit. Variable
@@ -570,3 +720,23 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
+
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])

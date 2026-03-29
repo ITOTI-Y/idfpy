@@ -37,6 +37,16 @@ class DaylightingControlsControlDataItem(IDFBaseModel):
         default=500.0, ge=0.0, json_schema_extra={'units': 'lux'}
     )
 
+    @property
+    def daylighting_reference_point(self) -> IDFBaseModel | None:
+        v = self.daylighting_reference_point_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DaylightReferencePointNames'])
+
 
 class DaylightingDeviceTubularTransitionLengthsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -47,6 +57,16 @@ class DaylightingDeviceTubularTransitionLengthsItem(IDFBaseModel):
     transition_zone_length: float | None = Field(
         default=None, ge=0.0, json_schema_extra={'units': 'm'}
     )
+
+    @property
+    def transition_zone(self) -> IDFBaseModel | None:
+        v = self.transition_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class DaylightingControls(IDFBaseModel):
@@ -106,6 +126,36 @@ class DaylightingControls(IDFBaseModel):
     )
     control_data: list[DaylightingControlsControlDataItem] | None = Field(default=None)
 
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def glare_calculation_daylighting_reference_point(self) -> IDFBaseModel | None:
+        v = self.glare_calculation_daylighting_reference_point_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DaylightReferencePointNames'])
+
 
 class DaylightingDELightComplexFenestration(IDFBaseModel):
     """Used for DElight Complex Fenestration of all types"""
@@ -140,6 +190,26 @@ class DaylightingDELightComplexFenestration(IDFBaseModel):
         },
     )
 
+    @property
+    def building_surface(self) -> IDFBaseModel | None:
+        v = self.building_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def window(self) -> IDFBaseModel | None:
+        v = self.window_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
 
 class DaylightingDeviceLightWell(IDFBaseModel):
     """Applies only to exterior windows in daylighting-controlled zones or in zones
@@ -167,6 +237,16 @@ class DaylightingDeviceLightWell(IDFBaseModel):
     visible_reflectance_of_well_walls: float = Field(
         ..., ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}
     )
+
+    @property
+    def exterior_window(self) -> IDFBaseModel | None:
+        v = self.exterior_window_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
 
 
 class DaylightingDeviceShelf(IDFBaseModel):
@@ -201,6 +281,46 @@ class DaylightingDeviceShelf(IDFBaseModel):
         },
     )
     view_factor_to_outside_shelf: float | None = Field(default=None, ge=0.0, le=1.0)
+
+    @property
+    def window(self) -> IDFBaseModel | None:
+        v = self.window_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def inside_shelf(self) -> IDFBaseModel | None:
+        v = self.inside_shelf_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def outside_shelf(self) -> IDFBaseModel | None:
+        v = self.outside_shelf_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AttachedShadingSurfNames'])
+
+    @property
+    def outside_shelf_construction(self) -> IDFBaseModel | None:
+        v = self.outside_shelf_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class DaylightingDeviceTubular(IDFBaseModel):
@@ -248,6 +368,36 @@ class DaylightingDeviceTubular(IDFBaseModel):
         Field(default=None)
     )
 
+    @property
+    def dome(self) -> IDFBaseModel | None:
+        v = self.dome_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def diffuser(self) -> IDFBaseModel | None:
+        v = self.diffuser_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
 
 class DaylightingReferencePoint(IDFBaseModel):
     """Used by Daylighting:Controls to identify the reference point coordinates for
@@ -269,6 +419,16 @@ class DaylightingReferencePoint(IDFBaseModel):
     z_coordinate_of_reference_point: float | None = Field(
         default=0.8, json_schema_extra={'units': 'm'}
     )
+
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
 
 class OutputControlIlluminanceMapStyle(IDFBaseModel):
@@ -328,3 +488,13 @@ class OutputIlluminanceMap(IDFBaseModel):
             'note': 'Maximum number of total grid points must be <= 2500 (X*Y)'
         },
     )
+
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])

@@ -29,6 +29,18 @@
                 "--output",
                 "${workspaceFolder}/idfpy/models"
             ],
+        },
+        {
+            "name": "temp test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "args": [
+                "tests/test_models.py::test_to_dict_preserves_empty_string_name",
+                "-s",
+                "--no-header"
+            ],
         }
     ]
 }

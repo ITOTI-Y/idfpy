@@ -394,6 +394,176 @@ class FuelFactors(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
 
+    @property
+    def source_energy_schedule(self) -> IDFBaseModel | None:
+        v = self.source_energy_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def co2_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.co2_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def co_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.co_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ch4_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.ch4_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def nox_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.nox_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def n2o_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.n2o_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def so2_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.so2_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pm_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.pm_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pm10_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.pm10_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pm2_5_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.pm2_5_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def nh3_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.nh3_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def nmvoc_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.nmvoc_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def hg_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.hg_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pb_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.pb_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def water_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.water_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def nuclear_high_level_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.nuclear_high_level_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def nuclear_low_level_emission_factor_schedule(self) -> IDFBaseModel | None:
+        v = self.nuclear_low_level_emission_factor_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class MeterCustom(IDFBaseModel):
     """Used to allow users to combine specific variables and/or meters into
@@ -1333,6 +1503,16 @@ class OutputSurfacesDrawing(IDFBaseModel):
         },
     )
 
+    @property
+    def report_specifications_2_ref(self) -> IDFBaseModel | None:
+        v = self.report_specifications_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ColorSchemes'])
+
 
 class OutputSurfacesList(IDFBaseModel):
     """Produces a report summarizing the details of surfaces in the eio output
@@ -1380,6 +1560,16 @@ class OutputTableAnnual(IDFBaseModel):
     variable_details: list[OutputTableAnnualVariableDetailsItem] | None = Field(
         default=None
     )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class OutputTableMonthly(IDFBaseModel):
@@ -1502,6 +1692,16 @@ class OutputTableTimeBins(IDFBaseModel):
         },
     )
 
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class OutputVariable(IDFBaseModel):
     """each Output:Variable command picks variables to be put onto the standard
@@ -1540,6 +1740,16 @@ class OutputVariable(IDFBaseModel):
     schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class OutputVariableDictionary(IDFBaseModel):

@@ -66,6 +66,16 @@ class FoundationKivaBlocksItem(IDFBaseModel):
         },
     )
 
+    @property
+    def custom_block_material(self) -> IDFBaseModel | None:
+        v = self.custom_block_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class SurfacePropertyExposedFoundationPerimeterSurfacesItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -84,6 +94,16 @@ class SurfacePropertyExteriorNaturalVentedCAVitySurfaceItem(IDFBaseModel):
     surface_name: AllShadingAndHTSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
 
 class SurfacePropertyGroundSurfacesGroundSurfacesItem(IDFBaseModel):
@@ -108,6 +128,26 @@ class SurfacePropertyGroundSurfacesGroundSurfacesItem(IDFBaseModel):
         },
     )
 
+    @property
+    def ground_surface_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ground_surface_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ground_surface_reflectance_schedule(self) -> IDFBaseModel | None:
+        v = self.ground_surface_reflectance_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertyHeatTransferAlgorithmSurfaceListSurfaceItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -115,6 +155,16 @@ class SurfacePropertyHeatTransferAlgorithmSurfaceListSurfaceItem(IDFBaseModel):
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
 
 
 class SurfacePropertySurroundingSurfacesSurfacesItem(IDFBaseModel):
@@ -129,6 +179,16 @@ class SurfacePropertySurroundingSurfacesSurfacesItem(IDFBaseModel):
             'note': 'Schedule values are real numbers, -100.0 to 100.0, units C',
         },
     )
+
+    @property
+    def surrounding_surface_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.surrounding_surface_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem(IDFBaseModel):
@@ -147,6 +207,26 @@ class ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem(IDFBaseModel):
             'note': 'This value is the view factor value From Surface => To Surface'
         },
     )
+
+    @property
+    def from_surface_ref(self) -> IDFBaseModel | None:
+        v = self.from_surface
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def to_surface_ref(self) -> IDFBaseModel | None:
+        v = self.to_surface
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
 
 class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
@@ -197,6 +277,76 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
             'note': 'Values in schedule are expected to be in W/m2',
         },
     )
+
+    @property
+    def fenestration_surface_ref(self) -> IDFBaseModel | None:
+        v = self.fenestration_surface
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfNames'])
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ComplexFenestrationStates'])
+
+    @property
+    def layer_1_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+        v = self.layer_1_solar_radiation_absorbed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def layer_2_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+        v = self.layer_2_solar_radiation_absorbed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def layer_3_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+        v = self.layer_3_solar_radiation_absorbed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def layer_4_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+        v = self.layer_4_solar_radiation_absorbed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def layer_5_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+        v = self.layer_5_solar_radiation_absorbed_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class FoundationKiva(IDFBaseModel):
@@ -309,6 +459,66 @@ class FoundationKiva(IDFBaseModel):
     )
     blocks: list[FoundationKivaBlocksItem] | None = Field(default=None)
 
+    @property
+    def interior_horizontal_insulation_material(self) -> IDFBaseModel | None:
+        v = self.interior_horizontal_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def interior_vertical_insulation_material(self) -> IDFBaseModel | None:
+        v = self.interior_vertical_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def exterior_horizontal_insulation_material(self) -> IDFBaseModel | None:
+        v = self.exterior_horizontal_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def exterior_vertical_insulation_material(self) -> IDFBaseModel | None:
+        v = self.exterior_vertical_insulation_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def footing_wall_construction(self) -> IDFBaseModel | None:
+        v = self.footing_wall_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def footing_material(self) -> IDFBaseModel | None:
+        v = self.footing_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class FoundationKivaSettings(IDFBaseModel):
     """Settings applied across all Kiva foundation calculations. Object is not
@@ -367,6 +577,36 @@ class SurfaceControlMovableInsulation(IDFBaseModel):
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
@@ -1464,6 +1704,514 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         },
     )
 
+    @property
+    def simple_buoyancy_vertical_wall_user_curve(self) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_vertical_wall_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def simple_buoyancy_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def simple_buoyancy_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def simple_buoyancy_stable_tilted_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_stable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def simple_buoyancy_unstable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_unstable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def simple_buoyancy_windows_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.simple_buoyancy_windows_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_heated_floor_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_heated_floor_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_chilled_ceiling_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_chilled_ceiling_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_stable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_stable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_unstable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_unstable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def floor_heat_ceiling_cool_window_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.floor_heat_ceiling_cool_window_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_heated_wall_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_heated_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_stable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_stable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_unstable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_unstable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def wall_panel_heating_window_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.wall_panel_heating_window_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_vertical_walls_near_heater_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_vertical_walls_near_heater_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_stable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_stable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_unstable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_unstable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def convective_zone_heater_windows_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.convective_zone_heater_windows_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def central_air_diffuser_wall_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.central_air_diffuser_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def central_air_diffuser_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.central_air_diffuser_ceiling_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def central_air_diffuser_floor_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.central_air_diffuser_floor_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def central_air_diffuser_window_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.central_air_diffuser_window_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_stable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_stable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_unstable_tilted_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_unstable_tilted_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mechanical_zone_fan_circulation_window_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mechanical_zone_fan_circulation_window_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_buoyancy_assisting_flow_on_walls_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mixed_regime_buoyancy_assisting_flow_on_walls_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_buoyancy_opposing_flow_on_walls_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.mixed_regime_buoyancy_opposing_flow_on_walls_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_stable_floor_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.mixed_regime_stable_floor_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_unstable_floor_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.mixed_regime_unstable_floor_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_stable_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.mixed_regime_stable_ceiling_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_unstable_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.mixed_regime_unstable_ceiling_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
+    @property
+    def mixed_regime_window_equation_user_curve(self) -> IDFBaseModel | None:
+        v = self.mixed_regime_window_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionInsideModels'])
+
 
 class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
     """Used to describe a custom model equation for surface convection heat
@@ -1515,6 +2263,50 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
             'note': 'Curve\'s "x" is mechanical system air flow rate (m3/s) divided by zone\'s length along exterior walls (m).',
         },
     )
+
+    @property
+    def hc_function_of_temperature_difference_curve(self) -> IDFBaseModel | None:
+        v = self.hc_function_of_temperature_difference_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def hc_function_of_temperature_difference_divided_by_height_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.hc_function_of_temperature_difference_divided_by_height_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def hc_function_of_air_change_rate_curve(self) -> IDFBaseModel | None:
+        v = self.hc_function_of_air_change_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def hc_function_of_air_system_volume_flow_rate_divided_by_zone_perimeter_length_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.hc_function_of_air_system_volume_flow_rate_divided_by_zone_perimeter_length_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
@@ -1671,6 +2463,76 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
         },
     )
 
+    @property
+    def wind_convection_windward_equation_vertical_wall_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wind_convection_windward_equation_vertical_wall_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
+    @property
+    def wind_convection_leeward_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.wind_convection_leeward_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
+    @property
+    def wind_convection_horizontal_roof_user_curve(self) -> IDFBaseModel | None:
+        v = self.wind_convection_horizontal_roof_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
+    @property
+    def natural_convection_vertical_wall_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.natural_convection_vertical_wall_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
+    @property
+    def natural_convection_stable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.natural_convection_stable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
+    @property
+    def natural_convection_unstable_horizontal_equation_user_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.natural_convection_unstable_horizontal_equation_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
+
 
 class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
     """Used to describe a custom model equation for surface convection heat
@@ -1715,6 +2577,38 @@ class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
         },
     )
 
+    @property
+    def hf_function_of_wind_speed_curve(self) -> IDFBaseModel | None:
+        v = self.hf_function_of_wind_speed_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def hn_function_of_temperature_difference_curve(self) -> IDFBaseModel | None:
+        v = self.hn_function_of_temperature_difference_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def hn_function_of_temperature_difference_divided_by_height_curve(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.hn_function_of_temperature_difference_divided_by_height_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class SurfacePropertiesVaporCoefficients(IDFBaseModel):
     """The interior and external vapor transfer coefficients. Normally these value
@@ -1739,6 +2633,16 @@ class SurfacePropertiesVaporCoefficients(IDFBaseModel):
     internal_vapor_coefficient_value: float | None = Field(
         default=0.0, ge=0.0, json_schema_extra={'units': 'kg/Pa-s-m2'}
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
 
 
 class SurfacePropertyConvectionCoefficients(IDFBaseModel):
@@ -1897,6 +2801,56 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
             'note': 'used if Convection Type = UserCurve',
         },
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def convection_coefficient_1_schedule(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_1_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def convection_coefficient_1_user_curve(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_1_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionModels'])
+
+    @property
+    def convection_coefficient_2_schedule(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_2_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def convection_coefficient_2_user_curve(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_2_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionModels'])
 
 
 class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
@@ -2067,6 +3021,46 @@ class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
         },
     )
 
+    @property
+    def convection_coefficient_1_schedule(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_1_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def convection_coefficient_1_user_curve(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_1_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionModels'])
+
+    @property
+    def convection_coefficient_2_schedule(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_2_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def convection_coefficient_2_user_curve(self) -> IDFBaseModel | None:
+        v = self.convection_coefficient_2_user_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UserConvectionModels'])
+
 
 class SurfacePropertyExposedFoundationPerimeter(IDFBaseModel):
     """Defines the perimeter of a foundation floor that is exposed to the exterior
@@ -2095,6 +3089,16 @@ class SurfacePropertyExposedFoundationPerimeter(IDFBaseModel):
     surfaces: list[SurfacePropertyExposedFoundationPerimeterSurfacesItem] | None = (
         Field(default=None)
     )
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FloorSurfaceNames'])
 
 
 class SurfacePropertyExteriorNaturalVentedCAVity(IDFBaseModel):
@@ -2152,6 +3156,16 @@ class SurfacePropertyExteriorNaturalVentedCAVity(IDFBaseModel):
         default=None
     )
 
+    @property
+    def boundary_conditions_model(self) -> IDFBaseModel | None:
+        v = self.boundary_conditions_model_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OSCMNames'])
+
 
 class SurfacePropertyGroundSurfaces(IDFBaseModel):
     """This object defines a list of ground surfaces for use with an exterior
@@ -2188,6 +3202,36 @@ class SurfacePropertyHeatBalanceSourceTerm(IDFBaseModel):
         },
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def inside_face_heat_source_term_schedule(self) -> IDFBaseModel | None:
+        v = self.inside_face_heat_source_term_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def outside_face_heat_source_term_schedule(self) -> IDFBaseModel | None:
+        v = self.outside_face_heat_source_term_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertyHeatTransferAlgorithm(IDFBaseModel):
     """Determines which Heat Balance Algorithm will be used for a specific surface
@@ -2211,6 +3255,16 @@ class SurfacePropertyHeatTransferAlgorithm(IDFBaseModel):
         ]
         | None
     ) = Field(default='ConductionTransferFunction')
+
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
 
 
 class SurfacePropertyHeatTransferAlgorithmConstruction(IDFBaseModel):
@@ -2238,6 +3292,16 @@ class SurfacePropertyHeatTransferAlgorithmConstruction(IDFBaseModel):
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
     )
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class SurfacePropertyHeatTransferAlgorithmMultipleSurface(IDFBaseModel):
@@ -2330,6 +3394,26 @@ class SurfacePropertyIncidentSolarMultiplier(IDFBaseModel):
         },
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def incident_solar_multiplier_schedule(self) -> IDFBaseModel | None:
+        v = self.incident_solar_multiplier_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertyLocalEnvironment(IDFBaseModel):
     """This object defines the local environment properties of an exterior surface.
@@ -2373,6 +3457,56 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
             'note': 'Enter the name of a SurfaceProperty:GroundSurfaces object',
         },
     )
+
+    @property
+    def exterior_surface(self) -> IDFBaseModel | None:
+        v = self.exterior_surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def sunlit_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.sunlit_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def surrounding_surfaces_object(self) -> IDFBaseModel | None:
+        v = self.surrounding_surfaces_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurroundingSurfacesNames'])
+
+    @property
+    def outdoor_air_node(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_node_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
+
+    @property
+    def ground_surfaces_object(self) -> IDFBaseModel | None:
+        v = self.ground_surfaces_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GroundSurfacesNames'])
 
 
 class SurfacePropertyOtherSideCoefficients(IDFBaseModel):
@@ -2449,6 +3583,16 @@ class SurfacePropertyOtherSideCoefficients(IDFBaseModel):
         },
     )
 
+    @property
+    def constant_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.constant_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertyOtherSideConditionsModel(IDFBaseModel):
     """This object sets up modifying the other side conditions for a surface from
@@ -2495,6 +3639,38 @@ class SurfacePropertySolarIncidentInside(IDFBaseModel):
         },
     )
 
+    @property
+    def surface(self) -> IDFBaseModel | None:
+        v = self.surface_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceNames'])
+
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def inside_surface_incident_sun_solar_radiation_schedule(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.inside_surface_incident_sun_solar_radiation_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertySurroundingSurfaces(IDFBaseModel):
     """This object defines a list of surrounding surfaces for an exterior surface."""
@@ -2525,6 +3701,26 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
         default=None
     )
 
+    @property
+    def sky_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.sky_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ground_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ground_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class SurfacePropertyUnderwater(IDFBaseModel):
     """This object sets up a convective water boundary condition for a surface The
@@ -2549,6 +3745,26 @@ class SurfacePropertyUnderwater(IDFBaseModel):
         json_schema_extra={'units': 'm/s', 'object_list': ['ScheduleNames']},
     )
 
+    @property
+    def free_stream_water_temperature_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.free_stream_water_temperature_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def free_stream_water_velocity_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.free_stream_water_velocity_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZonePropertyLocalEnvironment(IDFBaseModel):
     """This object defines the local environment properties of a zone object. A
@@ -2571,6 +3787,26 @@ class ZonePropertyLocalEnvironment(IDFBaseModel):
             'note': 'Enter the name of an OutdoorAir:Node object',
         },
     )
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def outdoor_air_node(self) -> IDFBaseModel | None:
+        v = self.outdoor_air_node_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
 
 class ZonePropertyUserViewFactorsBySurfaceName(IDFBaseModel):
@@ -2596,3 +3832,15 @@ class ZonePropertyUserViewFactorsBySurfaceName(IDFBaseModel):
     view_factors: (
         list[ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem] | None
     ) = Field(default=None)
+
+    @property
+    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_or_space_or_spacelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['SpaceListNames', 'SpaceNames', 'ZoneListNames', 'ZoneNames']
+        )

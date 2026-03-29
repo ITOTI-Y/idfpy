@@ -109,6 +109,56 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
         },
     )
 
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.use_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.source_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermalStorageChilledWaterStratified(IDFBaseModel):
     """Chilled water storage with a stratified, multi-node tank. The chilled water
@@ -267,6 +317,56 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     node_10_additional_loss_coefficient: float | None = Field(
         default=0.0, json_schema_extra={'units': 'W/K'}
     )
+
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.use_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.source_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ThermalStorageHotWaterStratified(IDFBaseModel):
@@ -442,6 +542,66 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         default=0.0, json_schema_extra={'units': 'W/K'}
     )
 
+    @property
+    def top_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.top_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def bottom_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.bottom_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.use_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.source_side_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ThermalStorageIceDetailed(IDFBaseModel):
     """This input syntax is intended to describe a thermal storage system that
@@ -522,6 +682,46 @@ class ThermalStorageIceDetailed(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def discharging_curve(self) -> IDFBaseModel | None:
+        v = self.discharging_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def charging_curve(self) -> IDFBaseModel | None:
+        v = self.charging_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def thermal_storage_sizing_object(self) -> IDFBaseModel | None:
+        v = self.thermal_storage_sizing_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalStorageSizing'])
+
 
 class ThermalStorageIceSimple(IDFBaseModel):
     """This ice storage model is a simplified model It requires a setpoint placed
@@ -549,6 +749,16 @@ class ThermalStorageIceSimple(IDFBaseModel):
             'note': 'used only when tank capacity is autosized',
         },
     )
+
+    @property
+    def thermal_storage_sizing_object(self) -> IDFBaseModel | None:
+        v = self.thermal_storage_sizing_object_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalStorageSizing'])
 
 
 class ThermalStoragePCM(IDFBaseModel):
@@ -579,6 +789,26 @@ class ThermalStoragePCM(IDFBaseModel):
     plant_side_design_flow_rate: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'm3/s'}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def pcm_material(self) -> IDFBaseModel | None:
+        v = self.pcm_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
 
 
 class ThermalStorageSizing(IDFBaseModel):
@@ -899,6 +1129,113 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def compressor_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.compressor_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_humidity_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_humidity_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_zone(self) -> IDFBaseModel | None:
+        v = self.inlet_air_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def tank(self) -> IDFBaseModel | None:
+        v = self.tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterHeaterNames'])
+
+    @property
+    def dx_coil(self) -> IDFBaseModel | None:
+        v = self.dx_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            [
+                'HeatPumpWaterHeaterDXCoilsPumped',
+                'HeatPumpWaterHeaterDXCoilsVariableSpeed',
+                'IntegratedHeatPumps',
+            ],
+        )
+
+    @property
+    def compressor_ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.compressor_ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan(self) -> IDFBaseModel | None:
+        v = self.fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
+
+    @property
+    def inlet_air_mixer_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_mixer_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
     """This object models an air-source heat pump for water heating where the
@@ -1177,6 +1514,106 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def compressor_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.compressor_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_humidity_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_humidity_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def inlet_air_zone(self) -> IDFBaseModel | None:
+        v = self.inlet_air_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def tank(self) -> IDFBaseModel | None:
+        v = self.tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterHeaterStratifiedNames'])
+
+    @property
+    def dx_coil(self) -> IDFBaseModel | None:
+        v = self.dx_coil_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsWrapped'])
+
+    @property
+    def compressor_ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.compressor_ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan(self) -> IDFBaseModel | None:
+        v = self.fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
+
+    @property
+    def inlet_air_mixer_schedule(self) -> IDFBaseModel | None:
+        v = self.inlet_air_mixer_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class WaterHeaterMixed(IDFBaseModel):
     """Water heater with well-mixed, single-node water tank. May be used to model a
@@ -1379,6 +1816,76 @@ class WaterHeaterMixed(IDFBaseModel):
         },
     )
 
+    @property
+    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def part_load_factor_curve(self) -> IDFBaseModel | None:
+        v = self.part_load_factor_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def use_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.use_flow_rate_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.cold_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def indirect_alternate_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.indirect_alternate_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class WaterHeaterSizing(IDFBaseModel):
     """This input object is used with WaterHeater:Mixed or with
@@ -1504,6 +2011,16 @@ class WaterHeaterSizing(IDFBaseModel):
         ge=0.0,
         json_schema_extra={'note': 'only used if for WaterHeater:Stratified'},
     )
+
+    @property
+    def waterheater(self) -> IDFBaseModel | None:
+        v = self.waterheater_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ThermalStorageWaterNames', 'WaterHeaterNames'])
 
 
 class WaterHeaterStratified(IDFBaseModel):
@@ -1795,3 +2312,73 @@ class WaterHeaterStratified(IDFBaseModel):
             },
         )
     )
+
+    @property
+    def heater_1_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.heater_1_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heater_2_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.heater_2_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+        v = self.ambient_temperature_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def use_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.use_flow_rate_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.cold_water_supply_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def indirect_alternate_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.indirect_alternate_setpoint_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

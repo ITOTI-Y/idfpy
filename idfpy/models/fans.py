@@ -285,6 +285,154 @@ class FanComponentModel(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan_pressure_rise_curve(self) -> IDFBaseModel | None:
+        v = self.fan_pressure_rise_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def duct_static_pressure_reset_curve(self) -> IDFBaseModel | None:
+        v = self.duct_static_pressure_reset_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_fan_static_efficiency_curve_non_stall_region_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.normalized_fan_static_efficiency_curve_name_non_stall_region
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_fan_static_efficiency_curve_stall_region_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.normalized_fan_static_efficiency_curve_name_stall_region
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_dimensionless_airflow_curve_non_stall_region_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.normalized_dimensionless_airflow_curve_name_non_stall_region
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_dimensionless_airflow_curve_stall_region_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.normalized_dimensionless_airflow_curve_name_stall_region
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def maximum_belt_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.maximum_belt_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_belt_efficiency_curve_region_1_ref(self) -> IDFBaseModel | None:
+        v = self.normalized_belt_efficiency_curve_name_region_1
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_belt_efficiency_curve_region_2_ref(self) -> IDFBaseModel | None:
+        v = self.normalized_belt_efficiency_curve_name_region_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_belt_efficiency_curve_region_3_ref(self) -> IDFBaseModel | None:
+        v = self.normalized_belt_efficiency_curve_name_region_3
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def maximum_motor_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.maximum_motor_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def normalized_motor_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.normalized_motor_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def vfd_efficiency_curve(self) -> IDFBaseModel | None:
+        v = self.vfd_efficiency_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class FanConstantVolume(IDFBaseModel):
     """Constant volume fan that is intended to operate continuously based on a time
@@ -322,6 +470,16 @@ class FanConstantVolume(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class FanOnOff(IDFBaseModel):
@@ -367,6 +525,36 @@ class FanOnOff(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def fan_power_ratio_function_of_speed_ratio_curve(self) -> IDFBaseModel | None:
+        v = self.fan_power_ratio_function_of_speed_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def fan_efficiency_ratio_function_of_speed_ratio_curve(self) -> IDFBaseModel | None:
+        v = self.fan_efficiency_ratio_function_of_speed_ratio_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
 
 class FanPerformanceNightVentilation(IDFBaseModel):
     """Specifies an alternate set of performance parameters for a fan. These
@@ -395,6 +583,16 @@ class FanPerformanceNightVentilation(IDFBaseModel):
             'note': '0.0 means fan motor outside of airstream 1.0 means fan motor inside of airstream'
         },
     )
+
+    @property
+    def fan(self) -> IDFBaseModel | None:
+        v = self.fan_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FansCVandVAV', 'FansComponentModel'])
 
 
 class FanSystemModel(IDFBaseModel):
@@ -507,6 +705,36 @@ class FanSystemModel(IDFBaseModel):
     )
     speed_fractions: list[FanSystemModelSpeedFractionsItem] | None = Field(default=None)
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def electric_power_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.electric_power_function_of_flow_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def motor_loss_zone(self) -> IDFBaseModel | None:
+        v = self.motor_loss_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class FanVariableVolume(IDFBaseModel):
     """Variable air volume fan where the electric power input varies according to a
@@ -560,6 +788,16 @@ class FanVariableVolume(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class FanZoneExhaust(IDFBaseModel):
@@ -616,3 +854,43 @@ class FanZoneExhaust(IDFBaseModel):
             'note': "Used to control fan's impact on flow at the return air node. Enter the portion of the exhaust that is balanced by simple airflows.",
         },
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def flow_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.flow_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_zone_temperature_limit_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_zone_temperature_limit_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def balanced_exhaust_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.balanced_exhaust_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

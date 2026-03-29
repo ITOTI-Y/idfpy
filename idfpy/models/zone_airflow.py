@@ -52,6 +52,26 @@ class ZoneAirBalanceOutdoorAir(IDFBaseModel):
         },
     )
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def induced_outdoor_air_schedule(self) -> IDFBaseModel | None:
+        v = self.induced_outdoor_air_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneCoolTowerShower(IDFBaseModel):
     """A cooltower (sometimes referred to as a wind tower or a shower cooling
@@ -119,6 +139,46 @@ class ZoneCoolTowerShower(IDFBaseModel):
     fraction_of_water_loss: float | None = Field(default=None, ge=0.0, le=1.0)
     fraction_of_flow_schedule: float | None = Field(default=None, ge=0.0, le=1.0)
     rated_power_consumption: float = Field(..., json_schema_extra={'units': 'W'})
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+        v = self.pump_flow_rate_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneCrossMixing(IDFBaseModel):
@@ -223,6 +283,106 @@ class ZoneCrossMixing(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def source_zone_or_space(self) -> IDFBaseModel | None:
+        v = self.source_zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.delta_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_receiving_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_receiving_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_source_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_source_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_source_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_source_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneEarthtube(IDFBaseModel):
     """Earth Tube is specified as a design level which is modified by a Schedule
@@ -322,6 +482,36 @@ class ZoneEarthtube(IDFBaseModel):
     earth_tube_model_parameters: EarthTubeParameterNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['EarthTubeParameterNames']}
     )
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def earth_tube_model_parameters_ref(self) -> IDFBaseModel | None:
+        v = self.earth_tube_model_parameters
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['EarthTubeParameterNames'])
 
 
 class ZoneEarthtubeParameters(IDFBaseModel):
@@ -441,6 +631,28 @@ class ZoneInfiltrationDesignFlowRate(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_or_space_or_spacelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['SpaceAndSpaceListNames', 'ZoneAndZoneListNames']
+        )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
     """Infiltration is specified as effective leakage area at 4 Pa, schedule
@@ -482,6 +694,26 @@ class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
         ..., gt=0.0, json_schema_extra={'note': '"Cw" in Equation'}
     )
 
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
     """Infiltration is specified as flow coefficient, schedule fraction, stack and
@@ -522,6 +754,26 @@ class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
     shelter_factor: float = Field(
         ..., gt=0.0, json_schema_extra={'note': '"s" in Equation'}
     )
+
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneMixing(IDFBaseModel):
@@ -627,6 +879,106 @@ class ZoneMixing(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def source_zone_or_space(self) -> IDFBaseModel | None:
+        v = self.source_zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.delta_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_receiving_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_receiving_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_source_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_source_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_source_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_source_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneRefrigerationDoorMixing(IDFBaseModel):
     """Refrigeration Door Mixing is used for an opening between two zones (or
@@ -675,6 +1027,36 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
             },
         )
     )
+
+    @property
+    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_1
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneThermalChimney(IDFBaseModel):
@@ -946,6 +1328,226 @@ class ZoneThermalChimney(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'm2'}
     )
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_1
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_3_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_3
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_4_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_4
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_5_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_5
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_6_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_6
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_7_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_7
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_8_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_8
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_9_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_9
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_10_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_10
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_11_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_11
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_12_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_12
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_13_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_13
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_14_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_14
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_15_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_15
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_16_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_16
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_17_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_17
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_18_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_18
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_19_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_19
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def zone_or_space_20_ref(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name_20
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
 
 class ZoneVentilationDesignFlowRate(IDFBaseModel):
     """Ventilation is specified as a design level which is modified by a schedule
@@ -1108,6 +1710,78 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         },
     )
 
+    @property
+    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+        v = self.zone_or_zonelist_or_space_or_spacelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['SpaceAndSpaceListNames', 'ZoneAndZoneListNames']
+        )
+
+    @property
+    def schedule(self) -> IDFBaseModel | None:
+        v = self.schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_indoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_indoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.delta_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
     """This object is specified as natural ventilation driven by wind and stack
@@ -1262,3 +1936,73 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
             'note': 'This is the outdoor wind speed above which ventilation is shutoff.',
         },
     )
+
+    @property
+    def zone_or_space(self) -> IDFBaseModel | None:
+        v = self.zone_or_space_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
+
+    @property
+    def opening_area_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.opening_area_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_indoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_indoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.delta_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.minimum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.maximum_outdoor_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])

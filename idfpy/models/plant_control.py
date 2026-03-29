@@ -40,6 +40,16 @@ class CondenserEquipmentListEquipmentItem(IDFBaseModel):
         json_schema_extra={'object_list': ['validCondenserEquipmentNames']},
     )
 
+    @property
+    def equipment(self) -> IDFBaseModel | None:
+        v = self.equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validCondenserEquipmentNames'])
+
 
 class PlantEquipmentListEquipmentItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -50,6 +60,16 @@ class PlantEquipmentListEquipmentItem(IDFBaseModel):
     equipment_name: ValidPlantEquipmentNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['validPlantEquipmentNames']}
     )
+
+    @property
+    def equipment(self) -> IDFBaseModel | None:
+        v = self.equipment_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['validPlantEquipmentNames'])
 
 
 class CondenserEquipmentList(IDFBaseModel):
@@ -249,6 +269,166 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
 
+    @property
+    def control_scheme_1(self) -> IDFBaseModel | None:
+        v = self.control_scheme_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_1_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_1_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_2(self) -> IDFBaseModel | None:
+        v = self.control_scheme_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_2_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_2_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_3(self) -> IDFBaseModel | None:
+        v = self.control_scheme_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_3_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_3_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_4(self) -> IDFBaseModel | None:
+        v = self.control_scheme_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_4_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_4_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_5(self) -> IDFBaseModel | None:
+        v = self.control_scheme_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_5_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_5_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_6(self) -> IDFBaseModel | None:
+        v = self.control_scheme_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_6_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_6_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_7(self) -> IDFBaseModel | None:
+        v = self.control_scheme_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_7_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_7_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_8(self) -> IDFBaseModel | None:
+        v = self.control_scheme_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_8_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_8_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class PlantEquipmentList(IDFBaseModel):
     """List plant equipment in order of operating priority, 1st in list will be
@@ -340,6 +520,84 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     backup_outdoor_low_temperature: float | None = Field(
         default=None, json_schema_extra={'units': 'C'}
     )
+
+    @property
+    def zone_load_polling_zonelist(self) -> IDFBaseModel | None:
+        v = self.zone_load_polling_zonelist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneListNames'])
+
+    @property
+    def cooling_only_load_plant_equipment_operation_cooling_load(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.cooling_only_load_plant_equipment_operation_cooling_load_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def heating_only_load_plant_equipment_operation_heating_load(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.heating_only_load_plant_equipment_operation_heating_load_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def simultaneous_cooling_and_heating_plant_equipment_operation_cooling_load(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.simultaneous_cooling_and_heating_plant_equipment_operation_cooling_load_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def simultaneous_cooling_and_heating_plant_equipment_operation_heating_load(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.simultaneous_cooling_and_heating_plant_equipment_operation_heating_load_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def dedicated_chilled_water_return_recovery_heat_pump(self) -> IDFBaseModel | None:
+        v = self.dedicated_chilled_water_return_recovery_heat_pump_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PLHPCoolingNames'])
+
+    @property
+    def dedicated_hot_water_return_recovery_heat_pump(self) -> IDFBaseModel | None:
+        v = self.dedicated_hot_water_return_recovery_heat_pump_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PLHPHeatingNames'])
 
 
 class PlantEquipmentOperationComponentSetpoint(IDFBaseModel):
@@ -541,6 +799,106 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
 
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
 
 class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
     """Plant equipment operation scheme for heating load range operation. Specifies
@@ -649,6 +1007,106 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
 
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
 
 class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
     """Plant equipment operation scheme for outdoor dewpoint temperature range
@@ -756,6 +1214,106 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         default=None,
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
+
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
 
 class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
@@ -869,6 +1427,106 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
 
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
 
 class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
     """Plant equipment operation scheme for outdoor dry-bulb temperature range
@@ -976,6 +1634,106 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         default=None,
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
+
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
 
 class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
@@ -1087,6 +1845,106 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
 
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
 
 class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
     """Plant equipment operation scheme for outdoor relative humidity range
@@ -1195,6 +2053,106 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
 
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
 
 class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
     """Plant equipment operation scheme for outdoor wet-bulb temperature range
@@ -1302,6 +2260,106 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         default=None,
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
+
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
 
 class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
@@ -1412,6 +2470,106 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         default=None,
         json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']},
     )
+
+    @property
+    def range_1_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_1_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_2_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_2_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_3_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_3_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_4_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_4_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_5_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_5_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_6_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_6_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_7_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_7_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_8_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_8_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_9_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_9_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
+
+    @property
+    def range_10_equipment_list(self) -> IDFBaseModel | None:
+        v = self.range_10_equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
 
 class PlantEquipmentOperationSchemes(IDFBaseModel):
@@ -1621,6 +2779,166 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
     control_scheme_8_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
     )
+
+    @property
+    def control_scheme_1(self) -> IDFBaseModel | None:
+        v = self.control_scheme_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_1_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_1_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_2(self) -> IDFBaseModel | None:
+        v = self.control_scheme_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_2_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_2_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_3(self) -> IDFBaseModel | None:
+        v = self.control_scheme_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_3_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_3_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_4(self) -> IDFBaseModel | None:
+        v = self.control_scheme_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_4_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_4_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_5(self) -> IDFBaseModel | None:
+        v = self.control_scheme_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_5_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_5_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_6(self) -> IDFBaseModel | None:
+        v = self.control_scheme_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_6_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_6_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_7(self) -> IDFBaseModel | None:
+        v = self.control_scheme_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_7_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_7_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def control_scheme_8(self) -> IDFBaseModel | None:
+        v = self.control_scheme_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ControlSchemeList'])
+
+    @property
+    def control_scheme_8_schedule(self) -> IDFBaseModel | None:
+        v = self.control_scheme_8_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
@@ -1951,6 +3269,126 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         default=None
     )
 
+    @property
+    def on_peak_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.on_peak_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def charging_availability_schedule_ref(self) -> IDFBaseModel | None:
+        v = self.charging_availability_schedule
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def component_1(self) -> IDFBaseModel | None:
+        v = self.component_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_2(self) -> IDFBaseModel | None:
+        v = self.component_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_3(self) -> IDFBaseModel | None:
+        v = self.component_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_4(self) -> IDFBaseModel | None:
+        v = self.component_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_5(self) -> IDFBaseModel | None:
+        v = self.component_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_6(self) -> IDFBaseModel | None:
+        v = self.component_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_7(self) -> IDFBaseModel | None:
+        v = self.component_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_8(self) -> IDFBaseModel | None:
+        v = self.component_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_9(self) -> IDFBaseModel | None:
+        v = self.component_9_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
+    @property
+    def component_10(self) -> IDFBaseModel | None:
+        v = self.component_10_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
+
 
 class PlantEquipmentOperationUncontrolled(IDFBaseModel):
     """Plant equipment operation scheme for uncontrolled operation. Specifies a
@@ -1962,3 +3400,13 @@ class PlantEquipmentOperationUncontrolled(IDFBaseModel):
     equipment_list_name: PlantAndCondenserEquipmentListsRef = Field(
         ..., json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']}
     )
+
+    @property
+    def equipment_list(self) -> IDFBaseModel | None:
+        v = self.equipment_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])

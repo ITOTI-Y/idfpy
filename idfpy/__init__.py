@@ -10,6 +10,7 @@ from importlib.metadata import version
 
 from idfpy.idf import IDF
 from idfpy.models._base import IDFBaseModel
+from idfpy.models._ref_errors import RefError, RefValidationError
 
 __version__ = version('idfpy')
-__all__ = ['IDF', 'IDFBaseModel', '__version__']
+__all__ = ['IDF', 'IDFBaseModel', 'RefError', 'RefValidationError', '__version__']

@@ -305,6 +305,26 @@ class FluidPropertiesConcentration(IDFBaseModel):
     property_value_249: float | None = Field(default=None)
     property_value_250: float | None = Field(default=None)
 
+    @property
+    def fluid(self) -> IDFBaseModel | None:
+        v = self.fluid_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def temperature_values(self) -> IDFBaseModel | None:
+        v = self.temperature_values_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidPropertyTemperatures'])
+
 
 class FluidPropertiesGlycolConcentration(IDFBaseModel):
     """glycol and what concentration it is"""
@@ -323,6 +343,16 @@ class FluidPropertiesGlycolConcentration(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['FluidAndGlycolNames']}
     )
     glycol_concentration: float | None = Field(default=None, ge=0.0, le=1.0)
+
+    @property
+    def user_defined_glycol(self) -> IDFBaseModel | None:
+        v = self.user_defined_glycol_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidAndGlycolNames'])
 
 
 class FluidPropertiesName(IDFBaseModel):
@@ -611,6 +641,26 @@ class FluidPropertiesSaturated(IDFBaseModel):
     property_value_249: float | None = Field(default=None)
     property_value_250: float | None = Field(default=None)
 
+    @property
+    def fluid(self) -> IDFBaseModel | None:
+        v = self.fluid_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def temperature_values(self) -> IDFBaseModel | None:
+        v = self.temperature_values_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidPropertyTemperatures'])
+
 
 class FluidPropertiesSuperheated(IDFBaseModel):
     """fluid properties for the superheated region"""
@@ -888,6 +938,26 @@ class FluidPropertiesSuperheated(IDFBaseModel):
     property_value_248: float | None = Field(default=None)
     property_value_249: float | None = Field(default=None)
     property_value_250: float | None = Field(default=None)
+
+    @property
+    def fluid(self) -> IDFBaseModel | None:
+        v = self.fluid_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def temperature_values(self) -> IDFBaseModel | None:
+        v = self.temperature_values_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidPropertyTemperatures'])
 
 
 class FluidPropertiesTemperatures(IDFBaseModel):

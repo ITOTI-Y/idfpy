@@ -85,6 +85,16 @@ class WindowMaterialGlazingGroupThermochromicTemperatureDataItem(IDFBaseModel):
         ..., json_schema_extra={'object_list': ['GlazingMaterialName']}
     )
 
+    @property
+    def window_material_glazing(self) -> IDFBaseModel | None:
+        v = self.window_material_glazing_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['GlazingMaterialName'])
+
 
 class Construction(IDFBaseModel):
     """Start with outside layer and work your way to the inside layer Up to 10
@@ -123,6 +133,106 @@ class Construction(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['MaterialName']}
     )
 
+    @property
+    def outside_layer_ref(self) -> IDFBaseModel | None:
+        v = self.outside_layer
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_2_ref(self) -> IDFBaseModel | None:
+        v = self.layer_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_3_ref(self) -> IDFBaseModel | None:
+        v = self.layer_3
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_4_ref(self) -> IDFBaseModel | None:
+        v = self.layer_4
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_5_ref(self) -> IDFBaseModel | None:
+        v = self.layer_5
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_6_ref(self) -> IDFBaseModel | None:
+        v = self.layer_6
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_7_ref(self) -> IDFBaseModel | None:
+        v = self.layer_7
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_8_ref(self) -> IDFBaseModel | None:
+        v = self.layer_8
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_9_ref(self) -> IDFBaseModel | None:
+        v = self.layer_9
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
+    @property
+    def layer_10_ref(self) -> IDFBaseModel | None:
+        v = self.layer_10
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class ConstructionAirBoundary(IDFBaseModel):
     """Indicates an open boundary between two zones. It may be used for base
@@ -155,6 +265,16 @@ class ConstructionAirBoundary(IDFBaseModel):
             'note': 'If the Air Exchange Method is SimpleMixing then this field specifies the air exchange schedule. If this field is blank, the schedule is always 1.0. If an AirflowNetwork simulation is active this fi...',
         },
     )
+
+    @property
+    def simple_mixing_schedule(self) -> IDFBaseModel | None:
+        v = self.simple_mixing_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ConstructionCfactorUndergroundWall(IDFBaseModel):
@@ -327,6 +447,326 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
     )
     layer_5_directional_back_absorptance_matrix_name: str | None = Field(default=None)
 
+    @property
+    def window_thermal_model_ref(self) -> IDFBaseModel | None:
+        v = self.window_thermal_model
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowThermalModelParameters'])
+
+    @property
+    def basis_matrix(self) -> IDFBaseModel | None:
+        v = self.basis_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def solar_optical_complex_front_transmittance_matrix(self) -> IDFBaseModel | None:
+        v = self.solar_optical_complex_front_transmittance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def solar_optical_complex_back_reflectance_matrix(self) -> IDFBaseModel | None:
+        v = self.solar_optical_complex_back_reflectance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def visible_optical_complex_front_transmittance_matrix(self) -> IDFBaseModel | None:
+        v = self.visible_optical_complex_front_transmittance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def visible_optical_complex_back_transmittance_matrix(self) -> IDFBaseModel | None:
+        v = self.visible_optical_complex_back_transmittance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def outside_layer(self) -> IDFBaseModel | None:
+        v = self.outside_layer_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
+
+    @property
+    def outside_layer_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.outside_layer_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def outside_layer_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.outside_layer_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_1(self) -> IDFBaseModel | None:
+        v = self.gap_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGap'])
+
+    @property
+    def cfs_gap_1_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.cfs_gap_1_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def cfs_gap_1_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.cfs_gap_1_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_2(self) -> IDFBaseModel | None:
+        v = self.layer_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
+
+    @property
+    def layer_2_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_2_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_2_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_2_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_2(self) -> IDFBaseModel | None:
+        v = self.gap_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGap'])
+
+    @property
+    def gap_2_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_2_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_2_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_2_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_3(self) -> IDFBaseModel | None:
+        v = self.layer_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
+
+    @property
+    def layer_3_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_3_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_3_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_3_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_3(self) -> IDFBaseModel | None:
+        v = self.gap_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGap'])
+
+    @property
+    def gap_3_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_3_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_3_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_3_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_4(self) -> IDFBaseModel | None:
+        v = self.layer_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
+
+    @property
+    def layer_4_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_4_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_4_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_4_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_4(self) -> IDFBaseModel | None:
+        v = self.gap_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGap'])
+
+    @property
+    def gap_4_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_4_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def gap_4_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.gap_4_directional_back_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
+    @property
+    def layer_5(self) -> IDFBaseModel | None:
+        v = self.layer_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
+
+    @property
+    def layer_5_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+        v = self.layer_5_directional_front_absorptance_matrix_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DataMatrices'])
+
 
 class ConstructionFfactorGroundFloor(IDFBaseModel):
     """Alternate method of describing slab-on-grade or underground floor
@@ -393,6 +833,16 @@ class ConstructionPropertyInternalHeatSource(IDFBaseModel):
         },
     )
 
+    @property
+    def construction(self) -> IDFBaseModel | None:
+        v = self.construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
 
 class ConstructionWindowDataFile(IDFBaseModel):
     """Initiates search of the Window data file for a window called Name."""
@@ -457,6 +907,116 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         default=None,
         json_schema_extra={'object_list': ['WindowEquivalentLayerMaterialNames']},
     )
+
+    @property
+    def outside_layer_ref(self) -> IDFBaseModel | None:
+        v = self.outside_layer
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_2_ref(self) -> IDFBaseModel | None:
+        v = self.layer_2
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_3_ref(self) -> IDFBaseModel | None:
+        v = self.layer_3
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_4_ref(self) -> IDFBaseModel | None:
+        v = self.layer_4
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_5_ref(self) -> IDFBaseModel | None:
+        v = self.layer_5
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_6_ref(self) -> IDFBaseModel | None:
+        v = self.layer_6
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_7_ref(self) -> IDFBaseModel | None:
+        v = self.layer_7
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_8_ref(self) -> IDFBaseModel | None:
+        v = self.layer_8
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_9_ref(self) -> IDFBaseModel | None:
+        v = self.layer_9
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_10_ref(self) -> IDFBaseModel | None:
+        v = self.layer_10
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
+
+    @property
+    def layer_11_ref(self) -> IDFBaseModel | None:
+        v = self.layer_11
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
 
 class Material(IDFBaseModel):
@@ -874,6 +1434,16 @@ class MaterialPropertyHeatAndMoistureTransferDiffusion(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'dimensionless'}
     )
 
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyHeatAndMoistureTransferRedistribution(IDFBaseModel):
     """HeatBalanceAlgorithm = CombinedHeatAndMoistureFiniteElement solution
@@ -1043,6 +1613,16 @@ class MaterialPropertyHeatAndMoistureTransferRedistribution(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'm2/s'}
     )
 
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyHeatAndMoistureTransferSettings(IDFBaseModel):
     """HeatBalanceAlgorithm = CombinedHeatAndMoistureFiniteElement solution
@@ -1068,6 +1648,16 @@ class MaterialPropertyHeatAndMoistureTransferSettings(IDFBaseModel):
             'note': 'units are the water/material density ratio at the beginning of each run period.',
         },
     )
+
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
 
 
 class MaterialPropertyHeatAndMoistureTransferSorptionIsotherm(IDFBaseModel):
@@ -1387,6 +1977,16 @@ class MaterialPropertyHeatAndMoistureTransferSorptionIsotherm(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'kg/m3'}
     )
 
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyHeatAndMoistureTransferSuction(IDFBaseModel):
     """HeatBalanceAlgorithm = CombinedHeatAndMoistureFiniteElement solution
@@ -1559,6 +2159,16 @@ class MaterialPropertyHeatAndMoistureTransferSuction(IDFBaseModel):
         default=None, ge=0.0, json_schema_extra={'units': 'm2/s'}
     )
 
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyHeatAndMoistureTransferThermalConductivity(IDFBaseModel):
     """HeatBalanceAlgorithm = CombinedHeatAndMoistureFiniteElement solution
@@ -1727,6 +2337,16 @@ class MaterialPropertyHeatAndMoistureTransferThermalConductivity(IDFBaseModel):
         default=None, gt=0.0, json_schema_extra={'units': 'W/m-K'}
     )
 
+    @property
+    def material(self) -> IDFBaseModel | None:
+        v = self.material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyMoisturePenetrationDepthSettings(IDFBaseModel):
     """Additional properties for moisture using EMPD procedure HeatBalanceAlgorithm
@@ -1781,6 +2401,16 @@ class MaterialPropertyMoisturePenetrationDepthSettings(IDFBaseModel):
         },
     )
 
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyPhaseChange(IDFBaseModel):
     """Additional properties for temperature dependent thermal conductivity and
@@ -1806,6 +2436,16 @@ class MaterialPropertyPhaseChange(IDFBaseModel):
         },
     )
     values: list[MaterialPropertyPhaseChangeValuesItem] | None = Field(default=None)
+
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
 
 
 class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
@@ -1928,6 +2568,16 @@ class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
         },
     )
 
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyVariableAbsorptance(IDFBaseModel):
     """MaterialProperty:VariableAbsorptance"""
@@ -1982,6 +2632,16 @@ class MaterialPropertyVariableAbsorptance(IDFBaseModel):
         json_schema_extra={'note': 'only used when Control Signal = "Scheduled"'},
     )
 
+    @property
+    def reference_material(self) -> IDFBaseModel | None:
+        v = self.reference_material_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
+
 
 class MaterialPropertyVariableThermalConductivity(IDFBaseModel):
     """Additional properties for temperature dependent thermal conductivity using
@@ -2001,6 +2661,16 @@ class MaterialPropertyVariableThermalConductivity(IDFBaseModel):
     values: list[MaterialPropertyVariableThermalConductivityValuesItem] | None = Field(
         default=None
     )
+
+    @property
+    def name_ref(self) -> IDFBaseModel | None:
+        v = self.name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['MaterialName'])
 
 
 class MaterialRoofVegetation(IDFBaseModel):
@@ -2740,6 +3410,36 @@ class WindowMaterialGap(IDFBaseModel):
         },
     )
 
+    @property
+    def gas_or_gas_mixture_ref(self) -> IDFBaseModel | None:
+        v = self.gas_or_gas_mixture
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowGasAndGasMixtures'])
+
+    @property
+    def deflection_state_ref(self) -> IDFBaseModel | None:
+        v = self.deflection_state
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowGapDeflectionStates'])
+
+    @property
+    def support_pillar_ref(self) -> IDFBaseModel | None:
+        v = self.support_pillar
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WindowGapSupportPillars'])
+
 
 class WindowMaterialGapEquivalentLayer(IDFBaseModel):
     """Gas material properties that are used in Windows Equivalent Layer References
@@ -3030,6 +3730,52 @@ class WindowMaterialGlazing(IDFBaseModel):
         },
     )
 
+    @property
+    def window_glass_spectral_data_set(self) -> IDFBaseModel | None:
+        v = self.window_glass_spectral_data_set_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpectralDataSets'])
+
+    @property
+    def window_glass_spectral_and_incident_angle_transmittance_data_set_table(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.window_glass_spectral_and_incident_angle_transmittance_data_set_table_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def window_glass_spectral_and_incident_angle_front_reflectance_data_set_table(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.window_glass_spectral_and_incident_angle_front_reflectance_data_set_table_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def window_glass_spectral_and_incident_angle_back_reflectance_data_set_table(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.window_glass_spectral_and_incident_angle_back_reflectance_data_set_table_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
 
 class WindowMaterialGlazingEquivalentLayer(IDFBaseModel):
     """Glass material properties for Windows or Glass Doors
@@ -3284,6 +4030,16 @@ class WindowMaterialGlazingEquivalentLayer(IDFBaseModel):
             'note': 'This is the R-Value in SI for the glass. The default value is an approximation for a single layer of glass at 1/4" inch thickness. This field is used only for movable insulation defined with this m...',
         },
     )
+
+    @property
+    def window_glass_spectral_data_set(self) -> IDFBaseModel | None:
+        v = self.window_glass_spectral_data_set_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SpectralDataSets'])
 
 
 class WindowMaterialGlazingGroupThermochromic(IDFBaseModel):

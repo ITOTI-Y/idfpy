@@ -46,6 +46,16 @@ class RefrigerationCaseAndWalkInListCasesAndWalkinsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def case_or_walkin(self) -> IDFBaseModel | None:
+        v = self.case_or_walkin_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInNames'])
+
 
 class RefrigerationCompressorListCompressorsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -58,6 +68,16 @@ class RefrigerationCompressorListCompressorsItem(IDFBaseModel):
         },
     )
 
+    @property
+    def refrigeration_compressor(self) -> IDFBaseModel | None:
+        v = self.refrigeration_compressor_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCompressorNames'])
+
 
 class RefrigerationTransferLoadListTransferLoadsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -69,6 +89,18 @@ class RefrigerationTransferLoadListTransferLoadsItem(IDFBaseModel):
             'note': 'Enter the name of a Refrigeration:Condenser:Cascade object OR the name of a Refrigeration:SecondarySystem object.',
         },
     )
+
+    @property
+    def cascade_condenser_or_secondary_system(self) -> IDFBaseModel | None:
+        v = self.cascade_condenser_name_or_secondary_system_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v, ['RefrigerationCascadeCondenserAndSecondarySystemNames']
+        )
 
 
 class RefrigerationWalkInZoneDataItem(IDFBaseModel):
@@ -150,6 +182,38 @@ class RefrigerationWalkInZoneDataItem(IDFBaseModel):
         },
     )
 
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def glass_reach_in_door_opening_schedule_facing_zone_ref(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.glass_reach_in_door_opening_schedule_name_facing_zone
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def stocking_door_opening_schedule_facing_zone_ref(self) -> IDFBaseModel | None:
+        v = self.stocking_door_opening_schedule_name_facing_zone
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneHVACRefrigerationChillerSetChillersItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -161,6 +225,16 @@ class ZoneHVACRefrigerationChillerSetChillersItem(IDFBaseModel):
             'note': 'This is the first chiller turned on to meet the zone load',
         },
     )
+
+    @property
+    def air_chiller(self) -> IDFBaseModel | None:
+        v = self.air_chiller_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationAirChillerNames'])
 
 
 class RefrigerationAirChiller(IDFBaseModel):
@@ -372,6 +446,56 @@ class RefrigerationAirChiller(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def capacity_correction_curve(self) -> IDFBaseModel | None:
+        v = self.capacity_correction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['TrivariateFunctions', 'UnivariateFunctions'])
+
+    @property
+    def heating_power_schedule(self) -> IDFBaseModel | None:
+        v = self.heating_power_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def defrost_schedule(self) -> IDFBaseModel | None:
+        v = self.defrost_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def defrost_drip_down_schedule(self) -> IDFBaseModel | None:
+        v = self.defrost_drip_down_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class RefrigerationCase(IDFBaseModel):
     """The Refrigeration Case object works in conjunction with a compressor rack, a
@@ -570,6 +694,96 @@ class RefrigerationCase(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def latent_case_credit_curve(self) -> IDFBaseModel | None:
+        v = self.latent_case_credit_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def case_lighting_schedule(self) -> IDFBaseModel | None:
+        v = self.case_lighting_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def case_defrost_schedule(self) -> IDFBaseModel | None:
+        v = self.case_defrost_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def case_defrost_drip_down_schedule(self) -> IDFBaseModel | None:
+        v = self.case_defrost_drip_down_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def defrost_energy_correction_curve(self) -> IDFBaseModel | None:
+        v = self.defrost_energy_correction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def refrigerated_case_restocking_schedule(self) -> IDFBaseModel | None:
+        v = self.refrigerated_case_restocking_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def case_credit_fraction_schedule(self) -> IDFBaseModel | None:
+        v = self.case_credit_fraction_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class RefrigerationCaseAndWalkInList(IDFBaseModel):
     """Provides a list of all the refrigerated cases, walk in coolers, or air
@@ -650,6 +864,46 @@ class RefrigerationCompressor(IDFBaseModel):
     transcritical_compressor_capacity_curve_name: BivariateFunctionsRef | None = Field(
         default=None, json_schema_extra={'object_list': ['BivariateFunctions']}
     )
+
+    @property
+    def refrigeration_compressor_power_curve(self) -> IDFBaseModel | None:
+        v = self.refrigeration_compressor_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def refrigeration_compressor_capacity_curve(self) -> IDFBaseModel | None:
+        v = self.refrigeration_compressor_capacity_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def transcritical_compressor_power_curve(self) -> IDFBaseModel | None:
+        v = self.transcritical_compressor_power_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
+
+    @property
+    def transcritical_compressor_capacity_curve(self) -> IDFBaseModel | None:
+        v = self.transcritical_compressor_capacity_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['BivariateFunctions'])
 
 
 class RefrigerationCompressorList(IDFBaseModel):
@@ -834,6 +1088,76 @@ class RefrigerationCompressorRack(IDFBaseModel):
         },
     )
 
+    @property
+    def compressor_rack_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.compressor_rack_cop_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def condenser_fan_power_function_of_temperature_curve(self) -> IDFBaseModel | None:
+        v = self.condenser_fan_power_function_of_temperature_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_cooled_condenser_outlet_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.water_cooled_condenser_outlet_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def evaporative_condenser_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.evaporative_condenser_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def evaporative_water_supply_tank(self) -> IDFBaseModel | None:
+        v = self.evaporative_water_supply_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def refrigeration_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+        v = self.refrigeration_case_name_or_walkin_name_or_caseandwalkinlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
+
+    @property
+    def heat_rejection_zone(self) -> IDFBaseModel | None:
+        v = self.heat_rejection_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class RefrigerationCondenserAirCooled(IDFBaseModel):
     """Air cooled condenser for a refrigeration system (Refrigeration:System)."""
@@ -897,6 +1221,16 @@ class RefrigerationCondenserAirCooled(IDFBaseModel):
     condensate_piping_refrigerant_inventory: float | None = Field(
         default=0.0, json_schema_extra={'units': 'kg', 'note': 'optional input'}
     )
+
+    @property
+    def rated_effective_total_heat_rejection_rate_curve(self) -> IDFBaseModel | None:
+        v = self.rated_effective_total_heat_rejection_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class RefrigerationCondenserCascade(IDFBaseModel):
@@ -1105,6 +1439,26 @@ class RefrigerationCondenserEvaporativeCooled(IDFBaseModel):
         default=0.0, json_schema_extra={'units': 'kg', 'note': 'optional input'}
     )
 
+    @property
+    def evaporative_water_supply_tank(self) -> IDFBaseModel | None:
+        v = self.evaporative_water_supply_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
+    @property
+    def evaporative_condenser_availability_schedule(self) -> IDFBaseModel | None:
+        v = self.evaporative_condenser_availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class RefrigerationCondenserWaterCooled(IDFBaseModel):
     """Water cooled condenser for a refrigeration system (Refrigeration:System)."""
@@ -1194,6 +1548,16 @@ class RefrigerationCondenserWaterCooled(IDFBaseModel):
         default=None, json_schema_extra={'units': 'kg', 'note': 'optional input'}
     )
 
+    @property
+    def water_outlet_temperature_schedule(self) -> IDFBaseModel | None:
+        v = self.water_outlet_temperature_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class RefrigerationGasCoolerAirCooled(IDFBaseModel):
     """The transcritical refrigeration system requires a single gas cooler to
@@ -1276,6 +1640,16 @@ class RefrigerationGasCoolerAirCooled(IDFBaseModel):
     gas_cooler_outlet_piping_refrigerant_inventory: float | None = Field(
         default=0.0, json_schema_extra={'units': 'kg', 'note': 'optional input'}
     )
+
+    @property
+    def rated_total_heat_rejection_rate_curve(self) -> IDFBaseModel | None:
+        v = self.rated_total_heat_rejection_rate_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
 
 
 class RefrigerationSecondarySystem(IDFBaseModel):
@@ -1439,6 +1813,56 @@ class RefrigerationSecondarySystem(IDFBaseModel):
         },
     )
 
+    @property
+    def refrigerated_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+        v = self.refrigerated_case_or_walkin_or_caseandwalkinlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
+
+    @property
+    def circulating_fluid(self) -> IDFBaseModel | None:
+        v = self.circulating_fluid_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidAndGlycolNames'])
+
+    @property
+    def variable_speed_pump_cubic_curve(self) -> IDFBaseModel | None:
+        v = self.variable_speed_pump_cubic_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def distribution_piping_zone(self) -> IDFBaseModel | None:
+        v = self.distribution_piping_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def receiver_separator_zone(self) -> IDFBaseModel | None:
+        v = self.receiver_separator_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class RefrigerationSubcooler(IDFBaseModel):
     """Two types of subcoolers are modeled by the detailed refrigeration system.
@@ -1488,6 +1912,16 @@ class RefrigerationSubcooler(IDFBaseModel):
             'note': 'Control Temperature Out for subcooled liquid Applicable only and required for mechanical subcoolers',
         },
     )
+
+    @property
+    def capacity_providing_system_ref(self) -> IDFBaseModel | None:
+        v = self.capacity_providing_system
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationSystemNames'])
 
 
 class RefrigerationSystem(IDFBaseModel):
@@ -1589,6 +2023,99 @@ class RefrigerationSystem(IDFBaseModel):
         json_schema_extra={'object_list': ['RefrigerationCompressorAndListNames']},
     )
 
+    @property
+    def refrigerated_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+        v = self.refrigerated_case_or_walkin_or_caseandwalkinlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
+
+    @property
+    def refrigeration_transfer_load_or_transferload_list(self) -> IDFBaseModel | None:
+        v = self.refrigeration_transfer_load_or_transferload_list_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(
+            v,
+            ['RefrigerationSecondarySystemAndCascadeCondenserAndTransferLoadListNames'],
+        )
+
+    @property
+    def refrigeration_condenser(self) -> IDFBaseModel | None:
+        v = self.refrigeration_condenser_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationAllTypesCondenserNames'])
+
+    @property
+    def compressor_or_compressorlist(self) -> IDFBaseModel | None:
+        v = self.compressor_or_compressorlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
+
+    @property
+    def refrigeration_system_working_fluid_type_ref(self) -> IDFBaseModel | None:
+        v = self.refrigeration_system_working_fluid_type
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def mechanical_subcooler(self) -> IDFBaseModel | None:
+        v = self.mechanical_subcooler_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationSubcoolerNames'])
+
+    @property
+    def liquid_suction_heat_exchanger_subcooler(self) -> IDFBaseModel | None:
+        v = self.liquid_suction_heat_exchanger_subcooler_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationSubcoolerNames'])
+
+    @property
+    def suction_piping_zone(self) -> IDFBaseModel | None:
+        v = self.suction_piping_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def high_stage_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+        v = self.high_stage_compressor_or_compressorlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
+
 
 class RefrigerationTranscriticalSystem(IDFBaseModel):
     """Detailed transcritical carbon dioxide (CO2) booster refrigeration systems
@@ -1672,6 +2199,90 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
             'note': 'Any text may be used here to categorize the end-uses in the ABUPS End Uses by Subcategory table.'
         },
     )
+
+    @property
+    def medium_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.medium_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
+
+    @property
+    def low_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist(
+        self,
+    ) -> IDFBaseModel | None:
+        v = self.low_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
+
+    @property
+    def refrigeration_gas_cooler(self) -> IDFBaseModel | None:
+        v = self.refrigeration_gas_cooler_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationAllTypesGasCoolerNames'])
+
+    @property
+    def high_pressure_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+        v = self.high_pressure_compressor_or_compressorlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
+
+    @property
+    def low_pressure_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+        v = self.low_pressure_compressor_or_compressorlist_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
+
+    @property
+    def refrigeration_system_working_fluid_type_ref(self) -> IDFBaseModel | None:
+        v = self.refrigeration_system_working_fluid_type
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['FluidNames'])
+
+    @property
+    def medium_temperature_suction_piping_zone(self) -> IDFBaseModel | None:
+        v = self.medium_temperature_suction_piping_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def low_temperature_suction_piping_zone(self) -> IDFBaseModel | None:
+        v = self.low_temperature_suction_piping_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class RefrigerationTransferLoadList(IDFBaseModel):
@@ -1821,6 +2432,66 @@ class RefrigerationWalkIn(IDFBaseModel):
     )
     zone_data: list[RefrigerationWalkInZoneDataItem] | None = Field(default=None)
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def heating_power_schedule(self) -> IDFBaseModel | None:
+        v = self.heating_power_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def lighting_schedule(self) -> IDFBaseModel | None:
+        v = self.lighting_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def defrost_schedule(self) -> IDFBaseModel | None:
+        v = self.defrost_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def defrost_drip_down_schedule(self) -> IDFBaseModel | None:
+        v = self.defrost_drip_down_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def restocking_schedule(self) -> IDFBaseModel | None:
+        v = self.restocking_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class ZoneHVACRefrigerationChillerSet(IDFBaseModel):
     """Works in conjunction with one or multiple air chillers, compressor racks,
@@ -1861,3 +2532,23 @@ class ZoneHVACRefrigerationChillerSet(IDFBaseModel):
     chillers: list[ZoneHVACRefrigerationChillerSetChillersItem] | None = Field(
         default=None
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def zone(self) -> IDFBaseModel | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])

@@ -53,6 +53,26 @@ class EvaporativeCoolerDirectCelDekPad(IDFBaseModel):
         default=None, json_schema_extra={'object_list': ['WaterStorageTankNames']}
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
     """Direct evaporative cooler with user-specified effectiveness (can represent
@@ -148,6 +168,46 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.effectiveness_flow_ratio_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_pump_power_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.water_pump_power_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
     """Indirect evaporative cooler with rigid media evaporative pad, recirculating
@@ -197,6 +257,26 @@ class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
         default=None,
         json_schema_extra={'note': 'Enter the name of an outdoor air node'},
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
 
 class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
@@ -351,6 +431,66 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         },
     )
 
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def wetbulb_effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.wetbulb_effectiveness_flow_ratio_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def drybulb_effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.drybulb_effectiveness_flow_ratio_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_pump_power_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.water_pump_power_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def secondary_air_fan_power_modifier_curve(self) -> IDFBaseModel | None:
+        v = self.secondary_air_fan_power_modifier_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])
+
 
 class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
     """Indirect evaporative cooler with wetted coil, recirculating water pump, and
@@ -392,3 +532,23 @@ class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
     secondary_air_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Enter the name of an outdoor air node'}
     )
+
+    @property
+    def availability_schedule(self) -> IDFBaseModel | None:
+        v = self.availability_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+        v = self.water_supply_storage_tank_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['WaterStorageTankNames'])

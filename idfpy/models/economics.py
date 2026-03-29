@@ -912,6 +912,16 @@ class UtilityCostChargeBlock(IDFBaseModel):
         },
     )
 
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
+
 
 class UtilityCostChargeSimple(IDFBaseModel):
     """UtilityCost:Charge:Simple is one of the most often used objects for tariff
@@ -970,6 +980,16 @@ class UtilityCostChargeSimple(IDFBaseModel):
         },
     )
 
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
+
 
 class UtilityCostComputation(IDFBaseModel):
     """The object lists a series of computations that are used to perform the
@@ -1023,6 +1043,16 @@ class UtilityCostComputation(IDFBaseModel):
     compute_step_28: str | None = Field(default=None)
     compute_step_29: str | None = Field(default=None)
     compute_step_30: str | None = Field(default=None)
+
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
 
 
 class UtilityCostQualify(IDFBaseModel):
@@ -1081,6 +1111,16 @@ class UtilityCostQualify(IDFBaseModel):
             'note': 'A number from 1 to 12. If no value entered 12 is assumed when the qualify type is minimum and 1 when the qualify type is maximum. This is the number of months that the threshold test applies to det...'
         },
     )
+
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
 
 
 class UtilityCostRatchet(IDFBaseModel):
@@ -1142,6 +1182,16 @@ class UtilityCostRatchet(IDFBaseModel):
             'note': 'A less common strategy is to say that the ratchet must be all demand greater than a value in this case an offset that is added to the demand may be entered here. If entered it is common for the off...'
         },
     )
+
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
 
 
 class UtilityCostTariff(IDFBaseModel):
@@ -1267,6 +1317,56 @@ class UtilityCostTariff(IDFBaseModel):
         },
     )
 
+    @property
+    def time_of_use_period_schedule(self) -> IDFBaseModel | None:
+        v = self.time_of_use_period_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def season_schedule(self) -> IDFBaseModel | None:
+        v = self.season_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def month_schedule(self) -> IDFBaseModel | None:
+        v = self.month_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def real_time_pricing_charge_schedule(self) -> IDFBaseModel | None:
+        v = self.real_time_pricing_charge_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
+    @property
+    def customer_baseline_load_schedule(self) -> IDFBaseModel | None:
+        v = self.customer_baseline_load_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleNames'])
+
 
 class UtilityCostVariable(IDFBaseModel):
     """Allows for the direct entry of monthly values into a utility tariff
@@ -1296,3 +1396,13 @@ class UtilityCostVariable(IDFBaseModel):
     october_value: float | None = Field(default=None)
     november_value: float | None = Field(default=None)
     december_value: float | None = Field(default=None)
+
+    @property
+    def tariff(self) -> IDFBaseModel | None:
+        v = self.tariff_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UtilityCostTariffs'])
