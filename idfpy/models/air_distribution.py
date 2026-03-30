@@ -119,6 +119,7 @@ class AirLoopHVAC(IDFBaseModel):
     """Defines a central forced air system."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     controller_list_name: ControllerListsRef | None = Field(
         default=None,
@@ -229,6 +230,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
     multiple AirLoopHVACs."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:DedicatedOutdoorAirSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_outdoorairsystem_name: ValidBranchEquipmentNamesRef | None = Field(
         default=None,
@@ -364,6 +366,7 @@ class AirLoopHVACMixer(IDFBaseModel):
     extensible). Node names cannot be duplicated within a single mixer list."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:Mixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outlet_node_name: str = Field(...)
     nodes: list[AirLoopHVACMixerNodesItem] | None = Field(default=None)
@@ -376,6 +379,7 @@ class AirLoopHVACOutdoorAirSystem(IDFBaseModel):
     outdoor air system is treated as a single component."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:OutdoorAirSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     controller_list_name: ControllerListsRef | None = Field(
         default=None,
@@ -417,6 +421,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
     """List equipment in simulation order"""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:OutdoorAirSystem:EquipmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     component_1_object_type: ValidOASysEquipmentTypesRef = Field(
         ..., json_schema_extra={'object_list': ['validOASysEquipmentTypes']}
@@ -580,6 +585,7 @@ class AirLoopHVACReturnPlenum(IDFBaseModel):
     plenum list."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ReturnPlenum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -607,6 +613,7 @@ class AirLoopHVACSplitter(IDFBaseModel):
     AirLoopHVAC objects listed in AirLoopHVAC:DedicatedOutdoorAirSystem."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:Splitter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     nodes: list[AirLoopHVACSplitterNodesItem] | None = Field(default=None)
@@ -627,6 +634,7 @@ class AirLoopHVACSupplyPlenum(IDFBaseModel):
     outlets. Node names cannot be duplicated within a single supply plenum list."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:SupplyPlenum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -652,6 +660,7 @@ class AirLoopHVACZoneMixer(IDFBaseModel):
     (AirLoopHVAC:ZoneMixer) list."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ZoneMixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outlet_node_name: str = Field(...)
     nodes: list[AirLoopHVACMixerNodesItem] | None = Field(default=None)
@@ -663,6 +672,7 @@ class AirLoopHVACZoneSplitter(IDFBaseModel):
     (AirLoopHVAC:ZoneSplitter) list."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ZoneSplitter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     nodes: list[AirLoopHVACSplitterNodesItem] | None = Field(default=None)
@@ -673,6 +683,7 @@ class OutdoorAirMixer(IDFBaseModel):
     OutdoorAir:Mixer object or across all outdoor air mixers."""
 
     _idf_object_type: ClassVar[str] = 'OutdoorAir:Mixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     mixed_air_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of Mixed Air Node'}

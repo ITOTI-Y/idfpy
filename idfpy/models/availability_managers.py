@@ -64,6 +64,7 @@ class AvailabilityManagerAssignmentList(IDFBaseModel):
     CycleOnZoneFansOnly (used only for air loops)."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManagerAssignmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     managers: list[AvailabilityManagerAssignmentListManagersItem] | None = Field(
         default=None
@@ -75,6 +76,7 @@ class AvailabilityManagerDifferentialThermostat(IDFBaseModel):
     nodes."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:DifferentialThermostat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hot_node_name: str = Field(...)
     cold_node_name: str = Field(...)
@@ -94,6 +96,7 @@ class AvailabilityManagerHighTemperatureTurnOff(IDFBaseModel):
     """Overrides fan/pump schedules depending on temperature at sensor node."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:HighTemperatureTurnOff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sensor_node_name: str = Field(...)
     temperature: float = Field(..., json_schema_extra={'units': 'C'})
@@ -103,6 +106,7 @@ class AvailabilityManagerHighTemperatureTurnOn(IDFBaseModel):
     """Overrides fan/pump schedules depending on temperature at sensor node."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:HighTemperatureTurnOn'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sensor_node_name: str = Field(...)
     temperature: float = Field(..., json_schema_extra={'units': 'C'})
@@ -123,6 +127,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
     ventilation manager, then zone hybrid ventilation manager is disabled."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:HybridVentilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: (AirPrimaryLoopsRef | HVACTemplateSystemsRef) | None = Field(
         default=None,
@@ -353,6 +358,7 @@ class AvailabilityManagerLowTemperatureTurnOff(IDFBaseModel):
     """Overrides fan/pump schedules depending on temperature at sensor node."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:LowTemperatureTurnOff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sensor_node_name: str = Field(...)
     temperature: float = Field(..., json_schema_extra={'units': 'C'})
@@ -379,6 +385,7 @@ class AvailabilityManagerLowTemperatureTurnOn(IDFBaseModel):
     """Overrides fan/pump schedules depending on temperature at sensor node."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:LowTemperatureTurnOn'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sensor_node_name: str = Field(...)
     temperature: float = Field(..., json_schema_extra={'units': 'C'})
@@ -390,6 +397,7 @@ class AvailabilityManagerNightCycle(IDFBaseModel):
     on."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:NightCycle'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     applicability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -508,6 +516,7 @@ class AvailabilityManagerNightVentilation(IDFBaseModel):
     precooling with outdoor air"""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:NightVentilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     applicability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -596,6 +605,7 @@ class AvailabilityManagerOptimumStart(IDFBaseModel):
     """Determines the optimal start of HVAC systems before occupancy."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:OptimumStart'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     applicability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -704,6 +714,7 @@ class AvailabilityManagerScheduled(IDFBaseModel):
     Schedule overrides fan/pump schedule."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:Scheduled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -725,6 +736,7 @@ class AvailabilityManagerScheduledOff(IDFBaseModel):
     action. Schedule overrides fan/pump schedule."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:ScheduledOff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -746,6 +758,7 @@ class AvailabilityManagerScheduledOn(IDFBaseModel):
     action. Schedule overrides fan/pump schedule."""
 
     _idf_object_type: ClassVar[str] = 'AvailabilityManager:ScheduledOn'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}

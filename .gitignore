@@ -7,3 +7,5 @@ build/
 *.lock
 
 .claude/
+
+_dev/

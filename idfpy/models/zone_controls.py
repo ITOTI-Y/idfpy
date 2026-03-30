@@ -29,6 +29,7 @@ class ThermostatSetpointDualSetpoint(IDFBaseModel):
     cooling."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:DualSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -63,6 +64,7 @@ class ThermostatSetpointSingleCooling(IDFBaseModel):
     throughout the simulation but only cooling is allowed."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -85,6 +87,7 @@ class ThermostatSetpointSingleHeating(IDFBaseModel):
     type."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleHeating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -107,6 +110,7 @@ class ThermostatSetpointSingleHeatingOrCooling(IDFBaseModel):
     heating and cooling."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleHeatingOrCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -131,6 +135,7 @@ class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:DualSetpoint'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_heating_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -176,6 +181,7 @@ class ThermostatSetpointThermalComfortFangerSingleCooling(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleCooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -204,6 +210,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeating(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeating'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -232,6 +239,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeatingOrCooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -383,6 +391,7 @@ class ZoneControlHumidistat(IDFBaseModel):
     dehumidifying."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Humidistat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -441,6 +450,7 @@ class ZoneControlThermostat(IDFBaseModel):
     all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}
@@ -653,6 +663,7 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
     definition applies to all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat:StagedDualSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}

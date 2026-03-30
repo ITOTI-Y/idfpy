@@ -1066,6 +1066,7 @@ class FaultModelThermostatOffset(IDFBaseModel):
     """This object describes fault of thermostat offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:ThermostatOffset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     thermostat_name: ZoneControlThermostaticNamesRef = Field(
         ...,

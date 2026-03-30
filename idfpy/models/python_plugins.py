@@ -37,6 +37,7 @@ class PythonPluginInstance(IDFBaseModel):
     calling point methods."""
 
     _idf_object_type: ClassVar[str] = 'PythonPlugin:Instance'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

@@ -24,6 +24,7 @@ class EvaporativeCoolerDirectCelDekPad(IDFBaseModel):
     water pump. This model has no controls other than its availability schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Direct:CelDekPad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -81,6 +82,7 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
     setpoint."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Direct:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -215,6 +217,7 @@ class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
     availability schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:CelDekPad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -286,6 +289,7 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
     setpoint."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -498,6 +502,7 @@ class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
     schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:WetCoil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

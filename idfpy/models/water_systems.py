@@ -70,6 +70,7 @@ class WaterUseConnections(IDFBaseModel):
     water 3. Internal connections to simulate drainwater heat recovery."""
 
     _idf_object_type: ClassVar[str] = 'WaterUse:Connections'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str | None = Field(default=None)
     outlet_node_name: str | None = Field(default=None)
@@ -159,6 +160,7 @@ class WaterUseEquipment(IDFBaseModel):
     also simulate drainwater heat recovery."""
 
     _idf_object_type: ClassVar[str] = 'WaterUse:Equipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     end_use_subcategory: str | None = Field(
         default='General',
@@ -344,6 +346,7 @@ class WaterUseStorage(IDFBaseModel):
     assumed to have unlimited capacity."""
 
     _idf_object_type: ClassVar[str] = 'WaterUse:Storage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     water_quality_subcategory: str | None = Field(default=None)
     maximum_capacity: float | None = Field(

@@ -298,6 +298,7 @@ class EnergyManagementSystemProgram(IDFBaseModel):
     Runtime Language"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:Program'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'no spaces allowed in name'})
     lines: list[EnergyManagementSystemProgramLinesItem] = Field(...)
 
@@ -307,6 +308,7 @@ class EnergyManagementSystemProgramCallingManager(IDFBaseModel):
     called and then lines of program code for EMS Runtime language"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:ProgramCallingManager'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'no spaces allowed in name'})
     energyplus_model_calling_point: (
         Literal[
@@ -357,6 +359,7 @@ class EnergyManagementSystemSubroutine(IDFBaseModel):
     line of EMS Runtime Language"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:Subroutine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'no spaces allowed in name'})
     lines: list[EnergyManagementSystemProgramLinesItem] | None = Field(default=None)
 

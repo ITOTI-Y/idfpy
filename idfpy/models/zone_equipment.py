@@ -278,6 +278,7 @@ class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
     for Simulation\" is Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneEquipmentMixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -330,6 +331,7 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
     ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance for Simulation\" is Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneEquipmentSplitter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -452,6 +454,7 @@ class SpaceHVACZoneReturnMixer(IDFBaseModel):
     for Simulation\" is Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneReturnMixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -563,6 +566,7 @@ class ZoneHVACEquipmentList(IDFBaseModel):
     net load after the DOAS air is added to the zone."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:EquipmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_distribution_scheme: (
         Literal[

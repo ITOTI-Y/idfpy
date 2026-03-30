@@ -52,6 +52,7 @@ class CoilCoolingDX(IDFBaseModel):
     after which, this object will replace all other Coil:Cooling:DX* objects."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     evaporator_inlet_node_name: str = Field(...)
     evaporator_outlet_node_name: str = Field(...)
@@ -151,6 +152,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
     or more speeds."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:CurveFit:OperatingMode'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_gross_total_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
         default='Autosize',
@@ -370,6 +372,7 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
     optional states such as subcool reheat for humidity control."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:CurveFit:Performance'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     crankcase_heater_capacity: float | None = Field(
         default=0.0, ge=0.0, json_schema_extra={'units': 'W'}
@@ -522,6 +525,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     mode."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:CurveFit:Speed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     gross_total_cooling_capacity_fraction: float = Field(
         ...,
@@ -779,6 +783,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     coil)."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:MultiSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1886,6 +1891,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     operation."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:SingleSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2273,6 +2279,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     storage for cooling."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:SingleSpeed:ThermalStorage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3573,6 +3580,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     or intertwined coil)."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:TwoSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4053,6 +4061,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
     are modeled as a face-split coil."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:TwoStageWithHumidityControlMode'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4238,6 +4247,7 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     modeled separately, see AirConditioner:VariableRefrigerantFlow."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:VariableRefrigerantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4345,6 +4355,7 @@ class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Cooling:DX:VariableRefrigerantFlow:FluidTemperatureControl'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4421,6 +4432,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     between speeds. Modeled as a single coil with variable-speed compressor."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:DX:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5931,6 +5943,7 @@ class CoilCoolingWater(IDFBaseModel):
     entering and leaving conditions."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -6010,6 +6023,7 @@ class CoilCoolingWaterDetailedGeometry(IDFBaseModel):
     plate fins, with inputs for detailed coil geometry specifications."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:Water:DetailedGeometry'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -6127,6 +6141,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
     describe the heat pump performance."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Cooling:WaterToAirHeatPump:EquationFit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -6312,6 +6327,7 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Cooling:WaterToAirHeatPump:ParameterEstimation'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -6535,6 +6551,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -8316,6 +8333,7 @@ class CoilDXASHRAE205Performance(IDFBaseModel):
     for future addition)."""
 
     _idf_object_type: ClassVar[str] = 'Coil:DX:ASHRAE205:Performance'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     representation_file_name: str = Field(
         ...,
@@ -8349,6 +8367,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     of performance data and will interpolate between speeds."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:DX:MultiSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -9436,6 +9455,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     defrost controls."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:DX:SingleSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -9761,6 +9781,7 @@ class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
     AirConditioner:VariableRefrigerantFlow."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:DX:VariableRefrigerantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule: ScheduleNamesRef | None = Field(
         default=None,
@@ -9847,6 +9868,7 @@ class CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Heating:DX:VariableRefrigerantFlow:FluidTemperatureControl'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule: ScheduleNamesRef | None = Field(
         default=None,
@@ -9902,6 +9924,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     interpolate between speeds."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:DX:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11223,6 +11246,7 @@ class CoilHeatingDesuperheater(IDFBaseModel):
     the setpoint node name is not entered."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Desuperheater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11293,6 +11317,7 @@ class CoilHeatingElectric(IDFBaseModel):
     parent component and the setpoint node name is not entered."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11333,6 +11358,7 @@ class CoilHeatingElectricMultiStage(IDFBaseModel):
     entered."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Electric:MultiStage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11400,6 +11426,7 @@ class CoilHeatingFuel(IDFBaseModel):
     parent component and the setpoint node name is not entered."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Fuel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11487,6 +11514,7 @@ class CoilHeatingGasMultiStage(IDFBaseModel):
     parent component and the setpoint node name is not entered."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Gas:MultiStage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11604,6 +11632,7 @@ class CoilHeatingSteam(IDFBaseModel):
     discharges condensate through steam traps to low pressure condensate line."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11657,6 +11686,7 @@ class CoilHeatingWater(IDFBaseModel):
     capacity and design temperatures."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11721,6 +11751,7 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
     uses normalized curves to describe the heat pump performance."""
 
     _idf_object_type: ClassVar[str] = 'Coil:Heating:WaterToAirHeatPump:EquationFit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -11840,6 +11871,7 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Heating:WaterToAirHeatPump:ParameterEstimation'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -12015,6 +12047,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -13721,6 +13754,7 @@ class CoilPerformanceDXCooling(IDFBaseModel):
     the bypassed flow and the flow through the active part of the coil."""
 
     _idf_object_type: ClassVar[str] = 'CoilPerformance:DX:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     gross_rated_total_cooling_capacity: float | Literal['Autosize'] = Field(
         ...,
@@ -13962,6 +13996,7 @@ class CoilSystemCoolingDX(IDFBaseModel):
     air equipment list."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:Cooling:DX'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -14061,6 +14096,7 @@ class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
     removal performance of the cooling coil (lower sensible heat ratio)."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:Cooling:DX:HeatExchangerAssisted'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heat_exchanger_object_type: Literal[
         'HeatExchanger:AirToAir:FlatPlate',
@@ -14123,6 +14159,7 @@ class CoilSystemCoolingWater(IDFBaseModel):
     equipment list."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:Cooling:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     air_inlet_node_name: str = Field(...)
     air_outlet_node_name: str = Field(...)
@@ -14229,6 +14266,7 @@ class CoilSystemCoolingWaterHeatExchangerAssisted(IDFBaseModel):
     performance of the cooling coil (lower sensible heat ratio)."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:Cooling:Water:HeatExchangerAssisted'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heat_exchanger_object_type: Literal[
         'HeatExchanger:AirToAir:FlatPlate', 'HeatExchanger:AirToAir:SensibleAndLatent'
@@ -14259,6 +14297,7 @@ class CoilSystemHeatingDX(IDFBaseModel):
     or outdoor air equipment list."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:Heating:DX'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -14310,6 +14349,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
     working modes."""
 
     _idf_object_type: ClassVar[str] = 'CoilSystem:IntegratedHeatPump:AirSource'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -14522,6 +14562,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
     WaterHeater:HeatPump:PumpedCondenser system."""
 
     _idf_object_type: ClassVar[str] = 'Coil:WaterHeating:AirToWaterHeatPump:Pumped'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -14858,6 +14899,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Coil:WaterHeating:AirToWaterHeatPump:VariableSpeed'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -16578,6 +16620,7 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
     WaterHeater:HeatPump:WrappedCondenser system."""
 
     _idf_object_type: ClassVar[str] = 'Coil:WaterHeating:AirToWaterHeatPump:Wrapped'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

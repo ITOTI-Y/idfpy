@@ -39,6 +39,7 @@ class BoilerHotWater(IDFBaseModel):
     curve name input blank."""
 
     _idf_object_type: ClassVar[str] = 'Boiler:HotWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: Literal[
         'Coal',
@@ -132,6 +133,7 @@ class BoilerSteam(IDFBaseModel):
     as follows: N9=1, N10=0, N11=0"""
 
     _idf_object_type: ClassVar[str] = 'Boiler:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: Literal[
         'Coal',
@@ -190,6 +192,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     to connect the source water to the evaporator or condenser side."""
 
     _idf_object_type: ClassVar[str] = 'CentralHeatPumpSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_method: Literal['', 'SmartMixing'] | None = Field(default='SmartMixing')
     cooling_loop_inlet_node_name: str = Field(...)
@@ -894,6 +897,7 @@ class ChillerAbsorption(IDFBaseModel):
     polynomial equations. Two sets of coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Absorption'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -991,6 +995,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     part-load ratio, condenser temperature, and chilled water temperature."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Absorption:Indirect'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -1242,6 +1247,7 @@ class ChillerCombustionTurbine(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:CombustionTurbine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -1435,6 +1441,7 @@ class ChillerConstantCOP(IDFBaseModel):
     Chiller where performance data is not available."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:ConstantCOP'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -1540,6 +1547,7 @@ class ChillerElectric(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -1717,6 +1725,7 @@ class ChillerElectricASHRAE205(IDFBaseModel):
     for chillers (Representation Specification RS0001)."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:ASHRAE205'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     representation_file_name: str = Field(
         ...,
@@ -1842,6 +1851,7 @@ class ChillerElectricEIR(IDFBaseModel):
     modeled using three polynomial equations. Three curves objects are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:EIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -2186,6 +2196,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     polynomial equations. Three curve objects are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:ReformulatedEIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -2481,6 +2492,7 @@ class ChillerEngineDriven(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:EngineDriven'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -2726,6 +2738,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     to DOE-2"""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeater:Absorption:DirectFired'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
         default='Autosize', json_schema_extra={'units': 'W'}
@@ -3024,6 +3037,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     DOE-2"""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeater:Absorption:DoubleEffect'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
         default='Autosize', json_schema_extra={'units': 'W'}
@@ -3323,6 +3337,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     required."""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeaterPerformance:Electric:EIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_cooling_mode_evaporator_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -3568,6 +3583,7 @@ class DistrictCooling(IDFBaseModel):
     """Centralized source of chilled water, such as a district cooling system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     chilled_water_inlet_node_name: str = Field(...)
     chilled_water_outlet_node_name: str = Field(...)
@@ -3597,6 +3613,7 @@ class DistrictHeatingSteam(IDFBaseModel):
     """Centralized source of Steam, such as a district heating system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictHeating:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     steam_inlet_node_name: str = Field(...)
     steam_outlet_node_name: str = Field(...)
@@ -3626,6 +3643,7 @@ class DistrictHeatingWater(IDFBaseModel):
     """Centralized source of hot water, such as a district heating system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictHeating:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hot_water_inlet_node_name: str = Field(...)
     hot_water_outlet_node_name: str = Field(...)
@@ -3656,6 +3674,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     with single- or variable speed compressors."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name_heating: ScheduleNamesRef | None = Field(
         default=None,
@@ -4878,6 +4897,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     models."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater:FuelFired:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5169,6 +5189,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     models."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater:FuelFired:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5507,6 +5528,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     """An EIR formulated water to water heat pump model, cooling operation."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:PlantLoop:EIR:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_side_inlet_node_name: str = Field(...)
     load_side_outlet_node_name: str = Field(...)
@@ -5771,6 +5793,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     """An EIR formulated water to water heat pump model, heating operation"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:PlantLoop:EIR:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_side_inlet_node_name: str = Field(...)
     load_side_outlet_node_name: str = Field(...)
@@ -6134,6 +6157,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
     """simple water-water heat pump curve-fit model"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:WaterToWater:EquationFit:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6213,6 +6237,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
     """simple water-water hp curve-fit model"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:WaterToWater:EquationFit:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6290,6 +6315,7 @@ class HeatPumpWaterToWaterParameterEstimationCooling(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatPump:WaterToWater:ParameterEstimation:Cooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6350,6 +6376,7 @@ class HeatPumpWaterToWaterParameterEstimationHeating(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatPump:WaterToWater:ParameterEstimation:Heating'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6412,6 +6439,7 @@ class PlantComponentTemperatureSource(IDFBaseModel):
     system"""
 
     _idf_object_type: ClassVar[str] = 'PlantComponent:TemperatureSource'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Component Name'})
     inlet_node: str = Field(
         ..., json_schema_extra={'note': 'Name of the source inlet node'}

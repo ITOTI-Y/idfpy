@@ -227,6 +227,7 @@ class DemandManagerElectricEquipment(IDFBaseModel):
     """used for demand limiting ElectricEquipment objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:ElectricEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -276,6 +277,7 @@ class DemandManagerExteriorLights(IDFBaseModel):
     """used for demand limiting Exterior:Lights objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:ExteriorLights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -323,6 +325,7 @@ class DemandManagerLights(IDFBaseModel):
     """used for demand limiting Lights objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -370,6 +373,7 @@ class DemandManagerThermostats(IDFBaseModel):
     """used for demand limiting ZoneControl:Thermostat objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Thermostats'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -420,6 +424,7 @@ class DemandManagerVentilation(IDFBaseModel):
     """used for demand limiting Controller:OutdoorAir objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Ventilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

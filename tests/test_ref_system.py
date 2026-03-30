@@ -6,12 +6,20 @@ import pytest
 
 from idfpy import IDF, RefValidationError
 from idfpy.models.constructions import Construction
+from idfpy.models.fluids import FluidPropertiesName, FluidPropertiesSaturated
 from idfpy.models.internal_gains import Lights
+from idfpy.models.misc import (
+    AirflowNetworkMultiZoneComponentZoneExhaustFan,
+    AirflowNetworkMultiZoneSurface,
+    AirflowNetworkMultiZoneZone,
+)
 from idfpy.models.schedules import ScheduleCompact
 from idfpy.models.thermal_zones import (
     BuildingSurfaceDetailed,
     BuildingSurfaceDetailedVerticesItem,
     Zone,
+    ZoneList,
+    ZoneListZonesItem,
 )
 
 # ── Helpers ──────────────────────────────────────────────
@@ -418,3 +426,228 @@ class TestIntegration:
         # All objects should be bound
         for obj in idf:
             assert obj._idf is idf
+
+
+# ── Cascade Rename ──────────────────────────────────────
+
+
+class TestCascadeRename:
+    """T1-T11: cascade rename of provider fields."""
+
+    def test_basic_zone_rename(self):
+        """T1: Zone.name change cascades to Lights consumer."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        schedule = _make_schedule()
+        light = _make_lights('Light1', 'Zone 1', 'Sched1')
+        idf.add(zone)
+        idf.add(schedule)
+        idf.add(light)
+
+        zone.name = 'Zone 2'
+
+        assert light.zone_or_zonelist_or_space_or_spacelist_name == 'Zone 2'
+        assert idf.get('Zone', 'Zone 2') is zone
+        assert idf.get('Zone', 'Zone 1') is None
+
+    def test_roundtrip_after_rename(self):
+        """T2: save/load roundtrip after rename preserves references."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        schedule = _make_schedule()
+        light = _make_lights('Light1', 'Zone 1', 'Sched1')
+        idf.add(zone)
+        idf.add(schedule)
+        idf.add(light)
+
+        zone.name = 'Zone 2'
+
+        d = idf.to_dict()
+        idf2 = IDF.from_dict(d)
+        zone2 = idf2.get('Zone', 'Zone 2')
+        light2 = idf2.get('Lights', 'Light1')
+        assert zone2 is not None
+        assert light2 is not None
+        assert light2.zone_or_zonelist_or_space_or_spacelist_name == 'Zone 2'
+
+    def test_two_level_cascade_afn_zone(self):
+        """T3a: Zone → AFN:MultiZone:Zone (L1 consumer+provider)."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        idf.add(zone)
+        afn_zone = AirflowNetworkMultiZoneZone(zone_name='Zone 1')
+        idf.add(afn_zone)
+
+        zone.name = 'Zone 2'
+
+        assert afn_zone.zone_name == 'Zone 2'
+        assert idf.get('AirflowNetwork:MultiZone:Zone', 'Zone 2') is afn_zone
+        assert idf.get('AirflowNetwork:MultiZone:Zone', 'Zone 1') is None
+
+    def test_two_level_cascade_fan_exhaust(self):
+        """T3b: Fan:ZoneExhaust → AFN:Component:ZoneExhaustFan → AFN:Surface."""
+        from idfpy.models.fans import FanZoneExhaust
+
+        idf = IDF()
+        fan = FanZoneExhaust(
+            name='ExhFan1',
+            pressure_rise=0.0,
+            air_inlet_node_name='InNode',
+            air_outlet_node_name='OutNode',
+        )
+        idf.add(fan)
+        afn_exhaust = AirflowNetworkMultiZoneComponentZoneExhaustFan(
+            name='ExhFan1',
+            air_mass_flow_coefficient_when_the_zone_exhaust_fan_is_off_at_reference_conditions=0.01,
+        )
+        idf.add(afn_exhaust)
+        surface = AirflowNetworkMultiZoneSurface(
+            surface_name='Wall1',
+            leakage_component_name='ExhFan1',
+        )
+        idf.add(surface)
+
+        fan.name = 'ExhFan2'
+
+        assert afn_exhaust.name == 'ExhFan2'
+        assert surface.leakage_component_name == 'ExhFan2'
+        assert idf.get('Fan:ZoneExhaust', 'ExhFan2') is fan
+        assert (
+            idf.get('AirflowNetwork:MultiZone:Component:ZoneExhaustFan', 'ExhFan2')
+            is afn_exhaust
+        )
+
+    def test_two_level_cascade_hvac_template(self):
+        """T3c: Zone → HVACTemplate:Zone:ConstantVolume."""
+        from idfpy.models.hvac_templates import HVACTemplateZoneConstantVolume
+
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        idf.add(zone)
+        hvac = HVACTemplateZoneConstantVolume(
+            zone_name='Zone 1',
+            template_constant_volume_system_name='Sys1',
+        )
+        idf.add(hvac)
+
+        zone.name = 'Zone 2'
+
+        assert hvac.zone_name == 'Zone 2'
+        assert idf.get('HVACTemplate:Zone:ConstantVolume', 'Zone 2') is hvac
+
+    def test_noop_same_value(self):
+        """T4: old == new does not trigger cascade."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        schedule = _make_schedule()
+        light = _make_lights('Light1', 'Zone 1', 'Sched1')
+        idf.add(zone)
+        idf.add(schedule)
+        idf.add(light)
+
+        zone.name = 'Zone 1'
+
+        assert light.zone_or_zonelist_or_space_or_spacelist_name == 'Zone 1'
+        assert idf.get('Zone', 'Zone 1') is zone
+
+    def test_unbound_object_no_cascade(self):
+        """T5: unbound object assignment is plain Pydantic."""
+        zone = Zone(name='Z1')
+        zone.name = 'Z2'
+        assert zone.name == 'Z2'
+
+    def test_non_name_provider_fluid(self):
+        """T6: FluidProperties:Name.fluid_name cascade, _objects key stays _0."""
+        idf = IDF()
+        fluid = FluidPropertiesName(fluid_name='Water', fluid_type='Glycol')
+        idf.add(fluid)
+        consumer = FluidPropertiesSaturated(fluid_name='Water')
+        idf.add(consumer)
+
+        fluid.fluid_name = 'Glycol50'
+
+        assert consumer.fluid_name == 'Glycol50'
+        # _objects key is auto-generated, should NOT change
+        assert idf.get('FluidProperties:Name', fluid._idf_obj_key) is fluid
+
+    def test_non_name_provider_afn_zone(self):
+        """T7: AFN:MultiZone:Zone uses zone_name as _objects key."""
+        idf = IDF()
+        afn_zone = AirflowNetworkMultiZoneZone(zone_name='Office')
+        idf.add(afn_zone)
+
+        assert afn_zone._idf_obj_key == 'Office'
+
+        afn_zone.zone_name = 'MainOffice'
+
+        assert idf.get('AirflowNetwork:MultiZone:Zone', 'MainOffice') is afn_zone
+        assert idf.get('AirflowNetwork:MultiZone:Zone', 'Office') is None
+
+    def test_validate_after_rename(self):
+        """T8: validate() returns 0 errors after rename."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        construction = _make_construction()
+        surface = _make_surface('Wall1', 'Zone 1', 'Const1')
+        schedule = _make_schedule()
+        light = _make_lights('Light1', 'Zone 1', 'Sched1')
+        idf.add(zone)
+        idf.add(construction)
+        idf.add(surface)
+        idf.add(schedule)
+        idf.add(light)
+
+        zone.name = 'NewZone'
+
+        errors = idf.validate()
+        zone_errors = [
+            e
+            for e in errors
+            if e.referenced_name in ('Zone 1', 'NewZone') and e.error_type == 'missing'
+        ]
+        assert zone_errors == []
+
+    def test_extensible_items_cascade(self):
+        """T9: ZoneList extensible items update on Zone rename."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        idf.add(zone)
+        zone_list = ZoneList(
+            name='AllZones',
+            zones=[ZoneListZonesItem(zone_name='Zone 1')],
+        )
+        idf.add(zone_list)
+
+        zone.name = 'Zone 2'
+
+        assert zone_list.zones[0].zone_name == 'Zone 2'
+
+    def test_consecutive_renames(self):
+        """T10: multiple renames in sequence."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        schedule = _make_schedule()
+        light = _make_lights('Light1', 'Zone 1', 'Sched1')
+        idf.add(zone)
+        idf.add(schedule)
+        idf.add(light)
+
+        zone.name = 'Zone 2'
+        zone.name = 'Zone 3'
+
+        assert light.zone_or_zonelist_or_space_or_spacelist_name == 'Zone 3'
+        assert idf.get('Zone', 'Zone 3') is zone
+        assert idf.get('Zone', 'Zone 1') is None
+        assert idf.get('Zone', 'Zone 2') is None
+
+    def test_idf_obj_key_reset_on_remove(self):
+        """T11: _idf_obj_key cleared after remove."""
+        idf = IDF()
+        zone = _make_zone('Zone 1')
+        idf.add(zone)
+
+        assert zone._idf_obj_key == 'Zone 1'
+
+        idf.remove('Zone', 'Zone 1')
+
+        assert zone._idf_obj_key == ''

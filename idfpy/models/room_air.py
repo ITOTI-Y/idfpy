@@ -262,6 +262,7 @@ class RoomAirNode(IDFBaseModel):
     """Define an air node for some types of nodal room air models"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     node_type: Literal[
         'Ceiling', 'Control', 'Floor', 'Inlet', 'MundtRoom', 'Return'
@@ -561,6 +562,7 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
     """define an air node for some types of nodal air models"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -625,6 +627,7 @@ class RoomAirNodeAirflowNetworkAdjacentSurfaceList(IDFBaseModel):
     """RoomAir:Node:AirflowNetwork:AdjacentSurfaceList"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:AdjacentSurfaceList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     surfaces: list[RoomAirNodeAirflowNetworkAdjacentSurfaceListSurfacesItem] | None = (
         Field(default=None)
@@ -635,6 +638,7 @@ class RoomAirNodeAirflowNetworkHVACEquipment(IDFBaseModel):
     """define the zone equipment associated with one particular RoomAir:Node"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:HVACEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     equipment_fractions: (
         list[RoomAirNodeAirflowNetworkHVACEquipmentEquipmentFractionsItem] | None
@@ -646,6 +650,7 @@ class RoomAirNodeAirflowNetworkInternalGains(IDFBaseModel):
     RoomAir:Node"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:InternalGains'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     gains: list[RoomAirNodeAirflowNetworkInternalGainsGainsItem] | None = Field(
         default=None

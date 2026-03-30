@@ -59,6 +59,7 @@ class DesignSpecificationAirTerminalSizing(IDFBaseModel):
     """This object is used to scale the sizing of air terminal units."""
 
     _idf_object_type: ClassVar[str] = 'DesignSpecification:AirTerminal:Sizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -112,6 +113,7 @@ class DesignSpecificationOutdoorAir(IDFBaseModel):
     referenced by other objects."""
 
     _idf_object_type: ClassVar[str] = 'DesignSpecification:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outdoor_air_method: (
         Literal[
@@ -213,6 +215,7 @@ class DesignSpecificationOutdoorAirSpaceList(IDFBaseModel):
     DesignSpecification:OutdoorAir object name."""
 
     _idf_object_type: ClassVar[str] = 'DesignSpecification:OutdoorAir:SpaceList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Name of the List'})
     space_specs: list[DesignSpecificationOutdoorAirSpaceListSpaceSpecsItem] | None = (
         Field(default=None)
@@ -225,6 +228,7 @@ class DesignSpecificationZoneAirDistribution(IDFBaseModel):
     referenced by Sizing:Zone and Controller:MechanicalVentilation objects"""
 
     _idf_object_type: ClassVar[str] = 'DesignSpecification:ZoneAirDistribution'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_air_distribution_effectiveness_in_cooling_mode: float | None = Field(
         default=1.0, gt=0.0, json_schema_extra={'units': 'dimensionless'}
@@ -262,6 +266,7 @@ class DesignSpecificationZoneHVACSizing(IDFBaseModel):
     which are referenced by other objects."""
 
     _idf_object_type: ClassVar[str] = 'DesignSpecification:ZoneHVAC:Sizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     cooling_supply_air_flow_rate_method: (
         Literal[

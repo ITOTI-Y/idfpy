@@ -47,6 +47,15 @@ class ObjectSpec:
     extensible_size: int | None = None
     format: str | None = None
 
+    @property
+    def provider_field_names(self) -> str | None:
+        """Get provider field names as a formatted frozenset literal, or None."""
+        names = sorted(f.python_name for f in self.fields if f.reference)
+        if not names:
+            return None
+        items = ', '.join(f'"{n}"' for n in names)
+        return '{' + items + '}'
+
 
 class SchemaParser:
     """Parser for Energy+.schema.epJSON files.

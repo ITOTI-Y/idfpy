@@ -330,6 +330,7 @@ class FluidPropertiesGlycolConcentration(IDFBaseModel):
     """glycol and what concentration it is"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:GlycolConcentration'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     glycol_type: Literal[
         'EthyleneGlycol', 'PropyleneGlycol', 'UserDefinedGlycolType'
@@ -360,6 +361,7 @@ class FluidPropertiesName(IDFBaseModel):
     fluid"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:Name'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'fluid_name'})
     fluid_name: str = Field(...)
     fluid_type: Literal['Glycol', 'Refrigerant'] = Field(...)
 
@@ -968,6 +970,7 @@ class FluidPropertiesTemperatures(IDFBaseModel):
     all temperature inputs)"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:Temperatures'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     temperature_1: float | None = Field(default=None, json_schema_extra={'units': 'C'})
     temperature_2: float | None = Field(default=None, json_schema_extra={'units': 'C'})

@@ -24,6 +24,7 @@ class HeaderedPumpsConstantSpeed(IDFBaseModel):
     parallel"""
 
     _idf_object_type: ClassVar[str] = 'HeaderedPumps:ConstantSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -142,6 +143,7 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
     parallel"""
 
     _idf_object_type: ClassVar[str] = 'HeaderedPumps:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -271,6 +273,7 @@ class PumpConstantSpeed(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit."""
 
     _idf_object_type: ClassVar[str] = 'Pump:ConstantSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -408,6 +411,7 @@ class PumpVariableSpeed(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit."""
 
     _idf_object_type: ClassVar[str] = 'Pump:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -632,6 +636,7 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
     Speed Condensate pump for Steam Systems"""
 
     _idf_object_type: ClassVar[str] = 'Pump:VariableSpeed:Condensate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)

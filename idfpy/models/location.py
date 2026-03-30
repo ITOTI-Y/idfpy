@@ -76,6 +76,7 @@ class RunPeriod(IDFBaseModel):
     periods may be input, but they may not overlap."""
 
     _idf_object_type: ClassVar[str] = 'RunPeriod'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -782,6 +783,7 @@ class SiteGroundTemperatureUndisturbedFiniteDifference(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Site:GroundTemperature:Undisturbed:FiniteDifference'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -814,6 +816,7 @@ class SiteGroundTemperatureUndisturbedKusudaAchenbach(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Site:GroundTemperature:Undisturbed:KusudaAchenbach'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -853,6 +856,7 @@ class SiteGroundTemperatureUndisturbedXing(IDFBaseModel):
     parameter model."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundTemperature:Undisturbed:Xing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -1035,6 +1039,7 @@ class SiteSpectrumData(IDFBaseModel):
     (0.25 to 2.5 microns) or visible spectrum (0.38 to 0.78 microns)"""
 
     _idf_object_type: ClassVar[str] = 'Site:SpectrumData'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     spectrum_data_type: Literal['Solar', 'Visible'] = Field(...)
     wavelength: float | None = Field(
@@ -1195,6 +1200,7 @@ class SizingPeriodDesignDay(IDFBaseModel):
     radiation values."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:DesignDay'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     month: int = Field(..., ge=1, le=12)
     day_of_month: int = Field(
@@ -1459,6 +1465,7 @@ class SizingPeriodWeatherFileConditionType(IDFBaseModel):
     document."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:WeatherFileConditionType'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'user supplied name for reporting'}
     )
@@ -1522,6 +1529,7 @@ class SizingPeriodWeatherFileDays(IDFBaseModel):
     """Use a weather file period for design sizing calculations."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:WeatherFileDays'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'user supplied name for reporting'}
     )

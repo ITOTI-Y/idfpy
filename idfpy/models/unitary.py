@@ -69,6 +69,7 @@ class AirLoopHVACUnitaryFurnaceHeatCool(IDFBaseModel):
     dehumidification control. Identical to AirLoopHVAC:UnitaryHeatCool."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:Unitary:Furnace:HeatCool'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -265,6 +266,7 @@ class AirLoopHVACUnitaryFurnaceHeatOnly(IDFBaseModel):
     AirLoopHVAC:UnitaryHeatOnly."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:Unitary:Furnace:HeatOnly'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -380,6 +382,7 @@ class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
     dehumidification control. Identical to AirLoopHVAC:Unitary:Furnace:HeatCool."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatCool'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -584,6 +587,7 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
     AirTerminal:SingleDuct:VAV:HeatAndCool:NoReheat."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatCool:VAVChangeoverBypass'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this unitary system.'}
     )
@@ -882,6 +886,7 @@ class AirLoopHVACUnitaryHeatOnly(IDFBaseModel):
     AirLoopHVAC:Unitary:Furnace:HeatOnly."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatOnly'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -996,6 +1001,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
     and supplemental heating coil (gas, electric, hot water, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatPump:AirToAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1236,6 +1242,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
     supplemental heating coil (gas, electric, hot water, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1529,6 +1536,7 @@ class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
     coil (gas, electric, hot water, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitaryHeatPump:WaterToAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1734,6 +1742,7 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
     air units, air loops, and as zone equipment if desired."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:UnitarySystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Unique name for the Unitary System.'}
     )
@@ -2355,6 +2364,7 @@ class UnitarySystemPerformanceMultispeed(IDFBaseModel):
     specified in the coil object."""
 
     _idf_object_type: ClassVar[str] = 'UnitarySystemPerformance:Multispeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     number_of_speeds_for_heating: int = Field(
         ...,

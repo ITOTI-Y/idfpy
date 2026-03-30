@@ -102,6 +102,7 @@ class ExternalInterfaceFunctionalMockupUnitExportToSchedule(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitExport:To:Schedule'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'schedule_name'})
     schedule_name: str = Field(...)
     schedule_type_limits_names: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -146,6 +147,7 @@ class ExternalInterfaceFunctionalMockupUnitImport(IDFBaseModel):
     """This object declares an FMU"""
 
     _idf_object_type: ClassVar[str] = 'ExternalInterface:FunctionalMockupUnitImport'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'fmu_file_name'})
     fmu_file_name: str = Field(...)
     fmu_timeout: float | None = Field(
         default=0.0, json_schema_extra={'units': 'ms', 'note': 'in milli-seconds'}
@@ -221,6 +223,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToSchedule(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitImport:To:Schedule'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_names: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -293,6 +296,7 @@ class ExternalInterfaceSchedule(IDFBaseModel):
     the warm-up period and the system sizing."""
 
     _idf_object_type: ClassVar[str] = 'ExternalInterface:Schedule'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}

@@ -98,6 +98,7 @@ class ScheduleCompact(IDFBaseModel):
     value> words \"Through\",\"For\",\"Interpolate\",\"Until\" must be included."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Compact'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -119,6 +120,7 @@ class ScheduleConstant(IDFBaseModel):
     """Constant hourly value for entire year."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Constant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -140,6 +142,7 @@ class ScheduleDayHourly(IDFBaseModel):
     """A Schedule:Day:Hourly contains 24 values for each hour of the day."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Day:Hourly'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -186,6 +189,7 @@ class ScheduleDayInterval(IDFBaseModel):
     for an entire day."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Day:Interval'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -214,6 +218,7 @@ class ScheduleDayList(IDFBaseModel):
     which can be sub-hourly in nature."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Day:List'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -248,6 +253,7 @@ class ScheduleFile(IDFBaseModel):
     data."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:File'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
@@ -314,6 +320,7 @@ class ScheduleTypeLimits(IDFBaseModel):
     contained in schedules"""
 
     _idf_object_type: ClassVar[str] = 'ScheduleTypeLimits'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -369,6 +376,7 @@ class ScheduleWeekCompact(IDFBaseModel):
     """Compact definition for Schedule:Day:List"""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Week:Compact'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     data: list[ScheduleWeekCompactDataItem] | None = Field(default=None)
 
@@ -378,6 +386,7 @@ class ScheduleWeekDaily(IDFBaseModel):
     day type."""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Week:Daily'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sunday_schedule_day_name: DayScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['DayScheduleNames']}
@@ -541,6 +550,7 @@ class ScheduleYear(IDFBaseModel):
     """A Schedule:Year contains from 1 to 52 week schedules"""
 
     _idf_object_type: ClassVar[str] = 'Schedule:Year'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}

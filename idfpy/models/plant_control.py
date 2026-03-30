@@ -81,6 +81,7 @@ class CondenserEquipmentList(IDFBaseModel):
     lower/upper limit."""
 
     _idf_object_type: ClassVar[str] = 'CondenserEquipmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     equipment: list[CondenserEquipmentListEquipmentItem] | None = Field(default=None)
 
@@ -94,6 +95,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
     Control Scheme for this item."""
 
     _idf_object_type: ClassVar[str] = 'CondenserEquipmentOperationSchemes'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_scheme_1_object_type: Literal[
         'PlantEquipmentOperation:CoolingLoad',
@@ -439,6 +441,7 @@ class PlantEquipmentList(IDFBaseModel):
     limit."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     equipment: list[PlantEquipmentListEquipmentItem] | None = Field(default=None)
 
@@ -450,6 +453,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     simultaneous heating and cooling and dispatch equipment accordingly."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:ChillerHeaterChangeover'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     primary_cooling_plant_setpoint_temperature: float = Field(
         ..., ge=-10.0, le=20.0, json_schema_extra={'units': 'C'}
@@ -606,6 +610,7 @@ class PlantEquipmentOperationComponentSetpoint(IDFBaseModel):
     setpoint at the component outlet node."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:ComponentSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     equipment_1_object_type: str = Field(...)
     equipment_1_name: str = Field(...)
@@ -697,6 +702,7 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
     successive cooling load ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:CoolingLoad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_range_1_lower_limit: float = Field(
         ..., ge=0.0, json_schema_extra={'units': 'W'}
@@ -906,6 +912,7 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
     successive heating load ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:HeatingLoad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_range_1_lower_limit: float = Field(
         ..., ge=0.0, json_schema_extra={'units': 'W'}
@@ -1114,6 +1121,7 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
     operate for successive outdoor dewpoint temperature ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorDewpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     dewpoint_temperature_range_1_lower_limit: float = Field(
         ..., ge=-70.0, le=70.0, json_schema_extra={'units': 'C'}
@@ -1325,6 +1333,7 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'PlantEquipmentOperation:OutdoorDewpointDifference'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_temperature_node_name: str = Field(...)
     dewpoint_temperature_difference_range_1_lower_limit: float = Field(
@@ -1534,6 +1543,7 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
     operate for successive outdoor dry-bulb temperature ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorDryBulb'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     dry_bulb_temperature_range_1_lower_limit: float = Field(
         ..., ge=-70.0, le=70.0, json_schema_extra={'units': 'C'}
@@ -1743,6 +1753,7 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
     temperature and the outdoor dry-bulb temperature."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorDryBulbDifference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_temperature_node_name: str = Field(...)
     dry_bulb_temperature_difference_range_1_lower_limit: float = Field(
@@ -1952,6 +1963,7 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
     operate for successive outdoor relative humidity ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorRelativeHumidity'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     relative_humidity_range_1_lower_limit: float = Field(
         ..., ge=0.0, le=100.0, json_schema_extra={'units': 'percent'}
@@ -2160,6 +2172,7 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
     operate for successive outdoor wet-bulb temperature ranges."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorWetBulb'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     wet_bulb_temperature_range_1_lower_limit: float = Field(
         ..., ge=-70.0, le=70.0, json_schema_extra={'units': 'C'}
@@ -2369,6 +2382,7 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
     temperature and the outdoor wet-bulb temperature."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:OutdoorWetBulbDifference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_temperature_node_name: str = Field(...)
     wet_bulb_temperature_difference_range_1_lower_limit: float = Field(
@@ -2581,6 +2595,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
     Control Scheme for this item."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperationSchemes'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_scheme_1_object_type: Literal[
         'PlantEquipmentOperation:ChillerHeaterChangeover',
@@ -2948,6 +2963,7 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
     scheme."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:ThermalEnergyStorage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     on_peak_schedule: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -3396,6 +3412,7 @@ class PlantEquipmentOperationUncontrolled(IDFBaseModel):
     loop flow resolver to maintain continuity in the fluid loop."""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:Uncontrolled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     equipment_list_name: PlantAndCondenserEquipmentListsRef = Field(
         ..., json_schema_extra={'object_list': ['PlantAndCondenserEquipmentLists']}

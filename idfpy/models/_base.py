@@ -54,7 +54,10 @@ class IDFBaseModel(BaseModel):
     _literal_case_maps: ClassVar[dict[str, dict[str, str | int]]] = {}
     # Cached per-class: field names whose type is list (extensible fields)
     _list_field_names: ClassVar[frozenset[str]] = frozenset()
+    # Per-class: field names that are reference providers (triggers cascade on rename)
+    _provider_fields: ClassVar[frozenset[str]] = frozenset()
     _idf_ref: weakref.ref | None = PrivateAttr(default=None)
+    _idf_obj_key: str = PrivateAttr(default='')
 
     @property
     def _idf(self) -> Any:
@@ -62,6 +65,19 @@ class IDFBaseModel(BaseModel):
         if self._idf_ref is None:
             return None
         return self._idf_ref()
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if name in self.__class__._provider_fields:
+            ref = getattr(self, '_idf_ref', None)
+            idf = ref() if ref is not None else None
+            if idf is not None:
+                old = getattr(self, name, None)
+                if old is not None and old != value:
+                    idf._before_provider_change(self, name, old, value)
+                    super().__setattr__(name, value)
+                    idf._after_provider_change(self, name, value)
+                    return
+        super().__setattr__(name, value)
 
     @classmethod
     def _get_list_field_names(cls) -> frozenset[str]:

@@ -34,6 +34,7 @@ class AirTerminalDualDuctConstantVolume(IDFBaseModel):
     """Central air system terminal unit, dual duct, constant volume."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:DualDuct:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -69,6 +70,7 @@ class AirTerminalDualDuctVAV(IDFBaseModel):
     """Central air system terminal unit, dual duct, variable volume."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:DualDuct:VAV'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -150,6 +152,7 @@ class AirTerminalDualDuctVAVOutdoorAir(IDFBaseModel):
     VAV duct is controlled to meet the zone cooling load."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:DualDuct:VAV:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -219,6 +222,7 @@ class AirTerminalSingleDuctConstantVolumeCooledBeam(IDFBaseModel):
     beam (active or passive)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:ConstantVolume:CooledBeam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -296,6 +300,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirTerminal:SingleDuct:ConstantVolume:FourPipeBeam'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     primary_air_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -593,6 +598,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirTerminal:SingleDuct:ConstantVolume:FourPipeInduction'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -704,6 +710,7 @@ class AirTerminalSingleDuctConstantVolumeNoReheat(IDFBaseModel):
     reheat coil"""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:ConstantVolume:NoReheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -773,6 +780,7 @@ class AirTerminalSingleDuctConstantVolumeReheat(IDFBaseModel):
     coil (hot water, electric, gas, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:ConstantVolume:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -848,6 +856,7 @@ class AirTerminalSingleDuctMixer(IDFBaseModel):
     dedicated outdoor air system (DOAS)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:Mixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zonehvac_unit_object_type: Literal[
         'AirLoopHVAC:UnitarySystem',
@@ -941,6 +950,7 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
     steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:ParallelPIU:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1086,6 +1096,7 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
     steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:SeriesPIU:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1222,6 +1233,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolNoReheat(IDFBaseModel):
     cooling and heating, with no reheat coil."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:VAV:HeatAndCool:NoReheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1277,6 +1289,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolReheat(IDFBaseModel):
     cooling and heating, with reheat coil (hot water, electric, gas, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:VAV:HeatAndCool:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1386,6 +1399,7 @@ class AirTerminalSingleDuctVAVNoReheat(IDFBaseModel):
     reheat coil."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:VAV:NoReheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1492,6 +1506,7 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
     coil (hot water, electric, gas, or steam)."""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:VAV:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1686,6 +1701,7 @@ class AirTerminalSingleDuctVAVReheatVariableSpeedFan(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirTerminal:SingleDuct:VAV:Reheat:VariableSpeedFan'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1802,6 +1818,7 @@ class ZoneHVACAirDistributionUnit(IDFBaseModel):
     ZoneHVAC:EquipmentList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:AirDistributionUnit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     air_distribution_unit_outlet_node_name: str = Field(...)
     air_terminal_object_type: Literal[

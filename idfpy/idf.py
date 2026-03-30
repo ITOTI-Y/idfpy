@@ -146,6 +146,7 @@ class IDF:
             name = f'_{idx}'
 
         objects[name] = obj
+        obj._idf_obj_key = name
         self._bind_recursive(obj)
         self._register_refs(obj)
         self._index_consumer_refs(obj, object_type, name)
@@ -222,6 +223,7 @@ class IDF:
             self._unbind_recursive(obj)
             self._unregister_refs(obj)
             self._unindex_consumer_refs(obj, object_type, name)
+            obj._idf_obj_key = ''
         return obj
 
     # ── Binding ──────────────────────────────────────────────
@@ -332,6 +334,95 @@ class IDF:
                 for item in value:
                     if isinstance(item, IDFBaseModel):
                         self._unindex_consumer_refs(item, obj_type, obj_name)
+
+    # ── Cascade rename ──────────────────────────────────────
+
+    def _before_provider_change(
+        self,
+        obj: IDFBaseModel,
+        field_name: str,
+        old_value: str,
+        new_value: str,
+    ) -> None:
+        """Prepare index structures before a provider field changes."""
+        object_type = obj.idf_object_type()
+        old_obj_key = obj._idf_obj_key
+
+        # 1. Tear down old index entries (obj still has old_value)
+        self._unregister_refs(obj)
+        self._unindex_consumer_refs(obj, object_type, old_obj_key)
+
+        # 2. Determine affected ref groups
+        affected_groups: set[str] = set()
+        for fn, groups in REF_PROVIDERS.get(object_type, []):
+            if fn == field_name:
+                affected_groups.update(groups)
+
+        # 3. Cascade: update consumer reference fields
+        old_key = old_value.upper()
+        new_key = new_value.upper()
+        for group in affected_groups:
+            bucket = self._reverse_index.get(group, {})
+            for consumer_type, consumer_name in list(bucket.get(old_key, [])):
+                consumer = self._objects.get(consumer_type, {}).get(consumer_name)
+                if consumer is not None:
+                    self._cascade_consumer_fields(
+                        consumer,
+                        old_key,
+                        new_value,
+                        affected_groups,
+                    )
+            # 4. Move reverse_index bucket key
+            entries = bucket.pop(old_key, [])
+            if entries:
+                bucket.setdefault(new_key, []).extend(entries)
+
+        # 5. Update _objects key when provider field is the key source
+        if old_obj_key == old_value:
+            objs = self._objects.get(object_type, {})
+            if old_obj_key in objs:
+                objs[new_value] = objs.pop(old_obj_key)
+                obj._idf_obj_key = new_value
+
+    def _after_provider_change(
+        self,
+        obj: IDFBaseModel,
+        field_name: str,
+        new_value: str,
+    ) -> None:
+        """Rebuild index structures after a provider field has changed."""
+        object_type = obj.idf_object_type()
+        self._register_refs(obj)
+        self._index_consumer_refs(obj, object_type, obj._idf_obj_key)
+
+    def _cascade_consumer_fields(
+        self,
+        consumer: IDFBaseModel,
+        old_key: str,
+        new_value: str,
+        affected_groups: set[str],
+    ) -> None:
+        """Update consumer reference fields that point to old_key."""
+        cls_name = type(consumer).__name__
+        for field_name, field_groups in REF_CONSUMERS.get(cls_name, {}).items():
+            if not affected_groups.intersection(field_groups):
+                continue
+            val = getattr(consumer, field_name, None)
+            if isinstance(val, str) and val.upper() == old_key:
+                setattr(consumer, field_name, new_value)
+
+        # Recurse into extensible list items
+        for field_name in type(consumer)._get_list_field_names():
+            items = getattr(consumer, field_name, None)
+            if items:
+                for item in items:
+                    if isinstance(item, IDFBaseModel):
+                        self._cascade_consumer_fields(
+                            item,
+                            old_key,
+                            new_value,
+                            affected_groups,
+                        )
 
     # ── Forward resolution ───────────────────────────────────
 

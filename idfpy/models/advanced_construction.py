@@ -355,6 +355,7 @@ class FoundationKiva(IDFBaseModel):
     methodology."""
 
     _idf_object_type: ClassVar[str] = 'Foundation:Kiva'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     initial_indoor_air_temperature: float | None = Field(
         default=None,
@@ -2219,6 +2220,7 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
     and added together."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceConvectionAlgorithm:Inside:UserCurve'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     reference_temperature_for_convection_heat_transfer: (
         Literal['AdjacentAirTemperature', 'MeanAirTemperature', 'SupplyAirTemperature']
@@ -2540,6 +2542,7 @@ class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
     and added together."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceConvectionAlgorithm:Outside:UserCurve'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     wind_speed_type_for_curve: (
         Literal[
@@ -3172,6 +3175,7 @@ class SurfacePropertyGroundSurfaces(IDFBaseModel):
     surface."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:GroundSurfaces'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ground_surfaces: list[SurfacePropertyGroundSurfacesGroundSurfacesItem] | None = (
         Field(default=None)
@@ -3421,6 +3425,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
     exterior surface."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:LocalEnvironment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     exterior_surface_name: SurfaceNamesRef | None = Field(
         default=None,
@@ -3514,6 +3519,7 @@ class SurfacePropertyOtherSideCoefficients(IDFBaseModel):
     ways."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:OtherSideCoefficients'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     combined_convective_radiative_film_coefficient: float = Field(
         ...,
@@ -3599,6 +3605,7 @@ class SurfacePropertyOtherSideConditionsModel(IDFBaseModel):
     other model results."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:OtherSideConditionsModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     type_of_modeling: (
         Literal[
@@ -3676,6 +3683,7 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
     """This object defines a list of surrounding surfaces for an exterior surface."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:SurroundingSurfaces'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sky_view_factor: float | None = Field(
         default=0.5, ge=0.0, le=1.0, json_schema_extra={'note': 'optional'}
@@ -3729,6 +3737,7 @@ class SurfacePropertyUnderwater(IDFBaseModel):
     water."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:Underwater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     distance_from_surface_centroid_to_leading_edge_of_boundary_layer: float = Field(
         ...,
@@ -3772,6 +3781,7 @@ class ZonePropertyLocalEnvironment(IDFBaseModel):
     object."""
 
     _idf_object_type: ClassVar[str] = 'ZoneProperty:LocalEnvironment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef | None = Field(
         default=None,

@@ -38,6 +38,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
     the water tank."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:ChilledWater:Mixed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float | None = Field(
         default=0.1, gt=0.0, json_schema_extra={'units': 'm3'}
@@ -167,6 +168,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     the water tank."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:ChilledWater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float = Field(..., gt=0.0, json_schema_extra={'units': 'm3'})
     tank_height: float = Field(
@@ -373,6 +375,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
     """ThermalStorage:HotWater:Stratified"""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:HotWater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float = Field(..., gt=0.0, json_schema_extra={'units': 'm3'})
     tank_height: float = Field(
@@ -610,6 +613,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
     system performance."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Ice:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -730,6 +734,7 @@ class ThermalStorageIceSimple(IDFBaseModel):
     PlantEquipmentOperation:ComponentSetpoint plant operation scheme."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Ice:Simple'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ice_storage_type: Literal['IceOnCoilExternal', 'IceOnCoilInternal'] = Field(
         ...,
@@ -768,6 +773,7 @@ class ThermalStoragePCM(IDFBaseModel):
     side nodes and 2 use side nodes."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:PCM'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -815,6 +821,7 @@ class ThermalStorageSizing(IDFBaseModel):
     """Sizing information for thermal energy stoarge capacity."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Sizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     on_peak_period_start_time: float = Field(
         ...,
@@ -842,6 +849,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
     WaterHeater:Mixed or WaterHeater:Stratified"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:HeatPump:PumpedCondenser'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1246,6 +1254,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
     Fan:OnOff, WaterHeater:Mixed"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:HeatPump:WrappedCondenser'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1622,6 +1631,7 @@ class WaterHeaterMixed(IDFBaseModel):
     WaterHeater:HeatPump:PumpedCondenser.)"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:Mixed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float | Literal['', 'Autosize'] | None = Field(
         default=0.0, json_schema_extra={'units': 'm3'}
@@ -2029,6 +2039,7 @@ class WaterHeaterStratified(IDFBaseModel):
     heater capacity), or a heat pump water heater (see WaterHeater:HeatPump:*.)"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     end_use_subcategory: str | None = Field(
         default='General',

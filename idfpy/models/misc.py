@@ -271,6 +271,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     ZoneHVAC:TerminalUnit:VariableRefrigerantFlow and ZoneTerminalUnitList."""
 
     _idf_object_type: ClassVar[str] = 'AirConditioner:VariableRefrigerantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(
         default=None,
         json_schema_extra={
@@ -2085,6 +2086,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
     """List controllers in order of control sequence"""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ControllerList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     controller_1_object_type: Literal[
         'Controller:OutdoorAir', 'Controller:WaterCoil'
@@ -2220,6 +2222,7 @@ class AirflowNetworkDistributionComponentCoil(IDFBaseModel):
     """This object defines the name of a coil used in an air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Coil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'coil_name'})
     coil_name: AFNCoilNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2292,6 +2295,7 @@ class AirflowNetworkDistributionComponentConstantPressureDrop(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:ConstantPressureDrop'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2310,6 +2314,7 @@ class AirflowNetworkDistributionComponentDuct(IDFBaseModel):
     the duct."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Duct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2390,6 +2395,7 @@ class AirflowNetworkDistributionComponentFan(IDFBaseModel):
     """This object defines the name of the supply Air Fan used in an Air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Fan'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'fan_name'})
     fan_name: FansCVandOnOffandVAVRef | FansSystemModelRef = Field(
         ...,
         json_schema_extra={
@@ -2426,6 +2432,7 @@ class AirflowNetworkDistributionComponentHeatExchanger(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:HeatExchanger'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'heatexchanger_name'})
     heatexchanger_name: AFNHeatExchangerNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2475,6 +2482,7 @@ class AirflowNetworkDistributionComponentLeak(IDFBaseModel):
     """This object defines the characteristics of a supply or return air leak."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Leak'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2504,6 +2512,7 @@ class AirflowNetworkDistributionComponentLeakageRatio(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:LeakageRatio'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2550,6 +2559,7 @@ class AirflowNetworkDistributionComponentOutdoorAirFlow(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:OutdoorAirFlow'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outdoor_air_mixer_name: OutdoorAirMixersRef = Field(
         ..., json_schema_extra={'object_list': ['OutdoorAirMixers']}
@@ -2606,6 +2616,7 @@ class AirflowNetworkDistributionComponentReliefAirFlow(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:ReliefAirFlow'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outdoor_air_mixer_name: OutdoorAirMixersRef = Field(
         ..., json_schema_extra={'object_list': ['OutdoorAirMixers']}
@@ -2662,6 +2673,7 @@ class AirflowNetworkDistributionComponentTerminalUnit(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:TerminalUnit'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'terminal_unit_name'})
     terminal_unit_name: AFNTerminalUnitNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2792,6 +2804,7 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
     """This object defines the connection between two nodes and a component."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Linkage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2890,6 +2903,7 @@ class AirflowNetworkDistributionNode(IDFBaseModel):
     """This object represents an air distribution node in the AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2932,6 +2946,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
     the combination of RoomAir and AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:IntraZone:Linkage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3010,6 +3025,7 @@ class AirflowNetworkIntraZoneNode(IDFBaseModel):
     AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:IntraZone:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3064,6 +3080,7 @@ class AirflowNetworkMultiZoneComponentDetailedOpening(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:DetailedOpening'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3298,6 +3315,7 @@ class AirflowNetworkMultiZoneComponentHorizontalOpening(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:HorizontalOpening'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3343,6 +3361,7 @@ class AirflowNetworkMultiZoneComponentSimpleOpening(IDFBaseModel):
     or open."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Component:SimpleOpening'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3388,6 +3407,7 @@ class AirflowNetworkMultiZoneComponentZoneExhaustFan(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:ZoneExhaustFan'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: FansZoneExhaustRef = Field(
         ...,
         json_schema_extra={
@@ -3446,6 +3466,7 @@ class AirflowNetworkMultiZoneExternalNode(IDFBaseModel):
     building."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:ExternalNode'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -3499,6 +3520,7 @@ class AirflowNetworkMultiZoneReferenceCrackConditions(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:ReferenceCrackConditions'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3531,6 +3553,7 @@ class AirflowNetworkMultiZoneSpecifiedFlowRate(IDFBaseModel):
     """This object is used to define specified flow through a linkage."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:SpecifiedFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3764,6 +3787,7 @@ class AirflowNetworkMultiZoneSurfaceCrack(IDFBaseModel):
     """This object specifies the properties of airflow through a crack."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Surface:Crack'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3809,6 +3833,7 @@ class AirflowNetworkMultiZoneSurfaceEffectiveLeakageArea(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3854,6 +3879,7 @@ class AirflowNetworkMultiZoneWindPressureCoefficientArray(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:WindPressureCoefficientArray'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for the object.'}
     )
@@ -4192,6 +4218,7 @@ class AirflowNetworkMultiZoneWindPressureCoefficientValues(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:WindPressureCoefficientValues'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -4473,6 +4500,7 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
     door openings, both exterior and interior."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Zone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'zone_name'})
     zone_name: ZoneNamesRef = Field(
         ...,
         json_schema_extra={
@@ -4640,6 +4668,7 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
     opening and closing for both exterior and interior windows."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:OccupantVentilationControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -4875,6 +4904,7 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
     rate in an air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:ZoneControl:PressureController'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -4967,6 +4997,7 @@ class CondenserLoop(IDFBaseModel):
     to only one loop type or the other."""
 
     _idf_object_type: ClassVar[str] = 'CondenserLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_type: Literal['', 'UserDefinedFluidType', 'Water'] | None = Field(
         default='Water'
@@ -5104,6 +5135,7 @@ class ControllerMechanicalVentilation(IDFBaseModel):
     Object Name to increase allowable number of entries"""
 
     _idf_object_type: ClassVar[str] = 'Controller:MechanicalVentilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5152,6 +5184,7 @@ class ControllerOutdoorAir(IDFBaseModel):
     ventilation."""
 
     _idf_object_type: ClassVar[str] = 'Controller:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     relief_air_outlet_node_name: str = Field(...)
     return_air_node_name: str = Field(...)
@@ -5394,6 +5427,7 @@ class ControllerWaterCoil(IDFBaseModel):
     CoilSystem:Cooling:Water:HeatexchangerAssisted."""
 
     _idf_object_type: ClassVar[str] = 'Controller:WaterCoil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal[
         'HumidityRatio', 'Temperature', 'TemperatureAndHumidityRatio'
@@ -5435,6 +5469,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     AirLoopHVAC:OutdoorAirSystem, but can also be specified in any AirLoopHVAC."""
 
     _idf_object_type: ClassVar[str] = 'Dehumidifier:Desiccant:NoFans'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5765,6 +5800,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
     AirLoopHVAC:OutdoorAirSystem, but can also be specified in any AirLoopHVAC."""
 
     _idf_object_type: ClassVar[str] = 'Dehumidifier:Desiccant:System'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -6113,6 +6149,7 @@ class ExteriorLights(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -6976,6 +7013,7 @@ class HeatExchangerAirToAirFlatPlate(IDFBaseModel):
     air heat recovery."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:AirToAir:FlatPlate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7041,6 +7079,7 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
     streams."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:AirToAir:SensibleAndLatent'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7211,6 +7250,7 @@ class HeatExchangerDesiccantBalancedFlow(IDFBaseModel):
     exchanger."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:Desiccant:BalancedFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7271,6 +7311,7 @@ class HeatExchangerDesiccantBalancedFlowPerformanceDataType1(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatExchanger:Desiccant:BalancedFlow:PerformanceDataType1'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_air_flow_rate: float | Literal['Autosize'] | None = Field(
         default=None,
@@ -7408,6 +7449,7 @@ class HumidifierSteamElectric(IDFBaseModel):
     """Electrically heated steam humidifier with fan."""
 
     _idf_object_type: ClassVar[str] = 'Humidifier:Steam:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7467,6 +7509,7 @@ class HumidifierSteamGas(IDFBaseModel):
     """Natural gas fired steam humidifier with optional blower fan."""
 
     _idf_object_type: ClassVar[str] = 'Humidifier:Steam:Gas'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7813,6 +7856,7 @@ class LoadProfilePlant(IDFBaseModel):
     performance of the supply loop components. Optional inputs for steam loop."""
 
     _idf_object_type: ClassVar[str] = 'LoadProfile:Plant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -7871,6 +7915,7 @@ class MatrixTwoDimension(IDFBaseModel):
     number of values must equal N1 x N2"""
 
     _idf_object_type: ClassVar[str] = 'Matrix:TwoDimension'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     number_of_rows: int = Field(...)
     number_of_columns: int = Field(...)
@@ -7930,6 +7975,7 @@ class PlantLoop(IDFBaseModel):
     """Defines a central plant loop."""
 
     _idf_object_type: ClassVar[str] = 'PlantLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_type: Literal['', 'Steam', 'UserDefinedFluidType', 'Water'] | None = Field(
         default='Water'
@@ -8086,6 +8132,7 @@ class TableIndependentVariable(IDFBaseModel):
     object."""
 
     _idf_object_type: ClassVar[str] = 'Table:IndependentVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     interpolation_method: Literal['', 'Cubic', 'Linear'] | None = Field(
         default='Linear'
@@ -8120,6 +8167,7 @@ class TableIndependentVariableList(IDFBaseModel):
     objects."""
 
     _idf_object_type: ClassVar[str] = 'Table:IndependentVariableList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     independent_variables: (
         list[TableIndependentVariableListIndependentVariablesItem] | None
@@ -8135,6 +8183,7 @@ class TableLookup(IDFBaseModel):
     independent variable."""
 
     _idf_object_type: ClassVar[str] = 'Table:Lookup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     independent_variable_list_name: IndependentVariableListNameRef = Field(
         ..., json_schema_extra={'object_list': ['IndependentVariableListName']}
@@ -8171,6 +8220,7 @@ class TemperingValve(IDFBaseModel):
     of two branches between a Splitter and a Mixer."""
 
     _idf_object_type: ClassVar[str] = 'TemperingValve'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(..., json_schema_extra={'note': 'Name of a Node'})
     outlet_node_name: str = Field(..., json_schema_extra={'note': 'Name of a Node'})
@@ -8189,6 +8239,9 @@ class ZoneTerminalUnitList(IDFBaseModel):
     AirConditioner:VariableRefrigerantFlow."""
 
     _idf_object_type: ClassVar[str] = 'ZoneTerminalUnitList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset(
+        {'zone_terminal_unit_list_name'}
+    )
     zone_terminal_unit_list_name: str = Field(...)
     terminal_units: list[ZoneTerminalUnitListTerminalUnitsItem] | None = Field(
         default=None

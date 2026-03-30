@@ -23,6 +23,7 @@ class CurveBicubic(IDFBaseModel):
     C10*x*y**2"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Bicubic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -88,6 +89,7 @@ class CurveBiquadratic(IDFBaseModel):
     C3*x**2 + C4*y + C5*y**2 + C6*x*y"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Biquadratic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -155,6 +157,7 @@ class CurveChillerPartLoadWithLift(IDFBaseModel):
     Chilled Water Temperature - Reference Chilled Water Temperature"""
 
     _idf_object_type: ClassVar[str] = 'Curve:ChillerPartLoadWithLift'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -209,6 +212,7 @@ class CurveCubic(IDFBaseModel):
     + C3*x**2 + C4*x**3"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Cubic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -254,6 +258,7 @@ class CurveCubicLinear(IDFBaseModel):
     C3*x**2 + C4*x**3) + (C5 + C6*x)*y"""
 
     _idf_object_type: ClassVar[str] = 'Curve:CubicLinear'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -297,6 +302,7 @@ class CurveDoubleExponentialDecay(IDFBaseModel):
     C1+C2*exp(C3*x)+C4*exp(C5*x)"""
 
     _idf_object_type: ClassVar[str] = 'Curve:DoubleExponentialDecay'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -335,6 +341,7 @@ class CurveExponent(IDFBaseModel):
     by C2, and C1 is added to the result."""
 
     _idf_object_type: ClassVar[str] = 'Curve:Exponent'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_constant: float = Field(...)
@@ -389,6 +396,7 @@ class CurveExponentialDecay(IDFBaseModel):
     C1+C2*exp(C3*x)"""
 
     _idf_object_type: ClassVar[str] = 'Curve:ExponentialDecay'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -424,6 +432,7 @@ class CurveExponentialSkewNormal(IDFBaseModel):
     curve. curve = see Input Output Reference"""
 
     _idf_object_type: ClassVar[str] = 'Curve:ExponentialSkewNormal'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'See InputOut Reference for curve description'}
     )
@@ -463,6 +472,7 @@ class CurveFanPressureRise(IDFBaseModel):
     Po) Po assumed to be zero See InputOut Reference for curve details"""
 
     _idf_object_type: ClassVar[str] = 'Curve:FanPressureRise'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -494,6 +504,7 @@ class CurveFunctionalPressureDrop(IDFBaseModel):
     / 2"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Functional:PressureDrop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     diameter: float = Field(
         ...,
@@ -538,6 +549,7 @@ class CurveLinear(IDFBaseModel):
     + C2*x"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Linear'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -582,6 +594,7 @@ class CurveQuadLinear(IDFBaseModel):
     + C2*w + C3*x + C4*y + C5*z"""
 
     _idf_object_type: ClassVar[str] = 'Curve:QuadLinear'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_w: float = Field(...)
@@ -670,6 +683,7 @@ class CurveQuadratic(IDFBaseModel):
     = C1 + C2*x + C3*x**2"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Quadratic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -714,6 +728,7 @@ class CurveQuadraticLinear(IDFBaseModel):
     C3*x**2) + (C4 + C5*x + C6*x**2)*y"""
 
     _idf_object_type: ClassVar[str] = 'Curve:QuadraticLinear'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -775,6 +790,7 @@ class CurveQuartic(IDFBaseModel):
     performance curve. curve = C1 + C2*x + C3*x**2 + C4*x**3 + C5*x**4"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Quartic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_x: float = Field(...)
@@ -821,6 +837,7 @@ class CurveQuintLinear(IDFBaseModel):
     + C2*v + C3*w + C4*x + C5*y + C6*z"""
 
     _idf_object_type: ClassVar[str] = 'Curve:QuintLinear'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float = Field(...)
     coefficient2_v: float = Field(...)
@@ -925,6 +942,7 @@ class CurveRectangularHyperbola1(IDFBaseModel):
     curve. curve = ((C1*x)/(C2+x))+C3"""
 
     _idf_object_type: ClassVar[str] = 'Curve:RectangularHyperbola1'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -960,6 +978,7 @@ class CurveRectangularHyperbola2(IDFBaseModel):
     curve. curve = ((C1*x)/(C2+x))+(C3*x)"""
 
     _idf_object_type: ClassVar[str] = 'Curve:RectangularHyperbola2'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_c1: float = Field(...)
     coefficient2_c2: float = Field(...)
@@ -995,6 +1014,7 @@ class CurveSigmoid(IDFBaseModel):
     C1+C2/[1+exp((C3-x)/C4)]**C5"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Sigmoid'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'See InputOut Reference for curve description'}
     )
@@ -1038,6 +1058,7 @@ class CurveTriquadratic(IDFBaseModel):
     a24*x*y**2*z + a25*x*y*z**2 +a26*x*y*z"""
 
     _idf_object_type: ClassVar[str] = 'Curve:Triquadratic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coefficient1_constant: float | None = Field(default=None)
     coefficient2_x_2: float | None = Field(default=None)

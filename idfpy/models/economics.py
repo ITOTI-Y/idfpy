@@ -1202,6 +1202,7 @@ class UtilityCostTariff(IDFBaseModel):
     UtilityCost:Variable and UtilityCost:Computation objects."""
 
     _idf_object_type: ClassVar[str] = 'UtilityCost:Tariff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

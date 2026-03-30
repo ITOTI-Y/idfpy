@@ -167,6 +167,7 @@ class Branch(IDFBaseModel):
     should NOT include splitters or mixers which define endpoints of branches"""
 
     _idf_object_type: ClassVar[str] = 'Branch'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pressure_drop_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
@@ -194,6 +195,7 @@ class BranchList(IDFBaseModel):
     cannot be duplicated within a single branch list."""
 
     _idf_object_type: ClassVar[str] = 'BranchList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     branches: list[BranchListBranchesItem] | None = Field(default=None)
 
@@ -203,6 +205,7 @@ class ConnectorList(IDFBaseModel):
     Connector:Splitter and one must be Connector:Mixer"""
 
     _idf_object_type: ClassVar[str] = 'ConnectorList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     connector_1_object_type: Literal['Connector:Mixer', 'Connector:Splitter'] = Field(
         ...
@@ -243,6 +246,7 @@ class ConnectorMixer(IDFBaseModel):
     within a single mixer list."""
 
     _idf_object_type: ClassVar[str] = 'Connector:Mixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outlet_branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
@@ -265,6 +269,7 @@ class ConnectorSplitter(IDFBaseModel):
     duplicated within a single Splitter list."""
 
     _idf_object_type: ClassVar[str] = 'Connector:Splitter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
@@ -286,6 +291,7 @@ class Duct(IDFBaseModel):
     """Passes inlet node state variables to outlet node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Duct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -308,6 +314,7 @@ class OutdoorAirNode(IDFBaseModel):
     defines local outdoor air environmental conditions."""
 
     _idf_object_type: ClassVar[str] = 'OutdoorAir:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     height_above_ground: float | None = Field(
         default=-1.0,
@@ -432,6 +439,7 @@ class PipeAdiabatic(IDFBaseModel):
     """Passes Inlet Node state variables to Outlet Node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Adiabatic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -441,6 +449,7 @@ class PipeAdiabaticSteam(IDFBaseModel):
     """Passes Inlet Node state variables to Outlet Node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Adiabatic:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -450,6 +459,7 @@ class PipeIndoor(IDFBaseModel):
     """Pipe model with transport delay and heat transfer to the environment."""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Indoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -518,6 +528,7 @@ class PipeOutdoor(IDFBaseModel):
     """Pipe model with transport delay and heat transfer to the environment."""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Outdoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -548,6 +559,7 @@ class PipeUnderground(IDFBaseModel):
     an alternative object to: HeatExchanger:Surface"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Underground'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -798,6 +810,7 @@ class PipingSystemUndergroundPipeCircuit(IDFBaseModel):
     branch on a plant loop."""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:PipeCircuit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pipe_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -839,6 +852,7 @@ class PipingSystemUndergroundPipeSegment(IDFBaseModel):
     a given x, y location in the domain"""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:PipeSegment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     x_position: float = Field(
         ...,

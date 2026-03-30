@@ -59,6 +59,9 @@ class {{ obj.class_name }}(IDFBaseModel):
     """{{ obj.memo | format_docstring if obj.memo else obj.name }}"""
 
     _idf_object_type: ClassVar[str] = "{{ obj.name }}"
+{% if obj.provider_field_names %}
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({{ obj.provider_field_names }})
+{% endif %}
 {% for spec in obj.fields %}
 {{ render_field(spec) }}
 {% endfor %}

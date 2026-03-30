@@ -118,6 +118,7 @@ class ZoneHVACBaseboardConvectiveElectric(IDFBaseModel):
     heating unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:Convective:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -180,6 +181,7 @@ class ZoneHVACBaseboardConvectiveWater(IDFBaseModel):
     heating unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:Convective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -250,6 +252,7 @@ class ZoneHVACBaseboardRadiantConvectiveElectric(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -319,6 +322,7 @@ class ZoneHVACBaseboardRadiantConvectiveSteam(IDFBaseModel):
     more groups to the end of the list."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -376,6 +380,7 @@ class ZoneHVACBaseboardRadiantConvectiveSteamDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:Baseboard:RadiantConvective:Steam:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_design_capacity_method: (
         Literal[
@@ -418,6 +423,7 @@ class ZoneHVACBaseboardRadiantConvectiveWater(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -490,6 +496,7 @@ class ZoneHVACBaseboardRadiantConvectiveWaterDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:Baseboard:RadiantConvective:Water:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_design_capacity_method: (
         Literal[
@@ -532,6 +539,7 @@ class ZoneHVACCoolingPanelRadiantConvectiveWater(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:CoolingPanel:RadiantConvective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -649,6 +657,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:HighTemperatureRadiant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -800,6 +809,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
     chilled water temperature circulating through the unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:ConstantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -1031,6 +1041,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlowDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:LowTemperatureRadiant:ConstantFlow:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_to_radiant_surface_heat_transfer_model: (
         Literal['', 'ConvectionOnly', 'ISOStandard'] | None
@@ -1112,6 +1123,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
     """Electric resistance low temperature radiant system"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1247,6 +1259,7 @@ class ZoneHVACLowTemperatureRadiantSurfaceGroup(IDFBaseModel):
     groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:SurfaceGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_fractions: (
         list[ZoneHVACLowTemperatureRadiantSurfaceGroupSurfaceFractionsItem] | None
@@ -1259,6 +1272,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
     chilled water flow to the unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:VariableFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -1371,6 +1385,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlowDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     fluid_to_radiant_surface_heat_transfer_model: (
         Literal['', 'ConvectionOnly', 'ISOStandard'] | None
@@ -1535,6 +1550,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
     building surface (wall, ceiling, or floor)."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:VentilatedSlab'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1933,5 +1949,6 @@ class ZoneHVACVentilatedSlabSlabGroup(IDFBaseModel):
     to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:VentilatedSlab:SlabGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     data: list[ZoneHVACVentilatedSlabSlabGroupDataItem] | None = Field(default=None)

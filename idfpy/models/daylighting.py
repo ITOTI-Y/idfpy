@@ -74,6 +74,7 @@ class DaylightingControls(IDFBaseModel):
     point. Glare from daylighting is also calculated."""
 
     _idf_object_type: ClassVar[str] = 'Daylighting:Controls'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SpaceNames', 'ZoneNames']}
@@ -406,6 +407,7 @@ class DaylightingReferencePoint(IDFBaseModel):
     field."""
 
     _idf_object_type: ClassVar[str] = 'Daylighting:ReferencePoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SpaceNames', 'ZoneNames']}

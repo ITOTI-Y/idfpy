@@ -246,6 +246,7 @@ class RefrigerationAirChiller(IDFBaseModel):
     for the sensible and latent heat exchange with the surrounding environment."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:AirChiller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -506,6 +507,7 @@ class RefrigerationCase(IDFBaseModel):
     impacts the temperature and humidity in the zone where the case is located."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Case'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -795,6 +797,7 @@ class RefrigerationCaseAndWalkInList(IDFBaseModel):
     or walk-ins."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:CaseAndWalkInList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     cases_and_walkins: (
         list[RefrigerationCaseAndWalkInListCasesAndWalkinsItem] | None
@@ -806,6 +809,7 @@ class RefrigerationCompressor(IDFBaseModel):
     the RefrigerationCompressor.idf dataset"""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Compressor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     refrigeration_compressor_power_curve_name: BivariateFunctionsRef = Field(
         ...,
@@ -916,6 +920,7 @@ class RefrigerationCompressorList(IDFBaseModel):
     dataset"""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:CompressorList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     compressors: list[RefrigerationCompressorListCompressorsItem] | None = Field(
         default=None
@@ -931,6 +936,7 @@ class RefrigerationCompressorRack(IDFBaseModel):
     (Coil:Heating:Desuperheater and Coil:WaterHeating:Desuperheater)."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:CompressorRack'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heat_rejection_location: Literal['', 'Outdoors', 'Zone'] | None = Field(
         default='Outdoors'
@@ -1163,6 +1169,7 @@ class RefrigerationCondenserAirCooled(IDFBaseModel):
     """Air cooled condenser for a refrigeration system (Refrigeration:System)."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Condenser:AirCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_effective_total_heat_rejection_rate_curve_name: (
         UnivariateFunctionsRef | None
@@ -1241,6 +1248,7 @@ class RefrigerationCondenserCascade(IDFBaseModel):
     as a refrigeration load for another system."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Condenser:Cascade'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_condensing_temperature: float = Field(
         ...,
@@ -1287,6 +1295,7 @@ class RefrigerationCondenserEvaporativeCooled(IDFBaseModel):
     (Refrigeration:System)."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Condenser:EvaporativeCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_effective_total_heat_rejection_rate: float = Field(
         ...,
@@ -1464,6 +1473,7 @@ class RefrigerationCondenserWaterCooled(IDFBaseModel):
     """Water cooled condenser for a refrigeration system (Refrigeration:System)."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Condenser:WaterCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_effective_total_heat_rejection_rate: float | None = Field(
         default=None,
@@ -1564,6 +1574,7 @@ class RefrigerationGasCoolerAirCooled(IDFBaseModel):
     reject the system heat."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:GasCooler:AirCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_total_heat_rejection_rate_curve_name: UnivariateFunctionsRef = Field(
         ...,
@@ -1661,6 +1672,7 @@ class RefrigerationSecondarySystem(IDFBaseModel):
     load, on the primary refrigeration system."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:SecondarySystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     refrigerated_case_or_walkin_or_caseandwalkinlist_name: RefrigerationCaseAndWalkInAndListNamesRef = Field(
         ...,
@@ -1872,6 +1884,7 @@ class RefrigerationSubcooler(IDFBaseModel):
     from one refrigeration system to another."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:Subcooler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     subcooler_type: Literal['', 'LiquidSuction', 'Mechanical'] | None = Field(
         default='LiquidSuction',
@@ -1930,6 +1943,7 @@ class RefrigerationSystem(IDFBaseModel):
     compressor(s), and the condenser."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:System'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     refrigerated_case_or_walkin_or_caseandwalkinlist_name: (
         RefrigerationCaseAndWalkInAndListNamesRef | None
@@ -2124,6 +2138,7 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
     and low-temperature loads."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:TranscriticalSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_type: Literal['SingleStage', 'TwoStage'] = Field(...)
     medium_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist_name: RefrigerationCaseAndWalkInAndListNamesRef = Field(
@@ -2294,6 +2309,7 @@ class RefrigerationTransferLoadList(IDFBaseModel):
     object)."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:TransferLoadList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     transfer_loads: list[RefrigerationTransferLoadListTransferLoadsItem] | None = Field(
         default=None
@@ -2308,6 +2324,7 @@ class RefrigerationWalkIn(IDFBaseModel):
     determine performance."""
 
     _idf_object_type: ClassVar[str] = 'Refrigeration:WalkIn'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2502,6 +2519,7 @@ class ZoneHVACRefrigerationChillerSet(IDFBaseModel):
     the sensible and latent heat exchange with the zone environment."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:RefrigerationChillerSet'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

@@ -54,6 +54,7 @@ class ComfortViewFactorAngles(IDFBaseModel):
     must be in the same enclosure."""
 
     _idf_object_type: ClassVar[str] = 'ComfortViewFactorAngles'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     angles: list[ComfortViewFactorAnglesAnglesItem] | None = Field(default=None)
 
@@ -65,6 +66,7 @@ class ElectricEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ElectricEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -786,6 +788,7 @@ class Lights(IDFBaseModel):
     Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1016,6 +1019,7 @@ class People(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'People'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1587,6 +1591,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
     assumed to cover the entire floor to which it is linked."""
 
     _idf_object_type: ClassVar[str] = 'SwimmingPool:Indoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: FloorSurfaceNamesRef = Field(
         ...,

@@ -43,6 +43,7 @@ class FanComponentModel(IDFBaseModel):
     drive (if used)."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ComponentModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     air_inlet_node_name: str = Field(...)
     air_outlet_node_name: str = Field(...)
@@ -440,6 +441,7 @@ class FanConstantVolume(IDFBaseModel):
     or other control signals."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -488,6 +490,7 @@ class FanOnOff(IDFBaseModel):
     continuously like Fan:ConstantVolume."""
 
     _idf_object_type: ClassVar[str] = 'Fan:OnOff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -603,6 +606,7 @@ class FanSystemModel(IDFBaseModel):
     levels for two-speed or multi-speed fans."""
 
     _idf_object_type: ClassVar[str] = 'Fan:SystemModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -741,6 +745,7 @@ class FanVariableVolume(IDFBaseModel):
     performance curve as a function of flow fraction."""
 
     _idf_object_type: ClassVar[str] = 'Fan:VariableVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -804,6 +809,7 @@ class FanZoneExhaust(IDFBaseModel):
     """Models a fan that exhausts air from a zone."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ZoneExhaust'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

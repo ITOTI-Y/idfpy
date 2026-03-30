@@ -518,6 +518,9 @@ class ZoneEarthtubeParameters(IDFBaseModel):
     """Parameters that apply to the vertical model for an earth tube"""
 
     _idf_object_type: ClassVar[str] = 'ZoneEarthtube:Parameters'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset(
+        {'earth_tube_model_parameters_name'}
+    )
     earth_tube_model_parameters_name: str = Field(...)
     nodes_above_earth_tube: int | None = Field(
         default=5, ge=3, le=10, json_schema_extra={'units': 'dimensionless'}
@@ -1558,6 +1561,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneVentilation:DesignFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1793,6 +1797,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneVentilation:WindandStackOpenArea'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,

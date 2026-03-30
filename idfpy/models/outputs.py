@@ -727,6 +727,7 @@ class OutputControlSurfaceColorScheme(IDFBaseModel):
     uses."""
 
     _idf_object_type: ClassVar[str] = 'OutputControl:SurfaceColorScheme'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'choose a name or use one of the DataSets'}
     )

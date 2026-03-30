@@ -1069,6 +1069,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
     optional heating coil and optional preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1662,6 +1663,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
     central multizone systems"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:DedicatedOutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2011,6 +2013,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
     """Dual-duct constant volume or variable volume air loop"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:DualDuct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2709,6 +2712,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
     optional preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:PackagedVAV'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3174,6 +3178,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
     """Unitary furnace with air conditioner"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:Unitary'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3541,6 +3546,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
     """Unitary furnace with electric air-to-air heat pump"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:UnitaryHeatPump:AirToAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3994,6 +4000,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
     water-to-air heat pumps."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:UnitarySystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4558,6 +4565,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
     preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:VAV'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5047,6 +5055,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
     more VRF zone terminal units (HVACTemplate:Zone:VRF)."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:VRF'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5393,6 +5402,7 @@ class HVACTemplateThermostat(IDFBaseModel):
     thermostat objects, one for \"Office\" and one for \"Storage\"."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Thermostat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5619,6 +5629,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
     must be defined elsewhere in the idf."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Zone:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'zone_name'})
     zone_name: ZoneNamesRef = Field(
         ...,
         json_schema_extra={

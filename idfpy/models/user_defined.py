@@ -24,6 +24,7 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
     Energy Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the air terminal'}
     )
@@ -146,6 +147,7 @@ class CoilUserDefined(IDFBaseModel):
     Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'Coil:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'This is the name of the coil'})
     overall_model_simulation_program_calling_manager_name: ProgramNamesRef | None = (
         Field(
@@ -253,6 +255,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'PlantComponent:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the plant component'}
     )
@@ -601,6 +604,7 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
     System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:ForcedAir:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the zone unit'}
     )

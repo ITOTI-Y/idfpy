@@ -352,6 +352,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
     object might be able to be used to model other room air dehumidifier types."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Dehumidifier:DX'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -507,6 +508,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
     operation)."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:EnergyRecoveryVentilator'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -647,6 +649,7 @@ class ZoneHVACEnergyRecoveryVentilatorController(IDFBaseModel):
     object to allow economizer (free cooling) operation when possible."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:EnergyRecoveryVentilator:Controller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     temperature_high_limit: float | None = Field(
         default=None,
@@ -761,6 +764,7 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
     fan, 100% outdoor air supply. Optional relief exhaust node"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:EvaporativeCoolerUnit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -941,6 +945,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
     fixed-position outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:FourPipeFanCoil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1184,6 +1189,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
     class may consume electricity, water, and up to two additional fuel types."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:HybridUnitaryHVAC'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1664,6 +1670,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
     DistrictHeatingWater and DistrictCooling."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:IdealLoadsAirSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1974,6 +1981,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
     recovery."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:OutdoorAirUnit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2162,6 +2170,7 @@ class ZoneHVACOutdoorAirUnitEquipmentList(IDFBaseModel):
     simulated sequentially in the order given in the equipment list."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:OutdoorAirUnit:EquipmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     component_1_object_type: (
         Literal[
@@ -2323,6 +2332,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
     electric, hot water, or steam) and fixed-position outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:PackagedTerminalAirConditioner'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2609,6 +2619,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
     steam), and fixed-position outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:PackagedTerminalHeatPump'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2976,6 +2987,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
     equipment."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:TerminalUnit:VariableRefrigerantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     terminal_unit_availability_schedule: ScheduleNamesRef | None = Field(
         default=None,
@@ -3337,6 +3349,7 @@ class ZoneHVACUnitHeater(IDFBaseModel):
     mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:UnitHeater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3485,6 +3498,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
     outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:UnitVentilator'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3710,6 +3724,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
     electric, hot water, or steam), and fixed-position outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:WaterToAirHeatPump'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4023,6 +4038,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
     direct expansion (DX) cooling coil, and fixed-position outdoor air mixer."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:WindowAirConditioner'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

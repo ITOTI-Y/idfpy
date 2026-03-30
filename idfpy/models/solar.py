@@ -57,6 +57,7 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
     heating air or water."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:FlatPlate:PhotovoltaicThermal'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     surface_name: AllShadingAndHTSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
@@ -122,6 +123,7 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
     calculations."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:FlatPlate:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     solarcollectorperformance_name: FlatPlateSolarCollectorParametersRef = Field(
         ..., json_schema_extra={'object_list': ['FlatPlateSolarCollectorParameters']}
@@ -165,6 +167,7 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
     calculations."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:IntegralCollectorStorage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     integralcollectorstorageparameters_name: CollectorStoragePerformanceRef = Field(
         ..., json_schema_extra={'object_list': ['CollectorStoragePerformance']}
@@ -216,6 +219,7 @@ class SolarCollectorPerformanceFlatPlate(IDFBaseModel):
     Ratings. See EnergyPlus DataSets file SolarCollectors.idf."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollectorPerformance:FlatPlate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     gross_area: float = Field(..., gt=0.0, json_schema_extra={'units': 'm2'})
     test_fluid: Literal['', 'Water'] | None = Field(default='Water')
@@ -245,6 +249,7 @@ class SolarCollectorPerformanceIntegralCollectorStorage(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:IntegralCollectorStorage'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ics_collector_type: Literal['', 'RectangularTank'] | None = Field(
         default='RectangularTank',
@@ -396,6 +401,7 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:PhotovoltaicThermal:BIPVT'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     boundary_conditions_model_name: OSCMNamesRef = Field(
         ...,
@@ -477,6 +483,7 @@ class SolarCollectorPerformancePhotovoltaicThermalSimple(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:PhotovoltaicThermal:Simple'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     fraction_of_surface_area_with_active_thermal_collector: float = Field(
         ..., le=1.0, gt=0.0, json_schema_extra={'units': 'dimensionless'}
@@ -517,6 +524,7 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
     systems."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:UnglazedTranspired'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     boundary_conditions_model_name: OSCMNamesRef = Field(
         ...,
