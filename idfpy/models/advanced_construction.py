@@ -7,7 +7,7 @@ Group: Advanced Construction, Surface, Zone Concepts
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -35,6 +35,21 @@ from ._refs import (
     ZoneListNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .constructions import ConstructionComplexFenestrationState
+    from .node_branch import OutdoorAirNode
+    from .thermal_zones import (
+        BuildingSurfaceDetailed,
+        FloorAdiabatic,
+        FloorDetailed,
+        FloorGroundContact,
+        FloorInterzone,
+        Space,
+        SpaceList,
+        Zone,
+        ZoneList,
+    )
 
 
 class FoundationKivaBlocksItem(IDFBaseModel):
@@ -289,7 +304,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionComplexFenestrationState | None:
         v = self.construction_name
         if not v:
             return None
@@ -1706,7 +1721,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     )
 
     @property
-    def simple_buoyancy_vertical_wall_user_curve(self) -> IDFBaseModel | None:
+    def simple_buoyancy_vertical_wall_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_vertical_wall_user_curve_name
         if not v:
             return None
@@ -1718,7 +1735,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def simple_buoyancy_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1730,7 +1747,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def simple_buoyancy_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1740,7 +1757,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def simple_buoyancy_stable_tilted_equation_user_curve(self) -> IDFBaseModel | None:
+    def simple_buoyancy_stable_tilted_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_stable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1752,7 +1771,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def simple_buoyancy_unstable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_unstable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1762,7 +1781,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def simple_buoyancy_windows_equation_user_curve(self) -> IDFBaseModel | None:
+    def simple_buoyancy_windows_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.simple_buoyancy_windows_equation_user_curve_name
         if not v:
             return None
@@ -1774,7 +1795,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -1786,7 +1807,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1798,7 +1819,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1810,7 +1831,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_heated_floor_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_heated_floor_equation_user_curve_name
         if not v:
             return None
@@ -1822,7 +1843,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_chilled_ceiling_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_chilled_ceiling_equation_user_curve_name
         if not v:
             return None
@@ -1834,7 +1855,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_stable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_stable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1846,7 +1867,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def floor_heat_ceiling_cool_unstable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_unstable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1856,7 +1877,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def floor_heat_ceiling_cool_window_equation_user_curve(self) -> IDFBaseModel | None:
+    def floor_heat_ceiling_cool_window_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.floor_heat_ceiling_cool_window_equation_user_curve_name
         if not v:
             return None
@@ -1868,7 +1891,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wall_panel_heating_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -1878,7 +1901,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def wall_panel_heating_heated_wall_equation_user_curve(self) -> IDFBaseModel | None:
+    def wall_panel_heating_heated_wall_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_heated_wall_equation_user_curve_name
         if not v:
             return None
@@ -1890,7 +1915,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wall_panel_heating_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1902,7 +1927,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wall_panel_heating_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1914,7 +1939,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wall_panel_heating_stable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_stable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1926,7 +1951,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wall_panel_heating_unstable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_unstable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -1936,7 +1961,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def wall_panel_heating_window_equation_user_curve(self) -> IDFBaseModel | None:
+    def wall_panel_heating_window_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.wall_panel_heating_window_equation_user_curve_name
         if not v:
             return None
@@ -1948,7 +1975,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -1960,7 +1987,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_vertical_walls_near_heater_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_vertical_walls_near_heater_equation_user_curve_name
         if not v:
             return None
@@ -1972,7 +1999,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1984,7 +2011,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -1996,7 +2023,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_stable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_stable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -2008,7 +2035,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def convective_zone_heater_unstable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_unstable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -2018,7 +2045,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def convective_zone_heater_windows_equation_user_curve(self) -> IDFBaseModel | None:
+    def convective_zone_heater_windows_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.convective_zone_heater_windows_equation_user_curve_name
         if not v:
             return None
@@ -2028,7 +2057,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def central_air_diffuser_wall_equation_user_curve(self) -> IDFBaseModel | None:
+    def central_air_diffuser_wall_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.central_air_diffuser_wall_equation_user_curve_name
         if not v:
             return None
@@ -2038,7 +2069,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def central_air_diffuser_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+    def central_air_diffuser_ceiling_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.central_air_diffuser_ceiling_equation_user_curve_name
         if not v:
             return None
@@ -2048,7 +2081,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def central_air_diffuser_floor_equation_user_curve(self) -> IDFBaseModel | None:
+    def central_air_diffuser_floor_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.central_air_diffuser_floor_equation_user_curve_name
         if not v:
             return None
@@ -2058,7 +2093,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def central_air_diffuser_window_equation_user_curve(self) -> IDFBaseModel | None:
+    def central_air_diffuser_window_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.central_air_diffuser_window_equation_user_curve_name
         if not v:
             return None
@@ -2070,7 +2107,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -2082,7 +2119,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -2094,7 +2131,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -2106,7 +2143,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_stable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_stable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -2118,7 +2155,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_unstable_tilted_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_unstable_tilted_equation_user_curve_name
         if not v:
             return None
@@ -2130,7 +2167,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mechanical_zone_fan_circulation_window_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mechanical_zone_fan_circulation_window_equation_user_curve_name
         if not v:
             return None
@@ -2142,7 +2179,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mixed_regime_buoyancy_assisting_flow_on_walls_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_buoyancy_assisting_flow_on_walls_equation_user_curve_name
         if not v:
             return None
@@ -2154,7 +2191,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def mixed_regime_buoyancy_opposing_flow_on_walls_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_buoyancy_opposing_flow_on_walls_equation_user_curve_name
         if not v:
             return None
@@ -2164,7 +2201,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def mixed_regime_stable_floor_equation_user_curve(self) -> IDFBaseModel | None:
+    def mixed_regime_stable_floor_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_stable_floor_equation_user_curve_name
         if not v:
             return None
@@ -2174,7 +2213,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def mixed_regime_unstable_floor_equation_user_curve(self) -> IDFBaseModel | None:
+    def mixed_regime_unstable_floor_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_unstable_floor_equation_user_curve_name
         if not v:
             return None
@@ -2184,7 +2225,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def mixed_regime_stable_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+    def mixed_regime_stable_ceiling_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_stable_ceiling_equation_user_curve_name
         if not v:
             return None
@@ -2194,7 +2237,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def mixed_regime_unstable_ceiling_equation_user_curve(self) -> IDFBaseModel | None:
+    def mixed_regime_unstable_ceiling_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_unstable_ceiling_equation_user_curve_name
         if not v:
             return None
@@ -2204,7 +2249,9 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionInsideModels'])
 
     @property
-    def mixed_regime_window_equation_user_curve(self) -> IDFBaseModel | None:
+    def mixed_regime_window_equation_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmInsideUserCurve | None:
         v = self.mixed_regime_window_equation_user_curve_name
         if not v:
             return None
@@ -2468,7 +2515,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wind_convection_windward_equation_vertical_wall_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.wind_convection_windward_equation_vertical_wall_user_curve_name
         if not v:
             return None
@@ -2480,7 +2527,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def wind_convection_leeward_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.wind_convection_leeward_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -2490,7 +2537,9 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionOutsideModels'])
 
     @property
-    def wind_convection_horizontal_roof_user_curve(self) -> IDFBaseModel | None:
+    def wind_convection_horizontal_roof_user_curve(
+        self,
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.wind_convection_horizontal_roof_user_curve_name
         if not v:
             return None
@@ -2502,7 +2551,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def natural_convection_vertical_wall_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.natural_convection_vertical_wall_equation_user_curve_name
         if not v:
             return None
@@ -2514,7 +2563,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def natural_convection_stable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.natural_convection_stable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -2526,7 +2575,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     @property
     def natural_convection_unstable_horizontal_equation_user_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfaceConvectionAlgorithmOutsideUserCurve | None:
         v = self.natural_convection_unstable_horizontal_equation_user_curve_name
         if not v:
             return None
@@ -2826,7 +2875,13 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def convection_coefficient_1_user_curve(self) -> IDFBaseModel | None:
+    def convection_coefficient_1_user_curve(
+        self,
+    ) -> (
+        SurfaceConvectionAlgorithmInsideUserCurve
+        | SurfaceConvectionAlgorithmOutsideUserCurve
+        | None
+    ):
         v = self.convection_coefficient_1_user_curve_name
         if not v:
             return None
@@ -2846,7 +2901,13 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def convection_coefficient_2_user_curve(self) -> IDFBaseModel | None:
+    def convection_coefficient_2_user_curve(
+        self,
+    ) -> (
+        SurfaceConvectionAlgorithmInsideUserCurve
+        | SurfaceConvectionAlgorithmOutsideUserCurve
+        | None
+    ):
         v = self.convection_coefficient_2_user_curve_name
         if not v:
             return None
@@ -3035,7 +3096,13 @@ class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def convection_coefficient_1_user_curve(self) -> IDFBaseModel | None:
+    def convection_coefficient_1_user_curve(
+        self,
+    ) -> (
+        SurfaceConvectionAlgorithmInsideUserCurve
+        | SurfaceConvectionAlgorithmOutsideUserCurve
+        | None
+    ):
         v = self.convection_coefficient_1_user_curve_name
         if not v:
             return None
@@ -3055,7 +3122,13 @@ class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def convection_coefficient_2_user_curve(self) -> IDFBaseModel | None:
+    def convection_coefficient_2_user_curve(
+        self,
+    ) -> (
+        SurfaceConvectionAlgorithmInsideUserCurve
+        | SurfaceConvectionAlgorithmOutsideUserCurve
+        | None
+    ):
         v = self.convection_coefficient_2_user_curve_name
         if not v:
             return None
@@ -3094,7 +3167,16 @@ class SurfacePropertyExposedFoundationPerimeter(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(
+        self,
+    ) -> (
+        BuildingSurfaceDetailed
+        | FloorAdiabatic
+        | FloorDetailed
+        | FloorGroundContact
+        | FloorInterzone
+        | None
+    ):
         v = self.surface_name
         if not v:
             return None
@@ -3160,7 +3242,9 @@ class SurfacePropertyExteriorNaturalVentedCAVity(IDFBaseModel):
     )
 
     @property
-    def boundary_conditions_model(self) -> IDFBaseModel | None:
+    def boundary_conditions_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.boundary_conditions_model_name
         if not v:
             return None
@@ -3484,7 +3568,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def surrounding_surfaces_object(self) -> IDFBaseModel | None:
+    def surrounding_surfaces_object(self) -> SurfacePropertySurroundingSurfaces | None:
         v = self.surrounding_surfaces_object_name
         if not v:
             return None
@@ -3494,7 +3578,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
         return idf._resolve_forward(v, ['SurroundingSurfacesNames'])
 
     @property
-    def outdoor_air_node(self) -> IDFBaseModel | None:
+    def outdoor_air_node(self) -> OutdoorAirNode | None:
         v = self.outdoor_air_node_name
         if not v:
             return None
@@ -3504,7 +3588,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
     @property
-    def ground_surfaces_object(self) -> IDFBaseModel | None:
+    def ground_surfaces_object(self) -> SurfacePropertyGroundSurfaces | None:
         v = self.ground_surfaces_object_name
         if not v:
             return None
@@ -3799,7 +3883,7 @@ class ZonePropertyLocalEnvironment(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -3809,7 +3893,7 @@ class ZonePropertyLocalEnvironment(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def outdoor_air_node(self) -> IDFBaseModel | None:
+    def outdoor_air_node(self) -> OutdoorAirNode | None:
         v = self.outdoor_air_node_name
         if not v:
             return None
@@ -3844,7 +3928,9 @@ class ZonePropertyUserViewFactorsBySurfaceName(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None

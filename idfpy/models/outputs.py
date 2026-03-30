@@ -1505,7 +1505,7 @@ class OutputSurfacesDrawing(IDFBaseModel):
     )
 
     @property
-    def report_specifications_2_ref(self) -> IDFBaseModel | None:
+    def report_specifications_2_ref(self) -> OutputControlSurfaceColorScheme | None:
         v = self.report_specifications_2
         if not v:
             return None

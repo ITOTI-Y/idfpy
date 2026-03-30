@@ -7,7 +7,7 @@ Group: Fans
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -20,6 +20,9 @@ from ._refs import (
     UnivariateFunctionsRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class FanSystemModelSpeedFractionsItem(IDFBaseModel):
@@ -588,7 +591,7 @@ class FanPerformanceNightVentilation(IDFBaseModel):
     )
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanComponentModel | FanConstantVolume | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -730,7 +733,7 @@ class FanSystemModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def motor_loss_zone(self) -> IDFBaseModel | None:
+    def motor_loss_zone(self) -> Zone | None:
         v = self.motor_loss_zone_name
         if not v:
             return None

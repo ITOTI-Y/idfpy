@@ -18,8 +18,10 @@ from .field_parser import FieldSpec
 from .schema_parser import ObjectSpec
 from .template_filters import (
     TEMPLATE_FILTERS,
+    collect_nav_imports,
     collect_used_ref_types,
     extract_nested_classes,
+    set_nav_type_mapping,
     set_object_list_ref_types,
     set_reference_class_name_groups,
 )
@@ -144,6 +146,23 @@ class ModelGenerator:
 
         # Group objects by output file
         file_groups = self._group_objects_by_file(specs)
+
+        # Pre-compute ref_group -> provider class names for nav type narrowing
+        group_to_classes: dict[str, set[str]] = {}
+        class_to_module: dict[str, str] = {}
+        for file_name, objs in file_groups.items():
+            for obj in objs:
+                class_to_module[obj.class_name] = file_name
+                for field in obj.fields:
+                    if field.reference:
+                        for group in field.reference:
+                            group_to_classes.setdefault(group, set()).add(
+                                obj.class_name
+                            )
+        # Also map nested class names to their modules (computed during generation)
+        # We'll update class_to_module as nested classes are discovered
+        self._class_to_module = class_to_module
+        set_nav_type_mapping(group_to_classes, class_to_module)
 
         # Track all generated classes for __init__.py
         all_classes: dict[str, list[str]] = {}  # file_name -> [class_names]
@@ -290,9 +309,16 @@ class ModelGenerator:
         # Extract nested classes from array fields
         nested_classes = extract_nested_classes(objects, deduplicate=True)
 
+        # Update class_to_module for nested classes
+        for nc in nested_classes:
+            self._class_to_module[nc['name']] = file_name
+
         # Collect reference types used by this file's objects
         used_ref_types = collect_used_ref_types(objects)
         has_refs = len(used_ref_types) > 0
+
+        # Collect TYPE_CHECKING imports for narrowed nav property types
+        nav_imports = collect_nav_imports(objects, nested_classes, file_name)
 
         # Render template
         content = template.render(
@@ -303,6 +329,7 @@ class ModelGenerator:
             nested_classes=nested_classes,
             has_refs=has_refs,
             used_ref_types=used_ref_types,
+            nav_imports=nav_imports,
         )
 
         # Write file
@@ -363,49 +390,38 @@ class ModelGenerator:
                 if item_fields:
                     consumers[nc['name']] = item_fields
 
-        # Write _ref_meta.py
-        lines = [
-            '"""Auto-generated reference metadata for EnergyPlus validation.',
-            '',
-            'DO NOT EDIT MANUALLY.',
-            f'Generated from Energy+.schema.epJSON version {schema_version}.',
-            '"""',
-            'from __future__ import annotations',
-            '',
-            '',
-        ]
+        # Render _ref_meta.py via template
+        env = self._get_jinja_env()
+        template = env.get_template('ref_meta_py.jinja2')
 
-        # REF_PROVIDERS
-        lines.append('REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {')
+        # Prepare sorted template data
+        providers_data = []
         for obj_type in sorted(providers):
             entries = providers[obj_type]
             formatted = ', '.join(f'("{fn}", {gl!r})' for fn, gl in entries)
-            lines.append(f'    "{obj_type}": [{formatted}],')
-        lines.append('}')
-        lines.append('')
-        lines.append('')
+            providers_data.append((obj_type, formatted))
 
-        # REF_GROUP_PROVIDERS
-        lines.append('REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {')
-        for group in sorted(group_providers):
-            types_str = ', '.join(f'"{t}"' for t in sorted(group_providers[group]))
-            lines.append(f'    "{group}": frozenset({{{types_str}}}),')
-        lines.append('}')
-        lines.append('')
-        lines.append('')
+        group_providers_data = [
+            (group, sorted(group_providers[group])) for group in sorted(group_providers)
+        ]
 
-        # REF_CONSUMERS
-        lines.append('REF_CONSUMERS: dict[str, dict[str, list[str]]] = {')
-        for cls_name in sorted(consumers):
-            lines.append(f'    "{cls_name}": {{')
-            for fn, groups in consumers[cls_name].items():
-                lines.append(f'        "{fn}": {groups!r},')
-            lines.append('    },')
-        lines.append('}')
-        lines.append('')
+        consumers_data = [
+            (
+                cls_name,
+                [(fn, repr(groups)) for fn, groups in consumers[cls_name].items()],
+            )
+            for cls_name in sorted(consumers)
+        ]
+
+        content = template.render(
+            schema_version=schema_version,
+            providers=providers_data,
+            group_providers=group_providers_data,
+            consumers=consumers_data,
+        )
 
         output_path = self.output_dir / '_ref_meta.py'
-        output_path.write_text('\n'.join(lines), encoding='utf-8')
+        output_path.write_text(content, encoding='utf-8')
         logger.info(
             f'Generated _ref_meta.py: {len(providers)} providers, '
             f'{len(group_providers)} groups, {len(consumers)} consumers'
@@ -429,187 +445,33 @@ class ModelGenerator:
             field_order_registry: Mapping of object type names to field orders.
             schema_version: Schema version for documentation.
         """
-        lines = [
-            '"""Auto-generated EnergyPlus IDF models.',
-            '',
-            'This module exports all EnergyPlus object types as Pydantic models.',
-            'Model classes are lazily imported on first access (PEP 562).',
-            f'Generated from Energy+.schema.epJSON version {schema_version}.',
-            '"""',
-            'from __future__ import annotations',
-            '',
-            'import importlib',
-            '',
-            'from ._base import IDFBaseModel',
-            '',
-        ]
+        env = self._get_jinja_env()
+        template = env.get_template('init_py.jinja2')
 
-        # Generate _CLASS_TO_MODULE mapping for lazy imports
-        lines.extend(self._format_class_to_module(all_classes))
+        # Invert: file_name -> [class_names] to class_name -> file_name
+        class_to_module: dict[str, str] = {}
+        for file_name, class_names in all_classes.items():
+            for cls_name in class_names:
+                class_to_module[cls_name] = file_name
 
-        lines.append('')
-        lines.append('')
-
-        # Generate __getattr__ for lazy imports
-        lines.extend(
-            [
-                'def __getattr__(name: str):',
-                '    """Lazily import model classes on first access (PEP 562)."""',
-                '    module_name = _CLASS_TO_MODULE.get(name)',
-                '    if module_name is None:',
-                '        raise AttributeError(',
-                '            f"module {__name__!r} has no attribute {name!r}"',
-                '        )',
-                '    module = importlib.import_module(f".{module_name}", __name__)',
-                '    value = getattr(module, name)',
-                '    globals()[name] = value',
-                '    return value',
-            ]
-        )
-
-        lines.append('')
-        lines.append('')
-
-        # Generate OBJECT_TYPE_REGISTRY
-        lines.extend(self._format_object_type_registry(object_type_registry))
-
-        lines.append('')
-
-        # Generate FIELD_ORDER_REGISTRY
-        lines.extend(self._format_field_order_registry(field_order_registry))
-
-        lines.append('')
-
-        # Helper functions
-        lines.extend(
-            [
-                '',
-                'def get_model_class(object_type: str) -> type[IDFBaseModel] | None:',
-                '    """Get model class by EnergyPlus object type name.',
-                '',
-                '    Args:',
-                "        object_type: EnergyPlus object type (e.g., 'Zone').",
-                '',
-                '    Returns:',
-                '        Model class or None if not found.',
-                '    """',
-                '    class_name = OBJECT_TYPE_REGISTRY.get(object_type)',
-                '    if class_name is None:',
-                '        return None',
-                '    cls = globals().get(class_name)',
-                '    if cls is not None:',
-                '        return cls',
-                '    module_name = _CLASS_TO_MODULE.get(class_name)',
-                '    if module_name is None:',
-                '        return None',
-                '    module = importlib.import_module(f".{module_name}", __name__)',
-                '    cls = getattr(module, class_name, None)',
-                '    if cls is not None:',
-                '        globals()[class_name] = cls',
-                '    return cls',
-                '',
-                '',
-                'def get_field_order(object_type: str) -> list[str]:',
-                '    """Get field order for an object type.',
-                '',
-                '    Args:',
-                '        object_type: EnergyPlus object type name.',
-                '',
-                '    Returns:',
-                '        List of field names in schema order, empty if not found.',
-                '    """',
-                '    return FIELD_ORDER_REGISTRY.get(object_type, [])',
-                '',
-            ]
-        )
-
-        # Generate __all__
+        # Build sorted __all__ exports
         all_exports = ['IDFBaseModel', 'OBJECT_TYPE_REGISTRY', 'FIELD_ORDER_REGISTRY']
         all_exports.extend(['get_model_class', 'get_field_order'])
         for class_names in all_classes.values():
             all_exports.extend(class_names)
         all_exports = sorted(set(all_exports))
 
-        lines.append('')
-        lines.append('__all__ = [')
-        for name in all_exports:
-            lines.append(f'    "{name}",')
-        lines.append(']')
+        content = template.render(
+            schema_version=schema_version,
+            class_to_module=sorted(class_to_module.items()),
+            object_type_registry=sorted(object_type_registry.items()),
+            field_order_registry=sorted(field_order_registry.items()),
+            all_exports=all_exports,
+        )
 
         output_path = self.output_dir / '__init__.py'
-        output_path.write_text('\n'.join(lines), encoding='utf-8')
+        output_path.write_text(content, encoding='utf-8')
         logger.debug(f'Written {output_path}')
-
-    def _format_object_type_registry(self, registry: dict[str, str]) -> list[str]:
-        """Format OBJECT_TYPE_REGISTRY as Python code.
-
-        Args:
-            registry: Mapping of object type names to class names.
-
-        Returns:
-            List of code lines.
-        """
-        lines = [
-            '# Object type name to model class name mapping',
-            'OBJECT_TYPE_REGISTRY: dict[str, str] = {',
-        ]
-        for obj_type in sorted(registry.keys()):
-            class_name = registry[obj_type]
-            lines.append(f'    "{obj_type}": "{class_name}",')
-        lines.append('}')
-        return lines
-
-    def _format_field_order_registry(self, registry: dict[str, list[str]]) -> list[str]:
-        """Format FIELD_ORDER_REGISTRY as Python code.
-
-        Args:
-            registry: Mapping of object type names to field name lists.
-
-        Returns:
-            List of code lines.
-        """
-        lines = [
-            '# Field order mapping for IDF output (preserves schema order)',
-            'FIELD_ORDER_REGISTRY: dict[str, list[str]] = {',
-        ]
-        for obj_type in sorted(registry.keys()):
-            fields = registry[obj_type]
-            if not fields:
-                lines.append(f'    "{obj_type}": [],')
-            elif len(fields) <= 3:
-                fields_str = ', '.join(f'"{f}"' for f in fields)
-                lines.append(f'    "{obj_type}": [{fields_str}],')
-            else:
-                lines.append(f'    "{obj_type}": [')
-                for field_name in fields:
-                    lines.append(f'        "{field_name}",')
-                lines.append('    ],')
-        lines.append('}')
-        return lines
-
-    def _format_class_to_module(self, all_classes: dict[str, list[str]]) -> list[str]:
-        """Format _CLASS_TO_MODULE mapping for lazy imports.
-
-        Args:
-            all_classes: Mapping of file names to class names.
-
-        Returns:
-            List of code lines.
-        """
-        # Invert: file_name -> [class_names] to class_name -> file_name
-        mapping: dict[str, str] = {}
-        for file_name, class_names in all_classes.items():
-            for cls_name in class_names:
-                mapping[cls_name] = file_name
-
-        lines = [
-            '# Class name to submodule mapping for lazy imports',
-            '_CLASS_TO_MODULE: dict[str, str] = {',
-        ]
-        for cls_name in sorted(mapping.keys()):
-            lines.append(f'    "{cls_name}": "{mapping[cls_name]}",')
-        lines.append('}')
-        return lines
 
     def _get_jinja_env(self) -> Environment:
         """Get or create the Jinja2 environment with filters.
@@ -709,86 +571,19 @@ class ModelGenerator:
             object_lists: Set of object list names.
             schema_version: Schema version for documentation.
         """
-        lines = [
-            '"""Auto-generated reference types for EnergyPlus object validation.',
-            '',
-            'DO NOT EDIT MANUALLY.',
-            f'Generated from Energy+.schema.epJSON version {schema_version}.',
-            '',
-            'This module provides type aliases with runtime validation for object',
-            'references. Use with validation context for reference checking.',
-            '"""',
-            'from __future__ import annotations',
-            '',
-            'from typing import Annotated, Any',
-            '',
-            'from pydantic import BeforeValidator',
-            '',
-            '',
+        env = self._get_jinja_env()
+        template = env.get_template('refs_py.jinja2')
+
+        ref_types = [
+            {'type_name': self._object_list_to_type_name(ol), 'object_list': ol}
+            for ol in sorted(object_lists)
         ]
 
-        # Add RefValidator class
-        lines.extend(self._get_ref_validator_code())
-
-        lines.append('')
-        lines.append('')
-        lines.append('# ' + '=' * 60)
-        lines.append('# Reference type aliases')
-        lines.append('# ' + '=' * 60)
-        lines.append('')
-
-        # Generate type aliases for each object_list
-        for obj_list in sorted(object_lists):
-            type_name = self._object_list_to_type_name(obj_list)
-            lines.append(
-                f'{type_name} = Annotated[str, BeforeValidator(RefValidator("{obj_list}"))]'
-            )
-
-        lines.append('')
-
-        # Generate __all__
-        all_exports = ['RefValidator']
-        all_exports.extend(
-            self._object_list_to_type_name(ol) for ol in sorted(object_lists)
+        content = template.render(
+            schema_version=schema_version,
+            ref_types=ref_types,
         )
 
-        lines.append('__all__ = [')
-        for name in all_exports:
-            lines.append(f'    "{name}",')
-        lines.append(']')
-        lines.append('')
-
         output_path = self.output_dir / '_refs.py'
-        output_path.write_text('\n'.join(lines), encoding='utf-8')
+        output_path.write_text(content, encoding='utf-8')
         logger.info(f'Generated _refs.py with {len(object_lists)} reference types')
-
-    def _get_ref_validator_code(self) -> list[str]:
-        """Get RefValidator class code.
-
-        Returns:
-            List of code lines for RefValidator class.
-        """
-        return [
-            'class RefValidator:',
-            '    """Reference validator for EnergyPlus object lists.',
-            '',
-            '    When used with validation context containing an IDF instance,',
-            '    validates that referenced object names exist in the registry.',
-            '    """',
-            '',
-            '    def __init__(self, object_list: str):',
-            '        self.object_list = object_list',
-            '',
-            '    def __call__(self, v: Any) -> str | None:',
-            '        """Validate reference value.',
-            '',
-            '        Note: Context-based validation happens in IDF.add().',
-            '        This basic validator just ensures string conversion.',
-            '        """',
-            '        if v is None:',
-            '            return None',
-            '        return str(v)',
-            '',
-            '    def __repr__(self) -> str:',
-            '        return f"RefValidator({self.object_list!r})"',
-        ]

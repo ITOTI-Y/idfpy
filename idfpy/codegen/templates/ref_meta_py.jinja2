@@ -1,0 +1,35 @@
+"""Auto-generated reference metadata for EnergyPlus validation.
+
+DO NOT EDIT MANUALLY.
+Generated from Energy+.schema.epJSON version {{ schema_version }}.
+"""
+from __future__ import annotations
+
+
+REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
+{% for obj_type, entries in providers %}
+    "{{ obj_type }}": [{{ entries }}],
+{% endfor %}
+}
+
+
+REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
+{% for group, types in group_providers %}
+    "{{ group }}": frozenset({
+    {% for t in types %}
+        "{{ t }}",
+    {% endfor %}
+    }),
+{% endfor %}
+}
+
+
+REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
+{% for cls_name, fields in consumers %}
+    "{{ cls_name }}": {
+    {% for fn, groups in fields %}
+        "{{ fn }}": {{ groups }},
+    {% endfor %}
+    },
+{% endfor %}
+}

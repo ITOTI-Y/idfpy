@@ -7,7 +7,7 @@ Group: Solar Collectors
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,10 @@ from ._refs import (
     ScheduleNamesRef,
     UTSCNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .electric_load import GeneratorPhotovoltaic
 
 
 class SolarCollectorUnglazedTranspiredSurfacesItem(IDFBaseModel):
@@ -94,7 +98,13 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
         return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
     @property
-    def photovoltaic_thermal_model_performance(self) -> IDFBaseModel | None:
+    def photovoltaic_thermal_model_performance(
+        self,
+    ) -> (
+        SolarCollectorPerformancePhotovoltaicThermalBIPVT
+        | SolarCollectorPerformancePhotovoltaicThermalSimple
+        | None
+    ):
         v = self.photovoltaic_thermal_model_performance_name
         if not v:
             return None
@@ -104,7 +114,7 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
         return idf._resolve_forward(v, ['FlatPlatePVTParameters'])
 
     @property
-    def photovoltaic(self) -> IDFBaseModel | None:
+    def photovoltaic(self) -> GeneratorPhotovoltaic | None:
         v = self.photovoltaic_name
         if not v:
             return None
@@ -138,7 +148,7 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
     )
 
     @property
-    def solarcollectorperformance(self) -> IDFBaseModel | None:
+    def solarcollectorperformance(self) -> SolarCollectorPerformanceFlatPlate | None:
         v = self.solarcollectorperformance_name
         if not v:
             return None
@@ -191,7 +201,9 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
     )
 
     @property
-    def integralcollectorstorageparameters(self) -> IDFBaseModel | None:
+    def integralcollectorstorageparameters(
+        self,
+    ) -> SolarCollectorPerformanceIntegralCollectorStorage | None:
         v = self.integralcollectorstorageparameters_name
         if not v:
             return None
@@ -456,7 +468,9 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
     )
 
     @property
-    def boundary_conditions_model(self) -> IDFBaseModel | None:
+    def boundary_conditions_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.boundary_conditions_model_name
         if not v:
             return None
@@ -638,7 +652,9 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
     )
 
     @property
-    def boundary_conditions_model(self) -> IDFBaseModel | None:
+    def boundary_conditions_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.boundary_conditions_model_name
         if not v:
             return None
@@ -685,7 +701,7 @@ class SolarCollectorUnglazedTranspiredMultisystem(IDFBaseModel):
     )
 
     @property
-    def solar_collector(self) -> IDFBaseModel | None:
+    def solar_collector(self) -> SolarCollectorUnglazedTranspired | None:
         v = self.solar_collector_name
         if not v:
             return None

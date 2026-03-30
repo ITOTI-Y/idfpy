@@ -464,8 +464,8 @@ class TestCascadeRename:
 
         d = idf.to_dict()
         idf2 = IDF.from_dict(d)
-        zone2 = idf2.get('Zone', 'Zone 2')
-        light2 = idf2.get('Lights', 'Light1')
+        zone2 = idf2.get(Zone, 'Zone 2')
+        light2 = idf2.get(Lights, 'Light1')
         assert zone2 is not None
         assert light2 is not None
         assert light2.zone_or_zonelist_or_space_or_spacelist_name == 'Zone 2'
@@ -620,6 +620,7 @@ class TestCascadeRename:
 
         zone.name = 'Zone 2'
 
+        assert zone_list.zones is not None
         assert zone_list.zones[0].zone_name == 'Zone 2'
 
     def test_consecutive_renames(self):

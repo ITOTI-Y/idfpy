@@ -7,7 +7,7 @@ Group: Pumps
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -17,6 +17,9 @@ from ._refs import (
     UnivariateFunctionsRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class HeaderedPumpsConstantSpeed(IDFBaseModel):
@@ -128,7 +131,7 @@ class HeaderedPumpsConstantSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -259,7 +262,7 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -397,7 +400,7 @@ class PumpConstantSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -621,7 +624,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -737,7 +740,7 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

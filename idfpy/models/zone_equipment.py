@@ -7,7 +7,7 @@ Group: Zone HVAC Equipment Connections
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -19,6 +19,9 @@ from ._refs import (
     ZoneEquipmentNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Space, Zone
 
 
 class SpaceHVACZoneEquipmentMixerSpacesItem(IDFBaseModel):
@@ -42,7 +45,7 @@ class SpaceHVACZoneEquipmentMixerSpacesItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -73,7 +76,7 @@ class SpaceHVACZoneEquipmentSplitterSpacesItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -97,7 +100,7 @@ class SpaceHVACZoneReturnMixerSpacesItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -249,7 +252,7 @@ class SpaceHVACEquipmentConnections(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -312,7 +315,7 @@ class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
     spaces: list[SpaceHVACZoneEquipmentMixerSpacesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -417,7 +420,7 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
     spaces: list[SpaceHVACZoneEquipmentSplitterSpacesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -437,7 +440,7 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneEquipmentNames'])
 
     @property
-    def control_space(self) -> IDFBaseModel | None:
+    def control_space(self) -> Space | None:
         v = self.control_space_name
         if not v:
             return None
@@ -472,7 +475,7 @@ class SpaceHVACZoneReturnMixer(IDFBaseModel):
     spaces: list[SpaceHVACZoneReturnMixerSpacesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -520,7 +523,7 @@ class ZoneHVACEquipmentConnections(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -530,7 +533,7 @@ class ZoneHVACEquipmentConnections(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def zone_conditioning_equipment_list(self) -> IDFBaseModel | None:
+    def zone_conditioning_equipment_list(self) -> ZoneHVACEquipmentList | None:
         v = self.zone_conditioning_equipment_list_name
         if not v:
             return None

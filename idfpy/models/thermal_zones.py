@@ -7,7 +7,7 @@ Group: Thermal Zones and Surfaces
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -31,6 +31,18 @@ from ._refs import (
     ZoneListNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .constructions import (
+        WindowMaterialBlind,
+        WindowMaterialGlazing,
+        WindowMaterialGlazingGroupThermochromic,
+        WindowMaterialGlazingRefractionExtinctionMethod,
+        WindowMaterialScreen,
+        WindowMaterialShade,
+        WindowMaterialSimpleGlazingSystem,
+    )
+    from .daylighting import DaylightingControls
 
 
 class BuildingSurfaceDetailedVerticesItem(IDFBaseModel):
@@ -57,7 +69,7 @@ class SpaceListSpacesItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -79,7 +91,9 @@ class WindowShadingControlFenestrationSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def fenestration_surface(self) -> IDFBaseModel | None:
+    def fenestration_surface(
+        self,
+    ) -> FenestrationSurfaceDetailed | GlazedDoor | Window | None:
         v = self.fenestration_surface_name
         if not v:
             return None
@@ -97,7 +111,7 @@ class ZoneListZonesItem(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -193,7 +207,7 @@ class BuildingSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -203,7 +217,7 @@ class BuildingSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -299,7 +313,7 @@ class CeilingAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -309,7 +323,7 @@ class CeilingAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -403,7 +417,7 @@ class CeilingInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -413,7 +427,7 @@ class CeilingInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -686,7 +700,7 @@ class FenestrationSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -767,7 +781,7 @@ class FloorAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -777,7 +791,7 @@ class FloorAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -871,7 +885,7 @@ class FloorDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -881,7 +895,7 @@ class FloorDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -972,7 +986,7 @@ class FloorGroundContact(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -982,7 +996,7 @@ class FloorGroundContact(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1070,7 +1084,7 @@ class FloorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1080,7 +1094,7 @@ class FloorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1193,7 +1207,7 @@ class GlazedDoor(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -1368,7 +1382,7 @@ class InternalMass(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -1378,7 +1392,7 @@ class InternalMass(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def space_or_spacelist(self) -> IDFBaseModel | None:
+    def space_or_spacelist(self) -> Space | SpaceList | None:
         v = self.space_or_spacelist_name
         if not v:
             return None
@@ -1462,7 +1476,7 @@ class Roof(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1472,7 +1486,7 @@ class Roof(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1564,7 +1578,7 @@ class RoofCeilingDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1574,7 +1588,7 @@ class RoofCeilingDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2064,7 +2078,7 @@ class Space(IDFBaseModel):
     tags: list[SpaceTagsItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2164,7 +2178,7 @@ class WallAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2174,7 +2188,7 @@ class WallAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2268,7 +2282,7 @@ class WallDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2278,7 +2292,7 @@ class WallDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2371,7 +2385,7 @@ class WallExterior(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2381,7 +2395,7 @@ class WallExterior(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2470,7 +2484,7 @@ class WallInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2480,7 +2494,7 @@ class WallInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2572,7 +2586,7 @@ class WallUnderground(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2582,7 +2596,7 @@ class WallUnderground(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2664,7 +2678,7 @@ class Window(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -3076,7 +3090,15 @@ class WindowPropertyStormWindow(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def storm_glass_layer(self) -> IDFBaseModel | None:
+    def storm_glass_layer(
+        self,
+    ) -> (
+        WindowMaterialGlazing
+        | WindowMaterialGlazingGroupThermochromic
+        | WindowMaterialGlazingRefractionExtinctionMethod
+        | WindowMaterialSimpleGlazingSystem
+        | None
+    ):
         v = self.storm_glass_layer_name
         if not v:
             return None
@@ -3230,7 +3252,7 @@ class WindowShadingControl(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -3260,7 +3282,9 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def shading_device_material(self) -> IDFBaseModel | None:
+    def shading_device_material(
+        self,
+    ) -> WindowMaterialBlind | WindowMaterialScreen | WindowMaterialShade | None:
         v = self.shading_device_material_name
         if not v:
             return None
@@ -3280,7 +3304,7 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def daylighting_control_object(self) -> IDFBaseModel | None:
+    def daylighting_control_object(self) -> DaylightingControls | None:
         v = self.daylighting_control_object_name
         if not v:
             return None
@@ -3385,7 +3409,7 @@ class ZoneGroup(IDFBaseModel):
     zone_list_multiplier: int | None = Field(default=1, ge=1)
 
     @property
-    def zone_list(self) -> IDFBaseModel | None:
+    def zone_list(self) -> ZoneList | None:
         v = self.zone_list_name
         if not v:
             return None

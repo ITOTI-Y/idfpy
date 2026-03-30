@@ -7,7 +7,7 @@ Group: Plant-Condenser Control
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -26,6 +26,13 @@ from ._refs import (
     ValidPlantEquipmentTypesRef,
     ZoneListNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .plant_equipment import (
+        HeatPumpPlantLoopEIRCooling,
+        HeatPumpPlantLoopEIRHeating,
+    )
+    from .thermal_zones import ZoneList
 
 
 class CondenserEquipmentListEquipmentItem(IDFBaseModel):
@@ -526,7 +533,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     )
 
     @property
-    def zone_load_polling_zonelist(self) -> IDFBaseModel | None:
+    def zone_load_polling_zonelist(self) -> ZoneList | None:
         v = self.zone_load_polling_zonelist_name
         if not v:
             return None
@@ -584,7 +591,9 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def dedicated_chilled_water_return_recovery_heat_pump(self) -> IDFBaseModel | None:
+    def dedicated_chilled_water_return_recovery_heat_pump(
+        self,
+    ) -> HeatPumpPlantLoopEIRCooling | None:
         v = self.dedicated_chilled_water_return_recovery_heat_pump_name
         if not v:
             return None
@@ -594,7 +603,9 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
         return idf._resolve_forward(v, ['PLHPCoolingNames'])
 
     @property
-    def dedicated_hot_water_return_recovery_heat_pump(self) -> IDFBaseModel | None:
+    def dedicated_hot_water_return_recovery_heat_pump(
+        self,
+    ) -> HeatPumpPlantLoopEIRHeating | None:
         v = self.dedicated_hot_water_return_recovery_heat_pump_name
         if not v:
             return None
@@ -806,7 +817,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -816,7 +829,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -826,7 +841,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -836,7 +853,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -846,7 +865,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -856,7 +877,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -866,7 +889,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -876,7 +901,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -886,7 +913,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -896,7 +925,9 @@ class PlantEquipmentOperationCoolingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -1015,7 +1046,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -1025,7 +1058,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -1035,7 +1070,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -1045,7 +1082,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -1055,7 +1094,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -1065,7 +1106,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -1075,7 +1118,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -1085,7 +1130,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -1095,7 +1142,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -1105,7 +1154,9 @@ class PlantEquipmentOperationHeatingLoad(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -1224,7 +1275,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -1234,7 +1287,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -1244,7 +1299,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -1254,7 +1311,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -1264,7 +1323,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -1274,7 +1335,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -1284,7 +1347,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -1294,7 +1359,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -1304,7 +1371,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -1314,7 +1383,9 @@ class PlantEquipmentOperationOutdoorDewpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -1437,7 +1508,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -1447,7 +1520,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -1457,7 +1532,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -1467,7 +1544,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -1477,7 +1556,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -1487,7 +1568,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -1497,7 +1580,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -1507,7 +1592,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -1517,7 +1604,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -1527,7 +1616,9 @@ class PlantEquipmentOperationOutdoorDewpointDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -1646,7 +1737,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -1656,7 +1749,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -1666,7 +1761,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -1676,7 +1773,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -1686,7 +1785,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -1696,7 +1797,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -1706,7 +1809,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -1716,7 +1821,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -1726,7 +1833,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -1736,7 +1845,9 @@ class PlantEquipmentOperationOutdoorDryBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -1857,7 +1968,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -1867,7 +1980,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -1877,7 +1992,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -1887,7 +2004,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -1897,7 +2016,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -1907,7 +2028,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -1917,7 +2040,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -1927,7 +2052,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -1937,7 +2064,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -1947,7 +2076,9 @@ class PlantEquipmentOperationOutdoorDryBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -2066,7 +2197,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -2076,7 +2209,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -2086,7 +2221,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -2096,7 +2233,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -2106,7 +2245,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -2116,7 +2257,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -2126,7 +2269,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -2136,7 +2281,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -2146,7 +2293,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -2156,7 +2305,9 @@ class PlantEquipmentOperationOutdoorRelativeHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -2275,7 +2426,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -2285,7 +2438,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -2295,7 +2450,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -2305,7 +2462,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -2315,7 +2474,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -2325,7 +2486,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -2335,7 +2498,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -2345,7 +2510,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -2355,7 +2522,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -2365,7 +2534,9 @@ class PlantEquipmentOperationOutdoorWetBulb(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -2486,7 +2657,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
     )
 
     @property
-    def range_1_equipment_list(self) -> IDFBaseModel | None:
+    def range_1_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_1_equipment_list_name
         if not v:
             return None
@@ -2496,7 +2669,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_2_equipment_list(self) -> IDFBaseModel | None:
+    def range_2_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_2_equipment_list_name
         if not v:
             return None
@@ -2506,7 +2681,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_3_equipment_list(self) -> IDFBaseModel | None:
+    def range_3_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_3_equipment_list_name
         if not v:
             return None
@@ -2516,7 +2693,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_4_equipment_list(self) -> IDFBaseModel | None:
+    def range_4_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_4_equipment_list_name
         if not v:
             return None
@@ -2526,7 +2705,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_5_equipment_list(self) -> IDFBaseModel | None:
+    def range_5_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_5_equipment_list_name
         if not v:
             return None
@@ -2536,7 +2717,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_6_equipment_list(self) -> IDFBaseModel | None:
+    def range_6_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_6_equipment_list_name
         if not v:
             return None
@@ -2546,7 +2729,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_7_equipment_list(self) -> IDFBaseModel | None:
+    def range_7_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_7_equipment_list_name
         if not v:
             return None
@@ -2556,7 +2741,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_8_equipment_list(self) -> IDFBaseModel | None:
+    def range_8_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_8_equipment_list_name
         if not v:
             return None
@@ -2566,7 +2753,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_9_equipment_list(self) -> IDFBaseModel | None:
+    def range_9_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_9_equipment_list_name
         if not v:
             return None
@@ -2576,7 +2765,9 @@ class PlantEquipmentOperationOutdoorWetBulbDifference(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantAndCondenserEquipmentLists'])
 
     @property
-    def range_10_equipment_list(self) -> IDFBaseModel | None:
+    def range_10_equipment_list(
+        self,
+    ) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.range_10_equipment_list_name
         if not v:
             return None
@@ -3419,7 +3610,7 @@ class PlantEquipmentOperationUncontrolled(IDFBaseModel):
     )
 
     @property
-    def equipment_list(self) -> IDFBaseModel | None:
+    def equipment_list(self) -> CondenserEquipmentList | PlantEquipmentList | None:
         v = self.equipment_list_name
         if not v:
             return None

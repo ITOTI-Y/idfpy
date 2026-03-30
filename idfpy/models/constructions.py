@@ -7,7 +7,7 @@ Group: Surface Construction Elements
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -29,6 +29,9 @@ from ._refs import (
     WindowGasAndGasMixturesRef,
     WindowThermalModelParametersRef,
 )
+
+if TYPE_CHECKING:
+    from .misc import MatrixTwoDimension
 
 
 class MaterialPropertyGlazingSpectralDataExtensionsItem(IDFBaseModel):
@@ -86,7 +89,15 @@ class WindowMaterialGlazingGroupThermochromicTemperatureDataItem(IDFBaseModel):
     )
 
     @property
-    def window_material_glazing(self) -> IDFBaseModel | None:
+    def window_material_glazing(
+        self,
+    ) -> (
+        WindowMaterialGlazing
+        | WindowMaterialGlazingGroupThermochromic
+        | WindowMaterialGlazingRefractionExtinctionMethod
+        | WindowMaterialSimpleGlazingSystem
+        | None
+    ):
         v = self.window_material_glazing_name
         if not v:
             return None
@@ -452,7 +463,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
     layer_5_directional_back_absorptance_matrix_name: str | None = Field(default=None)
 
     @property
-    def window_thermal_model_ref(self) -> IDFBaseModel | None:
+    def window_thermal_model_ref(self) -> WindowThermalModelParams | None:
         v = self.window_thermal_model
         if not v:
             return None
@@ -462,7 +473,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowThermalModelParameters'])
 
     @property
-    def basis_matrix(self) -> IDFBaseModel | None:
+    def basis_matrix(self) -> MatrixTwoDimension | None:
         v = self.basis_matrix_name
         if not v:
             return None
@@ -472,7 +483,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def solar_optical_complex_front_transmittance_matrix(self) -> IDFBaseModel | None:
+    def solar_optical_complex_front_transmittance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.solar_optical_complex_front_transmittance_matrix_name
         if not v:
             return None
@@ -482,7 +495,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def solar_optical_complex_back_reflectance_matrix(self) -> IDFBaseModel | None:
+    def solar_optical_complex_back_reflectance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.solar_optical_complex_back_reflectance_matrix_name
         if not v:
             return None
@@ -492,7 +507,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def visible_optical_complex_front_transmittance_matrix(self) -> IDFBaseModel | None:
+    def visible_optical_complex_front_transmittance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.visible_optical_complex_front_transmittance_matrix_name
         if not v:
             return None
@@ -502,7 +519,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def visible_optical_complex_back_transmittance_matrix(self) -> IDFBaseModel | None:
+    def visible_optical_complex_back_transmittance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.visible_optical_complex_back_transmittance_matrix_name
         if not v:
             return None
@@ -512,7 +531,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def outside_layer(self) -> IDFBaseModel | None:
+    def outside_layer(
+        self,
+    ) -> WindowMaterialComplexShade | WindowMaterialGlazing | None:
         v = self.outside_layer_name
         if not v:
             return None
@@ -522,7 +543,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
 
     @property
-    def outside_layer_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def outside_layer_directional_front_absorptance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.outside_layer_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -532,7 +555,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def outside_layer_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def outside_layer_directional_back_absorptance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.outside_layer_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -542,7 +567,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_1(self) -> IDFBaseModel | None:
+    def gap_1(self) -> WindowMaterialGap | None:
         v = self.gap_1_name
         if not v:
             return None
@@ -552,7 +577,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGap'])
 
     @property
-    def cfs_gap_1_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def cfs_gap_1_directional_front_absorptance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.cfs_gap_1_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -562,7 +589,9 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def cfs_gap_1_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def cfs_gap_1_directional_back_absorptance_matrix(
+        self,
+    ) -> MatrixTwoDimension | None:
         v = self.cfs_gap_1_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -572,7 +601,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_2(self) -> IDFBaseModel | None:
+    def layer_2(self) -> WindowMaterialComplexShade | WindowMaterialGlazing | None:
         v = self.layer_2_name
         if not v:
             return None
@@ -582,7 +611,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
 
     @property
-    def layer_2_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_2_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_2_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -592,7 +621,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_2_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_2_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_2_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -602,7 +631,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_2(self) -> IDFBaseModel | None:
+    def gap_2(self) -> WindowMaterialGap | None:
         v = self.gap_2_name
         if not v:
             return None
@@ -612,7 +641,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGap'])
 
     @property
-    def gap_2_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_2_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_2_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -622,7 +651,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_2_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_2_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_2_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -632,7 +661,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_3(self) -> IDFBaseModel | None:
+    def layer_3(self) -> WindowMaterialComplexShade | WindowMaterialGlazing | None:
         v = self.layer_3_name
         if not v:
             return None
@@ -642,7 +671,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
 
     @property
-    def layer_3_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_3_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_3_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -652,7 +681,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_3_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_3_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_3_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -662,7 +691,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_3(self) -> IDFBaseModel | None:
+    def gap_3(self) -> WindowMaterialGap | None:
         v = self.gap_3_name
         if not v:
             return None
@@ -672,7 +701,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGap'])
 
     @property
-    def gap_3_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_3_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_3_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -682,7 +711,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_3_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_3_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_3_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -692,7 +721,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_4(self) -> IDFBaseModel | None:
+    def layer_4(self) -> WindowMaterialComplexShade | WindowMaterialGlazing | None:
         v = self.layer_4_name
         if not v:
             return None
@@ -702,7 +731,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
 
     @property
-    def layer_4_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_4_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_4_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -712,7 +741,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_4_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_4_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_4_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -722,7 +751,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_4(self) -> IDFBaseModel | None:
+    def gap_4(self) -> WindowMaterialGap | None:
         v = self.gap_4_name
         if not v:
             return None
@@ -732,7 +761,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGap'])
 
     @property
-    def gap_4_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_4_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_4_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -742,7 +771,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def gap_4_directional_back_absorptance_matrix(self) -> IDFBaseModel | None:
+    def gap_4_directional_back_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.gap_4_directional_back_absorptance_matrix_name
         if not v:
             return None
@@ -752,7 +781,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['DataMatrices'])
 
     @property
-    def layer_5(self) -> IDFBaseModel | None:
+    def layer_5(self) -> WindowMaterialComplexShade | WindowMaterialGlazing | None:
         v = self.layer_5_name
         if not v:
             return None
@@ -762,7 +791,7 @@ class ConstructionComplexFenestrationState(IDFBaseModel):
         return idf._resolve_forward(v, ['CFSGlazingName', 'WindowComplexShades'])
 
     @property
-    def layer_5_directional_front_absorptance_matrix(self) -> IDFBaseModel | None:
+    def layer_5_directional_front_absorptance_matrix(self) -> MatrixTwoDimension | None:
         v = self.layer_5_directional_front_absorptance_matrix_name
         if not v:
             return None
@@ -3432,7 +3461,9 @@ class WindowMaterialGap(IDFBaseModel):
     )
 
     @property
-    def gas_or_gas_mixture_ref(self) -> IDFBaseModel | None:
+    def gas_or_gas_mixture_ref(
+        self,
+    ) -> WindowMaterialGas | WindowMaterialGasMixture | None:
         v = self.gas_or_gas_mixture
         if not v:
             return None
@@ -3442,7 +3473,7 @@ class WindowMaterialGap(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowGasAndGasMixtures'])
 
     @property
-    def deflection_state_ref(self) -> IDFBaseModel | None:
+    def deflection_state_ref(self) -> WindowGapDeflectionState | None:
         v = self.deflection_state
         if not v:
             return None
@@ -3452,7 +3483,7 @@ class WindowMaterialGap(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowGapDeflectionStates'])
 
     @property
-    def support_pillar_ref(self) -> IDFBaseModel | None:
+    def support_pillar_ref(self) -> WindowGapSupportPillar | None:
         v = self.support_pillar
         if not v:
             return None
@@ -3756,7 +3787,9 @@ class WindowMaterialGlazing(IDFBaseModel):
     )
 
     @property
-    def window_glass_spectral_data_set(self) -> IDFBaseModel | None:
+    def window_glass_spectral_data_set(
+        self,
+    ) -> MaterialPropertyGlazingSpectralData | None:
         v = self.window_glass_spectral_data_set_name
         if not v:
             return None
@@ -4058,7 +4091,9 @@ class WindowMaterialGlazingEquivalentLayer(IDFBaseModel):
     )
 
     @property
-    def window_glass_spectral_data_set(self) -> IDFBaseModel | None:
+    def window_glass_spectral_data_set(
+        self,
+    ) -> MaterialPropertyGlazingSpectralData | None:
         v = self.window_glass_spectral_data_set_name
         if not v:
             return None

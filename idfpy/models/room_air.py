@@ -7,7 +7,7 @@ Group: Room Air Models
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -21,6 +21,9 @@ from ._refs import (
     ScheduleNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class RoomAirNodeAirflowNetworkAdjacentSurfaceListSurfacesItem(IDFBaseModel):
@@ -174,7 +177,7 @@ class RoomAirSettingsAirflowNetworkNodesItem(IDFBaseModel):
     )
 
     @property
-    def roomairflownetwork_node(self) -> IDFBaseModel | None:
+    def roomairflownetwork_node(self) -> RoomAirNodeAirflowNetwork | None:
         v = self.roomairflownetwork_node_name
         if not v:
             return None
@@ -248,7 +251,7 @@ class RoomAirModelType(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -338,7 +341,7 @@ class RoomAirNode(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -583,7 +586,7 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -593,7 +596,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def roomair_node_airflownetwork_adjacentsurfacelist(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_adjacentsurfacelist(
+        self,
+    ) -> RoomAirNodeAirflowNetworkAdjacentSurfaceList | None:
         v = self.roomair_node_airflownetwork_adjacentsurfacelist_name
         if not v:
             return None
@@ -603,7 +608,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodeSurfaceLists'])
 
     @property
-    def roomair_node_airflownetwork_internalgains(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_internalgains(
+        self,
+    ) -> RoomAirNodeAirflowNetworkInternalGains | None:
         v = self.roomair_node_airflownetwork_internalgains_name
         if not v:
             return None
@@ -613,7 +620,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodeGains'])
 
     @property
-    def roomair_node_airflownetwork_hvacequipment(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_hvacequipment(
+        self,
+    ) -> RoomAirNodeAirflowNetworkHVACEquipment | None:
         v = self.roomair_node_airflownetwork_hvacequipment_name
         if not v:
             return None
@@ -677,7 +686,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
     nodes: list[RoomAirSettingsAirflowNetworkNodesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -687,7 +696,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def control_point_roomairflownetwork_node(self) -> IDFBaseModel | None:
+    def control_point_roomairflownetwork_node(self) -> RoomAirNodeAirflowNetwork | None:
         v = self.control_point_roomairflownetwork_node_name
         if not v:
             return None
@@ -729,7 +738,7 @@ class RoomAirSettingsCrossVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -764,7 +773,7 @@ class RoomAirSettingsOneNodeDisplacementVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -825,7 +834,7 @@ class RoomAirSettingsThreeNodeDisplacementVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -953,7 +962,7 @@ class RoomAirSettingsUnderFloorAirDistributionExterior(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1064,7 +1073,7 @@ class RoomAirSettingsUnderFloorAirDistributionInterior(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1271,7 +1280,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

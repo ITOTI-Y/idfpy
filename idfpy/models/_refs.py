@@ -15,21 +15,17 @@ from pydantic import BeforeValidator
 
 
 class RefValidator:
-    """Reference validator for EnergyPlus object lists.
+    """Type marker and string coercer for EnergyPlus object list references.
 
-    When used with validation context containing an IDF instance,
-    validates that referenced object names exist in the registry.
+    Carries the object_list name as metadata; actual reference validation
+    is deferred to IDF.validate().
     """
 
     def __init__(self, object_list: str):
         self.object_list = object_list
 
     def __call__(self, v: Any) -> str | None:
-        """Validate reference value.
-
-        Note: Context-based validation happens in IDF.add().
-        This basic validator just ensures string conversion.
-        """
+        """Coerce to string. Reference existence checking is deferred to IDF.validate()."""
         if v is None:
             return None
         return str(v)

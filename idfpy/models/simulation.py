@@ -7,7 +7,7 @@ Group: Simulation Parameters
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -17,6 +17,9 @@ from ._refs import (
     ZoneAndZoneListNamesRef,
     ZoneListNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone, ZoneList
 
 
 class ShadowCalculationShadingZoneGroupsItem(IDFBaseModel):
@@ -31,7 +34,7 @@ class ShadowCalculationShadingZoneGroupsItem(IDFBaseModel):
     )
 
     @property
-    def shading_zone_group_zonelist(self) -> IDFBaseModel | None:
+    def shading_zone_group_zonelist(self) -> ZoneList | None:
         v = self.shading_zone_group_zonelist_name
         if not v:
             return None
@@ -657,7 +660,7 @@ class ZoneCapacitanceMultiplierResearchSpecial(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None

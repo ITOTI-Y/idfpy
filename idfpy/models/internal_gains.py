@@ -7,7 +7,7 @@ Group: Internal Gains
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -27,6 +27,20 @@ from ._refs import (
     ZoneAndZoneListNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .room_air import RoomAirNode
+    from .thermal_zones import (
+        BuildingSurfaceDetailed,
+        FloorAdiabatic,
+        FloorDetailed,
+        FloorGroundContact,
+        FloorInterzone,
+        Space,
+        SpaceList,
+        Zone,
+        ZoneList,
+    )
 
 
 class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):
@@ -111,7 +125,9 @@ class ElectricEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -356,7 +372,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -420,7 +436,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def air_inlet_room_air_model_node(self) -> IDFBaseModel | None:
+    def air_inlet_room_air_model_node(self) -> RoomAirNode | None:
         v = self.air_inlet_room_air_model_node_name
         if not v:
             return None
@@ -430,7 +446,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodes'])
 
     @property
-    def air_outlet_room_air_model_node(self) -> IDFBaseModel | None:
+    def air_outlet_room_air_model_node(self) -> RoomAirNode | None:
         v = self.air_outlet_room_air_model_node_name
         if not v:
             return None
@@ -552,7 +568,9 @@ class GasEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -633,7 +651,9 @@ class HotWaterEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -882,7 +902,9 @@ class Lights(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -990,7 +1012,9 @@ class OtherEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1278,7 +1302,9 @@ class People(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1429,7 +1455,9 @@ class SteamEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1643,7 +1671,16 @@ class SwimmingPoolIndoor(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(
+        self,
+    ) -> (
+        BuildingSurfaceDetailed
+        | FloorAdiabatic
+        | FloorDetailed
+        | FloorGroundContact
+        | FloorInterzone
+        | None
+    ):
         v = self.surface_name
         if not v:
             return None
@@ -1753,7 +1790,9 @@ class ZoneBaseboardOutdoorTemperatureControlled(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1799,7 +1838,7 @@ class ZoneContaminantSourceAndSinkCarbonDioxide(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1854,7 +1893,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1913,7 +1952,7 @@ class ZoneContaminantSourceAndSinkGenericCutoffModel(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1957,7 +1996,7 @@ class ZoneContaminantSourceAndSinkGenericDecaySource(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2000,7 +2039,7 @@ class ZoneContaminantSourceAndSinkGenericDepositionRateSink(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

@@ -13,7 +13,17 @@ import types
 import weakref
 from collections.abc import Iterator, Mapping
 from pathlib import Path
-from typing import Annotated, Any, Literal, Union, cast, get_args, get_origin
+from typing import (
+    Annotated,
+    Any,
+    Literal,
+    TypeVar,
+    Union,
+    cast,
+    get_args,
+    get_origin,
+    overload,
+)
 
 from loguru import logger
 
@@ -26,6 +36,8 @@ from idfpy.models._base import IDFBaseModel
 from idfpy.models._ref_errors import RefError, RefValidationError
 from idfpy.models._ref_meta import REF_CONSUMERS, REF_GROUP_PROVIDERS, REF_PROVIDERS
 from idfpy.models.simulation import Version
+
+_T = TypeVar('_T', bound=IDFBaseModel)
 
 
 def _find_list_item_class(annotation: Any) -> type[IDFBaseModel] | None:
@@ -152,16 +164,23 @@ class IDF:
         self._index_consumer_refs(obj, object_type, name)
         logger.debug(f'Added {object_type}: {name}')
 
-    def get(self, object_type: str, name: str) -> IDFBaseModel | None:
+    @overload
+    def get(self, object_type: type[_T], name: str) -> _T | None: ...
+    @overload
+    def get(self, object_type: str, name: str) -> IDFBaseModel | None: ...
+    def get(self, object_type: type[_T] | str, name: str) -> _T | IDFBaseModel | None:
         """Get an object by type and name.
 
         Args:
-            object_type: EnergyPlus object type (e.g., 'Zone').
+            object_type: EnergyPlus object type string (e.g., 'Zone')
+                or model class (e.g., Zone).
             name: Object name.
 
         Returns:
             IDF object or None if not found.
         """
+        if isinstance(object_type, type):
+            object_type = object_type._idf_object_type
         return self._objects.get(object_type, {}).get(name)
 
     def has(self, object_type: str, name: str) -> bool:

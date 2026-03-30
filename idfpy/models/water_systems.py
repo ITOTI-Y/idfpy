@@ -7,7 +7,7 @@ Group: Water Systems
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -20,6 +20,9 @@ from ._refs import (
     WaterUseEquipmentNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class WaterUseConnectionsConnectionsItem(IDFBaseModel):
@@ -34,7 +37,7 @@ class WaterUseConnectionsConnectionsItem(IDFBaseModel):
     )
 
     @property
-    def water_use_equipment(self) -> IDFBaseModel | None:
+    def water_use_equipment(self) -> WaterUseEquipment | None:
         v = self.water_use_equipment_name
         if not v:
             return None
@@ -110,7 +113,7 @@ class WaterUseConnections(IDFBaseModel):
     connections: list[WaterUseConnectionsConnectionsItem] | None = Field(default=None)
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -120,7 +123,7 @@ class WaterUseConnections(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def reclamation_water_storage_tank(self) -> IDFBaseModel | None:
+    def reclamation_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.reclamation_water_storage_tank_name
         if not v:
             return None
@@ -256,7 +259,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -317,7 +320,7 @@ class WaterUseRainCollector(IDFBaseModel):
     surfaces: list[WaterUseRainCollectorSurfacesItem] | None = Field(default=None)
 
     @property
-    def storage_tank(self) -> IDFBaseModel | None:
+    def storage_tank(self) -> WaterUseStorage | None:
         v = self.storage_tank_name
         if not v:
             return None
@@ -424,7 +427,7 @@ class WaterUseStorage(IDFBaseModel):
     )
 
     @property
-    def overflow_destination_ref(self) -> IDFBaseModel | None:
+    def overflow_destination_ref(self) -> WaterUseStorage | None:
         v = self.overflow_destination
         if not v:
             return None
@@ -434,7 +437,7 @@ class WaterUseStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def other_tank(self) -> IDFBaseModel | None:
+    def other_tank(self) -> WaterUseStorage | None:
         v = self.other_tank_name
         if not v:
             return None
@@ -464,7 +467,7 @@ class WaterUseStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -523,7 +526,7 @@ class WaterUseWell(IDFBaseModel):
     )
 
     @property
-    def storage_tank(self) -> IDFBaseModel | None:
+    def storage_tank(self) -> WaterUseStorage | None:
         v = self.storage_tank_name
         if not v:
             return None

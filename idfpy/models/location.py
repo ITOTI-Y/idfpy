@@ -7,7 +7,7 @@ Group: Location and Climate
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -21,6 +21,10 @@ from ._refs import (
     SpectrumDataNamesRef,
     UndisturbedGroundTempModelsRef,
 )
+
+if TYPE_CHECKING:
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
 
 
 class SiteSpectrumDataExtensionsItem(IDFBaseModel):
@@ -308,7 +312,14 @@ class SiteGroundDomainBasement(IDFBaseModel):
     mesh_density_parameter: int | None = Field(default=4, ge=2)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -318,7 +329,9 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def basement_floor_boundary_condition_model(self) -> IDFBaseModel | None:
+    def basement_floor_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.basement_floor_boundary_condition_model_name
         if not v:
             return None
@@ -338,7 +351,9 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def basement_wall_boundary_condition_model(self) -> IDFBaseModel | None:
+    def basement_wall_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.basement_wall_boundary_condition_model_name
         if not v:
             return None
@@ -476,7 +491,14 @@ class SiteGroundDomainSlab(IDFBaseModel):
     mesh_density_parameter: int | None = Field(default=6, ge=4)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -486,7 +508,9 @@ class SiteGroundDomainSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def slab_boundary_condition_model(self) -> IDFBaseModel | None:
+    def slab_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.slab_boundary_condition_model_name
         if not v:
             return None
@@ -1013,7 +1037,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     )
 
     @property
-    def solar_spectrum_data_object(self) -> IDFBaseModel | None:
+    def solar_spectrum_data_object(self) -> SiteSpectrumData | None:
         v = self.solar_spectrum_data_object_name
         if not v:
             return None
@@ -1023,7 +1047,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
         return idf._resolve_forward(v, ['SpectrumDataNames'])
 
     @property
-    def visible_spectrum_data_object(self) -> IDFBaseModel | None:
+    def visible_spectrum_data_object(self) -> SiteSpectrumData | None:
         v = self.visible_spectrum_data_object_name
         if not v:
             return None
@@ -1418,7 +1442,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
     )
 
     @property
-    def dry_bulb_temperature_range_modifier_day_schedule(self) -> IDFBaseModel | None:
+    def dry_bulb_temperature_range_modifier_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.dry_bulb_temperature_range_modifier_day_schedule_name
         if not v:
             return None
@@ -1428,7 +1454,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def humidity_condition_day_schedule(self) -> IDFBaseModel | None:
+    def humidity_condition_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.humidity_condition_day_schedule_name
         if not v:
             return None
@@ -1438,7 +1466,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def beam_solar_day_schedule(self) -> IDFBaseModel | None:
+    def beam_solar_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.beam_solar_day_schedule_name
         if not v:
             return None
@@ -1448,7 +1478,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def diffuse_solar_day_schedule(self) -> IDFBaseModel | None:
+    def diffuse_solar_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.diffuse_solar_day_schedule_name
         if not v:
             return None
@@ -1614,7 +1646,15 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(
+        self,
+    ) -> (
+        RunPeriod
+        | SizingPeriodDesignDay
+        | SizingPeriodWeatherFileConditionType
+        | SizingPeriodWeatherFileDays
+        | None
+    ):
         v = self.name
         if not v:
             return None

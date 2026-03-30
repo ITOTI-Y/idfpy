@@ -7,7 +7,7 @@ Group: Operational Faults
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -36,6 +36,23 @@ from ._refs import (
     ZoneControlHumidistatNamesRef,
     ZoneControlThermostaticNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .coils import CoilCoolingWater, CoilHeatingWater
+    from .condensers import (
+        CoolingTowerSingleSpeed,
+        CoolingTowerTwoSpeed,
+        CoolingTowerVariableSpeed,
+        CoolingTowerVariableSpeedMerkel,
+    )
+    from .fans import FanConstantVolume, FanOnOff, FanSystemModel, FanVariableVolume
+    from .misc import ControllerOutdoorAir, ControllerWaterCoil
+    from .plant_equipment import BoilerHotWater
+    from .zone_controls import (
+        ZoneControlHumidistat,
+        ZoneControlThermostat,
+        ZoneControlThermostatStagedDualSetpoint,
+    )
 
 
 class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
@@ -78,7 +95,7 @@ class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -128,7 +145,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -177,7 +194,9 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
     )
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -273,7 +292,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def boiler_object(self) -> IDFBaseModel | None:
+    def boiler_object(self) -> BoilerHotWater | None:
         v = self.boiler_object_name
         if not v:
             return None
@@ -415,7 +434,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
     )
 
     @property
-    def coil(self) -> IDFBaseModel | None:
+    def coil(self) -> CoilCoolingWater | CoilHeatingWater | None:
         v = self.coil_name
         if not v:
             return None
@@ -500,7 +519,14 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_tower_object(self) -> IDFBaseModel | None:
+    def cooling_tower_object(
+        self,
+    ) -> (
+        CoolingTowerSingleSpeed
+        | CoolingTowerTwoSpeed
+        | CoolingTowerVariableSpeedMerkel
+        | None
+    ):
         v = self.cooling_tower_object_name
         if not v:
             return None
@@ -630,7 +656,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
     )
 
     @property
-    def humidistat(self) -> IDFBaseModel | None:
+    def humidistat(self) -> ZoneControlHumidistat | None:
         v = self.humidistat_name
         if not v:
             return None
@@ -660,7 +686,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def related_thermostat_offset_fault(self) -> IDFBaseModel | None:
+    def related_thermostat_offset_fault(self) -> FaultModelThermostatOffset | None:
         v = self.related_thermostat_offset_fault_name
         if not v:
             return None
@@ -710,7 +736,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -888,7 +914,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
         )
 
     @property
-    def water_coil_controller(self) -> IDFBaseModel | None:
+    def water_coil_controller(self) -> ControllerWaterCoil | None:
         v = self.water_coil_controller_name
         if not v:
             return None
@@ -952,7 +978,15 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_tower_object(self) -> IDFBaseModel | None:
+    def cooling_tower_object(
+        self,
+    ) -> (
+        CoolingTowerSingleSpeed
+        | CoolingTowerTwoSpeed
+        | CoolingTowerVariableSpeed
+        | CoolingTowerVariableSpeedMerkel
+        | None
+    ):
         v = self.cooling_tower_object_name
         if not v:
             return None
@@ -1002,7 +1036,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -1052,7 +1086,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -1086,7 +1120,9 @@ class FaultModelThermostatOffset(IDFBaseModel):
     )
 
     @property
-    def thermostat(self) -> IDFBaseModel | None:
+    def thermostat(
+        self,
+    ) -> ZoneControlThermostat | ZoneControlThermostatStagedDualSetpoint | None:
         v = self.thermostat_name
         if not v:
             return None

@@ -7,7 +7,7 @@ Group: Plant Heating and Cooling Equipment
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -29,6 +29,13 @@ from ._refs import (
     WWHPHeatingNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .curves import CurveQuadLinear
+    from .electric_load import GeneratorMicroTurbine
+    from .misc import TableLookup
+    from .node_branch import OutdoorAirNode
+    from .thermal_zones import Zone
 
 
 class BoilerHotWater(IDFBaseModel):
@@ -466,7 +473,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_1_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_1_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_1
         if not v:
             return None
@@ -486,7 +495,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_2_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_2_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_2
         if not v:
             return None
@@ -506,7 +517,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_performance_component_3_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_performance_component_3_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_performance_component_name_3
         if not v:
             return None
@@ -526,7 +539,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_4_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_4_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_4
         if not v:
             return None
@@ -546,7 +561,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_models_performance_component_5_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_models_performance_component_5_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_models_performance_component_name_5
         if not v:
             return None
@@ -566,7 +583,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_6_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_6_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_6
         if not v:
             return None
@@ -586,7 +605,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_7_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_7_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_7
         if not v:
             return None
@@ -606,7 +627,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_8_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_8_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_8
         if not v:
             return None
@@ -626,7 +649,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_9_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_9_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_9
         if not v:
             return None
@@ -648,7 +673,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_10_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_10
         if not v:
             return None
@@ -670,7 +695,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_11_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_11
         if not v:
             return None
@@ -692,7 +717,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_12_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_12
         if not v:
             return None
@@ -714,7 +739,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_13_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_13
         if not v:
             return None
@@ -736,7 +761,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_14_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_14
         if not v:
             return None
@@ -758,7 +783,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_15_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_15
         if not v:
             return None
@@ -780,7 +805,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_16_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_16
         if not v:
             return None
@@ -802,7 +827,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_17_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_17
         if not v:
             return None
@@ -824,7 +849,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_18_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_18
         if not v:
             return None
@@ -848,7 +873,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_19_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_19
         if not v:
             return None
@@ -870,7 +895,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_20_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_20
         if not v:
             return None
@@ -1835,7 +1860,7 @@ class ChillerElectricASHRAE205(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -3318,7 +3343,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def exhaust_source_object(self) -> IDFBaseModel | None:
+    def exhaust_source_object(self) -> GeneratorMicroTurbine | None:
         v = self.exhaust_source_object_name
         if not v:
             return None
@@ -5098,7 +5123,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     )
 
     @property
-    def air_source_node(self) -> IDFBaseModel | None:
+    def air_source_node(self) -> OutdoorAirNode | None:
         v = self.air_source_node_name
         if not v:
             return None
@@ -5108,7 +5133,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
     @property
-    def companion_heating_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heating_heat_pump(self) -> HeatPumpAirToWaterFuelFiredHeating | None:
         v = self.companion_heating_heat_pump_name
         if not v:
             return None
@@ -5428,7 +5453,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     )
 
     @property
-    def air_source_node(self) -> IDFBaseModel | None:
+    def air_source_node(self) -> OutdoorAirNode | None:
         v = self.air_source_node_name
         if not v:
             return None
@@ -5438,7 +5463,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
     @property
-    def companion_cooling_heat_pump(self) -> IDFBaseModel | None:
+    def companion_cooling_heat_pump(self) -> HeatPumpAirToWaterFuelFiredCooling | None:
         v = self.companion_cooling_heat_pump_name
         if not v:
             return None
@@ -5691,7 +5716,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     )
 
     @property
-    def companion_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heat_pump(self) -> HeatPumpPlantLoopEIRHeating | None:
         v = self.companion_heat_pump_name
         if not v:
             return None
@@ -6011,7 +6036,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     )
 
     @property
-    def companion_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heat_pump(self) -> HeatPumpPlantLoopEIRCooling | None:
         v = self.companion_heat_pump_name
         if not v:
             return None
@@ -6203,7 +6228,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.cooling_capacity_curve_name
         if not v:
             return None
@@ -6213,7 +6238,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def cooling_compressor_power_curve(self) -> IDFBaseModel | None:
+    def cooling_compressor_power_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.cooling_compressor_power_curve_name
         if not v:
             return None
@@ -6223,7 +6248,9 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def companion_heating_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heating_heat_pump(
+        self,
+    ) -> HeatPumpWaterToWaterEquationFitHeating | None:
         v = self.companion_heating_heat_pump_name
         if not v:
             return None
@@ -6279,7 +6306,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
     )
 
     @property
-    def heating_capacity_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_capacity_curve_name
         if not v:
             return None
@@ -6289,7 +6316,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def heating_compressor_power_curve(self) -> IDFBaseModel | None:
+    def heating_compressor_power_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_compressor_power_curve_name
         if not v:
             return None
@@ -6299,7 +6326,9 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def companion_cooling_heat_pump(self) -> IDFBaseModel | None:
+    def companion_cooling_heat_pump(
+        self,
+    ) -> HeatPumpWaterToWaterEquationFitCooling | None:
         v = self.companion_cooling_heat_pump_name
         if not v:
             return None

@@ -306,7 +306,7 @@ class FluidPropertiesConcentration(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -316,7 +316,7 @@ class FluidPropertiesConcentration(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None
@@ -346,7 +346,9 @@ class FluidPropertiesGlycolConcentration(IDFBaseModel):
     glycol_concentration: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def user_defined_glycol(self) -> IDFBaseModel | None:
+    def user_defined_glycol(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.user_defined_glycol_name
         if not v:
             return None
@@ -644,7 +646,7 @@ class FluidPropertiesSaturated(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -654,7 +656,7 @@ class FluidPropertiesSaturated(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None
@@ -942,7 +944,7 @@ class FluidPropertiesSuperheated(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -952,7 +954,7 @@ class FluidPropertiesSuperheated(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None

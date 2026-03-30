@@ -7,7 +7,7 @@ Group: Daylighting
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,17 @@ from ._refs import (
     SurfaceNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import (
+        ShadingFin,
+        ShadingFinProjection,
+        ShadingOverhang,
+        ShadingOverhangProjection,
+        ShadingZoneDetailed,
+        Space,
+        Zone,
+    )
 
 
 class DaylightingControlsControlDataItem(IDFBaseModel):
@@ -38,7 +49,7 @@ class DaylightingControlsControlDataItem(IDFBaseModel):
     )
 
     @property
-    def daylighting_reference_point(self) -> IDFBaseModel | None:
+    def daylighting_reference_point(self) -> DaylightingReferencePoint | None:
         v = self.daylighting_reference_point_name
         if not v:
             return None
@@ -59,7 +70,7 @@ class DaylightingDeviceTubularTransitionLengthsItem(IDFBaseModel):
     )
 
     @property
-    def transition_zone(self) -> IDFBaseModel | None:
+    def transition_zone(self) -> Zone | None:
         v = self.transition_zone_name
         if not v:
             return None
@@ -128,7 +139,7 @@ class DaylightingControls(IDFBaseModel):
     control_data: list[DaylightingControlsControlDataItem] | None = Field(default=None)
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -148,7 +159,9 @@ class DaylightingControls(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def glare_calculation_daylighting_reference_point(self) -> IDFBaseModel | None:
+    def glare_calculation_daylighting_reference_point(
+        self,
+    ) -> DaylightingReferencePoint | None:
         v = self.glare_calculation_daylighting_reference_point_name
         if not v:
             return None
@@ -304,7 +317,16 @@ class DaylightingDeviceShelf(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def outside_shelf(self) -> IDFBaseModel | None:
+    def outside_shelf(
+        self,
+    ) -> (
+        ShadingFin
+        | ShadingFinProjection
+        | ShadingOverhang
+        | ShadingOverhangProjection
+        | ShadingZoneDetailed
+        | None
+    ):
         v = self.outside_shelf_name
         if not v:
             return None
@@ -423,7 +445,7 @@ class DaylightingReferencePoint(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -492,7 +514,7 @@ class OutputIlluminanceMap(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None

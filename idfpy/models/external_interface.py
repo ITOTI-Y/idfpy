@@ -7,7 +7,7 @@ Group: External Interface
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -16,6 +16,9 @@ from ._refs import (
     FMUFileNameRef,
     ScheduleTypeLimitsNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .schedules import ScheduleTypeLimits
 
 
 class ExternalInterface(IDFBaseModel):
@@ -114,7 +117,7 @@ class ExternalInterfaceFunctionalMockupUnitExportToSchedule(IDFBaseModel):
     )
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_names
         if not v:
             return None
@@ -170,7 +173,7 @@ class ExternalInterfaceFunctionalMockupUnitImportFromVariable(IDFBaseModel):
     fmu_variable_name: str = Field(...)
 
     @property
-    def fmu_file(self) -> IDFBaseModel | None:
+    def fmu_file(self) -> ExternalInterfaceFunctionalMockupUnitImport | None:
         v = self.fmu_file_name
         if not v:
             return None
@@ -206,7 +209,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToActuator(IDFBaseModel):
     )
 
     @property
-    def fmu_file(self) -> IDFBaseModel | None:
+    def fmu_file(self) -> ExternalInterfaceFunctionalMockupUnitImport | None:
         v = self.fmu_file_name
         if not v:
             return None
@@ -238,7 +241,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToSchedule(IDFBaseModel):
     )
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_names
         if not v:
             return None
@@ -248,7 +251,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToSchedule(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
 
     @property
-    def fmu_file(self) -> IDFBaseModel | None:
+    def fmu_file(self) -> ExternalInterfaceFunctionalMockupUnitImport | None:
         v = self.fmu_file_name
         if not v:
             return None
@@ -281,7 +284,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToVariable(IDFBaseModel):
     )
 
     @property
-    def fmu_file(self) -> IDFBaseModel | None:
+    def fmu_file(self) -> ExternalInterfaceFunctionalMockupUnitImport | None:
         v = self.fmu_file_name
         if not v:
             return None
@@ -306,7 +309,7 @@ class ExternalInterfaceSchedule(IDFBaseModel):
     )
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None

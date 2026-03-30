@@ -7,7 +7,7 @@ Group: HVAC Design Objects
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -23,6 +23,11 @@ from ._refs import (
     ZoneAndZoneListNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .air_distribution import AirLoopHVAC
+    from .misc import CondenserLoop, PlantLoop
+    from .thermal_zones import Space, Zone, ZoneList
+
 
 class DesignSpecificationOutdoorAirSpaceListSpaceSpecsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -35,7 +40,7 @@ class DesignSpecificationOutdoorAirSpaceListSpaceSpecsItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -45,7 +50,9 @@ class DesignSpecificationOutdoorAirSpaceListSpaceSpecsItem(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def space_design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def space_design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | None:
         v = self.space_design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -561,7 +568,7 @@ class SizingPlant(IDFBaseModel):
     )
 
     @property
-    def plant_or_condenser_loop(self) -> IDFBaseModel | None:
+    def plant_or_condenser_loop(self) -> CondenserLoop | PlantLoop | None:
         v = self.plant_or_condenser_loop_name
         if not v:
             return None
@@ -832,7 +839,7 @@ class SizingSystem(IDFBaseModel):
     )
 
     @property
-    def airloop(self) -> IDFBaseModel | None:
+    def airloop(self) -> AirLoopHVAC | None:
         v = self.airloop_name
         if not v:
             return None
@@ -1117,7 +1124,7 @@ class SizingZone(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -1127,7 +1134,9 @@ class SizingZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1139,7 +1148,9 @@ class SizingZone(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None

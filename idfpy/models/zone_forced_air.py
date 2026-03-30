@@ -7,7 +7,7 @@ Group: Zone HVAC Forced Air Units
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -53,6 +53,59 @@ from ._refs import (
     WaterStorageTankNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .air_distribution import OutdoorAirMixer
+    from .availability_managers import AvailabilityManagerAssignmentList
+    from .coils import (
+        CoilCoolingDX,
+        CoilCoolingDXSingleSpeed,
+        CoilCoolingDXSingleSpeedThermalStorage,
+        CoilCoolingDXVariableRefrigerantFlow,
+        CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl,
+        CoilCoolingDXVariableSpeed,
+        CoilCoolingWater,
+        CoilCoolingWaterDetailedGeometry,
+        CoilCoolingWaterToAirHeatPumpEquationFit,
+        CoilCoolingWaterToAirHeatPumpParameterEstimation,
+        CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
+        CoilHeatingDXSingleSpeed,
+        CoilHeatingDXVariableRefrigerantFlow,
+        CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl,
+        CoilHeatingDXVariableSpeed,
+        CoilHeatingElectric,
+        CoilHeatingFuel,
+        CoilHeatingSteam,
+        CoilHeatingWater,
+        CoilHeatingWaterToAirHeatPumpEquationFit,
+        CoilHeatingWaterToAirHeatPumpParameterEstimation,
+        CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit,
+        CoilSystemCoolingDXHeatExchangerAssisted,
+        CoilSystemCoolingWaterHeatExchangerAssisted,
+    )
+    from .evap_coolers import (
+        EvaporativeCoolerDirectCelDekPad,
+        EvaporativeCoolerDirectResearchSpecial,
+        EvaporativeCoolerIndirectCelDekPad,
+        EvaporativeCoolerIndirectResearchSpecial,
+        EvaporativeCoolerIndirectWetCoil,
+    )
+    from .fans import (
+        FanComponentModel,
+        FanConstantVolume,
+        FanOnOff,
+        FanSystemModel,
+        FanVariableVolume,
+    )
+    from .hvac_design import (
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+        DesignSpecificationZoneHVACSizing,
+    )
+    from .misc import HeatExchangerAirToAirSensibleAndLatent, TableLookup
+    from .thermal_zones import Zone
+    from .unitary import UnitarySystemPerformanceMultispeed
+    from .water_systems import WaterUseStorage
 
 
 class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
@@ -265,7 +318,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
     )
 
     @property
-    def mode_supply_air_temperature_lookup_table(self) -> IDFBaseModel | None:
+    def mode_supply_air_temperature_lookup_table(self) -> TableLookup | None:
         v = self.mode_supply_air_temperature_lookup_table_name
         if not v:
             return None
@@ -275,7 +328,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_supply_air_humidity_ratio_lookup_table(self) -> IDFBaseModel | None:
+    def mode_supply_air_humidity_ratio_lookup_table(self) -> TableLookup | None:
         v = self.mode_supply_air_humidity_ratio_lookup_table_name
         if not v:
             return None
@@ -285,7 +338,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_system_electric_power_lookup_table(self) -> IDFBaseModel | None:
+    def mode_system_electric_power_lookup_table(self) -> TableLookup | None:
         v = self.mode_system_electric_power_lookup_table_name
         if not v:
             return None
@@ -295,7 +348,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_supply_fan_electric_power_lookup_table(self) -> IDFBaseModel | None:
+    def mode_supply_fan_electric_power_lookup_table(self) -> TableLookup | None:
         v = self.mode_supply_fan_electric_power_lookup_table_name
         if not v:
             return None
@@ -305,7 +358,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_external_static_pressure_lookup_table(self) -> IDFBaseModel | None:
+    def mode_external_static_pressure_lookup_table(self) -> TableLookup | None:
         v = self.mode_external_static_pressure_lookup_table_name
         if not v:
             return None
@@ -315,7 +368,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_system_second_fuel_consumption_lookup_table(self) -> IDFBaseModel | None:
+    def mode_system_second_fuel_consumption_lookup_table(self) -> TableLookup | None:
         v = self.mode_system_second_fuel_consumption_lookup_table_name
         if not v:
             return None
@@ -325,7 +378,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_system_third_fuel_consumption_lookup_table(self) -> IDFBaseModel | None:
+    def mode_system_third_fuel_consumption_lookup_table(self) -> TableLookup | None:
         v = self.mode_system_third_fuel_consumption_lookup_table_name
         if not v:
             return None
@@ -335,7 +388,7 @@ class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_system_water_use_lookup_table(self) -> IDFBaseModel | None:
+    def mode_system_water_use_lookup_table(self) -> TableLookup | None:
         v = self.mode_system_water_use_lookup_table_name
         if not v:
             return None
@@ -489,7 +542,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -594,7 +647,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_exchanger(self) -> IDFBaseModel | None:
+    def heat_exchanger(self) -> HeatExchangerAirToAirSensibleAndLatent | None:
         v = self.heat_exchanger_name
         if not v:
             return None
@@ -604,7 +657,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['HXAirToAirSensibleAndLatentNames'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -614,7 +667,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
 
     @property
-    def exhaust_air_fan(self) -> IDFBaseModel | None:
+    def exhaust_air_fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.exhaust_air_fan_name
         if not v:
             return None
@@ -624,7 +677,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
 
     @property
-    def controller(self) -> IDFBaseModel | None:
+    def controller(self) -> ZoneHVACEnergyRecoveryVentilatorController | None:
         v = self.controller_name
         if not v:
             return None
@@ -634,7 +687,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['ControllerStandAloneEnergyRecoveryVentilator'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -749,7 +802,7 @@ class ZoneHVACEnergyRecoveryVentilatorController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidistat_control_zone(self) -> IDFBaseModel | None:
+    def humidistat_control_zone(self) -> Zone | None:
         v = self.humidistat_control_zone_name
         if not v:
             return None
@@ -889,7 +942,7 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -899,7 +952,16 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(
+        self,
+    ) -> (
+        FanComponentModel
+        | FanConstantVolume
+        | FanOnOff
+        | FanSystemModel
+        | FanVariableVolume
+        | None
+    ):
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -909,7 +971,16 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['Fans'])
 
     @property
-    def first_evaporative_cooler_object(self) -> IDFBaseModel | None:
+    def first_evaporative_cooler_object(
+        self,
+    ) -> (
+        EvaporativeCoolerDirectCelDekPad
+        | EvaporativeCoolerDirectResearchSpecial
+        | EvaporativeCoolerIndirectCelDekPad
+        | EvaporativeCoolerIndirectResearchSpecial
+        | EvaporativeCoolerIndirectWetCoil
+        | None
+    ):
         v = self.first_evaporative_cooler_object_name
         if not v:
             return None
@@ -919,7 +990,16 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['EvapCoolerNames'])
 
     @property
-    def second_evaporative_cooler(self) -> IDFBaseModel | None:
+    def second_evaporative_cooler(
+        self,
+    ) -> (
+        EvaporativeCoolerDirectCelDekPad
+        | EvaporativeCoolerDirectResearchSpecial
+        | EvaporativeCoolerIndirectCelDekPad
+        | EvaporativeCoolerIndirectResearchSpecial
+        | EvaporativeCoolerIndirectWetCoil
+        | None
+    ):
         v = self.second_evaporative_cooler_name
         if not v:
             return None
@@ -929,7 +1009,9 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['EvapCoolerNames'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -1104,7 +1186,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -1114,7 +1196,9 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -1124,7 +1208,14 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -1134,7 +1225,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsWater'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(self) -> CoilHeatingElectric | CoilHeatingWater | None:
         v = self.heating_coil_name
         if not v:
             return None
@@ -1144,7 +1235,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilsElectric', 'HeatingCoilsWater'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -1154,7 +1245,9 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -1518,7 +1611,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -1568,7 +1661,9 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1580,7 +1675,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         )
 
     @property
-    def mode_0_supply_air_temperature_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_supply_air_temperature_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_supply_air_temperature_lookup_table_name
         if not v:
             return None
@@ -1590,7 +1685,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_supply_air_humidity_ratio_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_supply_air_humidity_ratio_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_supply_air_humidity_ratio_lookup_table_name
         if not v:
             return None
@@ -1600,7 +1695,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_system_electric_power_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_system_electric_power_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_system_electric_power_lookup_table_name
         if not v:
             return None
@@ -1610,7 +1705,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_supply_fan_electric_power_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_supply_fan_electric_power_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_supply_fan_electric_power_lookup_table_name
         if not v:
             return None
@@ -1620,7 +1715,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_external_static_pressure_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_external_static_pressure_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_external_static_pressure_lookup_table_name
         if not v:
             return None
@@ -1630,7 +1725,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_system_second_fuel_consumption_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_system_second_fuel_consumption_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_system_second_fuel_consumption_lookup_table_name
         if not v:
             return None
@@ -1640,7 +1735,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_system_third_fuel_consumption_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_system_third_fuel_consumption_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_system_third_fuel_consumption_lookup_table_name
         if not v:
             return None
@@ -1650,7 +1745,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['MultivariateFunctions'])
 
     @property
-    def mode_0_system_water_use_lookup_table(self) -> IDFBaseModel | None:
+    def mode_0_system_water_use_lookup_table(self) -> TableLookup | None:
         v = self.mode_0_system_water_use_lookup_table_name
         if not v:
             return None
@@ -1932,7 +2027,9 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1944,7 +2041,9 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         )
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -2075,7 +2174,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2095,7 +2194,9 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_fan(self) -> IDFBaseModel | None:
+    def supply_fan(
+        self,
+    ) -> FanConstantVolume | FanSystemModel | FanVariableVolume | None:
         v = self.supply_fan_name
         if not v:
             return None
@@ -2105,7 +2206,9 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandVAV', 'FansSystemModel'])
 
     @property
-    def exhaust_fan(self) -> IDFBaseModel | None:
+    def exhaust_fan(
+        self,
+    ) -> FanConstantVolume | FanSystemModel | FanVariableVolume | None:
         v = self.exhaust_fan_name
         if not v:
             return None
@@ -2145,7 +2248,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_unit_list(self) -> IDFBaseModel | None:
+    def outdoor_air_unit_list(self) -> ZoneHVACOutdoorAirUnitEquipmentList | None:
         v = self.outdoor_air_unit_list_name
         if not v:
             return None
@@ -2155,7 +2258,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirUnitEquipmentLists'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -2535,7 +2638,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -2545,7 +2648,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(self) -> FanConstantVolume | FanOnOff | FanSystemModel | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -2555,7 +2658,15 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOff', 'FansSystemModel'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -2565,7 +2676,16 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXVariableSpeed
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -2592,7 +2712,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -2602,7 +2722,9 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -2889,7 +3011,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -2899,7 +3021,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(self) -> FanConstantVolume | FanOnOff | FanSystemModel | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -2909,7 +3031,14 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOff', 'FansSystemModel'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingDXSingleSpeed
+        | CoilHeatingDXVariableRefrigerantFlow
+        | CoilHeatingDXVariableSpeed
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -2921,7 +3050,16 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         )
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXVariableSpeed
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -2938,7 +3076,15 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         )
 
     @property
-    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.supplemental_heating_coil_name
         if not v:
             return None
@@ -2958,7 +3104,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -2968,7 +3114,9 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -3241,7 +3389,9 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_object(self) -> IDFBaseModel | None:
+    def supply_air_fan_object(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.supply_air_fan_object_name
         if not v:
             return None
@@ -3251,7 +3401,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def outside_air_mixer_object(self) -> IDFBaseModel | None:
+    def outside_air_mixer_object(self) -> OutdoorAirMixer | None:
         v = self.outside_air_mixer_object_name
         if not v:
             return None
@@ -3261,7 +3411,13 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def cooling_coil_object(self) -> IDFBaseModel | None:
+    def cooling_coil_object(
+        self,
+    ) -> (
+        CoilCoolingDXVariableRefrigerantFlow
+        | CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl
+        | None
+    ):
         v = self.cooling_coil_object_name
         if not v:
             return None
@@ -3277,7 +3433,13 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         )
 
     @property
-    def heating_coil_object(self) -> IDFBaseModel | None:
+    def heating_coil_object(
+        self,
+    ) -> (
+        CoilHeatingDXVariableRefrigerantFlow
+        | CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl
+        | None
+    ):
         v = self.heating_coil_object_name
         if not v:
             return None
@@ -3293,7 +3455,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         )
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -3303,7 +3465,9 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -3313,7 +3477,15 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneHVACSizingName'])
 
     @property
-    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.supplemental_heating_coil_name
         if not v:
             return None
@@ -3323,7 +3495,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def controlling_zone_or_thermostat_location_ref(self) -> IDFBaseModel | None:
+    def controlling_zone_or_thermostat_location_ref(self) -> Zone | None:
         v = self.controlling_zone_or_thermostat_location
         if not v:
             return None
@@ -3333,7 +3505,9 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def design_specification_multispeed_object(self) -> IDFBaseModel | None:
+    def design_specification_multispeed_object(
+        self,
+    ) -> UnitarySystemPerformanceMultispeed | None:
         v = self.design_specification_multispeed_object_name
         if not v:
             return None
@@ -3441,7 +3615,9 @@ class ZoneHVACUnitHeater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -3451,7 +3627,15 @@ class ZoneHVACUnitHeater(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -3471,7 +3655,7 @@ class ZoneHVACUnitHeater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -3481,7 +3665,9 @@ class ZoneHVACUnitHeater(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -3658,7 +3844,9 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -3678,7 +3866,15 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -3688,7 +3884,14 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -3698,7 +3901,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsWater'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -3708,7 +3911,9 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -3939,7 +4144,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -3949,7 +4154,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -3959,7 +4164,14 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingWaterToAirHeatPumpEquationFit
+        | CoilHeatingWaterToAirHeatPumpParameterEstimation
+        | CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -3971,7 +4183,14 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         )
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingWaterToAirHeatPumpEquationFit
+        | CoilCoolingWaterToAirHeatPumpParameterEstimation
+        | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -3983,7 +4202,15 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         )
 
     @property
-    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.supplemental_heating_coil_name
         if not v:
             return None
@@ -4003,7 +4230,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -4013,7 +4240,9 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -4023,7 +4252,9 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneHVACSizingName'])
 
     @property
-    def design_specification_multispeed_object(self) -> IDFBaseModel | None:
+    def design_specification_multispeed_object(
+        self,
+    ) -> UnitarySystemPerformanceMultispeed | None:
         v = self.design_specification_multispeed_object_name
         if not v:
             return None
@@ -4129,7 +4360,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -4139,7 +4370,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def supply_air_fan(self) -> IDFBaseModel | None:
+    def supply_air_fan(self) -> FanConstantVolume | FanOnOff | FanSystemModel | None:
         v = self.supply_air_fan_name
         if not v:
             return None
@@ -4149,7 +4380,15 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOff', 'FansSystemModel'])
 
     @property
-    def dx_cooling_coil(self) -> IDFBaseModel | None:
+    def dx_cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXVariableSpeed
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | None
+    ):
         v = self.dx_cooling_coil_name
         if not v:
             return None
@@ -4171,7 +4410,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -4181,7 +4420,9 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None

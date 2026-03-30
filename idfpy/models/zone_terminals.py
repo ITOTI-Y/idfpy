@@ -7,7 +7,7 @@ Group: Zone HVAC Air Loop Terminal Units
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -28,6 +28,24 @@ from ._refs import (
     ZoneMixersRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .air_distribution import AirLoopHVACZoneMixer
+    from .coils import (
+        CoilCoolingWater,
+        CoilCoolingWaterDetailedGeometry,
+        CoilHeatingElectric,
+        CoilHeatingFuel,
+        CoilHeatingSteam,
+        CoilHeatingWater,
+    )
+    from .fans import FanConstantVolume, FanSystemModel, FanVariableVolume
+    from .hvac_design import (
+        DesignSpecificationAirTerminalSizing,
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+    )
+    from .thermal_zones import Zone
 
 
 class AirTerminalDualDuctConstantVolume(IDFBaseModel):
@@ -124,7 +142,9 @@ class AirTerminalDualDuctVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -205,7 +225,9 @@ class AirTerminalDualDuctVAVOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -675,7 +697,15 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -685,7 +715,9 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> CoilCoolingWater | CoilCoolingWaterDetailedGeometry | None:
         v = self.cooling_coil_name
         if not v:
             return None
@@ -695,7 +727,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilName'])
 
     @property
-    def zone_mixer(self) -> IDFBaseModel | None:
+    def zone_mixer(self) -> AirLoopHVACZoneMixer | None:
         v = self.zone_mixer_name
         if not v:
             return None
@@ -763,7 +795,9 @@ class AirTerminalSingleDuctConstantVolumeNoReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -839,7 +873,15 @@ class AirTerminalSingleDuctConstantVolumeReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def reheat_coil(self) -> IDFBaseModel | None:
+    def reheat_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.reheat_coil_name
         if not v:
             return None
@@ -932,7 +974,9 @@ class AirTerminalSingleDuctMixer(IDFBaseModel):
         return idf._resolve_forward(v, ['DOAToZonalUnit'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1060,7 +1104,7 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_mixer(self) -> IDFBaseModel | None:
+    def zone_mixer(self) -> AirLoopHVACZoneMixer | None:
         v = self.zone_mixer_name
         if not v:
             return None
@@ -1070,7 +1114,7 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneMixers'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanConstantVolume | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -1080,7 +1124,15 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCV', 'FansSystemModel'])
 
     @property
-    def reheat_coil(self) -> IDFBaseModel | None:
+    def reheat_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.reheat_coil_name
         if not v:
             return None
@@ -1198,7 +1250,7 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_mixer(self) -> IDFBaseModel | None:
+    def zone_mixer(self) -> AirLoopHVACZoneMixer | None:
         v = self.zone_mixer_name
         if not v:
             return None
@@ -1208,7 +1260,7 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneMixers'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanConstantVolume | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -1218,7 +1270,15 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCV', 'FansSystemModel'])
 
     @property
-    def reheat_coil(self) -> IDFBaseModel | None:
+    def reheat_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.reheat_coil_name
         if not v:
             return None
@@ -1374,7 +1434,15 @@ class AirTerminalSingleDuctVAVHeatAndCoolReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def reheat_coil(self) -> IDFBaseModel | None:
+    def reheat_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.reheat_coil_name
         if not v:
             return None
@@ -1479,7 +1547,9 @@ class AirTerminalSingleDuctVAVNoReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1658,7 +1728,15 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def reheat_coil(self) -> IDFBaseModel | None:
+    def reheat_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.reheat_coil_name
         if not v:
             return None
@@ -1668,7 +1746,9 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -1782,7 +1862,7 @@ class AirTerminalSingleDuctVAVReheatVariableSpeedFan(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanSystemModel | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -1792,7 +1872,15 @@ class AirTerminalSingleDuctVAVReheatVariableSpeedFan(IDFBaseModel):
         return idf._resolve_forward(v, ['FansSystemModel', 'FansVAV'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -1875,7 +1963,9 @@ class ZoneHVACAirDistributionUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['AirTerminalUnitNames'])
 
     @property
-    def design_specification_air_terminal_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_air_terminal_sizing_object(
+        self,
+    ) -> DesignSpecificationAirTerminalSizing | None:
         v = self.design_specification_air_terminal_sizing_object_name
         if not v:
             return None
@@ -1966,7 +2056,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

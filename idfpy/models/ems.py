@@ -50,7 +50,9 @@ class EnergyManagementSystemProgramCallingManagerProgramsItem(IDFBaseModel):
     )
 
     @property
-    def program(self) -> IDFBaseModel | None:
+    def program(
+        self,
+    ) -> EnergyManagementSystemProgram | EnergyManagementSystemSubroutine | None:
         v = self.program_name
         if not v:
             return None

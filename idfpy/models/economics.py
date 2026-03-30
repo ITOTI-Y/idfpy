@@ -913,7 +913,7 @@ class UtilityCostChargeBlock(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -981,7 +981,7 @@ class UtilityCostChargeSimple(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1045,7 +1045,7 @@ class UtilityCostComputation(IDFBaseModel):
     compute_step_30: str | None = Field(default=None)
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1113,7 +1113,7 @@ class UtilityCostQualify(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1184,7 +1184,7 @@ class UtilityCostRatchet(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1399,7 +1399,7 @@ class UtilityCostVariable(IDFBaseModel):
     december_value: float | None = Field(default=None)
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None

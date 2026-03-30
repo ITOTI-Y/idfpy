@@ -7,7 +7,7 @@ Group: Refrigeration
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -34,6 +34,11 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .fluids import FluidPropertiesGlycolConcentration, FluidPropertiesName
+    from .thermal_zones import Zone
+    from .water_systems import WaterUseStorage
+
 
 class RefrigerationCaseAndWalkInListCasesAndWalkinsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -47,7 +52,9 @@ class RefrigerationCaseAndWalkInListCasesAndWalkinsItem(IDFBaseModel):
     )
 
     @property
-    def case_or_walkin(self) -> IDFBaseModel | None:
+    def case_or_walkin(
+        self,
+    ) -> RefrigerationAirChiller | RefrigerationCase | RefrigerationWalkIn | None:
         v = self.case_or_walkin_name
         if not v:
             return None
@@ -69,7 +76,7 @@ class RefrigerationCompressorListCompressorsItem(IDFBaseModel):
     )
 
     @property
-    def refrigeration_compressor(self) -> IDFBaseModel | None:
+    def refrigeration_compressor(self) -> RefrigerationCompressor | None:
         v = self.refrigeration_compressor_name
         if not v:
             return None
@@ -91,7 +98,9 @@ class RefrigerationTransferLoadListTransferLoadsItem(IDFBaseModel):
     )
 
     @property
-    def cascade_condenser_or_secondary_system(self) -> IDFBaseModel | None:
+    def cascade_condenser_or_secondary_system(
+        self,
+    ) -> RefrigerationCondenserCascade | RefrigerationSecondarySystem | None:
         v = self.cascade_condenser_name_or_secondary_system_name
         if not v:
             return None
@@ -183,7 +192,7 @@ class RefrigerationWalkInZoneDataItem(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -227,7 +236,7 @@ class ZoneHVACRefrigerationChillerSetChillersItem(IDFBaseModel):
     )
 
     @property
-    def air_chiller(self) -> IDFBaseModel | None:
+    def air_chiller(self) -> RefrigerationAirChiller | None:
         v = self.air_chiller_name
         if not v:
             return None
@@ -707,7 +716,7 @@ class RefrigerationCase(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1135,7 +1144,7 @@ class RefrigerationCompressorRack(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def evaporative_water_supply_tank(self) -> IDFBaseModel | None:
+    def evaporative_water_supply_tank(self) -> WaterUseStorage | None:
         v = self.evaporative_water_supply_tank_name
         if not v:
             return None
@@ -1145,7 +1154,15 @@ class RefrigerationCompressorRack(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def refrigeration_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+    def refrigeration_case_or_walkin_or_caseandwalkinlist(
+        self,
+    ) -> (
+        RefrigerationAirChiller
+        | RefrigerationCase
+        | RefrigerationCaseAndWalkInList
+        | RefrigerationWalkIn
+        | None
+    ):
         v = self.refrigeration_case_name_or_walkin_name_or_caseandwalkinlist_name
         if not v:
             return None
@@ -1155,7 +1172,7 @@ class RefrigerationCompressorRack(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
 
     @property
-    def heat_rejection_zone(self) -> IDFBaseModel | None:
+    def heat_rejection_zone(self) -> Zone | None:
         v = self.heat_rejection_zone_name
         if not v:
             return None
@@ -1449,7 +1466,7 @@ class RefrigerationCondenserEvaporativeCooled(IDFBaseModel):
     )
 
     @property
-    def evaporative_water_supply_tank(self) -> IDFBaseModel | None:
+    def evaporative_water_supply_tank(self) -> WaterUseStorage | None:
         v = self.evaporative_water_supply_tank_name
         if not v:
             return None
@@ -1826,7 +1843,15 @@ class RefrigerationSecondarySystem(IDFBaseModel):
     )
 
     @property
-    def refrigerated_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+    def refrigerated_case_or_walkin_or_caseandwalkinlist(
+        self,
+    ) -> (
+        RefrigerationAirChiller
+        | RefrigerationCase
+        | RefrigerationCaseAndWalkInList
+        | RefrigerationWalkIn
+        | None
+    ):
         v = self.refrigerated_case_or_walkin_or_caseandwalkinlist_name
         if not v:
             return None
@@ -1836,7 +1861,9 @@ class RefrigerationSecondarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
 
     @property
-    def circulating_fluid(self) -> IDFBaseModel | None:
+    def circulating_fluid(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.circulating_fluid_name
         if not v:
             return None
@@ -1856,7 +1883,7 @@ class RefrigerationSecondarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def distribution_piping_zone(self) -> IDFBaseModel | None:
+    def distribution_piping_zone(self) -> Zone | None:
         v = self.distribution_piping_zone_name
         if not v:
             return None
@@ -1866,7 +1893,7 @@ class RefrigerationSecondarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def receiver_separator_zone(self) -> IDFBaseModel | None:
+    def receiver_separator_zone(self) -> Zone | None:
         v = self.receiver_separator_zone_name
         if not v:
             return None
@@ -1927,7 +1954,9 @@ class RefrigerationSubcooler(IDFBaseModel):
     )
 
     @property
-    def capacity_providing_system_ref(self) -> IDFBaseModel | None:
+    def capacity_providing_system_ref(
+        self,
+    ) -> RefrigerationSystem | RefrigerationTranscriticalSystem | None:
         v = self.capacity_providing_system
         if not v:
             return None
@@ -2038,7 +2067,15 @@ class RefrigerationSystem(IDFBaseModel):
     )
 
     @property
-    def refrigerated_case_or_walkin_or_caseandwalkinlist(self) -> IDFBaseModel | None:
+    def refrigerated_case_or_walkin_or_caseandwalkinlist(
+        self,
+    ) -> (
+        RefrigerationAirChiller
+        | RefrigerationCase
+        | RefrigerationCaseAndWalkInList
+        | RefrigerationWalkIn
+        | None
+    ):
         v = self.refrigerated_case_or_walkin_or_caseandwalkinlist_name
         if not v:
             return None
@@ -2048,7 +2085,14 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
 
     @property
-    def refrigeration_transfer_load_or_transferload_list(self) -> IDFBaseModel | None:
+    def refrigeration_transfer_load_or_transferload_list(
+        self,
+    ) -> (
+        RefrigerationCondenserCascade
+        | RefrigerationSecondarySystem
+        | RefrigerationTransferLoadList
+        | None
+    ):
         v = self.refrigeration_transfer_load_or_transferload_list_name
         if not v:
             return None
@@ -2061,7 +2105,15 @@ class RefrigerationSystem(IDFBaseModel):
         )
 
     @property
-    def refrigeration_condenser(self) -> IDFBaseModel | None:
+    def refrigeration_condenser(
+        self,
+    ) -> (
+        RefrigerationCondenserAirCooled
+        | RefrigerationCondenserCascade
+        | RefrigerationCondenserEvaporativeCooled
+        | RefrigerationCondenserWaterCooled
+        | None
+    ):
         v = self.refrigeration_condenser_name
         if not v:
             return None
@@ -2071,7 +2123,9 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationAllTypesCondenserNames'])
 
     @property
-    def compressor_or_compressorlist(self) -> IDFBaseModel | None:
+    def compressor_or_compressorlist(
+        self,
+    ) -> RefrigerationCompressor | RefrigerationCompressorList | None:
         v = self.compressor_or_compressorlist_name
         if not v:
             return None
@@ -2081,7 +2135,7 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
 
     @property
-    def refrigeration_system_working_fluid_type_ref(self) -> IDFBaseModel | None:
+    def refrigeration_system_working_fluid_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigeration_system_working_fluid_type
         if not v:
             return None
@@ -2091,7 +2145,7 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def mechanical_subcooler(self) -> IDFBaseModel | None:
+    def mechanical_subcooler(self) -> RefrigerationSubcooler | None:
         v = self.mechanical_subcooler_name
         if not v:
             return None
@@ -2101,7 +2155,7 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationSubcoolerNames'])
 
     @property
-    def liquid_suction_heat_exchanger_subcooler(self) -> IDFBaseModel | None:
+    def liquid_suction_heat_exchanger_subcooler(self) -> RefrigerationSubcooler | None:
         v = self.liquid_suction_heat_exchanger_subcooler_name
         if not v:
             return None
@@ -2111,7 +2165,7 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationSubcoolerNames'])
 
     @property
-    def suction_piping_zone(self) -> IDFBaseModel | None:
+    def suction_piping_zone(self) -> Zone | None:
         v = self.suction_piping_zone_name
         if not v:
             return None
@@ -2121,7 +2175,9 @@ class RefrigerationSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def high_stage_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+    def high_stage_compressor_or_compressorlist(
+        self,
+    ) -> RefrigerationCompressor | RefrigerationCompressorList | None:
         v = self.high_stage_compressor_or_compressorlist_name
         if not v:
             return None
@@ -2218,7 +2274,13 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
     @property
     def medium_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> (
+        RefrigerationAirChiller
+        | RefrigerationCase
+        | RefrigerationCaseAndWalkInList
+        | RefrigerationWalkIn
+        | None
+    ):
         v = self.medium_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist_name
         if not v:
             return None
@@ -2230,7 +2292,13 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
     @property
     def low_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> (
+        RefrigerationAirChiller
+        | RefrigerationCase
+        | RefrigerationCaseAndWalkInList
+        | RefrigerationWalkIn
+        | None
+    ):
         v = self.low_temperature_refrigerated_case_or_walkin_or_caseandwalkinlist_name
         if not v:
             return None
@@ -2240,7 +2308,7 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCaseAndWalkInAndListNames'])
 
     @property
-    def refrigeration_gas_cooler(self) -> IDFBaseModel | None:
+    def refrigeration_gas_cooler(self) -> RefrigerationGasCoolerAirCooled | None:
         v = self.refrigeration_gas_cooler_name
         if not v:
             return None
@@ -2250,7 +2318,9 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationAllTypesGasCoolerNames'])
 
     @property
-    def high_pressure_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+    def high_pressure_compressor_or_compressorlist(
+        self,
+    ) -> RefrigerationCompressor | RefrigerationCompressorList | None:
         v = self.high_pressure_compressor_or_compressorlist_name
         if not v:
             return None
@@ -2260,7 +2330,9 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
 
     @property
-    def low_pressure_compressor_or_compressorlist(self) -> IDFBaseModel | None:
+    def low_pressure_compressor_or_compressorlist(
+        self,
+    ) -> RefrigerationCompressor | RefrigerationCompressorList | None:
         v = self.low_pressure_compressor_or_compressorlist_name
         if not v:
             return None
@@ -2270,7 +2342,7 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['RefrigerationCompressorAndListNames'])
 
     @property
-    def refrigeration_system_working_fluid_type_ref(self) -> IDFBaseModel | None:
+    def refrigeration_system_working_fluid_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigeration_system_working_fluid_type
         if not v:
             return None
@@ -2280,7 +2352,7 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def medium_temperature_suction_piping_zone(self) -> IDFBaseModel | None:
+    def medium_temperature_suction_piping_zone(self) -> Zone | None:
         v = self.medium_temperature_suction_piping_zone_name
         if not v:
             return None
@@ -2290,7 +2362,7 @@ class RefrigerationTranscriticalSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def low_temperature_suction_piping_zone(self) -> IDFBaseModel | None:
+    def low_temperature_suction_piping_zone(self) -> Zone | None:
         v = self.low_temperature_suction_piping_zone_name
         if not v:
             return None
@@ -2562,7 +2634,7 @@ class ZoneHVACRefrigerationChillerSet(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

@@ -58,7 +58,9 @@ class ScheduleWeekCompactDataItem(IDFBaseModel):
     )
 
     @property
-    def schedule_day(self) -> IDFBaseModel | None:
+    def schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.schedule_day_name
         if not v:
             return None
@@ -80,7 +82,7 @@ class ScheduleYearScheduleWeeksItem(IDFBaseModel):
     end_day: int = Field(..., ge=1, le=31)
 
     @property
-    def schedule_week(self) -> IDFBaseModel | None:
+    def schedule_week(self) -> ScheduleWeekCompact | ScheduleWeekDaily | None:
         v = self.schedule_week_name
         if not v:
             return None
@@ -106,7 +108,7 @@ class ScheduleCompact(IDFBaseModel):
     data: list[ScheduleCompactDataItem] | None = Field(default=None)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -128,7 +130,7 @@ class ScheduleConstant(IDFBaseModel):
     hourly_value: float | None = Field(default=0.0)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -173,7 +175,7 @@ class ScheduleDayHourly(IDFBaseModel):
     hour_24: float | None = Field(default=0.0)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -203,7 +205,7 @@ class ScheduleDayInterval(IDFBaseModel):
     data: list[ScheduleDayIntervalDataItem] | None = Field(default=None)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -238,7 +240,7 @@ class ScheduleDayList(IDFBaseModel):
     extensions: list[ScheduleDayListExtensionsItem] | None = Field(default=None)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -292,7 +294,7 @@ class ScheduleFile(IDFBaseModel):
     )
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None
@@ -426,7 +428,9 @@ class ScheduleWeekDaily(IDFBaseModel):
     )
 
     @property
-    def sunday_schedule_day(self) -> IDFBaseModel | None:
+    def sunday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.sunday_schedule_day_name
         if not v:
             return None
@@ -436,7 +440,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def monday_schedule_day(self) -> IDFBaseModel | None:
+    def monday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.monday_schedule_day_name
         if not v:
             return None
@@ -446,7 +452,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def tuesday_schedule_day(self) -> IDFBaseModel | None:
+    def tuesday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.tuesday_schedule_day_name
         if not v:
             return None
@@ -456,7 +464,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def wednesday_schedule_day(self) -> IDFBaseModel | None:
+    def wednesday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.wednesday_schedule_day_name
         if not v:
             return None
@@ -466,7 +476,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def thursday_schedule_day(self) -> IDFBaseModel | None:
+    def thursday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.thursday_schedule_day_name
         if not v:
             return None
@@ -476,7 +488,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def friday_schedule_day(self) -> IDFBaseModel | None:
+    def friday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.friday_schedule_day_name
         if not v:
             return None
@@ -486,7 +500,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def saturday_schedule_day(self) -> IDFBaseModel | None:
+    def saturday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.saturday_schedule_day_name
         if not v:
             return None
@@ -496,7 +512,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def holiday_schedule_day(self) -> IDFBaseModel | None:
+    def holiday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.holiday_schedule_day_name
         if not v:
             return None
@@ -506,7 +524,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def summerdesignday_schedule_day(self) -> IDFBaseModel | None:
+    def summerdesignday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.summerdesignday_schedule_day_name
         if not v:
             return None
@@ -516,7 +536,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def winterdesignday_schedule_day(self) -> IDFBaseModel | None:
+    def winterdesignday_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.winterdesignday_schedule_day_name
         if not v:
             return None
@@ -526,7 +548,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def customday1_schedule_day(self) -> IDFBaseModel | None:
+    def customday1_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.customday1_schedule_day_name
         if not v:
             return None
@@ -536,7 +560,9 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def customday2_schedule_day(self) -> IDFBaseModel | None:
+    def customday2_schedule_day(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.customday2_schedule_day_name
         if not v:
             return None
@@ -558,7 +584,7 @@ class ScheduleYear(IDFBaseModel):
     schedule_weeks: list[ScheduleYearScheduleWeeksItem] | None = Field(default=None)
 
     @property
-    def schedule_type_limits(self) -> IDFBaseModel | None:
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
         v = self.schedule_type_limits_name
         if not v:
             return None

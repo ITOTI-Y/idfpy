@@ -7,7 +7,7 @@ Group: Electric Load Center-Generator Specifications
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -37,6 +37,11 @@ from ._refs import (
     UnivariateFunctionsRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .curves import CurveChillerPartLoadWithLift, CurveTriquadratic
+    from .misc import TableLookup
+    from .thermal_zones import Zone
 
 
 class ElectricLoadCenterGeneratorsGeneratorOutputsItem(IDFBaseModel):
@@ -277,7 +282,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
     )
 
     @property
-    def generator_list(self) -> IDFBaseModel | None:
+    def generator_list(self) -> ElectricLoadCenterGenerators | None:
         v = self.generator_list_name
         if not v:
             return None
@@ -297,7 +302,15 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inverter(self) -> IDFBaseModel | None:
+    def inverter(
+        self,
+    ) -> (
+        ElectricLoadCenterInverterFunctionOfPower
+        | ElectricLoadCenterInverterLookUpTable
+        | ElectricLoadCenterInverterPVWatts
+        | ElectricLoadCenterInverterSimple
+        | None
+    ):
         v = self.inverter_name
         if not v:
             return None
@@ -307,7 +320,14 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['InverterList'])
 
     @property
-    def electrical_storage_object(self) -> IDFBaseModel | None:
+    def electrical_storage_object(
+        self,
+    ) -> (
+        ElectricLoadCenterStorageBattery
+        | ElectricLoadCenterStorageLiIonNMCBattery
+        | ElectricLoadCenterStorageSimple
+        | None
+    ):
         v = self.electrical_storage_object_name
         if not v:
             return None
@@ -317,7 +337,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ElecStorageList'])
 
     @property
-    def transformer_object(self) -> IDFBaseModel | None:
+    def transformer_object(self) -> ElectricLoadCenterTransformer | None:
         v = self.transformer_object_name
         if not v:
             return None
@@ -327,7 +347,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['TransformerNames'])
 
     @property
-    def storage_converter_object(self) -> IDFBaseModel | None:
+    def storage_converter_object(self) -> ElectricLoadCenterStorageConverter | None:
         v = self.storage_converter_object_name
         if not v:
             return None
@@ -439,7 +459,7 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -521,7 +541,7 @@ class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -580,7 +600,7 @@ class ElectricLoadCenterInverterSimple(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -751,7 +771,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -879,7 +899,7 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1031,7 +1051,7 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1098,7 +1118,7 @@ class ElectricLoadCenterStorageSimple(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1238,7 +1258,7 @@ class ElectricLoadCenterTransformer(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1497,7 +1517,7 @@ class GeneratorFuelCell(IDFBaseModel):
     )
 
     @property
-    def power_module(self) -> IDFBaseModel | None:
+    def power_module(self) -> GeneratorFuelCellPowerModule | None:
         v = self.power_module_name
         if not v:
             return None
@@ -1507,7 +1527,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCPMNames'])
 
     @property
-    def air_supply(self) -> IDFBaseModel | None:
+    def air_supply(self) -> GeneratorFuelCellAirSupply | None:
         v = self.air_supply_name
         if not v:
             return None
@@ -1517,7 +1537,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCAirSupNames'])
 
     @property
-    def fuel_supply(self) -> IDFBaseModel | None:
+    def fuel_supply(self) -> GeneratorFuelSupply | None:
         v = self.fuel_supply_name
         if not v:
             return None
@@ -1527,7 +1547,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['GenFuelSupNames'])
 
     @property
-    def water_supply(self) -> IDFBaseModel | None:
+    def water_supply(self) -> GeneratorFuelCellWaterSupply | None:
         v = self.water_supply_name
         if not v:
             return None
@@ -1537,7 +1557,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCWaterSupNames'])
 
     @property
-    def auxiliary_heater(self) -> IDFBaseModel | None:
+    def auxiliary_heater(self) -> GeneratorFuelCellAuxiliaryHeater | None:
         v = self.auxiliary_heater_name
         if not v:
             return None
@@ -1547,7 +1567,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCAuxHeatNames'])
 
     @property
-    def heat_exchanger(self) -> IDFBaseModel | None:
+    def heat_exchanger(self) -> GeneratorFuelCellExhaustGasToWaterHeatExchanger | None:
         v = self.heat_exchanger_name
         if not v:
             return None
@@ -1557,7 +1577,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCExhaustHXNames'])
 
     @property
-    def electrical_storage(self) -> IDFBaseModel | None:
+    def electrical_storage(self) -> GeneratorFuelCellElectricalStorage | None:
         v = self.electrical_storage_name
         if not v:
             return None
@@ -1567,7 +1587,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCStorageNames'])
 
     @property
-    def inverter(self) -> IDFBaseModel | None:
+    def inverter(self) -> GeneratorFuelCellInverter | None:
         v = self.inverter_name
         if not v:
             return None
@@ -1577,7 +1597,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCInverterNames'])
 
     @property
-    def stack_cooler(self) -> IDFBaseModel | None:
+    def stack_cooler(self) -> GeneratorFuelCellStackCooler | None:
         v = self.stack_cooler_name
         if not v:
             return None
@@ -1700,7 +1720,7 @@ class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     )
 
     @property
-    def zone_to_receive_skin_losses_ref(self) -> IDFBaseModel | None:
+    def zone_to_receive_skin_losses_ref(self) -> Zone | None:
         v = self.zone_name_to_receive_skin_losses
         if not v:
             return None
@@ -1943,7 +1963,7 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2557,7 +2577,7 @@ class GeneratorMicroCHP(IDFBaseModel):
     )
 
     @property
-    def performance_parameters(self) -> IDFBaseModel | None:
+    def performance_parameters(self) -> GeneratorMicroCHPNonNormalizedParameters | None:
         v = self.performance_parameters_name
         if not v:
             return None
@@ -2567,7 +2587,7 @@ class GeneratorMicroCHP(IDFBaseModel):
         return idf._resolve_forward(v, ['MicroCHPParametersNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2577,7 +2597,7 @@ class GeneratorMicroCHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def generator_fuel_supply(self) -> IDFBaseModel | None:
+    def generator_fuel_supply(self) -> GeneratorFuelSupply | None:
         v = self.generator_fuel_supply_name
         if not v:
             return None
@@ -2685,7 +2705,9 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
     )
 
     @property
-    def electrical_efficiency_curve(self) -> IDFBaseModel | None:
+    def electrical_efficiency_curve(
+        self,
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.electrical_efficiency_curve_name
         if not v:
             return None
@@ -2695,7 +2717,9 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
         return idf._resolve_forward(v, ['TrivariateFunctions'])
 
     @property
-    def thermal_efficiency_curve(self) -> IDFBaseModel | None:
+    def thermal_efficiency_curve(
+        self,
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.thermal_efficiency_curve_name
         if not v:
             return None
@@ -3257,7 +3281,14 @@ class GeneratorPhotovoltaic(IDFBaseModel):
         return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
     @property
-    def module_performance(self) -> IDFBaseModel | None:
+    def module_performance(
+        self,
+    ) -> (
+        PhotovoltaicPerformanceEquivalentOneDiode
+        | PhotovoltaicPerformanceSandia
+        | PhotovoltaicPerformanceSimple
+        | None
+    ):
         v = self.module_performance_name
         if not v:
             return None

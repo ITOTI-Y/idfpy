@@ -22,6 +22,12 @@ if TYPE_CHECKING:
 
 _OBJECT_LIST_REF_TYPES: dict[str, str] = {}
 _REFERENCE_CLASS_NAME_GROUPS: set[str] = set()
+_GROUP_TO_CLASSES: dict[str, set[str]] = {}
+_CLASS_TO_MODULE: dict[str, str] = {}
+
+# Navigation properties with more than this many provider types
+# fall back to IDFBaseModel | None
+MAX_NAV_UNION_SIZE = 5
 
 
 def set_object_list_ref_types(mapping: dict[str, str]) -> None:
@@ -43,6 +49,19 @@ def set_reference_class_name_groups(groups: set[str]) -> None:
     """
     global _REFERENCE_CLASS_NAME_GROUPS
     _REFERENCE_CLASS_NAME_GROUPS = groups
+
+
+def set_nav_type_mapping(
+    group_to_classes: dict[str, set[str]],
+    class_to_module: dict[str, str],
+) -> None:
+    """Set ref_group -> provider classes mapping for nav property type narrowing.
+
+    Called by ModelGenerator before template rendering.
+    """
+    global _GROUP_TO_CLASSES, _CLASS_TO_MODULE
+    _GROUP_TO_CLASSES = group_to_classes
+    _CLASS_TO_MODULE = class_to_module
 
 
 def get_ref_type_for_object_list(object_lists: list[str] | None) -> str | None:
@@ -427,10 +446,8 @@ def _format_default_value(value: Any, spec: FieldSpec | None = None) -> str:
     if isinstance(value, bool):
         return 'True' if value else 'False'
     if isinstance(value, (int, float)):
-        # Handle schema inconsistency: field_type is string but default is number
-        # (e.g., Version.version_identifier has type="string" but default=25.1)
-        if spec and spec.field_type == 'string':
-            return repr(str(value))
+        # Note: string fields with numeric defaults are normalized to str
+        # in FieldParser, so that case doesn't reach here.
 
         # Handle case where enum has integer values but default is float
         if spec and isinstance(value, float) and value == int(value):
@@ -571,6 +588,65 @@ def is_class_name_ref_filter(spec: FieldSpec) -> bool:
     return all(ol in _REFERENCE_CLASS_NAME_GROUPS for ol in spec.object_list)
 
 
+def _resolve_nav_classes(spec: FieldSpec) -> set[str] | None:
+    """Resolve provider classes for a nav property field.
+
+    Returns set of class names if narrowable (≤ MAX_NAV_UNION_SIZE),
+    or None to fall back to IDFBaseModel.
+    """
+    if not spec.object_list:
+        return None
+    all_classes: set[str] = set()
+    for group in spec.object_list:
+        classes = _GROUP_TO_CLASSES.get(group, set())
+        all_classes |= classes
+    if not all_classes or len(all_classes) > MAX_NAV_UNION_SIZE:
+        return None
+    return all_classes
+
+
+def nav_return_type_filter(spec: FieldSpec) -> str:
+    """Compute narrowed return type for navigation property."""
+    classes = _resolve_nav_classes(spec)
+    if classes is None:
+        return 'IDFBaseModel | None'
+    return ' | '.join(sorted(classes)) + ' | None'
+
+
+def collect_nav_imports(
+    objects: list[ObjectSpec],
+    nested_classes: list[dict],
+    current_module: str,
+) -> dict[str, list[str]]:
+    """Collect TYPE_CHECKING imports needed for narrowed nav property types."""
+    needed: set[str] = set()
+
+    def _collect_from_fields(fields: list[FieldSpec]) -> None:
+        for spec in fields:
+            if not spec.object_list or is_class_name_ref_filter(spec):
+                continue
+            classes = _resolve_nav_classes(spec)
+            if classes is not None:
+                needed.update(classes)
+
+    for obj in objects:
+        _collect_from_fields(obj.fields)
+    for nc in nested_classes:
+        _collect_from_fields(nc['fields'])
+
+    # Exclude classes defined in this file (same module)
+    local_classes = {obj.class_name for obj in objects}
+    local_classes |= {nc['name'] for nc in nested_classes}
+
+    imports: dict[str, list[str]] = {}
+    for cls_name in sorted(needed - local_classes):
+        module = _CLASS_TO_MODULE.get(cls_name, '')
+        if module == current_module:
+            continue
+        imports.setdefault(module, []).append(cls_name)
+    return imports
+
+
 # Registry of all template filters
 TEMPLATE_FILTERS: dict[str, Any] = {
     'python_type': python_type_filter,
@@ -578,5 +654,6 @@ TEMPLATE_FILTERS: dict[str, Any] = {
     'field_definition': field_definition_filter,
     'format_docstring': format_docstring_filter,
     'nav_name': nav_name_filter,
+    'nav_return_type': nav_return_type_filter,
     'is_class_name_ref': is_class_name_ref_filter,
 }

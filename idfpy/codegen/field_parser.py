@@ -106,6 +106,11 @@ class FieldParser:
             data_type=field_schema.get('data_type'),
         )
 
+        # Normalize: string field with numeric default → convert to str
+        # (e.g., Version.version_identifier has type="string" but default=25.1)
+        if spec.field_type == 'string' and isinstance(spec.default, (int, float)):
+            spec.default = str(spec.default)
+
         if field_type == 'array' and 'items' in field_schema:
             spec.items_spec = self._parse_array_items(field_schema['items'])
 
@@ -143,11 +148,16 @@ class FieldParser:
             )
             anyof_specs.append(alt_spec)
 
+        default = field_schema.get('default', _UNSET)
+        # Normalize: string field with numeric default → convert to str
+        if primary_type == 'string' and isinstance(default, (int, float)):
+            default = str(default)
+
         return FieldSpec(
             name=name,
             python_name=python_name,
             field_type=primary_type,
-            default=field_schema.get('default', _UNSET),
+            default=default,
             units=field_schema.get('units'),
             reference=field_schema.get('reference'),
             note=field_schema.get('note'),

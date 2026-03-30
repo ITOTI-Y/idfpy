@@ -7,7 +7,7 @@ Group: Condenser Equipment and Heat Exchangers
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -26,6 +26,15 @@ from ._refs import (
     VariableSpeedTowerCoefficientRef,
     WaterStorageTankNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .location import (
+        SiteGroundTemperatureUndisturbedFiniteDifference,
+        SiteGroundTemperatureUndisturbedKusudaAchenbach,
+        SiteGroundTemperatureUndisturbedXing,
+        SizingPeriodWeatherFileDays,
+    )
+    from .water_systems import WaterUseStorage
 
 
 class GroundHeatExchangerResponseFactorsGFunctionsItem(IDFBaseModel):
@@ -46,7 +55,7 @@ class GroundHeatExchangerSystemVerticalWellLocationsItem(IDFBaseModel):
     )
 
     @property
-    def ghe_vertical_single_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_single_object(self) -> GroundHeatExchangerVerticalSingle | None:
         v = self.ghe_vertical_single_object_name
         if not v:
             return None
@@ -498,7 +507,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -820,7 +829,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1035,7 +1044,9 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def model_coefficient(self) -> IDFBaseModel | None:
+    def model_coefficient(
+        self,
+    ) -> CoolingTowerPerformanceCoolTools | CoolingTowerPerformanceYorkCalc | None:
         v = self.model_coefficient_name
         if not v:
             return None
@@ -1077,7 +1088,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1441,7 +1452,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1607,7 +1618,7 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1839,7 +1850,7 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -2153,7 +2164,14 @@ class GroundHeatExchangerHorizontalTrench(IDFBaseModel):
     )
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2215,7 +2233,9 @@ class GroundHeatExchangerResponseFactors(IDFBaseModel):
     )
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2327,7 +2347,14 @@ class GroundHeatExchangerSlinky(IDFBaseModel):
     )
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2443,7 +2470,14 @@ class GroundHeatExchangerSystem(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2453,7 +2487,9 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def ghe_vertical_responsefactors_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_responsefactors_object(
+        self,
+    ) -> GroundHeatExchangerResponseFactors | None:
         v = self.ghe_vertical_responsefactors_object_name
         if not v:
             return None
@@ -2465,7 +2501,9 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         )
 
     @property
-    def ghe_vertical_sizing_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_sizing_object(
+        self,
+    ) -> GroundHeatExchangerVerticalSizingRectangle | None:
         v = self.ghe_vertical_sizing_object_name
         if not v:
             return None
@@ -2475,7 +2513,7 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['GroundHeatExchangerVerticalSizingNames'])
 
     @property
-    def ghe_vertical_array_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_array_object(self) -> GroundHeatExchangerVerticalArray | None:
         v = self.ghe_vertical_array_object_name
         if not v:
             return None
@@ -2502,7 +2540,9 @@ class GroundHeatExchangerVerticalArray(IDFBaseModel):
     borehole_spacing: float = Field(..., gt=0.0, json_schema_extra={'units': 'm'})
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2556,7 +2596,9 @@ class GroundHeatExchangerVerticalSingle(IDFBaseModel):
     y_location: float = Field(..., json_schema_extra={'units': 'm'})
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2659,7 +2701,7 @@ class GroundHeatExchangerVerticalSizingRectangle(IDFBaseModel):
     )
 
     @property
-    def sizingperiod_weatherfiledays(self) -> IDFBaseModel | None:
+    def sizingperiod_weatherfiledays(self) -> SizingPeriodWeatherFileDays | None:
         v = self.sizingperiod_weatherfiledays_name
         if not v:
             return None

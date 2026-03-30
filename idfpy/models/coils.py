@@ -7,7 +7,7 @@ Group: Coils
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -42,6 +42,24 @@ from ._refs import (
     WaterStorageTankNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .curves import (
+        CurveChillerPartLoadWithLift,
+        CurveQuadLinear,
+        CurveQuintLinear,
+        CurveTriquadratic,
+    )
+    from .fluids import FluidPropertiesGlycolConcentration, FluidPropertiesName
+    from .misc import (
+        HeatExchangerAirToAirFlatPlate,
+        HeatExchangerAirToAirSensibleAndLatent,
+        HeatExchangerDesiccantBalancedFlow,
+        TableLookup,
+    )
+    from .thermal_zones import Zone
+    from .water_heaters import WaterHeaterMixed, WaterHeaterStratified
+    from .water_systems import WaterUseStorage
 
 
 class CoilCoolingDX(IDFBaseModel):
@@ -107,7 +125,7 @@ class CoilCoolingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def condenser_zone(self) -> IDFBaseModel | None:
+    def condenser_zone(self) -> Zone | None:
         v = self.condenser_zone_name
         if not v:
             return None
@@ -117,7 +135,9 @@ class CoilCoolingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def performance_object(self) -> IDFBaseModel | None:
+    def performance_object(
+        self,
+    ) -> CoilCoolingDXCurveFitPerformance | CoilDXASHRAE205Performance | None:
         v = self.performance_object_name
         if not v:
             return None
@@ -127,7 +147,7 @@ class CoilCoolingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingPerformanceNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -137,7 +157,7 @@ class CoilCoolingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def evaporative_condenser_supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def evaporative_condenser_supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.evaporative_condenser_supply_water_storage_tank_name
         if not v:
             return None
@@ -266,7 +286,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
     )
 
     @property
-    def speed_1(self) -> IDFBaseModel | None:
+    def speed_1(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_1_name
         if not v:
             return None
@@ -276,7 +296,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_2(self) -> IDFBaseModel | None:
+    def speed_2(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_2_name
         if not v:
             return None
@@ -286,7 +306,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_3(self) -> IDFBaseModel | None:
+    def speed_3(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_3_name
         if not v:
             return None
@@ -296,7 +316,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_4(self) -> IDFBaseModel | None:
+    def speed_4(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_4_name
         if not v:
             return None
@@ -306,7 +326,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_5(self) -> IDFBaseModel | None:
+    def speed_5(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_5_name
         if not v:
             return None
@@ -316,7 +336,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_6(self) -> IDFBaseModel | None:
+    def speed_6(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_6_name
         if not v:
             return None
@@ -326,7 +346,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_7(self) -> IDFBaseModel | None:
+    def speed_7(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_7_name
         if not v:
             return None
@@ -336,7 +356,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_8(self) -> IDFBaseModel | None:
+    def speed_8(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_8_name
         if not v:
             return None
@@ -346,7 +366,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_9(self) -> IDFBaseModel | None:
+    def speed_9(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_9_name
         if not v:
             return None
@@ -356,7 +376,7 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingSpeedNames'])
 
     @property
-    def speed_10(self) -> IDFBaseModel | None:
+    def speed_10(self) -> CoilCoolingDXCurveFitSpeed | None:
         v = self.speed_10_name
         if not v:
             return None
@@ -490,7 +510,7 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def base_operating_mode_ref(self) -> IDFBaseModel | None:
+    def base_operating_mode_ref(self) -> CoilCoolingDXCurveFitOperatingMode | None:
         v = self.base_operating_mode
         if not v:
             return None
@@ -500,7 +520,9 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingOperatingModeNames'])
 
     @property
-    def alternative_operating_mode_1_ref(self) -> IDFBaseModel | None:
+    def alternative_operating_mode_1_ref(
+        self,
+    ) -> CoilCoolingDXCurveFitOperatingMode | None:
         v = self.alternative_operating_mode_1
         if not v:
             return None
@@ -510,7 +532,9 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
         return idf._resolve_forward(v, ['DXCoolingOperatingModeNames'])
 
     @property
-    def alternative_operating_mode_2_ref(self) -> IDFBaseModel | None:
+    def alternative_operating_mode_2_ref(
+        self,
+    ) -> CoilCoolingDXCurveFitOperatingMode | None:
         v = self.alternative_operating_mode_2
         if not v:
             return None
@@ -1560,7 +1584,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1570,7 +1594,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -1874,7 +1898,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> Zone | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None
@@ -2211,7 +2235,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -2221,7 +2245,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -2263,7 +2287,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> Zone | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None
@@ -3040,7 +3064,9 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def user_defined_fluid_type_ref(self) -> IDFBaseModel | None:
+    def user_defined_fluid_type_ref(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.user_defined_fluid_type
         if not v:
             return None
@@ -3136,7 +3162,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3160,7 +3186,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3196,7 +3222,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_storage_charge_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_charge_mode_storage_charge_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3220,7 +3246,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_storage_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_charge_mode_storage_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3280,7 +3306,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3304,7 +3330,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3340,7 +3366,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_discharge_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3376,7 +3402,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.cooling_and_discharge_mode_storage_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3552,7 +3578,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -3562,7 +3588,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -3966,7 +3992,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -3976,7 +4002,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -4042,7 +4068,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_for_condenser_placement_ref(self) -> IDFBaseModel | None:
+    def zone_for_condenser_placement_ref(self) -> Zone | None:
         v = self.zone_name_for_condenser_placement
         if not v:
             return None
@@ -4171,7 +4197,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normal_mode_stage_1_coil_performance(self) -> IDFBaseModel | None:
+    def normal_mode_stage_1_coil_performance(self) -> CoilPerformanceDXCooling | None:
         v = self.normal_mode_stage_1_coil_performance_name
         if not v:
             return None
@@ -4181,7 +4207,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['CoilPerformanceDX'])
 
     @property
-    def normal_mode_stage_1_2_coil_performance(self) -> IDFBaseModel | None:
+    def normal_mode_stage_1_2_coil_performance(self) -> CoilPerformanceDXCooling | None:
         v = self.normal_mode_stage_1_2_coil_performance_name
         if not v:
             return None
@@ -4191,7 +4217,9 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['CoilPerformanceDX'])
 
     @property
-    def dehumidification_mode_1_stage_1_coil_performance(self) -> IDFBaseModel | None:
+    def dehumidification_mode_1_stage_1_coil_performance(
+        self,
+    ) -> CoilPerformanceDXCooling | None:
         v = self.dehumidification_mode_1_stage_1_coil_performance_name
         if not v:
             return None
@@ -4201,7 +4229,9 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['CoilPerformanceDX'])
 
     @property
-    def dehumidification_mode_1_stage_1_2_coil_performance(self) -> IDFBaseModel | None:
+    def dehumidification_mode_1_stage_1_2_coil_performance(
+        self,
+    ) -> CoilPerformanceDXCooling | None:
         v = self.dehumidification_mode_1_stage_1_2_coil_performance_name
         if not v:
             return None
@@ -4211,7 +4241,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['CoilPerformanceDX'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -4221,7 +4251,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -4334,7 +4364,7 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     @property
     def name_of_water_storage_tank_for_condensate_collection_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> WaterUseStorage | None:
         v = self.name_of_water_storage_tank_for_condensate_collection
         if not v:
             return None
@@ -4414,7 +4444,7 @@ class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     @property
     def name_of_water_storage_tank_for_condensate_collection_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> WaterUseStorage | None:
         v = self.name_of_water_storage_tank_for_condensate_collection
         if not v:
             return None
@@ -5428,7 +5458,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -5438,7 +5468,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -6008,7 +6038,7 @@ class CoilCoolingWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -6123,7 +6153,7 @@ class CoilCoolingWaterDetailedGeometry(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def condensate_collection_water_storage_tank(self) -> IDFBaseModel | None:
+    def condensate_collection_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.condensate_collection_water_storage_tank_name
         if not v:
             return None
@@ -6276,7 +6306,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def total_cooling_capacity_curve(self) -> IDFBaseModel | None:
+    def total_cooling_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.total_cooling_capacity_curve_name
         if not v:
             return None
@@ -6286,7 +6316,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def sensible_cooling_capacity_curve(self) -> IDFBaseModel | None:
+    def sensible_cooling_capacity_curve(self) -> CurveQuintLinear | TableLookup | None:
         v = self.sensible_cooling_capacity_curve_name
         if not v:
             return None
@@ -6296,7 +6326,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['QuintvariateFunctions'])
 
     @property
-    def cooling_power_consumption_curve(self) -> IDFBaseModel | None:
+    def cooling_power_consumption_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.cooling_power_consumption_curve_name
         if not v:
             return None
@@ -6519,7 +6549,7 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+    def refrigerant_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigerant_type
         if not v:
             return None
@@ -11832,7 +11862,7 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_capacity_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_capacity_curve_name
         if not v:
             return None
@@ -11842,7 +11872,7 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def heating_power_consumption_curve(self) -> IDFBaseModel | None:
+    def heating_power_consumption_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_power_consumption_curve_name
         if not v:
             return None
@@ -12018,7 +12048,7 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+    def refrigerant_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigerant_type
         if not v:
             return None
@@ -14125,7 +14155,14 @@ class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
     )
 
     @property
-    def heat_exchanger(self) -> IDFBaseModel | None:
+    def heat_exchanger(
+        self,
+    ) -> (
+        HeatExchangerAirToAirFlatPlate
+        | HeatExchangerAirToAirSensibleAndLatent
+        | HeatExchangerDesiccantBalancedFlow
+        | None
+    ):
         v = self.heat_exchanger_name
         if not v:
             return None
@@ -14135,7 +14172,16 @@ class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
         return idf._resolve_forward(v, ['HXAirToAirNames'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXVariableSpeed
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -14238,7 +14284,14 @@ class CoilSystemCoolingWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -14248,7 +14301,14 @@ class CoilSystemCoolingWater(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsWater'])
 
     @property
-    def companion_coil_used_for_heat_recovery_ref(self) -> IDFBaseModel | None:
+    def companion_coil_used_for_heat_recovery_ref(
+        self,
+    ) -> (
+        CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | None
+    ):
         v = self.companion_coil_used_for_heat_recovery
         if not v:
             return None
@@ -14280,7 +14340,9 @@ class CoilSystemCoolingWaterHeatExchangerAssisted(IDFBaseModel):
     )
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> CoilCoolingWater | CoilCoolingWaterDetailedGeometry | None:
         v = self.cooling_coil_name
         if not v:
             return None
@@ -14332,7 +14394,14 @@ class CoilSystemHeatingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingDXSingleSpeed
+        | CoilHeatingDXVariableRefrigerantFlow
+        | CoilHeatingDXVariableSpeed
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -14475,7 +14544,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
     )
 
     @property
-    def space_cooling_coil(self) -> IDFBaseModel | None:
+    def space_cooling_coil(self) -> CoilCoolingDXVariableSpeed | None:
         v = self.space_cooling_coil_name
         if not v:
             return None
@@ -14485,7 +14554,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsDXVariableSpeed'])
 
     @property
-    def space_heating_coil(self) -> IDFBaseModel | None:
+    def space_heating_coil(self) -> CoilHeatingDXVariableSpeed | None:
         v = self.space_heating_coil_name
         if not v:
             return None
@@ -14495,7 +14564,9 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilsDXVariableSpeed'])
 
     @property
-    def dedicated_water_heating_coil(self) -> IDFBaseModel | None:
+    def dedicated_water_heating_coil(
+        self,
+    ) -> CoilWaterHeatingAirToWaterHeatPumpVariableSpeed | None:
         v = self.dedicated_water_heating_coil_name
         if not v:
             return None
@@ -14505,7 +14576,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
 
     @property
-    def scwh_coil(self) -> IDFBaseModel | None:
+    def scwh_coil(self) -> CoilWaterHeatingAirToWaterHeatPumpVariableSpeed | None:
         v = self.scwh_coil_name
         if not v:
             return None
@@ -14515,7 +14586,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
 
     @property
-    def scdwh_cooling_coil(self) -> IDFBaseModel | None:
+    def scdwh_cooling_coil(self) -> CoilCoolingDXVariableSpeed | None:
         v = self.scdwh_cooling_coil_name
         if not v:
             return None
@@ -14525,7 +14596,9 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsDXVariableSpeed'])
 
     @property
-    def scdwh_water_heating_coil(self) -> IDFBaseModel | None:
+    def scdwh_water_heating_coil(
+        self,
+    ) -> CoilWaterHeatingAirToWaterHeatPumpVariableSpeed | None:
         v = self.scdwh_water_heating_coil_name
         if not v:
             return None
@@ -14535,7 +14608,7 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsVariableSpeed'])
 
     @property
-    def shdwh_heating_coil(self) -> IDFBaseModel | None:
+    def shdwh_heating_coil(self) -> CoilHeatingDXVariableSpeed | None:
         v = self.shdwh_heating_coil_name
         if not v:
             return None
@@ -14545,7 +14618,9 @@ class CoilSystemIntegratedHeatPumpAirSource(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilsDXVariableSpeed'])
 
     @property
-    def shdwh_water_heating_coil(self) -> IDFBaseModel | None:
+    def shdwh_water_heating_coil(
+        self,
+    ) -> CoilWaterHeatingAirToWaterHeatPumpVariableSpeed | None:
         v = self.shdwh_water_heating_coil_name
         if not v:
             return None
@@ -17064,7 +17139,7 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def tank(self) -> IDFBaseModel | None:
+    def tank(self) -> WaterHeaterMixed | WaterHeaterStratified | None:
         v = self.tank_name
         if not v:
             return None

@@ -7,7 +7,7 @@ Group: Setpoint Managers
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -18,6 +18,12 @@ from ._refs import (
     ScheduleNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .air_distribution import AirLoopHVAC
+    from .curves import CurveQuadLinear
+    from .misc import TableLookup
+    from .thermal_zones import Zone
 
 
 class SetpointManagerColdest(IDFBaseModel):
@@ -50,7 +56,7 @@ class SetpointManagerColdest(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -110,7 +116,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_design_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_design_wetbulb_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.minimum_design_wetbulb_temperature_curve_name
         if not v:
             return None
@@ -120,7 +128,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def minimum_outside_air_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_outside_air_wetbulb_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.minimum_outside_air_wetbulb_temperature_curve_name
         if not v:
             return None
@@ -130,7 +140,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def optimized_cond_entering_water_temperature_curve(self) -> IDFBaseModel | None:
+    def optimized_cond_entering_water_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.optimized_cond_entering_water_temperature_curve_name
         if not v:
             return None
@@ -314,7 +326,7 @@ class SetpointManagerMultiZoneCoolingAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -349,7 +361,7 @@ class SetpointManagerMultiZoneHeatingAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -386,7 +398,7 @@ class SetpointManagerMultiZoneHumidityMaximum(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -423,7 +435,7 @@ class SetpointManagerMultiZoneHumidityMinimum(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -461,7 +473,7 @@ class SetpointManagerMultiZoneMaximumHumidityAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -499,7 +511,7 @@ class SetpointManagerMultiZoneMinimumHumidityAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -665,7 +677,7 @@ class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -921,7 +933,7 @@ class SetpointManagerSingleZoneCooling(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -956,7 +968,7 @@ class SetpointManagerSingleZoneHeating(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1038,7 +1050,7 @@ class SetpointManagerSingleZoneOneStageCooling(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1079,7 +1091,7 @@ class SetpointManagerSingleZoneOneStageHeating(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1114,7 +1126,7 @@ class SetpointManagerSingleZoneReheat(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1216,7 +1228,7 @@ class SetpointManagerWarmest(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -1265,7 +1277,7 @@ class SetpointManagerWarmestTemperatureFlow(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None

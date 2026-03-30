@@ -7,7 +7,7 @@ Group: Air Distribution
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -33,6 +33,13 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .availability_managers import AvailabilityManagerAssignmentList
+    from .fans import FanComponentModel, FanSystemModel
+    from .misc import AirLoopHVACControllerList
+    from .node_branch import BranchList, ConnectorList
+    from .thermal_zones import Zone
+
 
 class AirLoopHVACDedicatedOutdoorAirSystemAirloophvacsItem(IDFBaseModel):
     """Nested object type for array items."""
@@ -46,7 +53,7 @@ class AirLoopHVACDedicatedOutdoorAirSystemAirloophvacsItem(IDFBaseModel):
     )
 
     @property
-    def airloophvac(self) -> IDFBaseModel | None:
+    def airloophvac(self) -> AirLoopHVAC | None:
         v = self.airloophvac_name
         if not v:
             return None
@@ -73,7 +80,7 @@ class AirLoopHVACReturnPathComponentsItem(IDFBaseModel):
     )
 
     @property
-    def component(self) -> IDFBaseModel | None:
+    def component(self) -> AirLoopHVACReturnPlenum | AirLoopHVACZoneMixer | None:
         v = self.component_name
         if not v:
             return None
@@ -105,7 +112,7 @@ class AirLoopHVACSupplyPathComponentsItem(IDFBaseModel):
     )
 
     @property
-    def component(self) -> IDFBaseModel | None:
+    def component(self) -> AirLoopHVACSupplyPlenum | AirLoopHVACZoneSplitter | None:
         v = self.component_name
         if not v:
             return None
@@ -185,7 +192,7 @@ class AirLoopHVAC(IDFBaseModel):
     )
 
     @property
-    def controller_list(self) -> IDFBaseModel | None:
+    def controller_list(self) -> AirLoopHVACControllerList | None:
         v = self.controller_list_name
         if not v:
             return None
@@ -195,7 +202,7 @@ class AirLoopHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ControllerLists'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -205,7 +212,7 @@ class AirLoopHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def branch_list(self) -> IDFBaseModel | None:
+    def branch_list(self) -> BranchList | None:
         v = self.branch_list_name
         if not v:
             return None
@@ -215,7 +222,7 @@ class AirLoopHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['BranchLists'])
 
     @property
-    def connector_list(self) -> IDFBaseModel | None:
+    def connector_list(self) -> ConnectorList | None:
         v = self.connector_list_name
         if not v:
             return None
@@ -299,7 +306,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def airloophvac_mixer(self) -> IDFBaseModel | None:
+    def airloophvac_mixer(self) -> AirLoopHVACMixer | None:
         v = self.airloophvac_mixer_name
         if not v:
             return None
@@ -309,7 +316,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopHVACMixerNames'])
 
     @property
-    def airloophvac_splitter(self) -> IDFBaseModel | None:
+    def airloophvac_splitter(self) -> AirLoopHVACSplitter | None:
         v = self.airloophvac_splitter_name
         if not v:
             return None
@@ -339,7 +346,7 @@ class AirLoopHVACExhaustSystem(IDFBaseModel):
     )
 
     @property
-    def zone_mixer(self) -> IDFBaseModel | None:
+    def zone_mixer(self) -> AirLoopHVACZoneMixer | None:
         v = self.zone_mixer_name
         if not v:
             return None
@@ -349,7 +356,7 @@ class AirLoopHVACExhaustSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneMixers'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanComponentModel | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -397,7 +404,7 @@ class AirLoopHVACOutdoorAirSystem(IDFBaseModel):
     )
 
     @property
-    def controller_list(self) -> IDFBaseModel | None:
+    def controller_list(self) -> AirLoopHVACControllerList | None:
         v = self.controller_list_name
         if not v:
             return None
@@ -407,7 +414,9 @@ class AirLoopHVACOutdoorAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ControllerLists'])
 
     @property
-    def outdoor_air_equipment_list(self) -> IDFBaseModel | None:
+    def outdoor_air_equipment_list(
+        self,
+    ) -> AirLoopHVACOutdoorAirSystemEquipmentList | None:
         v = self.outdoor_air_equipment_list_name
         if not v:
             return None
@@ -596,7 +605,7 @@ class AirLoopHVACReturnPlenum(IDFBaseModel):
     nodes: list[AirLoopHVACMixerNodesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -644,7 +653,7 @@ class AirLoopHVACSupplyPlenum(IDFBaseModel):
     nodes: list[AirLoopHVACSplitterNodesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
