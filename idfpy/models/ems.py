@@ -66,6 +66,7 @@ class EnergyManagementSystemActuator(IDFBaseModel):
     """Hardware portion of EMS used to set up actuators in the model"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:Actuator'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -81,6 +82,7 @@ class EnergyManagementSystemConstructionIndexVariable(IDFBaseModel):
     """Declares EMS variable that identifies a construction"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:ConstructionIndexVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -106,6 +108,7 @@ class EnergyManagementSystemCurveOrTableIndexVariable(IDFBaseModel):
     """Declares EMS variable that identifies a curve or table"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:CurveOrTableIndexVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -168,6 +171,7 @@ class EnergyManagementSystemInternalVariable(IDFBaseModel):
     """Declares EMS variable as an internal data variable"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:InternalVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -182,6 +186,7 @@ class EnergyManagementSystemMeteredOutputVariable(IDFBaseModel):
     """This object sets up an EnergyPlus output variable from an Erl variable"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:MeteredOutputVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ems_variable_name: str = Field(
         ..., json_schema_extra={'note': 'must be an acceptable EMS variable, no spaces'}
@@ -275,6 +280,7 @@ class EnergyManagementSystemOutputVariable(IDFBaseModel):
     """This object sets up an EnergyPlus output variable from an Erl variable"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:OutputVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ems_variable_name: str = Field(
         ..., json_schema_extra={'note': 'must be an acceptable EMS variable'}
@@ -346,6 +352,7 @@ class EnergyManagementSystemSensor(IDFBaseModel):
     dictionary file (.mdd) if the Output:VariableDictionary has been requested."""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:Sensor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -371,6 +378,7 @@ class EnergyManagementSystemTrendVariable(IDFBaseModel):
     variable logs values across timesteps"""
 
     _idf_object_type: ClassVar[str] = 'EnergyManagementSystem:TrendVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'no spaces allowed in name'})
     ems_variable_name: str = Field(
         ..., json_schema_extra={'note': 'must be a global scope EMS variable'}

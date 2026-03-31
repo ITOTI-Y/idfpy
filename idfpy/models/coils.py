@@ -14174,14 +14174,7 @@ class CoilSystemCoolingDXHeatExchangerAssisted(IDFBaseModel):
     @property
     def cooling_coil(
         self,
-    ) -> (
-        CoilCoolingDX
-        | CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
-        | CoilCoolingDXVariableSpeed
-        | CoilSystemCoolingDXHeatExchangerAssisted
-        | None
-    ):
+    ) -> CoilCoolingDX | CoilCoolingDXSingleSpeed | CoilCoolingDXVariableSpeed | None:
         v = self.cooling_coil_name
         if not v:
             return None
@@ -14396,12 +14389,7 @@ class CoilSystemHeatingDX(IDFBaseModel):
     @property
     def heating_coil(
         self,
-    ) -> (
-        CoilHeatingDXSingleSpeed
-        | CoilHeatingDXVariableRefrigerantFlow
-        | CoilHeatingDXVariableSpeed
-        | None
-    ):
+    ) -> CoilHeatingDXSingleSpeed | CoilHeatingDXVariableSpeed | None:
         v = self.heating_coil_name
         if not v:
             return None
@@ -16941,6 +16929,7 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
     water heater tank, see Water Heater:Mixed."""
 
     _idf_object_type: ClassVar[str] = 'Coil:WaterHeating:Desuperheater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

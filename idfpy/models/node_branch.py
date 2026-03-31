@@ -311,6 +311,7 @@ class NodeList(IDFBaseModel):
     ZoneHVAC:EquipmentConnections field Zone Air Inlet Node or NodeList Name"""
 
     _idf_object_type: ClassVar[str] = 'NodeList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nodes: list[NodeListNodesItem] | None = Field(default=None)
 
@@ -629,6 +630,7 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
     """The ground domain object for underground piping system simulation."""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:Domain'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     xmax: float = Field(
         ...,

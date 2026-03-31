@@ -72,7 +72,7 @@ class IDFBaseModel(BaseModel):
             idf = ref() if ref is not None else None
             if idf is not None:
                 old = getattr(self, name, None)
-                if old is not None and old != value:
+                if old != value:
                     idf._before_provider_change(self, name, old, value)
                     super().__setattr__(name, value)
                     idf._after_provider_change(self, name, value)

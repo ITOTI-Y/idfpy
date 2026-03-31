@@ -170,6 +170,7 @@ class RunPeriodControlSpecialDays(IDFBaseModel):
     shown here. (No error message on duplicate days or overlapping days)."""
 
     _idf_object_type: ClassVar[str] = 'RunPeriodControl:SpecialDays'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     start_date: str = Field(
         ...,
@@ -203,6 +204,7 @@ class SiteGroundDomainBasement(IDFBaseModel):
     zones."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundDomain:Basement'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ground_domain_depth: float | None = Field(
         default=10.0,
@@ -378,6 +380,7 @@ class SiteGroundDomainSlab(IDFBaseModel):
     insulation."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundDomain:Slab'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ground_domain_depth: float | None = Field(
         default=10.0, gt=0.0, json_schema_extra={'units': 'm'}
@@ -939,6 +942,7 @@ class SiteLocation(IDFBaseModel):
     data file location, if it exists, will override this object."""
 
     _idf_object_type: ClassVar[str] = 'Site:Location'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     latitude: float | None = Field(
         default=0.0,
@@ -1022,6 +1026,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     be used."""
 
     _idf_object_type: ClassVar[str] = 'Site:SolarAndVisibleSpectrum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     spectrum_data_method: Literal['', 'Default', 'UserDefined'] | None = Field(
         default='Default',
@@ -1082,6 +1087,7 @@ class SiteVariableLocation(IDFBaseModel):
     vessel"""
 
     _idf_object_type: ClassVar[str] = 'Site:VariableLocation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     building_location_latitude_schedule: ScheduleNamesRef | None = Field(
         default=None,
@@ -1606,6 +1612,7 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
     """This object is used to override internal sky temperature calculations."""
 
     _idf_object_type: ClassVar[str] = 'WeatherProperty:SkyTemperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: RunPeriodsAndDesignDaysRef | None = Field(
         default=None,
         json_schema_extra={

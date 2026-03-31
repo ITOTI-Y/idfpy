@@ -2398,6 +2398,7 @@ class MaterialPropertyMoisturePenetrationDepthSettings(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'MaterialProperty:MoisturePenetrationDepth:Settings'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: MaterialNameRef = Field(
         ...,
         json_schema_extra={
@@ -2463,6 +2464,7 @@ class MaterialPropertyPhaseChange(IDFBaseModel):
     effect with other HeatBalanceAlgorithm solution algorithms"""
 
     _idf_object_type: ClassVar[str] = 'MaterialProperty:PhaseChange'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: MaterialNameRef = Field(
         ...,
         json_schema_extra={
@@ -2498,6 +2500,7 @@ class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
     process. Has no effect with other HeatBalanceAlgorithm solution algorithms."""
 
     _idf_object_type: ClassVar[str] = 'MaterialProperty:PhaseChangeHysteresis'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: MaterialNameRef = Field(
         ...,
         json_schema_extra={
@@ -2625,6 +2628,7 @@ class MaterialPropertyVariableAbsorptance(IDFBaseModel):
     """MaterialProperty:VariableAbsorptance"""
 
     _idf_object_type: ClassVar[str] = 'MaterialProperty:VariableAbsorptance'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2693,6 +2697,7 @@ class MaterialPropertyVariableThermalConductivity(IDFBaseModel):
     with other HeatBalanceAlgorithm solution algorithms"""
 
     _idf_object_type: ClassVar[str] = 'MaterialProperty:VariableThermalConductivity'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: MaterialNameRef = Field(
         ...,
         json_schema_extra={

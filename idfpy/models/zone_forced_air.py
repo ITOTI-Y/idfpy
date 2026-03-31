@@ -67,7 +67,6 @@ if TYPE_CHECKING:
         CoilCoolingWater,
         CoilCoolingWaterDetailedGeometry,
         CoilCoolingWaterToAirHeatPumpEquationFit,
-        CoilCoolingWaterToAirHeatPumpParameterEstimation,
         CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
         CoilHeatingDXSingleSpeed,
         CoilHeatingDXVariableRefrigerantFlow,
@@ -78,7 +77,6 @@ if TYPE_CHECKING:
         CoilHeatingSteam,
         CoilHeatingWater,
         CoilHeatingWaterToAirHeatPumpEquationFit,
-        CoilHeatingWaterToAirHeatPumpParameterEstimation,
         CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit,
         CoilSystemCoolingDXHeatExchangerAssisted,
         CoilSystemCoolingWaterHeatExchangerAssisted,
@@ -2681,7 +2679,6 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
     ) -> (
         CoilCoolingDX
         | CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
         | None
@@ -3033,12 +3030,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
     @property
     def heating_coil(
         self,
-    ) -> (
-        CoilHeatingDXSingleSpeed
-        | CoilHeatingDXVariableRefrigerantFlow
-        | CoilHeatingDXVariableSpeed
-        | None
-    ):
+    ) -> CoilHeatingDXSingleSpeed | CoilHeatingDXVariableSpeed | None:
         v = self.heating_coil_name
         if not v:
             return None
@@ -3055,7 +3047,6 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
     ) -> (
         CoilCoolingDX
         | CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
         | None
@@ -4168,7 +4159,6 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         self,
     ) -> (
         CoilHeatingWaterToAirHeatPumpEquationFit
-        | CoilHeatingWaterToAirHeatPumpParameterEstimation
         | CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
         | None
     ):
@@ -4187,7 +4177,6 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingWaterToAirHeatPumpEquationFit
-        | CoilCoolingWaterToAirHeatPumpParameterEstimation
         | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
         | None
     ):

@@ -270,6 +270,7 @@ class ZoneControlContaminantController(IDFBaseModel):
     zone."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:ContaminantController'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -918,6 +919,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
     definition applies to all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat:ThermalComfort'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}

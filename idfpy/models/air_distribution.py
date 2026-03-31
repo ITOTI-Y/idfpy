@@ -331,6 +331,7 @@ class AirLoopHVACExhaustSystem(IDFBaseModel):
     or more ZoneHVAC:ExhaustControl outlet nodes via an AirLoopHVAC:ZoneMixer."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ExhaustSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Name of the exhaust system'})
     zone_mixer_name: ZoneMixersRef = Field(
         ...,
@@ -583,6 +584,7 @@ class AirLoopHVACReturnPath(IDFBaseModel):
     AirLoopHVAC:ReturnPlenum objects."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ReturnPath'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     return_air_path_outlet_node_name: str = Field(...)
     components: list[AirLoopHVACReturnPathComponentsItem] | None = Field(default=None)
@@ -633,6 +635,7 @@ class AirLoopHVACSupplyPath(IDFBaseModel):
     AirLoopHVAC:SupplyPlenum objects which may be in series or parallel."""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:SupplyPath'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     supply_air_path_inlet_node_name: str = Field(...)
     components: list[AirLoopHVACSupplyPathComponentsItem] | None = Field(default=None)

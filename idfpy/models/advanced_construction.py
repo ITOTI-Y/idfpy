@@ -250,6 +250,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
     program will use value provided in schedules instead of calculating it."""
 
     _idf_object_type: ClassVar[str] = 'ComplexFenestrationProperty:SolarAbsorbedLayers'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fenestration_surface: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -635,6 +636,7 @@ class SurfaceConvectionAlgorithmInsideAdaptiveModelSelections(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceConvectionAlgorithm:Inside:AdaptiveModelSelections'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     simple_buoyancy_vertical_wall_equation_source: (
         Literal[
@@ -2368,6 +2370,7 @@ class SurfaceConvectionAlgorithmOutsideAdaptiveModelSelections(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceConvectionAlgorithm:Outside:AdaptiveModelSelections'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     wind_convection_windward_vertical_wall_equation_source: (
         Literal[
@@ -3192,6 +3195,7 @@ class SurfacePropertyExteriorNaturalVentedCAVity(IDFBaseModel):
     object is also used in conjunction with the OtherSideConditionsModel."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:ExteriorNaturalVentedCavity'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     boundary_conditions_model_name: OSCMNamesRef = Field(
         ...,
@@ -3366,6 +3370,7 @@ class SurfacePropertyHeatTransferAlgorithmConstruction(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceProperty:HeatTransferAlgorithm:Construction'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     algorithm: (
         Literal[
@@ -3403,6 +3408,7 @@ class SurfacePropertyHeatTransferAlgorithmMultipleSurface(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceProperty:HeatTransferAlgorithm:MultipleSurface'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_type: Literal[
         'AllExteriorFloors',
@@ -3438,6 +3444,7 @@ class SurfacePropertyHeatTransferAlgorithmSurfaceList(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceProperty:HeatTransferAlgorithm:SurfaceList'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     algorithm: (
         Literal[
@@ -3715,6 +3722,7 @@ class SurfacePropertySolarIncidentInside(IDFBaseModel):
     calculating it."""
 
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:SolarIncidentInside'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}

@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 _OBJECT_LIST_REF_TYPES: dict[str, str] = {}
 _REFERENCE_CLASS_NAME_GROUPS: set[str] = set()
 _GROUP_TO_CLASSES: dict[str, set[str]] = {}
-_CLASS_TO_MODULE: dict[str, str] = {}
+_OBJECT_TYPE_TO_CLASS: dict[str, str] = {}
 
 # Navigation properties with more than this many provider types
 # fall back to IDFBaseModel | None
@@ -53,15 +53,22 @@ def set_reference_class_name_groups(groups: set[str]) -> None:
 
 def set_nav_type_mapping(
     group_to_classes: dict[str, set[str]],
-    class_to_module: dict[str, str],
 ) -> None:
     """Set ref_group -> provider classes mapping for nav property type narrowing.
 
     Called by ModelGenerator before template rendering.
     """
-    global _GROUP_TO_CLASSES, _CLASS_TO_MODULE
+    global _GROUP_TO_CLASSES
     _GROUP_TO_CLASSES = group_to_classes
-    _CLASS_TO_MODULE = class_to_module
+
+
+def set_object_type_to_class(mapping: dict[str, str]) -> None:
+    """Set IDF object type string -> class name mapping.
+
+    Called by ModelGenerator before template rendering.
+    """
+    global _OBJECT_TYPE_TO_CLASS
+    _OBJECT_TYPE_TO_CLASS = mapping
 
 
 def get_ref_type_for_object_list(object_lists: list[str] | None) -> str | None:
@@ -588,7 +595,34 @@ def is_class_name_ref_filter(spec: FieldSpec) -> bool:
     return all(ol in _REFERENCE_CLASS_NAME_GROUPS for ol in spec.object_list)
 
 
-def _resolve_nav_classes(spec: FieldSpec) -> set[str] | None:
+def _find_discriminant_classes(
+    spec: FieldSpec,
+    sibling_fields: list[FieldSpec],
+) -> set[str] | None:
+    """Find allowed class names from the sibling *_object_type discriminant field."""
+    # Derive discriminant field name: terminal_unit_name -> terminal_unit_object_type
+    base = spec.python_name
+    if base.endswith('_name'):
+        discriminant_name = base[:-5] + '_object_type'
+    elif base.endswith('_names'):
+        discriminant_name = base[:-6] + '_object_type'
+    else:
+        return None
+
+    for sibling in sibling_fields:
+        if sibling.python_name == discriminant_name and sibling.enum_values:
+            return {
+                _OBJECT_TYPE_TO_CLASS[v]
+                for v in sibling.enum_values
+                if v and v in _OBJECT_TYPE_TO_CLASS
+            } or None
+    return None
+
+
+def _resolve_nav_classes(
+    spec: FieldSpec,
+    sibling_fields: list[FieldSpec] | None = None,
+) -> set[str] | None:
     """Resolve provider classes for a nav property field.
 
     Returns set of class names if narrowable (≤ MAX_NAV_UNION_SIZE),
@@ -600,14 +634,20 @@ def _resolve_nav_classes(spec: FieldSpec) -> set[str] | None:
     for group in spec.object_list:
         classes = _GROUP_TO_CLASSES.get(group, set())
         all_classes |= classes
+    # Intersect with discriminant whitelist if available
+    if sibling_fields is not None:
+        disc_classes = _find_discriminant_classes(spec, sibling_fields)
+        if disc_classes:
+            all_classes &= disc_classes
     if not all_classes or len(all_classes) > MAX_NAV_UNION_SIZE:
         return None
     return all_classes
 
 
-def nav_return_type_filter(spec: FieldSpec) -> str:
+def nav_return_type_filter(spec: FieldSpec, obj: ObjectSpec | None = None) -> str:
     """Compute narrowed return type for navigation property."""
-    classes = _resolve_nav_classes(spec)
+    sibling_fields = obj.fields if obj is not None else None
+    classes = _resolve_nav_classes(spec, sibling_fields)
     if classes is None:
         return 'IDFBaseModel | None'
     return ' | '.join(sorted(classes)) + ' | None'
@@ -617,30 +657,40 @@ def collect_nav_imports(
     objects: list[ObjectSpec],
     nested_classes: list[dict],
     current_module: str,
+    class_to_module: dict[str, str],
 ) -> dict[str, list[str]]:
-    """Collect TYPE_CHECKING imports needed for narrowed nav property types."""
+    """Collect TYPE_CHECKING imports needed for narrowed nav property types.
+
+    Args:
+        objects: List of ObjectSpec for the current file.
+        nested_classes: List of nested class dicts for the current file.
+        current_module: Module name of the file being generated.
+        class_to_module: Mapping of class name to module name.
+    """
     needed: set[str] = set()
 
-    def _collect_from_fields(fields: list[FieldSpec]) -> None:
+    def _collect_from_fields(
+        fields: list[FieldSpec],
+        sibling_fields: list[FieldSpec] | None = None,
+    ) -> None:
         for spec in fields:
             if not spec.object_list or is_class_name_ref_filter(spec):
                 continue
-            classes = _resolve_nav_classes(spec)
+            classes = _resolve_nav_classes(spec, sibling_fields)
             if classes is not None:
                 needed.update(classes)
 
     for obj in objects:
-        _collect_from_fields(obj.fields)
+        _collect_from_fields(obj.fields, obj.fields)
     for nc in nested_classes:
         _collect_from_fields(nc['fields'])
 
-    # Exclude classes defined in this file (same module)
     local_classes = {obj.class_name for obj in objects}
     local_classes |= {nc['name'] for nc in nested_classes}
 
     imports: dict[str, list[str]] = {}
     for cls_name in sorted(needed - local_classes):
-        module = _CLASS_TO_MODULE.get(cls_name, '')
+        module = class_to_module.get(cls_name, '')
         if module == current_module:
             continue
         imports.setdefault(module, []).append(cls_name)

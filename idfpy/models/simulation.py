@@ -51,6 +51,7 @@ class Building(IDFBaseModel):
     specifically the Terrain field."""
 
     _idf_object_type: ClassVar[str] = 'Building'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default='NONE')
     north_axis: float | None = Field(
         default=0.0,
@@ -622,6 +623,7 @@ class ZoneCapacitanceMultiplierResearchSpecial(IDFBaseModel):
     zone"""
 
     _idf_object_type: ClassVar[str] = 'ZoneCapacitanceMultiplier:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef | None = Field(
         default=None,

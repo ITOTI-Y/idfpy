@@ -563,6 +563,7 @@ class PlantEquipmentOperationUserDefined(IDFBaseModel):
     using Energy Management System or External Interface to dispatch loads"""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={'note': 'This is the name of the plant operation scheme'},

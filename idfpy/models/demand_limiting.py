@@ -185,6 +185,7 @@ class DemandManagerAssignmentList(IDFBaseModel):
     possible demand limiting strategies."""
 
     _idf_object_type: ClassVar[str] = 'DemandManagerAssignmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     meter_name: str = Field(...)
     demand_limit_schedule_name: ScheduleNamesRef | None = Field(

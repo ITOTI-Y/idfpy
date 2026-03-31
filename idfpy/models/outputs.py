@@ -572,6 +572,7 @@ class MeterCustom(IDFBaseModel):
     Meter:Custom cannot reference another Meter:Custom."""
 
     _idf_object_type: ClassVar[str] = 'Meter:Custom'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     resource_type: (
         Literal[
@@ -602,6 +603,7 @@ class MeterCustomDecrement(IDFBaseModel):
     first run a simulation to generate the RDD/MDD files and names."""
 
     _idf_object_type: ClassVar[str] = 'Meter:CustomDecrement'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     resource_type: (
         Literal[
@@ -1544,6 +1546,7 @@ class OutputTableAnnual(IDFBaseModel):
     Output:Table:Annual produces a single table in the output."""
 
     _idf_object_type: ClassVar[str] = 'Output:Table:Annual'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     filter: str | None = Field(
         default=None,
@@ -1582,6 +1585,7 @@ class OutputTableMonthly(IDFBaseModel):
     zone variables will be produced once for every zone."""
 
     _idf_object_type: ClassVar[str] = 'Output:Table:Monthly'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     digits_after_decimal: int | None = Field(default=2, ge=0, le=10)
     variable_details: list[OutputTableMonthlyVariableDetailsItem] | None = Field(
@@ -1596,6 +1600,7 @@ class OutputTableReportPeriod(IDFBaseModel):
     tabular reports. Multiple reporting periods may be input."""
 
     _idf_object_type: ClassVar[str] = 'Output:Table:ReportPeriod'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

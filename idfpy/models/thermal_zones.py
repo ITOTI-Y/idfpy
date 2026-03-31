@@ -2774,6 +2774,7 @@ class WindowPropertyAirflowControl(IDFBaseModel):
     """Used to control forced airflow through a gap between glass layers"""
 
     _idf_object_type: ClassVar[str] = 'WindowProperty:AirflowControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: SubSurfNamesRef = Field(
         ...,
         json_schema_extra={
@@ -3402,6 +3403,7 @@ class ZoneGroup(IDFBaseModel):
     floors of a multi-story building."""
 
     _idf_object_type: ClassVar[str] = 'ZoneGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Name of the Zone Group'})
     zone_list_name: ZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneListNames']}

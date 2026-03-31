@@ -35,6 +35,7 @@ class ZoneAirBalanceOutdoorAir(IDFBaseModel):
     be added in quadrature."""
 
     _idf_object_type: ClassVar[str] = 'ZoneAirBalance:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -84,6 +85,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
     using water evaporation before delivering it to a zone (or space)."""
 
     _idf_object_type: ClassVar[str] = 'ZoneCoolTower:Shower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -191,6 +193,7 @@ class ZoneCrossMixing(IDFBaseModel):
     spaces."""
 
     _idf_object_type: ClassVar[str] = 'ZoneCrossMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -570,6 +573,7 @@ class ZoneInfiltrationDesignFlowRate(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:DesignFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -673,6 +677,7 @@ class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
     Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:EffectiveLeakageArea'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -733,6 +738,7 @@ class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
     instance will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:FlowCoefficient'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -793,6 +799,7 @@ class ZoneMixing(IDFBaseModel):
     balancing of flows between zones is left to the user's discretion."""
 
     _idf_object_type: ClassVar[str] = 'ZoneMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -1000,6 +1007,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
     object Refrigeration:WalkIn."""
 
     _idf_object_type: ClassVar[str] = 'ZoneRefrigerationDoorMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name_1: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -1074,6 +1082,7 @@ class ZoneThermalChimney(IDFBaseModel):
     cover with high solar transmissivity."""
 
     _idf_object_type: ClassVar[str] = 'ZoneThermalChimney'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,

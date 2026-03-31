@@ -175,6 +175,7 @@ class DaylightingDELightComplexFenestration(IDFBaseModel):
     """Used for DElight Complex Fenestration of all types"""
 
     _idf_object_type: ClassVar[str] = 'Daylighting:DELight:ComplexFenestration'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Only used for user reference'})
     complex_fenestration_type: str = Field(
         ...,
@@ -269,6 +270,7 @@ class DaylightingDeviceShelf(IDFBaseModel):
     shelf is defined as a shading surface."""
 
     _idf_object_type: ClassVar[str] = 'DaylightingDevice:Shelf'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     window_name: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -352,6 +354,7 @@ class DaylightingDeviceTubular(IDFBaseModel):
     using the FenestrationSurface:Detailed object."""
 
     _idf_object_type: ClassVar[str] = 'DaylightingDevice:Tubular'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     dome_name: SubSurfNamesRef = Field(
         ...,
@@ -481,6 +484,7 @@ class OutputIlluminanceMap(IDFBaseModel):
     field"""
 
     _idf_object_type: ClassVar[str] = 'Output:IlluminanceMap'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SpaceNames', 'ZoneNames']}

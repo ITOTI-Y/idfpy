@@ -123,6 +123,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
     electricity generators and or storage in a simulation."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Distribution'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     generator_list_name: GeneratorListsRef | None = Field(
         default=None,

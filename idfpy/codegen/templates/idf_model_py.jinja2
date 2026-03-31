@@ -69,7 +69,7 @@ class {{ obj.class_name }}(IDFBaseModel):
 {% if spec.object_list and not spec | is_class_name_ref %}
 
     @property
-    def {{ spec | nav_name }}(self) -> {{ spec | nav_return_type }}:
+    def {{ spec | nav_name }}(self) -> {{ spec | nav_return_type(obj) }}:
         v = self.{{ spec.python_name }}
         if not v:
             return None

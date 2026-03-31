@@ -45,6 +45,7 @@ class ExternalInterfaceActuator(IDFBaseModel):
     """Hardware portion of EMS used to set up actuators in the model"""
 
     _idf_object_type: ClassVar[str] = 'ExternalInterface:Actuator'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -80,6 +81,7 @@ class ExternalInterfaceFunctionalMockupUnitExportToActuator(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitExport:To:Actuator'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -134,6 +136,7 @@ class ExternalInterfaceFunctionalMockupUnitExportToVariable(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitExport:To:Variable'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -190,6 +193,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToActuator(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitImport:To:Actuator'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -268,6 +272,7 @@ class ExternalInterfaceFunctionalMockupUnitImportToVariable(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ExternalInterface:FunctionalMockupUnitImport:To:Variable'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -328,6 +333,7 @@ class ExternalInterfaceVariable(IDFBaseModel):
     subroutines."""
 
     _idf_object_type: ClassVar[str] = 'ExternalInterface:Variable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

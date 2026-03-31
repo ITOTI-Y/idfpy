@@ -7,7 +7,7 @@
 [![CI](https://img.shields.io/badge/Autoupdate-CI-orange)](https://github.com/ITOTI-Y/idfpy/actions)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
 
-Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, Optimized for LLM tool calling and IDE IDE auto-completion.
+Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, Optimized for LLM tool calling and IDE auto-completion.
 
 Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 
@@ -22,7 +22,7 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 - **Extensible field** support (vertices, schedule data, etc.)
 - **IDF read/write** with positional field ordering
 - **epJSON read/write** with auto-detection by file extension
-- `**to_dict()` / `from_dict()`** for in-memory dict conversion (ideal for LLM tool calls)
+- **`to_dict()` / `from_dict()`** for in-memory dict conversion (ideal for LLM tool calls)
 - **EnergyPlus simulation** execution with ExpandObjects support
 - Accepts both `snake_case` and original EnergyPlus schema key names
 
@@ -30,7 +30,7 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 
 |  | idfpy | eppy |
 |---|:---:|:---:|
-| No Requires EnergyPlus IDD at runtime | ✅ | ❌ |
+| No EnergyPlus IDD required at runtime | ✅ | ❌ |
 | Type-safe field validation | ✅ Pydantic v2 | ❌ |
 | epJSON read/write | ✅ | ❌ |
 | Cross-reference validation | ✅ 275 ref groups | ❌ |

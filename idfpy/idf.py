@@ -141,7 +141,11 @@ class IDF:
             ValueError: If a named object with same type and name already exists.
         """
         object_type = obj.idf_object_type()
-        name = getattr(obj, 'name', None) or getattr(obj, 'zone_name', None) or ''
+        name = ''
+        for pf in obj._provider_fields:
+            name = getattr(obj, pf, None) or ''
+            if name:
+                break
 
         if object_type not in self._objects:
             self._objects[object_type] = {}
@@ -360,44 +364,55 @@ class IDF:
         self,
         obj: IDFBaseModel,
         field_name: str,
-        old_value: str,
+        old_value: str | None,
         new_value: str,
     ) -> None:
         """Prepare index structures before a provider field changes."""
         object_type = obj.idf_object_type()
         old_obj_key = obj._idf_obj_key
 
+        # 0. Conflict check: reject rename if it would overwrite another object
+        if old_obj_key == old_value or not old_value:
+            existing = self._objects.get(object_type, {}).get(new_value)
+            if existing is not None and existing is not obj:
+                raise ValueError(
+                    f"Cannot rename {object_type} '{old_value}' to '{new_value}': "
+                    f'an object with that name already exists'
+                )
+
         # 1. Tear down old index entries (obj still has old_value)
         self._unregister_refs(obj)
         self._unindex_consumer_refs(obj, object_type, old_obj_key)
 
-        # 2. Determine affected ref groups
-        affected_groups: set[str] = set()
-        for fn, groups in REF_PROVIDERS.get(object_type, []):
-            if fn == field_name:
-                affected_groups.update(groups)
+        # 2-4. Cascade only when old_value is a real name
+        if old_value:
+            # 2. Determine affected ref groups
+            affected_groups: set[str] = set()
+            for fn, groups in REF_PROVIDERS.get(object_type, []):
+                if fn == field_name:
+                    affected_groups.update(groups)
 
-        # 3. Cascade: update consumer reference fields
-        old_key = old_value.upper()
-        new_key = new_value.upper()
-        for group in affected_groups:
-            bucket = self._reverse_index.get(group, {})
-            for consumer_type, consumer_name in list(bucket.get(old_key, [])):
-                consumer = self._objects.get(consumer_type, {}).get(consumer_name)
-                if consumer is not None:
-                    self._cascade_consumer_fields(
-                        consumer,
-                        old_key,
-                        new_value,
-                        affected_groups,
-                    )
-            # 4. Move reverse_index bucket key
-            entries = bucket.pop(old_key, [])
-            if entries:
-                bucket.setdefault(new_key, []).extend(entries)
+            # 3. Cascade: update consumer reference fields
+            old_key = old_value.upper()
+            new_key = new_value.upper()
+            for group in affected_groups:
+                bucket = self._reverse_index.get(group, {})
+                for consumer_type, consumer_name in list(bucket.get(old_key, [])):
+                    consumer = self._objects.get(consumer_type, {}).get(consumer_name)
+                    if consumer is not None:
+                        self._cascade_consumer_fields(
+                            consumer,
+                            old_key,
+                            new_value,
+                            affected_groups,
+                        )
+                # 4. Move reverse_index bucket key
+                entries = bucket.pop(old_key, [])
+                if entries:
+                    bucket.setdefault(new_key, []).extend(entries)
 
         # 5. Update _objects key when provider field is the key source
-        if old_obj_key == old_value:
+        if old_obj_key == old_value or not old_value:
             objs = self._objects.get(object_type, {})
             if old_obj_key in objs:
                 objs[new_value] = objs.pop(old_obj_key)

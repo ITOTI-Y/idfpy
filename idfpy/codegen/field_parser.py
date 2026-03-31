@@ -60,6 +60,7 @@ class FieldSpec:
     data_type: str | None = None
     anyof_specs: list[FieldSpec] | None = None
     nested_fields: list[FieldSpec] | None = None
+    is_name: bool = False
 
 
 class FieldParser:

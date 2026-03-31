@@ -157,6 +157,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ElectricEquipment:ITE:AirCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -507,6 +508,7 @@ class GasEquipment(IDFBaseModel):
     instance will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'GasEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -599,6 +601,7 @@ class HotWaterEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'HotWaterEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -683,6 +686,7 @@ class IndoorLivingWall(IDFBaseModel):
     and zone air moisture balance."""
 
     _idf_object_type: ClassVar[str] = 'IndoorLivingWall'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ...,
@@ -933,6 +937,7 @@ class OtherEquipment(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'OtherEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: (
         Literal[
@@ -1403,6 +1408,7 @@ class SteamEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'SteamEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1486,6 +1492,7 @@ class SurfaceContaminantSourceAndSinkGenericBoundaryLayerDiffusion(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:BoundaryLayerDiffusion'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
@@ -1532,6 +1539,7 @@ class SurfaceContaminantSourceAndSinkGenericDepositionVelocitySink(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:DepositionVelocitySink'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
@@ -1575,6 +1583,7 @@ class SurfaceContaminantSourceAndSinkGenericPressureDriven(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:PressureDriven'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfAndSubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfAndSubSurfNames']}
@@ -1757,6 +1766,7 @@ class ZoneBaseboardOutdoorTemperatureControlled(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneBaseboard:OutdoorTemperatureControlled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1818,6 +1828,7 @@ class ZoneContaminantSourceAndSinkCarbonDioxide(IDFBaseModel):
     """Represents internal CO2 gains and sinks in the zone."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:CarbonDioxide'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1863,6 +1874,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
     values."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:Constant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1928,6 +1940,7 @@ class ZoneContaminantSourceAndSinkGenericCutoffModel(IDFBaseModel):
     model."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:CutoffModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1977,6 +1990,7 @@ class ZoneContaminantSourceAndSinkGenericDecaySource(IDFBaseModel):
     model."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:DecaySource'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -2023,6 +2037,7 @@ class ZoneContaminantSourceAndSinkGenericDepositionRateSink(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneContaminantSourceAndSink:Generic:DepositionRateSink'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}

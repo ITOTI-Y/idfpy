@@ -50,7 +50,7 @@ class ObjectSpec:
     @property
     def provider_field_names(self) -> str | None:
         """Get provider field names as a formatted frozenset literal, or None."""
-        names = sorted(f.python_name for f in self.fields if f.reference)
+        names = sorted({f.python_name for f in self.fields if f.reference or f.is_name})
         if not names:
             return None
         items = ', '.join(f'"{n}"' for n in names)
@@ -207,8 +207,8 @@ class SchemaParser:
         name_schema = obj_schema.get('name')
         if name_schema and isinstance(name_schema, dict):
             name_field = self._field_parser.parse_field('name', name_schema)
-            # is_required in schema means the field is required
             name_field.required = name_schema.get('is_required', False)
+            name_field.is_name = True
             fields.append(name_field)
 
         # Primary location: patternProperties.*.properties

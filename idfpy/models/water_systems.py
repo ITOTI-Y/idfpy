@@ -299,6 +299,7 @@ class WaterUseRainCollector(IDFBaseModel):
     precipitation in the .epw is accurate."""
 
     _idf_object_type: ClassVar[str] = 'WaterUse:RainCollector'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     storage_tank_name: WaterStorageTankNamesRef = Field(
         ..., json_schema_extra={'object_list': ['WaterStorageTankNames']}
@@ -494,6 +495,7 @@ class WaterUseWell(IDFBaseModel):
     operated as a vented cistern with no pressure tank."""
 
     _idf_object_type: ClassVar[str] = 'WaterUse:Well'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     storage_tank_name: WaterStorageTankNamesRef = Field(
         ..., json_schema_extra={'object_list': ['WaterStorageTankNames']}

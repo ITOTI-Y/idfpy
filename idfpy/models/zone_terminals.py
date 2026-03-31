@@ -697,15 +697,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil(
-        self,
-    ) -> (
-        CoilHeatingElectric
-        | CoilHeatingFuel
-        | CoilHeatingSteam
-        | CoilHeatingWater
-        | None
-    ):
+    def heating_coil(self) -> CoilHeatingWater | None:
         v = self.heating_coil_name
         if not v:
             return None
@@ -1981,6 +1973,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
     AirLoopHVAC:ExhaustSystem."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:ExhaustControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

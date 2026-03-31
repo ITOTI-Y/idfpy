@@ -45,7 +45,7 @@ if TYPE_CHECKING:
         CoolingTowerVariableSpeed,
         CoolingTowerVariableSpeedMerkel,
     )
-    from .fans import FanConstantVolume, FanOnOff, FanSystemModel, FanVariableVolume
+    from .fans import FanConstantVolume, FanOnOff, FanVariableVolume
     from .misc import ControllerOutdoorAir, ControllerWaterCoil
     from .plant_equipment import BoilerHotWater
     from .zone_controls import (
@@ -59,6 +59,7 @@ class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air enthalpy sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:EnthalpySensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -109,6 +110,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
     """This object describes return air enthalpy sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:EnthalpySensorOffset:ReturnAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -159,6 +161,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
     """This object describes fault of dirty air filters"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:AirFilter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     fan_object_type: Literal[
         'Fan:ConstantVolume', 'Fan:OnOff', 'Fan:VariableVolume'
@@ -194,9 +197,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
     )
 
     @property
-    def fan(
-        self,
-    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
+    def fan(self) -> FanConstantVolume | FanOnOff | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -241,6 +242,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
     exchangers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Boiler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -307,6 +309,7 @@ class FaultModelFoulingChiller(IDFBaseModel):
     condensers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Chiller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -379,6 +382,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
     """This object describes fouling water heating or cooling coils"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Coil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coil_name: SimpleCoilsRef = Field(
         ..., json_schema_extra={'object_list': ['SimpleCoils']}
@@ -468,6 +472,7 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
     """This object describes the fault of fouling cooling towers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:CoolingTower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -541,6 +546,7 @@ class FaultModelFoulingEvaporativeCooler(IDFBaseModel):
     cooler"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:EvaporativeCooler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -608,6 +614,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
     """This object describes fault of humidistat offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:HumidistatOffset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     humidistat_name: ZoneControlHumidistatNamesRef = Field(
         ...,
@@ -700,6 +707,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air humidity sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:HumiditySensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -753,6 +761,7 @@ class FaultModelTemperatureSensorOffsetChillerSupplyWater(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'FaultModel:TemperatureSensorOffset:ChillerSupplyWater'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -816,6 +825,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
     """This object describes fault of coil supply air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:CoilSupplyAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -931,6 +941,7 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'FaultModel:TemperatureSensorOffset:CondenserSupplyWater'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -1000,6 +1011,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -1050,6 +1062,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
     """This object describes return air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:ReturnAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}

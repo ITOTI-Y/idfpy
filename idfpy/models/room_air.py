@@ -223,6 +223,7 @@ class RoomAirModelType(IDFBaseModel):
     air at the same temperature) will be used."""
 
     _idf_object_type: ClassVar[str] = 'RoomAirModelType'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -670,6 +671,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
     """RoomAir modeling using Airflow pressure network solver"""
 
     _idf_object_type: ClassVar[str] = 'RoomAirSettings:AirflowNetwork'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -1126,6 +1128,7 @@ class RoomAirTemperaturePatternNondimensionalHeight(IDFBaseModel):
     combination with RoomAir:TemperaturePattern:UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:NondimensionalHeight'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_integer_for_pattern_control_schedule_name: int = Field(
         ...,
@@ -1165,6 +1168,7 @@ class RoomAirTemperaturePatternSurfaceMapping(IDFBaseModel):
     in combination with RoomAir:TemperaturePattern:UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:SurfaceMapping'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_integer_for_pattern_control_schedule_name: int = Field(
         ..., json_schema_extra={'note': 'reference this entry in schedule'}
@@ -1260,6 +1264,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
     UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}

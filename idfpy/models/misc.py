@@ -73,14 +73,12 @@ if TYPE_CHECKING:
     from .availability_managers import AvailabilityManagerAssignmentList
     from .coils import (
         CoilCoolingDXSingleSpeed,
-        CoilCoolingDXSingleSpeedThermalStorage,
         CoilCoolingDXTwoStageWithHumidityControlMode,
         CoilCoolingDXVariableSpeed,
         CoilHeatingElectric,
         CoilHeatingFuel,
         CoilHeatingSteam,
         CoilHeatingWater,
-        CoilSystemCoolingDXHeatExchangerAssisted,
     )
     from .fans import (
         FanConstantVolume,
@@ -105,7 +103,6 @@ if TYPE_CHECKING:
     from .water_systems import WaterUseStorage
     from .zone_forced_air import ZoneHVACTerminalUnitVariableRefrigerantFlow
     from .zone_terminals import (
-        AirTerminalSingleDuctConstantVolumeNoReheat,
         AirTerminalSingleDuctConstantVolumeReheat,
         AirTerminalSingleDuctVAVReheat,
     )
@@ -1686,6 +1683,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     _idf_object_type: ClassVar[str] = (
         'AirConditioner:VariableRefrigerantFlow:FluidTemperatureControl:HR'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2770,8 +2768,7 @@ class AirflowNetworkDistributionComponentTerminalUnit(IDFBaseModel):
     def terminal_unit(
         self,
     ) -> (
-        AirTerminalSingleDuctConstantVolumeNoReheat
-        | AirTerminalSingleDuctConstantVolumeReheat
+        AirTerminalSingleDuctConstantVolumeReheat
         | AirTerminalSingleDuctVAVReheat
         | None
     ):
@@ -2790,6 +2787,7 @@ class AirflowNetworkDistributionDuctSizing(IDFBaseModel):
     AirflowNetwork:SimulationControl Do Distribution Duct Sizing Calculation."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:DuctSizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     duct_sizing_method: (
         Literal[
@@ -4849,6 +4847,7 @@ class AirflowNetworkSimulationControl(IDFBaseModel):
     simulation."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:SimulationControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -6008,9 +6007,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['HXDesiccantBalanced'])
 
     @property
-    def regeneration_air_fan(
-        self,
-    ) -> FanOnOff | FanSystemModel | FanVariableVolume | None:
+    def regeneration_air_fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.regeneration_air_fan_name
         if not v:
             return None
@@ -6042,10 +6039,8 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXTwoStageWithHumidityControlMode
         | CoilCoolingDXVariableSpeed
-        | CoilSystemCoolingDXHeatExchangerAssisted
         | None
     ):
         v = self.companion_cooling_coil_name
@@ -6073,6 +6068,7 @@ class DuctLossConduction(IDFBaseModel):
     """Duct:Loss:Conduction"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:Conduction'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -6149,6 +6145,7 @@ class DuctLossLeakage(IDFBaseModel):
     """Duct:Loss:Leakage"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:Leakage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -6185,6 +6182,7 @@ class DuctLossMakeupAir(IDFBaseModel):
     """Duct:Loss:MakeupAir"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:MakeupAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -6221,6 +6219,7 @@ class ExteriorFuelEquipment(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:FuelEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_use_type: Literal[
         'Coal',
@@ -6306,6 +6305,7 @@ class ExteriorWaterEquipment(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:WaterEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_use_type: Literal['', 'Water'] | None = Field(default='Water')
     schedule_name: ScheduleNamesRef = Field(
@@ -6685,6 +6685,7 @@ class GroundHeatTransferControl(IDFBaseModel):
     executed."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatTransfer:Control'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(
         default=None,
         json_schema_extra={'note': 'This field is included for consistency.11'},
@@ -7737,6 +7738,7 @@ class HybridModelZone(IDFBaseModel):
     should include a leap day."""
 
     _idf_object_type: ClassVar[str] = 'HybridModel:Zone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -8049,6 +8051,7 @@ class ParametricFileNameSuffix(IDFBaseModel):
     the run number."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:FileNameSuffix'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     suffixes: list[ParametricFileNameSuffixSuffixesItem] | None = Field(default=None)
 
@@ -8061,6 +8064,7 @@ class ParametricLogic(IDFBaseModel):
     commands and syntax."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:Logic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     lines: list[ParametricLogicLinesItem] | None = Field(default=None)
 
@@ -8070,6 +8074,7 @@ class ParametricRunControl(IDFBaseModel):
     is not included, then all parametric runs are performed."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:RunControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     runs: list[ParametricRunControlRunsItem] | None = Field(default=None)
 
@@ -8083,6 +8088,7 @@ class ParametricSetValueForRun(IDFBaseModel):
     depending on which run is being simulated."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:SetValueForRun'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

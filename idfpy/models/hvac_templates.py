@@ -38,7 +38,6 @@ if TYPE_CHECKING:
         CoolingTowerSingleSpeed,
         CoolingTowerTwoSpeed,
         CoolingTowerVariableSpeed,
-        CoolingTowerVariableSpeedMerkel,
     )
     from .hvac_design import (
         DesignSpecificationOutdoorAir,
@@ -49,7 +48,11 @@ if TYPE_CHECKING:
         CondenserEquipmentOperationSchemes,
         PlantEquipmentOperationSchemes,
     )
-    from .plant_equipment import BoilerHotWater
+    from .plant_equipment import (
+        BoilerHotWater,
+        ChillerElectricEIR,
+        ChillerElectricReformulatedEIR,
+    )
     from .thermal_zones import Zone
 
 
@@ -58,6 +61,7 @@ class HVACTemplatePlantBoiler(IDFBaseModel):
     MixedWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Boiler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     boiler_type: Literal[
         'CondensingHotWaterBoiler', 'DistrictHotWater', 'HotWaterBoiler'
@@ -125,6 +129,7 @@ class HVACTemplatePlantBoilerObjectReference(IDFBaseModel):
     objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Boiler:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     boiler_object_type: Literal['', 'Boiler:HotWater'] | None = Field(
         default='Boiler:HotWater'
@@ -165,6 +170,7 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
     chillers, and towers."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:ChilledWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -500,6 +506,7 @@ class HVACTemplatePlantChiller(IDFBaseModel):
     """This object adds a chiller to an HVACTemplate:Plant:ChilledWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Chiller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     chiller_type: Literal[
         'DistrictChilledWater',
@@ -576,6 +583,7 @@ class HVACTemplatePlantChillerObjectReference(IDFBaseModel):
     detailed chiller object with all required curve or performance objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Chiller:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     chiller_object_type: (
         Literal['', 'Chiller:Electric:EIR', 'Chiller:Electric:ReformulatedEIR'] | None
@@ -595,7 +603,7 @@ class HVACTemplatePlantChillerObjectReference(IDFBaseModel):
     )
 
     @property
-    def chiller(self) -> IDFBaseModel | None:
+    def chiller(self) -> ChillerElectricEIR | ChillerElectricReformulatedEIR | None:
         v = self.chiller_name
         if not v:
             return None
@@ -609,6 +617,7 @@ class HVACTemplatePlantHotWaterLoop(IDFBaseModel):
     """Plant loop to serve all HVACTemplate hot water coils and boilers."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:HotWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -805,6 +814,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
     """Central plant loop portion of a water source heat pump system."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:MixedWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -985,6 +995,7 @@ class HVACTemplatePlantTower(IDFBaseModel):
     or MixedWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Tower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tower_type: Literal['SingleSpeed', 'TwoSpeed'] = Field(...)
     high_speed_nominal_capacity: float | Literal['', 'Autosize'] | None = Field(
@@ -1048,6 +1059,7 @@ class HVACTemplatePlantTowerObjectReference(IDFBaseModel):
     performance objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Tower:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     cooling_tower_object_type: (
         Literal[
@@ -1085,7 +1097,6 @@ class HVACTemplatePlantTowerObjectReference(IDFBaseModel):
         CoolingTowerSingleSpeed
         | CoolingTowerTwoSpeed
         | CoolingTowerVariableSpeed
-        | CoolingTowerVariableSpeedMerkel
         | None
     ):
         v = self.cooling_tower_name

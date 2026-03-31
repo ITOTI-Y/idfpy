@@ -23,6 +23,7 @@ from .template_filters import (
     extract_nested_classes,
     set_nav_type_mapping,
     set_object_list_ref_types,
+    set_object_type_to_class,
     set_reference_class_name_groups,
 )
 
@@ -144,6 +145,9 @@ class ModelGenerator:
         rcn_groups = self._collect_reference_class_name_groups(specs)
         set_reference_class_name_groups(rcn_groups)
 
+        # Build IDF object type -> class name mapping for discriminant intersection
+        set_object_type_to_class({s.name: s.class_name for s in specs.values()})
+
         # Group objects by output file
         file_groups = self._group_objects_by_file(specs)
 
@@ -162,7 +166,7 @@ class ModelGenerator:
         # Also map nested class names to their modules (computed during generation)
         # We'll update class_to_module as nested classes are discovered
         self._class_to_module = class_to_module
-        set_nav_type_mapping(group_to_classes, class_to_module)
+        set_nav_type_mapping(group_to_classes)
 
         # Track all generated classes for __init__.py
         all_classes: dict[str, list[str]] = {}  # file_name -> [class_names]
@@ -318,7 +322,9 @@ class ModelGenerator:
         has_refs = len(used_ref_types) > 0
 
         # Collect TYPE_CHECKING imports for narrowed nav property types
-        nav_imports = collect_nav_imports(objects, nested_classes, file_name)
+        nav_imports = collect_nav_imports(
+            objects, nested_classes, file_name, self._class_to_module
+        )
 
         # Render template
         content = template.render(

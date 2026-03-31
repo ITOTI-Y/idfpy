@@ -49,7 +49,6 @@ if TYPE_CHECKING:
     from .coils import (
         CoilCoolingDXMultiSpeed,
         CoilCoolingDXSingleSpeed,
-        CoilCoolingDXSingleSpeedThermalStorage,
         CoilCoolingDXTwoStageWithHumidityControlMode,
         CoilCoolingDXVariableSpeed,
         CoilCoolingWaterToAirHeatPumpEquationFit,
@@ -57,7 +56,6 @@ if TYPE_CHECKING:
         CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
         CoilHeatingDXMultiSpeed,
         CoilHeatingDXSingleSpeed,
-        CoilHeatingDXVariableRefrigerantFlow,
         CoilHeatingDXVariableSpeed,
         CoilHeatingElectric,
         CoilHeatingElectricMultiStage,
@@ -286,7 +284,6 @@ class AirLoopHVACUnitaryFurnaceHeatCool(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
         | None
@@ -636,7 +633,6 @@ class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
         | None
@@ -952,7 +948,6 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXTwoStageWithHumidityControlMode
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
@@ -1303,7 +1298,6 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
         self,
     ) -> (
         CoilHeatingDXSingleSpeed
-        | CoilHeatingDXVariableRefrigerantFlow
         | CoilHeatingDXVariableSpeed
         | CoilSystemIntegratedHeatPumpAirSource
         | None
@@ -1328,7 +1322,6 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
         self,
     ) -> (
         CoilCoolingDXSingleSpeed
-        | CoilCoolingDXSingleSpeedThermalStorage
         | CoilCoolingDXVariableSpeed
         | CoilSystemCoolingDXHeatExchangerAssisted
         | CoilSystemIntegratedHeatPumpAirSource

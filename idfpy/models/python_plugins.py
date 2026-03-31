@@ -69,6 +69,7 @@ class PythonPluginOutputVariable(IDFBaseModel):
     variable"""
 
     _idf_object_type: ClassVar[str] = 'PythonPlugin:OutputVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     python_plugin_variable_name: str = Field(
         ...,
@@ -178,6 +179,7 @@ class PythonPluginSearchPaths(IDFBaseModel):
     scripts."""
 
     _idf_object_type: ClassVar[str] = 'PythonPlugin:SearchPaths'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     add_current_working_directory_to_search_path: Literal['', 'No', 'Yes'] | None = (
         Field(
@@ -211,6 +213,7 @@ class PythonPluginTrendVariable(IDFBaseModel):
     variable A trend variable logs values across timesteps"""
 
     _idf_object_type: ClassVar[str] = 'PythonPlugin:TrendVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     name_of_a_python_plugin_variable: str = Field(...)
     number_of_timesteps_to_be_logged: int = Field(..., ge=1)
@@ -221,6 +224,7 @@ class PythonPluginVariables(IDFBaseModel):
     that should be shared among all running Python Plugins."""
 
     _idf_object_type: ClassVar[str] = 'PythonPlugin:Variables'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
