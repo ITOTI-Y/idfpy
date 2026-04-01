@@ -7,7 +7,7 @@ Group: Zone Airflow
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,10 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .thermal_zones import Space, SpaceList, Zone, ZoneList
+    from .water_systems import WaterUseStorage
+
 
 class ZoneAirBalanceOutdoorAir(IDFBaseModel):
     """Provide a combined zone outdoor air flow by including interactions between
@@ -31,6 +35,7 @@ class ZoneAirBalanceOutdoorAir(IDFBaseModel):
     be added in quadrature."""
 
     _idf_object_type: ClassVar[str] = 'ZoneAirBalance:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -53,7 +58,7 @@ class ZoneAirBalanceOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -80,6 +85,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
     using water evaporation before delivering it to a zone (or space)."""
 
     _idf_object_type: ClassVar[str] = 'ZoneCoolTower:Shower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -151,7 +157,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -161,7 +167,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None
@@ -187,6 +193,7 @@ class ZoneCrossMixing(IDFBaseModel):
     spaces."""
 
     _idf_object_type: ClassVar[str] = 'ZoneCrossMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -284,7 +291,7 @@ class ZoneCrossMixing(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -304,7 +311,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def source_zone_or_space(self) -> IDFBaseModel | None:
+    def source_zone_or_space(self) -> Space | Zone | None:
         v = self.source_zone_or_space_name
         if not v:
             return None
@@ -484,7 +491,7 @@ class ZoneEarthtube(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -504,7 +511,7 @@ class ZoneEarthtube(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def earth_tube_model_parameters_ref(self) -> IDFBaseModel | None:
+    def earth_tube_model_parameters_ref(self) -> ZoneEarthtubeParameters | None:
         v = self.earth_tube_model_parameters
         if not v:
             return None
@@ -518,6 +525,9 @@ class ZoneEarthtubeParameters(IDFBaseModel):
     """Parameters that apply to the vertical model for an earth tube"""
 
     _idf_object_type: ClassVar[str] = 'ZoneEarthtube:Parameters'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset(
+        {'earth_tube_model_parameters_name'}
+    )
     earth_tube_model_parameters_name: str = Field(...)
     nodes_above_earth_tube: int | None = Field(
         default=5, ge=3, le=10, json_schema_extra={'units': 'dimensionless'}
@@ -563,6 +573,7 @@ class ZoneInfiltrationDesignFlowRate(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:DesignFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -632,7 +643,9 @@ class ZoneInfiltrationDesignFlowRate(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -664,6 +677,7 @@ class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
     Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:EffectiveLeakageArea'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -695,7 +709,7 @@ class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -724,6 +738,7 @@ class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
     instance will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneInfiltration:FlowCoefficient'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -756,7 +771,7 @@ class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -784,6 +799,7 @@ class ZoneMixing(IDFBaseModel):
     balancing of flows between zones is left to the user's discretion."""
 
     _idf_object_type: ClassVar[str] = 'ZoneMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -880,7 +896,7 @@ class ZoneMixing(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -900,7 +916,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def source_zone_or_space(self) -> IDFBaseModel | None:
+    def source_zone_or_space(self) -> Space | Zone | None:
         v = self.source_zone_or_space_name
         if not v:
             return None
@@ -991,6 +1007,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
     object Refrigeration:WalkIn."""
 
     _idf_object_type: ClassVar[str] = 'ZoneRefrigerationDoorMixing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name_1: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -1029,7 +1046,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
     )
 
     @property
-    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_1_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_1
         if not v:
             return None
@@ -1039,7 +1056,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_2_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_2
         if not v:
             return None
@@ -1065,6 +1082,7 @@ class ZoneThermalChimney(IDFBaseModel):
     cover with high solar transmissivity."""
 
     _idf_object_type: ClassVar[str] = 'ZoneThermalChimney'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -1329,7 +1347,7 @@ class ZoneThermalChimney(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1349,7 +1367,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_or_space_1_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_1_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_1
         if not v:
             return None
@@ -1359,7 +1377,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_2_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_2_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_2
         if not v:
             return None
@@ -1369,7 +1387,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_3_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_3_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_3
         if not v:
             return None
@@ -1379,7 +1397,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_4_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_4_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_4
         if not v:
             return None
@@ -1389,7 +1407,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_5_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_5_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_5
         if not v:
             return None
@@ -1399,7 +1417,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_6_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_6_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_6
         if not v:
             return None
@@ -1409,7 +1427,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_7_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_7_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_7
         if not v:
             return None
@@ -1419,7 +1437,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_8_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_8_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_8
         if not v:
             return None
@@ -1429,7 +1447,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_9_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_9_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_9
         if not v:
             return None
@@ -1439,7 +1457,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_10_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_10_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_10
         if not v:
             return None
@@ -1449,7 +1467,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_11_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_11_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_11
         if not v:
             return None
@@ -1459,7 +1477,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_12_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_12_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_12
         if not v:
             return None
@@ -1469,7 +1487,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_13_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_13_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_13
         if not v:
             return None
@@ -1479,7 +1497,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_14_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_14_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_14
         if not v:
             return None
@@ -1489,7 +1507,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_15_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_15_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_15
         if not v:
             return None
@@ -1499,7 +1517,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_16_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_16_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_16
         if not v:
             return None
@@ -1509,7 +1527,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_17_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_17_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_17
         if not v:
             return None
@@ -1519,7 +1537,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_18_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_18_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_18
         if not v:
             return None
@@ -1529,7 +1547,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_19_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_19_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_19
         if not v:
             return None
@@ -1539,7 +1557,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def zone_or_space_20_ref(self) -> IDFBaseModel | None:
+    def zone_or_space_20_ref(self) -> Space | Zone | None:
         v = self.zone_or_space_name_20
         if not v:
             return None
@@ -1558,6 +1576,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneVentilation:DesignFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1711,7 +1730,9 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1793,6 +1814,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneVentilation:WindandStackOpenArea'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -1938,7 +1960,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None

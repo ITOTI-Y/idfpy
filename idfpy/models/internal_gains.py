@@ -7,7 +7,7 @@ Group: Internal Gains
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -27,6 +27,20 @@ from ._refs import (
     ZoneAndZoneListNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .room_air import RoomAirNode
+    from .thermal_zones import (
+        BuildingSurfaceDetailed,
+        FloorAdiabatic,
+        FloorDetailed,
+        FloorGroundContact,
+        FloorInterzone,
+        Space,
+        SpaceList,
+        Zone,
+        ZoneList,
+    )
 
 
 class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):
@@ -54,6 +68,7 @@ class ComfortViewFactorAngles(IDFBaseModel):
     must be in the same enclosure."""
 
     _idf_object_type: ClassVar[str] = 'ComfortViewFactorAngles'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     angles: list[ComfortViewFactorAnglesAnglesItem] | None = Field(default=None)
 
@@ -65,6 +80,7 @@ class ElectricEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ElectricEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -109,7 +125,9 @@ class ElectricEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -139,6 +157,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ElectricEquipment:ITE:AirCooled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_space_name: SpaceNamesRef | ZoneNamesRef = Field(
         ...,
@@ -354,7 +373,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     )
 
     @property
-    def zone_or_space(self) -> IDFBaseModel | None:
+    def zone_or_space(self) -> Space | Zone | None:
         v = self.zone_or_space_name
         if not v:
             return None
@@ -418,7 +437,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def air_inlet_room_air_model_node(self) -> IDFBaseModel | None:
+    def air_inlet_room_air_model_node(self) -> RoomAirNode | None:
         v = self.air_inlet_room_air_model_node_name
         if not v:
             return None
@@ -428,7 +447,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodes'])
 
     @property
-    def air_outlet_room_air_model_node(self) -> IDFBaseModel | None:
+    def air_outlet_room_air_model_node(self) -> RoomAirNode | None:
         v = self.air_outlet_room_air_model_node_name
         if not v:
             return None
@@ -489,6 +508,7 @@ class GasEquipment(IDFBaseModel):
     instance will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'GasEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -550,7 +570,9 @@ class GasEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -579,6 +601,7 @@ class HotWaterEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'HotWaterEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -631,7 +654,9 @@ class HotWaterEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -661,6 +686,7 @@ class IndoorLivingWall(IDFBaseModel):
     and zone air moisture balance."""
 
     _idf_object_type: ClassVar[str] = 'IndoorLivingWall'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ...,
@@ -786,6 +812,7 @@ class Lights(IDFBaseModel):
     Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -879,7 +906,9 @@ class Lights(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -908,6 +937,7 @@ class OtherEquipment(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'OtherEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: (
         Literal[
@@ -987,7 +1017,9 @@ class OtherEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1016,6 +1048,7 @@ class People(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'People'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1274,7 +1307,9 @@ class People(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1373,6 +1408,7 @@ class SteamEquipment(IDFBaseModel):
     with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'SteamEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1425,7 +1461,9 @@ class SteamEquipment(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1454,6 +1492,7 @@ class SurfaceContaminantSourceAndSinkGenericBoundaryLayerDiffusion(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:BoundaryLayerDiffusion'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
@@ -1500,6 +1539,7 @@ class SurfaceContaminantSourceAndSinkGenericDepositionVelocitySink(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:DepositionVelocitySink'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
@@ -1543,6 +1583,7 @@ class SurfaceContaminantSourceAndSinkGenericPressureDriven(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SurfaceContaminantSourceAndSink:Generic:PressureDriven'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: SurfAndSubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfAndSubSurfNames']}
@@ -1587,6 +1628,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
     assumed to cover the entire floor to which it is linked."""
 
     _idf_object_type: ClassVar[str] = 'SwimmingPool:Indoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: FloorSurfaceNamesRef = Field(
         ...,
@@ -1638,7 +1680,16 @@ class SwimmingPoolIndoor(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(
+        self,
+    ) -> (
+        BuildingSurfaceDetailed
+        | FloorAdiabatic
+        | FloorDetailed
+        | FloorGroundContact
+        | FloorInterzone
+        | None
+    ):
         v = self.surface_name
         if not v:
             return None
@@ -1715,6 +1766,7 @@ class ZoneBaseboardOutdoorTemperatureControlled(IDFBaseModel):
     will be named with the Space Name plus this Object Name."""
 
     _idf_object_type: ClassVar[str] = 'ZoneBaseboard:OutdoorTemperatureControlled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_or_space_or_spacelist_name: (
         SpaceAndSpaceListNamesRef | ZoneAndZoneListNamesRef
@@ -1748,7 +1800,9 @@ class ZoneBaseboardOutdoorTemperatureControlled(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist_or_space_or_spacelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist_or_space_or_spacelist(
+        self,
+    ) -> Space | SpaceList | Zone | ZoneList | None:
         v = self.zone_or_zonelist_or_space_or_spacelist_name
         if not v:
             return None
@@ -1774,6 +1828,7 @@ class ZoneContaminantSourceAndSinkCarbonDioxide(IDFBaseModel):
     """Represents internal CO2 gains and sinks in the zone."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:CarbonDioxide'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1794,7 +1849,7 @@ class ZoneContaminantSourceAndSinkCarbonDioxide(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1819,6 +1874,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
     values."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:Constant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1849,7 +1905,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1884,6 +1940,7 @@ class ZoneContaminantSourceAndSinkGenericCutoffModel(IDFBaseModel):
     model."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:CutoffModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1908,7 +1965,7 @@ class ZoneContaminantSourceAndSinkGenericCutoffModel(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1933,6 +1990,7 @@ class ZoneContaminantSourceAndSinkGenericDecaySource(IDFBaseModel):
     model."""
 
     _idf_object_type: ClassVar[str] = 'ZoneContaminantSourceAndSink:Generic:DecaySource'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1952,7 +2010,7 @@ class ZoneContaminantSourceAndSinkGenericDecaySource(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1979,6 +2037,7 @@ class ZoneContaminantSourceAndSinkGenericDepositionRateSink(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneContaminantSourceAndSink:Generic:DepositionRateSink'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1995,7 +2054,7 @@ class ZoneContaminantSourceAndSinkGenericDepositionRateSink(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

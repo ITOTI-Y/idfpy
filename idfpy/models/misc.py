@@ -7,7 +7,7 @@ Group: Variable Refrigerant Flow Equipment
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -67,6 +67,45 @@ from ._refs import (
     ZoneTerminalUnitListNamesRef,
     ZoneTerminalUnitNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .air_distribution import AirLoopHVAC, OutdoorAirMixer
+    from .availability_managers import AvailabilityManagerAssignmentList
+    from .coils import (
+        CoilCoolingDXSingleSpeed,
+        CoilCoolingDXTwoStageWithHumidityControlMode,
+        CoilCoolingDXVariableSpeed,
+        CoilHeatingElectric,
+        CoilHeatingFuel,
+        CoilHeatingSteam,
+        CoilHeatingWater,
+    )
+    from .fans import (
+        FanConstantVolume,
+        FanOnOff,
+        FanSystemModel,
+        FanVariableVolume,
+        FanZoneExhaust,
+    )
+    from .fluids import FluidPropertiesGlycolConcentration, FluidPropertiesName
+    from .hvac_design import (
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+        DesignSpecificationZoneAirDistribution,
+    )
+    from .node_branch import BranchList, ConnectorList, OutdoorAirNode
+    from .plant_control import (
+        CondenserEquipmentOperationSchemes,
+        PlantEquipmentOperationSchemes,
+    )
+    from .room_air import RoomAirNodeAirflowNetwork
+    from .thermal_zones import Zone, ZoneList
+    from .water_systems import WaterUseStorage
+    from .zone_forced_air import ZoneHVACTerminalUnitVariableRefrigerantFlow
+    from .zone_terminals import (
+        AirTerminalSingleDuctConstantVolumeReheat,
+        AirTerminalSingleDuctVAVReheat,
+    )
 
 
 class AirConditionerVariableRefrigerantFlowFluidTemperatureControlLoadingIndicesItem(
@@ -160,7 +199,7 @@ class ControllerMechanicalVentilationZoneSpecificationsItem(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -170,7 +209,9 @@ class ControllerMechanicalVentilationZoneSpecificationsItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -182,7 +223,9 @@ class ControllerMechanicalVentilationZoneSpecificationsItem(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -230,7 +273,7 @@ class TableIndependentVariableListIndependentVariablesItem(IDFBaseModel):
     )
 
     @property
-    def independent_variable(self) -> IDFBaseModel | None:
+    def independent_variable(self) -> TableIndependentVariable | None:
         v = self.independent_variable_name
         if not v:
             return None
@@ -254,7 +297,7 @@ class ZoneTerminalUnitListTerminalUnitsItem(IDFBaseModel):
     )
 
     @property
-    def zone_terminal_unit(self) -> IDFBaseModel | None:
+    def zone_terminal_unit(self) -> ZoneHVACTerminalUnitVariableRefrigerantFlow | None:
         v = self.zone_terminal_unit_name
         if not v:
             return None
@@ -271,6 +314,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     ZoneHVAC:TerminalUnit:VariableRefrigerantFlow and ZoneTerminalUnitList."""
 
     _idf_object_type: ClassVar[str] = 'AirConditioner:VariableRefrigerantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(
         default=None,
         json_schema_extra={
@@ -1159,7 +1203,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
+    def zone_for_master_thermostat_location_ref(self) -> Zone | None:
         v = self.zone_name_for_master_thermostat_location
         if not v:
             return None
@@ -1179,7 +1223,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_terminal_unit_list(self) -> IDFBaseModel | None:
+    def zone_terminal_unit_list(self) -> ZoneTerminalUnitList | None:
         v = self.zone_terminal_unit_list_name
         if not v:
             return None
@@ -1225,7 +1269,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1574,7 +1618,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_terminal_unit_list(self) -> IDFBaseModel | None:
+    def zone_terminal_unit_list(self) -> ZoneTerminalUnitList | None:
         v = self.zone_terminal_unit_list_name
         if not v:
             return None
@@ -1584,7 +1628,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
         return idf._resolve_forward(v, ['ZoneTerminalUnitListNames'])
 
     @property
-    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+    def refrigerant_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigerant_type
         if not v:
             return None
@@ -1639,6 +1683,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     _idf_object_type: ClassVar[str] = (
         'AirConditioner:VariableRefrigerantFlow:FluidTemperatureControl:HR'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2025,7 +2070,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_terminal_unit_list(self) -> IDFBaseModel | None:
+    def zone_terminal_unit_list(self) -> ZoneTerminalUnitList | None:
         v = self.zone_terminal_unit_list_name
         if not v:
             return None
@@ -2035,7 +2080,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
         return idf._resolve_forward(v, ['ZoneTerminalUnitListNames'])
 
     @property
-    def refrigerant_type_ref(self) -> IDFBaseModel | None:
+    def refrigerant_type_ref(self) -> FluidPropertiesName | None:
         v = self.refrigerant_type
         if not v:
             return None
@@ -2085,6 +2130,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
     """List controllers in order of control sequence"""
 
     _idf_object_type: ClassVar[str] = 'AirLoopHVAC:ControllerList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     controller_1_object_type: Literal[
         'Controller:OutdoorAir', 'Controller:WaterCoil'
@@ -2136,7 +2182,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
     )
 
     @property
-    def controller_1(self) -> IDFBaseModel | None:
+    def controller_1(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_1_name
         if not v:
             return None
@@ -2146,7 +2192,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_2(self) -> IDFBaseModel | None:
+    def controller_2(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_2_name
         if not v:
             return None
@@ -2156,7 +2202,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_3(self) -> IDFBaseModel | None:
+    def controller_3(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_3_name
         if not v:
             return None
@@ -2166,7 +2212,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_4(self) -> IDFBaseModel | None:
+    def controller_4(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_4_name
         if not v:
             return None
@@ -2176,7 +2222,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_5(self) -> IDFBaseModel | None:
+    def controller_5(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_5_name
         if not v:
             return None
@@ -2186,7 +2232,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_6(self) -> IDFBaseModel | None:
+    def controller_6(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_6_name
         if not v:
             return None
@@ -2196,7 +2242,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_7(self) -> IDFBaseModel | None:
+    def controller_7(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_7_name
         if not v:
             return None
@@ -2206,7 +2252,7 @@ class AirLoopHVACControllerList(IDFBaseModel):
         return idf._resolve_forward(v, ['AirLoopControllers'])
 
     @property
-    def controller_8(self) -> IDFBaseModel | None:
+    def controller_8(self) -> ControllerOutdoorAir | ControllerWaterCoil | None:
         v = self.controller_8_name
         if not v:
             return None
@@ -2220,6 +2266,7 @@ class AirflowNetworkDistributionComponentCoil(IDFBaseModel):
     """This object defines the name of a coil used in an air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Coil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'coil_name'})
     coil_name: AFNCoilNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2292,6 +2339,7 @@ class AirflowNetworkDistributionComponentConstantPressureDrop(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:ConstantPressureDrop'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2310,6 +2358,7 @@ class AirflowNetworkDistributionComponentDuct(IDFBaseModel):
     the duct."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Duct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2390,6 +2439,7 @@ class AirflowNetworkDistributionComponentFan(IDFBaseModel):
     """This object defines the name of the supply Air Fan used in an Air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Fan'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'fan_name'})
     fan_name: FansCVandOnOffandVAVRef | FansSystemModelRef = Field(
         ...,
         json_schema_extra={
@@ -2409,7 +2459,9 @@ class AirflowNetworkDistributionComponentFan(IDFBaseModel):
     ) = Field(default='Fan:ConstantVolume')
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanSystemModel | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -2426,6 +2478,7 @@ class AirflowNetworkDistributionComponentHeatExchanger(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:HeatExchanger'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'heatexchanger_name'})
     heatexchanger_name: AFNHeatExchangerNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2461,7 +2514,14 @@ class AirflowNetworkDistributionComponentHeatExchanger(IDFBaseModel):
     )
 
     @property
-    def heatexchanger(self) -> IDFBaseModel | None:
+    def heatexchanger(
+        self,
+    ) -> (
+        HeatExchangerAirToAirFlatPlate
+        | HeatExchangerAirToAirSensibleAndLatent
+        | HeatExchangerDesiccantBalancedFlow
+        | None
+    ):
         v = self.heatexchanger_name
         if not v:
             return None
@@ -2475,6 +2535,7 @@ class AirflowNetworkDistributionComponentLeak(IDFBaseModel):
     """This object defines the characteristics of a supply or return air leak."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Component:Leak'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2504,6 +2565,7 @@ class AirflowNetworkDistributionComponentLeakageRatio(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:LeakageRatio'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2550,6 +2612,7 @@ class AirflowNetworkDistributionComponentOutdoorAirFlow(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:OutdoorAirFlow'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outdoor_air_mixer_name: OutdoorAirMixersRef = Field(
         ..., json_schema_extra={'object_list': ['OutdoorAirMixers']}
@@ -2580,7 +2643,7 @@ class AirflowNetworkDistributionComponentOutdoorAirFlow(IDFBaseModel):
     )
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -2590,7 +2653,9 @@ class AirflowNetworkDistributionComponentOutdoorAirFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def reference_crack_conditions_ref(self) -> IDFBaseModel | None:
+    def reference_crack_conditions_ref(
+        self,
+    ) -> AirflowNetworkMultiZoneReferenceCrackConditions | None:
         v = self.reference_crack_conditions
         if not v:
             return None
@@ -2606,6 +2671,7 @@ class AirflowNetworkDistributionComponentReliefAirFlow(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:ReliefAirFlow'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outdoor_air_mixer_name: OutdoorAirMixersRef = Field(
         ..., json_schema_extra={'object_list': ['OutdoorAirMixers']}
@@ -2636,7 +2702,7 @@ class AirflowNetworkDistributionComponentReliefAirFlow(IDFBaseModel):
     )
 
     @property
-    def outdoor_air_mixer(self) -> IDFBaseModel | None:
+    def outdoor_air_mixer(self) -> OutdoorAirMixer | None:
         v = self.outdoor_air_mixer_name
         if not v:
             return None
@@ -2646,7 +2712,9 @@ class AirflowNetworkDistributionComponentReliefAirFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirMixers'])
 
     @property
-    def reference_crack_conditions_ref(self) -> IDFBaseModel | None:
+    def reference_crack_conditions_ref(
+        self,
+    ) -> AirflowNetworkMultiZoneReferenceCrackConditions | None:
         v = self.reference_crack_conditions
         if not v:
             return None
@@ -2662,6 +2730,7 @@ class AirflowNetworkDistributionComponentTerminalUnit(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:Distribution:Component:TerminalUnit'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'terminal_unit_name'})
     terminal_unit_name: AFNTerminalUnitNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2696,7 +2765,13 @@ class AirflowNetworkDistributionComponentTerminalUnit(IDFBaseModel):
     )
 
     @property
-    def terminal_unit(self) -> IDFBaseModel | None:
+    def terminal_unit(
+        self,
+    ) -> (
+        AirTerminalSingleDuctConstantVolumeReheat
+        | AirTerminalSingleDuctVAVReheat
+        | None
+    ):
         v = self.terminal_unit_name
         if not v:
             return None
@@ -2712,6 +2787,7 @@ class AirflowNetworkDistributionDuctSizing(IDFBaseModel):
     AirflowNetwork:SimulationControl Do Distribution Duct Sizing Calculation."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:DuctSizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     duct_sizing_method: (
         Literal[
@@ -2792,6 +2868,7 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
     """This object defines the connection between two nodes and a component."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Linkage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2837,7 +2914,7 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
     )
 
     @property
-    def node_1(self) -> IDFBaseModel | None:
+    def node_1(self) -> AirflowNetworkDistributionNode | Zone | None:
         v = self.node_1_name
         if not v:
             return None
@@ -2847,7 +2924,7 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkNodeAndZoneNames'])
 
     @property
-    def node_2(self) -> IDFBaseModel | None:
+    def node_2(self) -> AirflowNetworkDistributionNode | Zone | None:
         v = self.node_2_name
         if not v:
             return None
@@ -2876,7 +2953,7 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
         )
 
     @property
-    def thermal_zone(self) -> IDFBaseModel | None:
+    def thermal_zone(self) -> Zone | None:
         v = self.thermal_zone_name
         if not v:
             return None
@@ -2890,6 +2967,7 @@ class AirflowNetworkDistributionNode(IDFBaseModel):
     """This object represents an air distribution node in the AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:Distribution:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2932,6 +3010,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
     the combination of RoomAir and AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:IntraZone:Linkage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -2965,7 +3044,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
     )
 
     @property
-    def node_1(self) -> IDFBaseModel | None:
+    def node_1(self) -> AirflowNetworkIntraZoneNode | Zone | None:
         v = self.node_1_name
         if not v:
             return None
@@ -2975,7 +3054,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkNodeNames', 'ZoneNames'])
 
     @property
-    def node_2(self) -> IDFBaseModel | None:
+    def node_2(self) -> AirflowNetworkIntraZoneNode | Zone | None:
         v = self.node_2_name
         if not v:
             return None
@@ -3010,6 +3089,7 @@ class AirflowNetworkIntraZoneNode(IDFBaseModel):
     AirflowNetwork model."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:IntraZone:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3036,7 +3116,7 @@ class AirflowNetworkIntraZoneNode(IDFBaseModel):
     )
 
     @property
-    def roomair_node_airflownetwork(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork(self) -> RoomAirNodeAirflowNetwork | None:
         v = self.roomair_node_airflownetwork_name
         if not v:
             return None
@@ -3046,7 +3126,7 @@ class AirflowNetworkIntraZoneNode(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirflowNetworkNodes'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> AirflowNetworkMultiZoneZone | None:
         v = self.zone_name
         if not v:
             return None
@@ -3064,6 +3144,7 @@ class AirflowNetworkMultiZoneComponentDetailedOpening(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:DetailedOpening'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3298,6 +3379,7 @@ class AirflowNetworkMultiZoneComponentHorizontalOpening(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:HorizontalOpening'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3343,6 +3425,7 @@ class AirflowNetworkMultiZoneComponentSimpleOpening(IDFBaseModel):
     or open."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Component:SimpleOpening'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3388,6 +3471,7 @@ class AirflowNetworkMultiZoneComponentZoneExhaustFan(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Component:ZoneExhaustFan'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: FansZoneExhaustRef = Field(
         ...,
         json_schema_extra={
@@ -3421,7 +3505,7 @@ class AirflowNetworkMultiZoneComponentZoneExhaustFan(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> FanZoneExhaust | None:
         v = self.name
         if not v:
             return None
@@ -3431,7 +3515,9 @@ class AirflowNetworkMultiZoneComponentZoneExhaustFan(IDFBaseModel):
         return idf._resolve_forward(v, ['FansZoneExhaust'])
 
     @property
-    def reference_crack_conditions_ref(self) -> IDFBaseModel | None:
+    def reference_crack_conditions_ref(
+        self,
+    ) -> AirflowNetworkMultiZoneReferenceCrackConditions | None:
         v = self.reference_crack_conditions
         if not v:
             return None
@@ -3446,6 +3532,7 @@ class AirflowNetworkMultiZoneExternalNode(IDFBaseModel):
     building."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:ExternalNode'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -3499,6 +3586,7 @@ class AirflowNetworkMultiZoneReferenceCrackConditions(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:ReferenceCrackConditions'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3531,6 +3619,7 @@ class AirflowNetworkMultiZoneSpecifiedFlowRate(IDFBaseModel):
     """This object is used to define specified flow through a linkage."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:SpecifiedFlowRate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3716,7 +3805,9 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceAirflowLeakageNames'])
 
     @property
-    def external_node(self) -> IDFBaseModel | None:
+    def external_node(
+        self,
+    ) -> AirflowNetworkMultiZoneExternalNode | OutdoorAirNode | None:
         v = self.external_node_name
         if not v:
             return None
@@ -3748,7 +3839,9 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def occupant_ventilation_control(self) -> IDFBaseModel | None:
+    def occupant_ventilation_control(
+        self,
+    ) -> AirflowNetworkOccupantVentilationControl | None:
         v = self.occupant_ventilation_control_name
         if not v:
             return None
@@ -3764,6 +3857,7 @@ class AirflowNetworkMultiZoneSurfaceCrack(IDFBaseModel):
     """This object specifies the properties of airflow through a crack."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Surface:Crack'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3793,7 +3887,9 @@ class AirflowNetworkMultiZoneSurfaceCrack(IDFBaseModel):
     )
 
     @property
-    def reference_crack_conditions_ref(self) -> IDFBaseModel | None:
+    def reference_crack_conditions_ref(
+        self,
+    ) -> AirflowNetworkMultiZoneReferenceCrackConditions | None:
         v = self.reference_crack_conditions
         if not v:
             return None
@@ -3809,6 +3905,7 @@ class AirflowNetworkMultiZoneSurfaceEffectiveLeakageArea(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -3854,6 +3951,7 @@ class AirflowNetworkMultiZoneWindPressureCoefficientArray(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:WindPressureCoefficientArray'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for the object.'}
     )
@@ -4192,6 +4290,7 @@ class AirflowNetworkMultiZoneWindPressureCoefficientValues(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'AirflowNetwork:MultiZone:WindPressureCoefficientValues'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -4458,7 +4557,7 @@ class AirflowNetworkMultiZoneWindPressureCoefficientValues(IDFBaseModel):
     @property
     def airflownetwork_multizone_windpressurecoefficientarray(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> AirflowNetworkMultiZoneWindPressureCoefficientArray | None:
         v = self.airflownetwork_multizone_windpressurecoefficientarray_name
         if not v:
             return None
@@ -4473,6 +4572,7 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
     door openings, both exterior and interior."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:MultiZone:Zone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'zone_name'})
     zone_name: ZoneNamesRef = Field(
         ...,
         json_schema_extra={
@@ -4591,7 +4691,7 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -4623,7 +4723,9 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def occupant_ventilation_control(self) -> IDFBaseModel | None:
+    def occupant_ventilation_control(
+        self,
+    ) -> AirflowNetworkOccupantVentilationControl | None:
         v = self.occupant_ventilation_control_name
         if not v:
             return None
@@ -4640,6 +4742,7 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
     opening and closing for both exterior and interior windows."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:OccupantVentilationControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -4744,6 +4847,7 @@ class AirflowNetworkSimulationControl(IDFBaseModel):
     simulation."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:SimulationControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'Enter a unique name for this object.'}
     )
@@ -4875,6 +4979,7 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
     rate in an air loop."""
 
     _idf_object_type: ClassVar[str] = 'AirflowNetwork:ZoneControl:PressureController'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -4907,7 +5012,7 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -4917,7 +5022,9 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def control_object(self) -> IDFBaseModel | None:
+    def control_object(
+        self,
+    ) -> AirflowNetworkDistributionComponentReliefAirFlow | FanZoneExhaust | None:
         v = self.control_object_name
         if not v:
             return None
@@ -4967,6 +5074,7 @@ class CondenserLoop(IDFBaseModel):
     to only one loop type or the other."""
 
     _idf_object_type: ClassVar[str] = 'CondenserLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_type: Literal['', 'UserDefinedFluidType', 'Water'] | None = Field(
         default='Water'
@@ -5033,7 +5141,9 @@ class CondenserLoop(IDFBaseModel):
     )
 
     @property
-    def user_defined_fluid_type_ref(self) -> IDFBaseModel | None:
+    def user_defined_fluid_type_ref(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.user_defined_fluid_type
         if not v:
             return None
@@ -5043,7 +5153,9 @@ class CondenserLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidAndGlycolNames'])
 
     @property
-    def condenser_equipment_operation_scheme(self) -> IDFBaseModel | None:
+    def condenser_equipment_operation_scheme(
+        self,
+    ) -> CondenserEquipmentOperationSchemes | None:
         v = self.condenser_equipment_operation_scheme_name
         if not v:
             return None
@@ -5053,7 +5165,7 @@ class CondenserLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['CondenserOperationSchemes'])
 
     @property
-    def condenser_side_branch_list(self) -> IDFBaseModel | None:
+    def condenser_side_branch_list(self) -> BranchList | None:
         v = self.condenser_side_branch_list_name
         if not v:
             return None
@@ -5063,7 +5175,7 @@ class CondenserLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['BranchLists'])
 
     @property
-    def condenser_side_connector_list(self) -> IDFBaseModel | None:
+    def condenser_side_connector_list(self) -> ConnectorList | None:
         v = self.condenser_side_connector_list_name
         if not v:
             return None
@@ -5073,7 +5185,7 @@ class CondenserLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ConnectorLists'])
 
     @property
-    def condenser_demand_side_branch_list(self) -> IDFBaseModel | None:
+    def condenser_demand_side_branch_list(self) -> BranchList | None:
         v = self.condenser_demand_side_branch_list_name
         if not v:
             return None
@@ -5083,7 +5195,7 @@ class CondenserLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['BranchLists'])
 
     @property
-    def condenser_demand_side_connector_list(self) -> IDFBaseModel | None:
+    def condenser_demand_side_connector_list(self) -> ConnectorList | None:
         v = self.condenser_demand_side_connector_list_name
         if not v:
             return None
@@ -5104,6 +5216,7 @@ class ControllerMechanicalVentilation(IDFBaseModel):
     Object Name to increase allowable number of entries"""
 
     _idf_object_type: ClassVar[str] = 'Controller:MechanicalVentilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5152,6 +5265,7 @@ class ControllerOutdoorAir(IDFBaseModel):
     ventilation."""
 
     _idf_object_type: ClassVar[str] = 'Controller:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     relief_air_outlet_node_name: str = Field(...)
     return_air_node_name: str = Field(...)
@@ -5356,7 +5470,9 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def mechanical_ventilation_controller(self) -> IDFBaseModel | None:
+    def mechanical_ventilation_controller(
+        self,
+    ) -> ControllerMechanicalVentilation | None:
         v = self.mechanical_ventilation_controller_name
         if not v:
             return None
@@ -5376,7 +5492,7 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidistat_control_zone(self) -> IDFBaseModel | None:
+    def humidistat_control_zone(self) -> Zone | None:
         v = self.humidistat_control_zone_name
         if not v:
             return None
@@ -5394,6 +5510,7 @@ class ControllerWaterCoil(IDFBaseModel):
     CoilSystem:Cooling:Water:HeatexchangerAssisted."""
 
     _idf_object_type: ClassVar[str] = 'Controller:WaterCoil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal[
         'HumidityRatio', 'Temperature', 'TemperatureAndHumidityRatio'
@@ -5435,6 +5552,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     AirLoopHVAC:OutdoorAirSystem, but can also be specified in any AirLoopHVAC."""
 
     _idf_object_type: ClassVar[str] = 'Dehumidifier:Desiccant:NoFans'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5643,7 +5761,15 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def regeneration_coil(self) -> IDFBaseModel | None:
+    def regeneration_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.regeneration_coil_name
         if not v:
             return None
@@ -5653,7 +5779,9 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def regeneration_fan(self) -> IDFBaseModel | None:
+    def regeneration_fan(
+        self,
+    ) -> FanConstantVolume | FanSystemModel | FanVariableVolume | None:
         v = self.regeneration_fan_name
         if not v:
             return None
@@ -5765,6 +5893,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
     AirLoopHVAC:OutdoorAirSystem, but can also be specified in any AirLoopHVAC."""
 
     _idf_object_type: ClassVar[str] = 'Dehumidifier:Desiccant:System'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5868,7 +5997,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def desiccant_heat_exchanger(self) -> IDFBaseModel | None:
+    def desiccant_heat_exchanger(self) -> HeatExchangerDesiccantBalancedFlow | None:
         v = self.desiccant_heat_exchanger_name
         if not v:
             return None
@@ -5878,7 +6007,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['HXDesiccantBalanced'])
 
     @property
-    def regeneration_air_fan(self) -> IDFBaseModel | None:
+    def regeneration_air_fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.regeneration_air_fan_name
         if not v:
             return None
@@ -5888,7 +6017,15 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def regeneration_air_heater(self) -> IDFBaseModel | None:
+    def regeneration_air_heater(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.regeneration_air_heater_name
         if not v:
             return None
@@ -5898,7 +6035,14 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def companion_cooling_coil(self) -> IDFBaseModel | None:
+    def companion_cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDXSingleSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | None
+    ):
         v = self.companion_cooling_coil_name
         if not v:
             return None
@@ -5924,6 +6068,7 @@ class DuctLossConduction(IDFBaseModel):
     """Duct:Loss:Conduction"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:Conduction'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -5944,7 +6089,7 @@ class DuctLossConduction(IDFBaseModel):
     )
 
     @property
-    def airloophvac(self) -> IDFBaseModel | None:
+    def airloophvac(self) -> AirLoopHVAC | None:
         v = self.airloophvac_name
         if not v:
             return None
@@ -5954,7 +6099,9 @@ class DuctLossConduction(IDFBaseModel):
         return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
     @property
-    def airflownetwork_distribution_linkage(self) -> IDFBaseModel | None:
+    def airflownetwork_distribution_linkage(
+        self,
+    ) -> AirflowNetworkDistributionLinkage | None:
         v = self.airflownetwork_distribution_linkage_name
         if not v:
             return None
@@ -5964,7 +6111,7 @@ class DuctLossConduction(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkDistributionLinkageNames'])
 
     @property
-    def ambient_zone(self) -> IDFBaseModel | None:
+    def ambient_zone(self) -> Zone | None:
         v = self.ambient_zone_name
         if not v:
             return None
@@ -5998,6 +6145,7 @@ class DuctLossLeakage(IDFBaseModel):
     """Duct:Loss:Leakage"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:Leakage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -6008,7 +6156,7 @@ class DuctLossLeakage(IDFBaseModel):
     )
 
     @property
-    def airloophvac(self) -> IDFBaseModel | None:
+    def airloophvac(self) -> AirLoopHVAC | None:
         v = self.airloophvac_name
         if not v:
             return None
@@ -6018,7 +6166,9 @@ class DuctLossLeakage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
     @property
-    def airflownetwork_distribution_linkage(self) -> IDFBaseModel | None:
+    def airflownetwork_distribution_linkage(
+        self,
+    ) -> AirflowNetworkDistributionLinkage | None:
         v = self.airflownetwork_distribution_linkage_name
         if not v:
             return None
@@ -6032,6 +6182,7 @@ class DuctLossMakeupAir(IDFBaseModel):
     """Duct:Loss:MakeupAir"""
 
     _idf_object_type: ClassVar[str] = 'Duct:Loss:MakeupAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     airloophvac_name: AirPrimaryLoopsRef = Field(
         ..., json_schema_extra={'object_list': ['AirPrimaryLoops']}
@@ -6042,7 +6193,7 @@ class DuctLossMakeupAir(IDFBaseModel):
     )
 
     @property
-    def airloophvac(self) -> IDFBaseModel | None:
+    def airloophvac(self) -> AirLoopHVAC | None:
         v = self.airloophvac_name
         if not v:
             return None
@@ -6052,7 +6203,9 @@ class DuctLossMakeupAir(IDFBaseModel):
         return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
     @property
-    def airflownetwork_distribution_linkage(self) -> IDFBaseModel | None:
+    def airflownetwork_distribution_linkage(
+        self,
+    ) -> AirflowNetworkDistributionLinkage | None:
         v = self.airflownetwork_distribution_linkage_name
         if not v:
             return None
@@ -6066,6 +6219,7 @@ class ExteriorFuelEquipment(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:FuelEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_use_type: Literal[
         'Coal',
@@ -6113,6 +6267,7 @@ class ExteriorLights(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -6150,6 +6305,7 @@ class ExteriorWaterEquipment(IDFBaseModel):
     """only used for Meter type reporting, does not affect building loads"""
 
     _idf_object_type: ClassVar[str] = 'Exterior:WaterEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_use_type: Literal['', 'Water'] | None = Field(default='Water')
     schedule_name: ScheduleNamesRef = Field(
@@ -6529,6 +6685,7 @@ class GroundHeatTransferControl(IDFBaseModel):
     executed."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatTransfer:Control'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(
         default=None,
         json_schema_extra={'note': 'This field is included for consistency.11'},
@@ -6976,6 +7133,7 @@ class HeatExchangerAirToAirFlatPlate(IDFBaseModel):
     air heat recovery."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:AirToAir:FlatPlate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7041,6 +7199,7 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
     streams."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:AirToAir:SensibleAndLatent'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7211,6 +7370,7 @@ class HeatExchangerDesiccantBalancedFlow(IDFBaseModel):
     exchanger."""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:Desiccant:BalancedFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7247,7 +7407,9 @@ class HeatExchangerDesiccantBalancedFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_exchanger_performance(self) -> IDFBaseModel | None:
+    def heat_exchanger_performance(
+        self,
+    ) -> HeatExchangerDesiccantBalancedFlowPerformanceDataType1 | None:
         v = self.heat_exchanger_performance_name
         if not v:
             return None
@@ -7271,6 +7433,7 @@ class HeatExchangerDesiccantBalancedFlowPerformanceDataType1(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatExchanger:Desiccant:BalancedFlow:PerformanceDataType1'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_air_flow_rate: float | Literal['Autosize'] | None = Field(
         default=None,
@@ -7408,6 +7571,7 @@ class HumidifierSteamElectric(IDFBaseModel):
     """Electrically heated steam humidifier with fan."""
 
     _idf_object_type: ClassVar[str] = 'Humidifier:Steam:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7453,7 +7617,7 @@ class HumidifierSteamElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_storage_tank(self) -> IDFBaseModel | None:
+    def water_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_storage_tank_name
         if not v:
             return None
@@ -7467,6 +7631,7 @@ class HumidifierSteamGas(IDFBaseModel):
     """Natural gas fired steam humidifier with optional blower fan."""
 
     _idf_object_type: ClassVar[str] = 'Humidifier:Steam:Gas'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -7557,7 +7722,7 @@ class HumidifierSteamGas(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_storage_tank(self) -> IDFBaseModel | None:
+    def water_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_storage_tank_name
         if not v:
             return None
@@ -7573,6 +7738,7 @@ class HybridModelZone(IDFBaseModel):
     should include a leap day."""
 
     _idf_object_type: ClassVar[str] = 'HybridModel:Zone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -7686,7 +7852,7 @@ class HybridModelZone(IDFBaseModel):
     end_day_of_month: int = Field(..., ge=1, le=31)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -7813,6 +7979,7 @@ class LoadProfilePlant(IDFBaseModel):
     performance of the supply loop components. Optional inputs for steam loop."""
 
     _idf_object_type: ClassVar[str] = 'LoadProfile:Plant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -7871,6 +8038,7 @@ class MatrixTwoDimension(IDFBaseModel):
     number of values must equal N1 x N2"""
 
     _idf_object_type: ClassVar[str] = 'Matrix:TwoDimension'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     number_of_rows: int = Field(...)
     number_of_columns: int = Field(...)
@@ -7883,6 +8051,7 @@ class ParametricFileNameSuffix(IDFBaseModel):
     the run number."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:FileNameSuffix'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     suffixes: list[ParametricFileNameSuffixSuffixesItem] | None = Field(default=None)
 
@@ -7895,6 +8064,7 @@ class ParametricLogic(IDFBaseModel):
     commands and syntax."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:Logic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     lines: list[ParametricLogicLinesItem] | None = Field(default=None)
 
@@ -7904,6 +8074,7 @@ class ParametricRunControl(IDFBaseModel):
     is not included, then all parametric runs are performed."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:RunControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     runs: list[ParametricRunControlRunsItem] | None = Field(default=None)
 
@@ -7917,6 +8088,7 @@ class ParametricSetValueForRun(IDFBaseModel):
     depending on which run is being simulated."""
 
     _idf_object_type: ClassVar[str] = 'Parametric:SetValueForRun'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -7930,6 +8102,7 @@ class PlantLoop(IDFBaseModel):
     """Defines a central plant loop."""
 
     _idf_object_type: ClassVar[str] = 'PlantLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_type: Literal['', 'Steam', 'UserDefinedFluidType', 'Water'] | None = Field(
         default='Water'
@@ -8011,7 +8184,9 @@ class PlantLoop(IDFBaseModel):
     )
 
     @property
-    def user_defined_fluid_type_ref(self) -> IDFBaseModel | None:
+    def user_defined_fluid_type_ref(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.user_defined_fluid_type
         if not v:
             return None
@@ -8021,7 +8196,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidAndGlycolNames'])
 
     @property
-    def plant_equipment_operation_scheme(self) -> IDFBaseModel | None:
+    def plant_equipment_operation_scheme(self) -> PlantEquipmentOperationSchemes | None:
         v = self.plant_equipment_operation_scheme_name
         if not v:
             return None
@@ -8031,7 +8206,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantOperationSchemes'])
 
     @property
-    def plant_side_branch_list(self) -> IDFBaseModel | None:
+    def plant_side_branch_list(self) -> BranchList | None:
         v = self.plant_side_branch_list_name
         if not v:
             return None
@@ -8041,7 +8216,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['BranchLists'])
 
     @property
-    def plant_side_connector_list(self) -> IDFBaseModel | None:
+    def plant_side_connector_list(self) -> ConnectorList | None:
         v = self.plant_side_connector_list_name
         if not v:
             return None
@@ -8051,7 +8226,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ConnectorLists'])
 
     @property
-    def demand_side_branch_list(self) -> IDFBaseModel | None:
+    def demand_side_branch_list(self) -> BranchList | None:
         v = self.demand_side_branch_list_name
         if not v:
             return None
@@ -8061,7 +8236,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['BranchLists'])
 
     @property
-    def demand_side_connector_list(self) -> IDFBaseModel | None:
+    def demand_side_connector_list(self) -> ConnectorList | None:
         v = self.demand_side_connector_list_name
         if not v:
             return None
@@ -8071,7 +8246,7 @@ class PlantLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ConnectorLists'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -8086,6 +8261,7 @@ class TableIndependentVariable(IDFBaseModel):
     object."""
 
     _idf_object_type: ClassVar[str] = 'Table:IndependentVariable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     interpolation_method: Literal['', 'Cubic', 'Linear'] | None = Field(
         default='Linear'
@@ -8120,6 +8296,7 @@ class TableIndependentVariableList(IDFBaseModel):
     objects."""
 
     _idf_object_type: ClassVar[str] = 'Table:IndependentVariableList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     independent_variables: (
         list[TableIndependentVariableListIndependentVariablesItem] | None
@@ -8135,6 +8312,7 @@ class TableLookup(IDFBaseModel):
     independent variable."""
 
     _idf_object_type: ClassVar[str] = 'Table:Lookup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     independent_variable_list_name: IndependentVariableListNameRef = Field(
         ..., json_schema_extra={'object_list': ['IndependentVariableListName']}
@@ -8155,7 +8333,7 @@ class TableLookup(IDFBaseModel):
     values: list[TableLookupValuesItem] | None = Field(default=None)
 
     @property
-    def independent_variable_list(self) -> IDFBaseModel | None:
+    def independent_variable_list(self) -> TableIndependentVariableList | None:
         v = self.independent_variable_list_name
         if not v:
             return None
@@ -8171,6 +8349,7 @@ class TemperingValve(IDFBaseModel):
     of two branches between a Splitter and a Mixer."""
 
     _idf_object_type: ClassVar[str] = 'TemperingValve'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(..., json_schema_extra={'note': 'Name of a Node'})
     outlet_node_name: str = Field(..., json_schema_extra={'note': 'Name of a Node'})
@@ -8189,6 +8368,9 @@ class ZoneTerminalUnitList(IDFBaseModel):
     AirConditioner:VariableRefrigerantFlow."""
 
     _idf_object_type: ClassVar[str] = 'ZoneTerminalUnitList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset(
+        {'zone_terminal_unit_list_name'}
+    )
     zone_terminal_unit_list_name: str = Field(...)
     terminal_units: list[ZoneTerminalUnitListTerminalUnitsItem] | None = Field(
         default=None

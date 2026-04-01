@@ -7,7 +7,7 @@ Group: Operational Faults
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -37,11 +37,29 @@ from ._refs import (
     ZoneControlThermostaticNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .coils import CoilCoolingWater, CoilHeatingWater
+    from .condensers import (
+        CoolingTowerSingleSpeed,
+        CoolingTowerTwoSpeed,
+        CoolingTowerVariableSpeed,
+        CoolingTowerVariableSpeedMerkel,
+    )
+    from .fans import FanConstantVolume, FanOnOff, FanVariableVolume
+    from .misc import ControllerOutdoorAir, ControllerWaterCoil
+    from .plant_equipment import BoilerHotWater
+    from .zone_controls import (
+        ZoneControlHumidistat,
+        ZoneControlThermostat,
+        ZoneControlThermostatStagedDualSetpoint,
+    )
+
 
 class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air enthalpy sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:EnthalpySensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -78,7 +96,7 @@ class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -92,6 +110,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
     """This object describes return air enthalpy sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:EnthalpySensorOffset:ReturnAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -128,7 +147,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -142,6 +161,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
     """This object describes fault of dirty air filters"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:AirFilter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     fan_object_type: Literal[
         'Fan:ConstantVolume', 'Fan:OnOff', 'Fan:VariableVolume'
@@ -177,7 +197,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
     )
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanConstantVolume | FanOnOff | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -222,6 +242,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
     exchangers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Boiler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -273,7 +294,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def boiler_object(self) -> IDFBaseModel | None:
+    def boiler_object(self) -> BoilerHotWater | None:
         v = self.boiler_object_name
         if not v:
             return None
@@ -288,6 +309,7 @@ class FaultModelFoulingChiller(IDFBaseModel):
     condensers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Chiller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -360,6 +382,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
     """This object describes fouling water heating or cooling coils"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:Coil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     coil_name: SimpleCoilsRef = Field(
         ..., json_schema_extra={'object_list': ['SimpleCoils']}
@@ -415,7 +438,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
     )
 
     @property
-    def coil(self) -> IDFBaseModel | None:
+    def coil(self) -> CoilCoolingWater | CoilHeatingWater | None:
         v = self.coil_name
         if not v:
             return None
@@ -449,6 +472,7 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
     """This object describes the fault of fouling cooling towers"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:CoolingTower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -500,7 +524,14 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_tower_object(self) -> IDFBaseModel | None:
+    def cooling_tower_object(
+        self,
+    ) -> (
+        CoolingTowerSingleSpeed
+        | CoolingTowerTwoSpeed
+        | CoolingTowerVariableSpeedMerkel
+        | None
+    ):
         v = self.cooling_tower_object_name
         if not v:
             return None
@@ -515,6 +546,7 @@ class FaultModelFoulingEvaporativeCooler(IDFBaseModel):
     cooler"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:Fouling:EvaporativeCooler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -582,6 +614,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
     """This object describes fault of humidistat offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:HumidistatOffset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     humidistat_name: ZoneControlHumidistatNamesRef = Field(
         ...,
@@ -630,7 +663,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
     )
 
     @property
-    def humidistat(self) -> IDFBaseModel | None:
+    def humidistat(self) -> ZoneControlHumidistat | None:
         v = self.humidistat_name
         if not v:
             return None
@@ -660,7 +693,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def related_thermostat_offset_fault(self) -> IDFBaseModel | None:
+    def related_thermostat_offset_fault(self) -> FaultModelThermostatOffset | None:
         v = self.related_thermostat_offset_fault_name
         if not v:
             return None
@@ -674,6 +707,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air humidity sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:HumiditySensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -710,7 +744,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -727,6 +761,7 @@ class FaultModelTemperatureSensorOffsetChillerSupplyWater(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'FaultModel:TemperatureSensorOffset:ChillerSupplyWater'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -790,6 +825,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
     """This object describes fault of coil supply air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:CoilSupplyAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -888,7 +924,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
         )
 
     @property
-    def water_coil_controller(self) -> IDFBaseModel | None:
+    def water_coil_controller(self) -> ControllerWaterCoil | None:
         v = self.water_coil_controller_name
         if not v:
             return None
@@ -905,6 +941,7 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'FaultModel:TemperatureSensorOffset:CondenserSupplyWater'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -952,7 +989,15 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_tower_object(self) -> IDFBaseModel | None:
+    def cooling_tower_object(
+        self,
+    ) -> (
+        CoolingTowerSingleSpeed
+        | CoolingTowerTwoSpeed
+        | CoolingTowerVariableSpeed
+        | CoolingTowerVariableSpeedMerkel
+        | None
+    ):
         v = self.cooling_tower_object_name
         if not v:
             return None
@@ -966,6 +1011,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
     """This object describes outdoor air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:OutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -1002,7 +1048,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -1016,6 +1062,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
     """This object describes return air temperature sensor offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:TemperatureSensorOffset:ReturnAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -1052,7 +1099,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def controller_object(self) -> IDFBaseModel | None:
+    def controller_object(self) -> ControllerOutdoorAir | None:
         v = self.controller_object_name
         if not v:
             return None
@@ -1066,6 +1113,7 @@ class FaultModelThermostatOffset(IDFBaseModel):
     """This object describes fault of thermostat offset"""
 
     _idf_object_type: ClassVar[str] = 'FaultModel:ThermostatOffset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Enter the name of the fault'})
     thermostat_name: ZoneControlThermostaticNamesRef = Field(
         ...,
@@ -1085,7 +1133,9 @@ class FaultModelThermostatOffset(IDFBaseModel):
     )
 
     @property
-    def thermostat(self) -> IDFBaseModel | None:
+    def thermostat(
+        self,
+    ) -> ZoneControlThermostat | ZoneControlThermostatStagedDualSetpoint | None:
         v = self.thermostat_name
         if not v:
             return None

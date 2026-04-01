@@ -1,0 +1,100 @@
+"""Auto-generated EnergyPlus IDF models.
+
+This module exports all EnergyPlus object types as Pydantic models.
+Model classes are lazily imported on first access (PEP 562).
+Generated from Energy+.schema.epJSON version {{ schema_version }}.
+"""
+from __future__ import annotations
+
+import importlib
+
+from ._base import IDFBaseModel
+
+# Class name to submodule mapping for lazy imports
+_CLASS_TO_MODULE: dict[str, str] = {
+{% for cls_name, module_name in class_to_module %}
+    "{{ cls_name }}": "{{ module_name }}",
+{% endfor %}
+}
+
+
+def __getattr__(name: str):
+    """Lazily import model classes on first access (PEP 562)."""
+    module_name = _CLASS_TO_MODULE.get(name)
+    if module_name is None:
+        raise AttributeError(
+            f"module {__name__!r} has no attribute {name!r}"
+        )
+    module = importlib.import_module(f".{module_name}", __name__)
+    value = getattr(module, name)
+    globals()[name] = value
+    return value
+
+
+# Object type name to model class name mapping
+OBJECT_TYPE_REGISTRY: dict[str, str] = {
+{% for obj_type, class_name in object_type_registry %}
+    "{{ obj_type }}": "{{ class_name }}",
+{% endfor %}
+}
+
+# Field order mapping for IDF output (preserves schema order)
+FIELD_ORDER_REGISTRY: dict[str, list[str]] = {
+{% for obj_type, fields in field_order_registry %}
+{% if not fields %}
+    "{{ obj_type }}": [],
+{% elif fields | length <= 3 %}
+    "{{ obj_type }}": [{{ fields | map('tojson') | join(', ') }}],
+{% else %}
+    "{{ obj_type }}": [
+    {% for f in fields %}
+        "{{ f }}",
+    {% endfor %}
+    ],
+{% endif %}
+{% endfor %}
+}
+
+
+def get_model_class(object_type: str) -> type[IDFBaseModel] | None:
+    """Get model class by EnergyPlus object type name.
+
+    Args:
+        object_type: EnergyPlus object type (e.g., 'Zone').
+
+    Returns:
+        Model class or None if not found.
+    """
+    class_name = OBJECT_TYPE_REGISTRY.get(object_type)
+    if class_name is None:
+        return None
+    cls = globals().get(class_name)
+    if cls is not None:
+        return cls
+    module_name = _CLASS_TO_MODULE.get(class_name)
+    if module_name is None:
+        return None
+    module = importlib.import_module(f".{module_name}", __name__)
+    cls = getattr(module, class_name, None)
+    if cls is not None:
+        globals()[class_name] = cls
+    return cls
+
+
+def get_field_order(object_type: str) -> list[str]:
+    """Get field order for an object type.
+
+    Args:
+        object_type: EnergyPlus object type name.
+
+    Returns:
+        List of field names in schema order, empty if not found.
+    """
+    return list(FIELD_ORDER_REGISTRY.get(object_type, []))
+
+
+__all__ = [
+{% for name in all_exports %}
+    "{{ name }}",
+{% endfor %}
+]

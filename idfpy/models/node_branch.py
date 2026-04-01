@@ -7,7 +7,7 @@ Group: Node-Branch Management
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -27,6 +27,15 @@ from ._refs import (
     WPCValueNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .location import (
+        SiteGroundTemperatureUndisturbedFiniteDifference,
+        SiteGroundTemperatureUndisturbedKusudaAchenbach,
+        SiteGroundTemperatureUndisturbedXing,
+    )
+    from .thermal_zones import Zone
 
 
 class BranchComponentsItem(IDFBaseModel):
@@ -60,7 +69,7 @@ class BranchListBranchesItem(IDFBaseModel):
     )
 
     @property
-    def branch(self) -> IDFBaseModel | None:
+    def branch(self) -> Branch | None:
         v = self.branch_name
         if not v:
             return None
@@ -78,7 +87,7 @@ class ConnectorMixerBranchesItem(IDFBaseModel):
     )
 
     @property
-    def inlet_branch(self) -> IDFBaseModel | None:
+    def inlet_branch(self) -> Branch | None:
         v = self.inlet_branch_name
         if not v:
             return None
@@ -96,7 +105,7 @@ class ConnectorSplitterBranchesItem(IDFBaseModel):
     )
 
     @property
-    def outlet_branch(self) -> IDFBaseModel | None:
+    def outlet_branch(self) -> Branch | None:
         v = self.outlet_branch_name
         if not v:
             return None
@@ -130,7 +139,7 @@ class PipingSystemUndergroundDomainPipeCircuitsItem(IDFBaseModel):
     )
 
     @property
-    def pipe_circuit_ref(self) -> IDFBaseModel | None:
+    def pipe_circuit_ref(self) -> PipingSystemUndergroundPipeCircuit | None:
         v = self.pipe_circuit
         if not v:
             return None
@@ -152,7 +161,7 @@ class PipingSystemUndergroundPipeCircuitPipeSegmentsItem(IDFBaseModel):
     )
 
     @property
-    def pipe_segment_ref(self) -> IDFBaseModel | None:
+    def pipe_segment_ref(self) -> PipingSystemUndergroundPipeSegment | None:
         v = self.pipe_segment
         if not v:
             return None
@@ -167,6 +176,7 @@ class Branch(IDFBaseModel):
     should NOT include splitters or mixers which define endpoints of branches"""
 
     _idf_object_type: ClassVar[str] = 'Branch'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pressure_drop_curve_name: UnivariateFunctionsRef | None = Field(
         default=None,
@@ -194,6 +204,7 @@ class BranchList(IDFBaseModel):
     cannot be duplicated within a single branch list."""
 
     _idf_object_type: ClassVar[str] = 'BranchList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     branches: list[BranchListBranchesItem] | None = Field(default=None)
 
@@ -203,6 +214,7 @@ class ConnectorList(IDFBaseModel):
     Connector:Splitter and one must be Connector:Mixer"""
 
     _idf_object_type: ClassVar[str] = 'ConnectorList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     connector_1_object_type: Literal['Connector:Mixer', 'Connector:Splitter'] = Field(
         ...
@@ -218,7 +230,7 @@ class ConnectorList(IDFBaseModel):
     )
 
     @property
-    def connector_1(self) -> IDFBaseModel | None:
+    def connector_1(self) -> ConnectorMixer | ConnectorSplitter | None:
         v = self.connector_1_name
         if not v:
             return None
@@ -228,7 +240,7 @@ class ConnectorList(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantConnectors'])
 
     @property
-    def connector_2(self) -> IDFBaseModel | None:
+    def connector_2(self) -> ConnectorMixer | ConnectorSplitter | None:
         v = self.connector_2_name
         if not v:
             return None
@@ -243,6 +255,7 @@ class ConnectorMixer(IDFBaseModel):
     within a single mixer list."""
 
     _idf_object_type: ClassVar[str] = 'Connector:Mixer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     outlet_branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
@@ -250,7 +263,7 @@ class ConnectorMixer(IDFBaseModel):
     branches: list[ConnectorMixerBranchesItem] | None = Field(default=None)
 
     @property
-    def outlet_branch(self) -> IDFBaseModel | None:
+    def outlet_branch(self) -> Branch | None:
         v = self.outlet_branch_name
         if not v:
             return None
@@ -265,6 +278,7 @@ class ConnectorSplitter(IDFBaseModel):
     duplicated within a single Splitter list."""
 
     _idf_object_type: ClassVar[str] = 'Connector:Splitter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_branch_name: BranchesRef = Field(
         ..., json_schema_extra={'object_list': ['Branches']}
@@ -272,7 +286,7 @@ class ConnectorSplitter(IDFBaseModel):
     branches: list[ConnectorSplitterBranchesItem] | None = Field(default=None)
 
     @property
-    def inlet_branch(self) -> IDFBaseModel | None:
+    def inlet_branch(self) -> Branch | None:
         v = self.inlet_branch_name
         if not v:
             return None
@@ -286,6 +300,7 @@ class Duct(IDFBaseModel):
     """Passes inlet node state variables to outlet node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Duct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -296,6 +311,7 @@ class NodeList(IDFBaseModel):
     ZoneHVAC:EquipmentConnections field Zone Air Inlet Node or NodeList Name"""
 
     _idf_object_type: ClassVar[str] = 'NodeList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nodes: list[NodeListNodesItem] | None = Field(default=None)
 
@@ -308,6 +324,7 @@ class OutdoorAirNode(IDFBaseModel):
     defines local outdoor air environmental conditions."""
 
     _idf_object_type: ClassVar[str] = 'OutdoorAir:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     height_above_ground: float | None = Field(
         default=-1.0,
@@ -432,6 +449,7 @@ class PipeAdiabatic(IDFBaseModel):
     """Passes Inlet Node state variables to Outlet Node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Adiabatic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -441,6 +459,7 @@ class PipeAdiabaticSteam(IDFBaseModel):
     """Passes Inlet Node state variables to Outlet Node state variables"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Adiabatic:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -450,6 +469,7 @@ class PipeIndoor(IDFBaseModel):
     """Pipe model with transport delay and heat transfer to the environment."""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Indoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -484,7 +504,7 @@ class PipeIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -518,6 +538,7 @@ class PipeOutdoor(IDFBaseModel):
     """Pipe model with transport delay and heat transfer to the environment."""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Outdoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -548,6 +569,7 @@ class PipeUnderground(IDFBaseModel):
     an alternative object to: HeatExchanger:Surface"""
 
     _idf_object_type: ClassVar[str] = 'Pipe:Underground'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -587,7 +609,14 @@ class PipeUnderground(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -601,6 +630,7 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
     """The ground domain object for underground piping system simulation."""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:Domain'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     xmax: float = Field(
         ...,
@@ -760,7 +790,14 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
     )
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -770,7 +807,9 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def name_of_basement_wall_boundary_condition_model_ref(self) -> IDFBaseModel | None:
+    def name_of_basement_wall_boundary_condition_model_ref(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.name_of_basement_wall_boundary_condition_model
         if not v:
             return None
@@ -782,7 +821,7 @@ class PipingSystemUndergroundDomain(IDFBaseModel):
     @property
     def name_of_basement_floor_boundary_condition_model_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.name_of_basement_floor_boundary_condition_model
         if not v:
             return None
@@ -798,6 +837,7 @@ class PipingSystemUndergroundPipeCircuit(IDFBaseModel):
     branch on a plant loop."""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:PipeCircuit'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pipe_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -839,6 +879,7 @@ class PipingSystemUndergroundPipeSegment(IDFBaseModel):
     a given x, y location in the domain"""
 
     _idf_object_type: ClassVar[str] = 'PipingSystem:Underground:PipeSegment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     x_position: float = Field(
         ...,

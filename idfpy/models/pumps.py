@@ -7,7 +7,7 @@ Group: Pumps
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -18,12 +18,16 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
+
 
 class HeaderedPumpsConstantSpeed(IDFBaseModel):
     """This Headered pump object describes a pump bank with more than 1 pump in
     parallel"""
 
     _idf_object_type: ClassVar[str] = 'HeaderedPumps:ConstantSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -127,7 +131,7 @@ class HeaderedPumpsConstantSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -142,6 +146,7 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
     parallel"""
 
     _idf_object_type: ClassVar[str] = 'HeaderedPumps:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -257,7 +262,7 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -271,6 +276,7 @@ class PumpConstantSpeed(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit."""
 
     _idf_object_type: ClassVar[str] = 'Pump:ConstantSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -394,7 +400,7 @@ class PumpConstantSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -408,6 +414,7 @@ class PumpVariableSpeed(IDFBaseModel):
     """This pump model is described in the ASHRAE secondary HVAC toolkit."""
 
     _idf_object_type: ClassVar[str] = 'Pump:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -617,7 +624,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -632,6 +639,7 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
     Speed Condensate pump for Steam Systems"""
 
     _idf_object_type: ClassVar[str] = 'Pump:VariableSpeed:Condensate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -732,7 +740,7 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

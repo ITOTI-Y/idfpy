@@ -1,12 +1,19 @@
 # idfpy
 
-Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution.
+[![PyPI](https://img.shields.io/pypi/v/idfpy)](https://pypi.org/project/idfpy/)
+[![Python 3.12+](https://img.shields.io/pypi/pyversions/idfpy)](https://pypi.org/project/idfpy/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![EnergyPlus 25.2](https://img.shields.io/badge/EnergyPlus-25.2-orange)](https://energyplus.net/)
+[![Autoupdate](https://github.com/ITOTI-Y/idfpy/actions/workflows/update-models.yml/badge.svg)](https://github.com/ITOTI-Y/idfpy/actions/workflows/update-models.yml)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
+
+Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, optimized for LLM tool calling and IDE auto-completion.
 
 Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 
 ## Features
 
-- **858 object types** as Pydantic v2 models with full validation
+- **960+ object types** as Pydantic v2 models with full validation
 - **275 reference types** with cross-object validation
 - **Forward navigation** — `surface.zone` resolves a reference field to the target object
 - **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
@@ -18,6 +25,18 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 - **`to_dict()` / `from_dict()`** for in-memory dict conversion (ideal for LLM tool calls)
 - **EnergyPlus simulation** execution with ExpandObjects support
 - Accepts both `snake_case` and original EnergyPlus schema key names
+
+## Why idfpy over eppy?
+
+|  | idfpy | eppy |
+|---|:---:|:---:|
+| No EnergyPlus IDD required at runtime | ✅ | ❌ |
+| Type-safe field validation | ✅ Pydantic v2 | ❌ |
+| epJSON read/write | ✅ | ❌ |
+| Cross-reference validation | ✅ 275 ref groups | ❌ |
+| Forward/reverse navigation | ✅ 2847 properties | ❌ |
+| `to_dict()` / `from_dict()` for LLM | ✅ | ❌ |
+| Dependencies | 4 (pydantic, jinja2, loguru, typer) | 12+ (lxml, pyparsing...) |
 
 ## Installation
 
@@ -120,6 +139,25 @@ try:
     idf.validate_or_raise()
 except RefValidationError as exc:
     print(f"{len(exc.errors)} broken reference(s)")
+```
+
+## Real-world Example
+```python
+from pathlib import Path
+from idfpy import IDF
+
+# Load a DOE reference building
+idf = IDF.load(Path("LargeOffice.idf"))
+
+# Modify all exterior walls' insulation
+for con_name, con in idf.all_of_type("Construction").items():
+    layer = con.outside_layer_ref
+    if layer and hasattr(layer, "conductivity"):
+        print(f"{con.name}: k={layer.conductivity} W/m·K")
+
+# Validate all references
+errors = idf.validate()
+print(f"{len(errors)} broken references")
 ```
 
 ### Container mutation

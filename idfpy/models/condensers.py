@@ -7,7 +7,7 @@ Group: Condenser Equipment and Heat Exchangers
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -26,6 +26,15 @@ from ._refs import (
     VariableSpeedTowerCoefficientRef,
     WaterStorageTankNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .location import (
+        SiteGroundTemperatureUndisturbedFiniteDifference,
+        SiteGroundTemperatureUndisturbedKusudaAchenbach,
+        SiteGroundTemperatureUndisturbedXing,
+        SizingPeriodWeatherFileDays,
+    )
+    from .water_systems import WaterUseStorage
 
 
 class GroundHeatExchangerResponseFactorsGFunctionsItem(IDFBaseModel):
@@ -46,7 +55,7 @@ class GroundHeatExchangerSystemVerticalWellLocationsItem(IDFBaseModel):
     )
 
     @property
-    def ghe_vertical_single_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_single_object(self) -> GroundHeatExchangerVerticalSingle | None:
         v = self.ghe_vertical_single_object_name
         if not v:
             return None
@@ -62,6 +71,7 @@ class CoolingTowerPerformanceCoolTools(IDFBaseModel):
     specified as CoolToolsUserDefined in the object CoolingTower:VariableSpeed."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTowerPerformance:CoolTools'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     minimum_inlet_air_wet_bulb_temperature: float = Field(
         ...,
@@ -160,6 +170,7 @@ class CoolingTowerPerformanceYorkCalc(IDFBaseModel):
     specified as YorkCalcUserDefined in the object CoolingTower:VariableSpeed."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTowerPerformance:YorkCalc'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     minimum_inlet_air_wet_bulb_temperature: float = Field(
         ...,
@@ -259,6 +270,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
     and air/water flow rate inputs are for the entire tower."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTower:SingleSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Tower Name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of tower water inlet node'}
@@ -495,7 +507,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -513,6 +525,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
     capacity and air/water flow rate inputs are for the entire tower."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTower:TwoSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Tower Name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of tower Water Inlet Node'}
@@ -816,7 +829,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -835,6 +848,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
     and air/water flow rate inputs are for the entire tower."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTower:VariableSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Tower Name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of tower water inlet node'}
@@ -1030,7 +1044,9 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def model_coefficient(self) -> IDFBaseModel | None:
+    def model_coefficient(
+        self,
+    ) -> CoolingTowerPerformanceCoolTools | CoolingTowerPerformanceYorkCalc | None:
         v = self.model_coefficient_name
         if not v:
             return None
@@ -1072,7 +1088,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1090,6 +1106,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     the capacity and air/water flow rate inputs are for the entire tower."""
 
     _idf_object_type: ClassVar[str] = 'CoolingTower:VariableSpeed:Merkel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Tower Name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of tower water inlet node'}
@@ -1435,7 +1452,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1451,6 +1468,7 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
     as a counter flow heat exchanger."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeFluidCooler:SingleSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Fluid Cooler Name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of Fluid Cooler water inlet node'}
@@ -1600,7 +1618,7 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1616,6 +1634,7 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
     as a counter flow heat exchanger."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeFluidCooler:TwoSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'fluid cooler name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of fluid cooler water inlet node'}
@@ -1831,7 +1850,7 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_water_storage_tank_name
         if not v:
             return None
@@ -1846,6 +1865,7 @@ class FluidCoolerSingleSpeed(IDFBaseModel):
     unmixed) with single-speed fans (induced draft configuration)."""
 
     _idf_object_type: ClassVar[str] = 'FluidCooler:SingleSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'fluid cooler name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of fluid cooler water inlet node'}
@@ -1923,6 +1943,7 @@ class FluidCoolerTwoSpeed(IDFBaseModel):
     unmixed) with two-speed fans (induced draft configuration)."""
 
     _idf_object_type: ClassVar[str] = 'FluidCooler:TwoSpeed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'fluid cooler name'})
     water_inlet_node_name: str = Field(
         ..., json_schema_extra={'note': 'Name of fluid cooler water inlet node'}
@@ -2059,6 +2080,7 @@ class GroundHeatExchangerHorizontalTrench(IDFBaseModel):
     a more usable input interface."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:HorizontalTrench'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -2142,7 +2164,14 @@ class GroundHeatExchangerHorizontalTrench(IDFBaseModel):
     )
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2158,6 +2187,7 @@ class GroundHeatExchangerPond(IDFBaseModel):
     also be used as a simple solar collector."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Pond'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_inlet_node_name: str = Field(...)
     fluid_outlet_node_name: str = Field(...)
@@ -2186,6 +2216,7 @@ class GroundHeatExchangerResponseFactors(IDFBaseModel):
     \"g-functions\""""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:ResponseFactors'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ghe_vertical_properties_object_name: GroundHeatExchangerVerticalPropertiesNamesRef = Field(
         ...,
@@ -2202,7 +2233,9 @@ class GroundHeatExchangerResponseFactors(IDFBaseModel):
     )
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2219,6 +2252,7 @@ class GroundHeatExchangerSlinky(IDFBaseModel):
     Exchanger Model. Applied Energy 141: 57-69."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Slinky'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -2313,7 +2347,14 @@ class GroundHeatExchangerSlinky(IDFBaseModel):
     )
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2331,6 +2372,7 @@ class GroundHeatExchangerSurface(IDFBaseModel):
     exposed to wind (eg. bridge deck)."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Surface'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ConstructionNames']}
@@ -2373,6 +2415,7 @@ class GroundHeatExchangerSystem(IDFBaseModel):
     specified."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:System'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inlet_node_name: str = Field(...)
     outlet_node_name: str = Field(...)
@@ -2427,7 +2470,14 @@ class GroundHeatExchangerSystem(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -2437,7 +2487,9 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def ghe_vertical_responsefactors_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_responsefactors_object(
+        self,
+    ) -> GroundHeatExchangerResponseFactors | None:
         v = self.ghe_vertical_responsefactors_object_name
         if not v:
             return None
@@ -2449,7 +2501,9 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         )
 
     @property
-    def ghe_vertical_sizing_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_sizing_object(
+        self,
+    ) -> GroundHeatExchangerVerticalSizingRectangle | None:
         v = self.ghe_vertical_sizing_object_name
         if not v:
             return None
@@ -2459,7 +2513,7 @@ class GroundHeatExchangerSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['GroundHeatExchangerVerticalSizingNames'])
 
     @property
-    def ghe_vertical_array_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_array_object(self) -> GroundHeatExchangerVerticalArray | None:
         v = self.ghe_vertical_array_object_name
         if not v:
             return None
@@ -2473,6 +2527,7 @@ class GroundHeatExchangerVerticalArray(IDFBaseModel):
     """GroundHeatExchanger:Vertical:Array"""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Vertical:Array'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ghe_vertical_properties_object_name: GroundHeatExchangerVerticalPropertiesNamesRef = Field(
         ...,
@@ -2485,7 +2540,9 @@ class GroundHeatExchangerVerticalArray(IDFBaseModel):
     borehole_spacing: float = Field(..., gt=0.0, json_schema_extra={'units': 'm'})
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2499,6 +2556,7 @@ class GroundHeatExchangerVerticalProperties(IDFBaseModel):
     """Properties for vertical ground heat exchanger systems"""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Vertical:Properties'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     depth_of_top_of_borehole: float = Field(
         ..., ge=0.0, json_schema_extra={'units': 'm'}
@@ -2526,6 +2584,7 @@ class GroundHeatExchangerVerticalSingle(IDFBaseModel):
     """GroundHeatExchanger:Vertical:Single"""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Vertical:Single'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ghe_vertical_properties_object_name: GroundHeatExchangerVerticalPropertiesNamesRef = Field(
         ...,
@@ -2537,7 +2596,9 @@ class GroundHeatExchangerVerticalSingle(IDFBaseModel):
     y_location: float = Field(..., json_schema_extra={'units': 'm'})
 
     @property
-    def ghe_vertical_properties_object(self) -> IDFBaseModel | None:
+    def ghe_vertical_properties_object(
+        self,
+    ) -> GroundHeatExchangerVerticalProperties | None:
         v = self.ghe_vertical_properties_object_name
         if not v:
             return None
@@ -2552,6 +2613,7 @@ class GroundHeatExchangerVerticalSizingRectangle(IDFBaseModel):
     design and sizing."""
 
     _idf_object_type: ClassVar[str] = 'GroundHeatExchanger:Vertical:Sizing:Rectangle'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     sizingperiod_weatherfiledays_name: SizingPeriodWeatherFileDaysRef = Field(
         ...,
@@ -2639,7 +2701,7 @@ class GroundHeatExchangerVerticalSizingRectangle(IDFBaseModel):
     )
 
     @property
-    def sizingperiod_weatherfiledays(self) -> IDFBaseModel | None:
+    def sizingperiod_weatherfiledays(self) -> SizingPeriodWeatherFileDays | None:
         v = self.sizingperiod_weatherfiledays_name
         if not v:
             return None
@@ -2655,6 +2717,7 @@ class HeatExchangerFluidToFluid(IDFBaseModel):
     loops but no air side connections are allowed"""
 
     _idf_object_type: ClassVar[str] = 'HeatExchanger:FluidToFluid'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

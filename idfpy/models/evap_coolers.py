@@ -7,7 +7,7 @@ Group: Evaporative Coolers
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -18,12 +18,16 @@ from ._refs import (
     WaterStorageTankNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .water_systems import WaterUseStorage
+
 
 class EvaporativeCoolerDirectCelDekPad(IDFBaseModel):
     """Direct evaporative cooler with rigid media evaporative pad and recirculating
     water pump. This model has no controls other than its availability schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Direct:CelDekPad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -64,7 +68,7 @@ class EvaporativeCoolerDirectCelDekPad(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None
@@ -81,6 +85,7 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
     setpoint."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Direct:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -199,7 +204,7 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None
@@ -215,6 +220,7 @@ class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
     availability schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:CelDekPad'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -269,7 +275,7 @@ class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None
@@ -286,6 +292,7 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
     setpoint."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -482,7 +489,7 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None
@@ -498,6 +505,7 @@ class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
     schedule."""
 
     _idf_object_type: ClassVar[str] = 'EvaporativeCooler:Indirect:WetCoil'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -544,7 +552,7 @@ class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_supply_storage_tank(self) -> IDFBaseModel | None:
+    def water_supply_storage_tank(self) -> WaterUseStorage | None:
         v = self.water_supply_storage_tank_name
         if not v:
             return None

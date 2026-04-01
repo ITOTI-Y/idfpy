@@ -7,7 +7,7 @@ Group: Demand Limiting Controls
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -21,6 +21,14 @@ from ._refs import (
     ScheduleNamesRef,
     ZoneControlThermostaticNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .internal_gains import ElectricEquipment, Lights
+    from .misc import ControllerOutdoorAir, ExteriorLights
+    from .zone_controls import (
+        ZoneControlThermostat,
+        ZoneControlThermostatStagedDualSetpoint,
+    )
 
 
 class DemandManagerAssignmentListManagerDataItem(IDFBaseModel):
@@ -41,7 +49,16 @@ class DemandManagerAssignmentListManagerDataItem(IDFBaseModel):
     )
 
     @property
-    def demandmanager(self) -> IDFBaseModel | None:
+    def demandmanager(
+        self,
+    ) -> (
+        DemandManagerElectricEquipment
+        | DemandManagerExteriorLights
+        | DemandManagerLights
+        | DemandManagerThermostats
+        | DemandManagerVentilation
+        | None
+    ):
         v = self.demandmanager_name
         if not v:
             return None
@@ -63,7 +80,7 @@ class DemandManagerElectricEquipmentEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def electric_equipment(self) -> IDFBaseModel | None:
+    def electric_equipment(self) -> ElectricEquipment | None:
         v = self.electric_equipment_name
         if not v:
             return None
@@ -85,7 +102,7 @@ class DemandManagerExteriorLightsLightsItem(IDFBaseModel):
     )
 
     @property
-    def exterior_lights(self) -> IDFBaseModel | None:
+    def exterior_lights(self) -> ExteriorLights | None:
         v = self.exterior_lights_name
         if not v:
             return None
@@ -107,7 +124,7 @@ class DemandManagerLightsLightsItem(IDFBaseModel):
     )
 
     @property
-    def lights(self) -> IDFBaseModel | None:
+    def lights(self) -> Lights | None:
         v = self.lights_name
         if not v:
             return None
@@ -129,7 +146,9 @@ class DemandManagerThermostatsThermostatsItem(IDFBaseModel):
     )
 
     @property
-    def thermostat(self) -> IDFBaseModel | None:
+    def thermostat(
+        self,
+    ) -> ZoneControlThermostat | ZoneControlThermostatStagedDualSetpoint | None:
         v = self.thermostat_name
         if not v:
             return None
@@ -151,7 +170,7 @@ class DemandManagerVentilationControllersItem(IDFBaseModel):
     )
 
     @property
-    def controller_outdoor_air(self) -> IDFBaseModel | None:
+    def controller_outdoor_air(self) -> ControllerOutdoorAir | None:
         v = self.controller_outdoor_air_name
         if not v:
             return None
@@ -166,6 +185,7 @@ class DemandManagerAssignmentList(IDFBaseModel):
     possible demand limiting strategies."""
 
     _idf_object_type: ClassVar[str] = 'DemandManagerAssignmentList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     meter_name: str = Field(...)
     demand_limit_schedule_name: ScheduleNamesRef | None = Field(
@@ -227,6 +247,7 @@ class DemandManagerElectricEquipment(IDFBaseModel):
     """used for demand limiting ElectricEquipment objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:ElectricEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -276,6 +297,7 @@ class DemandManagerExteriorLights(IDFBaseModel):
     """used for demand limiting Exterior:Lights objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:ExteriorLights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -323,6 +345,7 @@ class DemandManagerLights(IDFBaseModel):
     """used for demand limiting Lights objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Lights'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -370,6 +393,7 @@ class DemandManagerThermostats(IDFBaseModel):
     """used for demand limiting ZoneControl:Thermostat objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Thermostats'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -420,6 +444,7 @@ class DemandManagerVentilation(IDFBaseModel):
     """used for demand limiting Controller:OutdoorAir objects."""
 
     _idf_object_type: ClassVar[str] = 'DemandManager:Ventilation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

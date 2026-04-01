@@ -7,7 +7,7 @@ Group: Electric Load Center-Generator Specifications
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -37,6 +37,11 @@ from ._refs import (
     UnivariateFunctionsRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .curves import CurveChillerPartLoadWithLift, CurveTriquadratic
+    from .misc import TableLookup
+    from .thermal_zones import Zone
 
 
 class ElectricLoadCenterGeneratorsGeneratorOutputsItem(IDFBaseModel):
@@ -118,6 +123,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
     electricity generators and or storage in a simulation."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Distribution'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     generator_list_name: GeneratorListsRef | None = Field(
         default=None,
@@ -277,7 +283,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
     )
 
     @property
-    def generator_list(self) -> IDFBaseModel | None:
+    def generator_list(self) -> ElectricLoadCenterGenerators | None:
         v = self.generator_list_name
         if not v:
             return None
@@ -297,7 +303,15 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inverter(self) -> IDFBaseModel | None:
+    def inverter(
+        self,
+    ) -> (
+        ElectricLoadCenterInverterFunctionOfPower
+        | ElectricLoadCenterInverterLookUpTable
+        | ElectricLoadCenterInverterPVWatts
+        | ElectricLoadCenterInverterSimple
+        | None
+    ):
         v = self.inverter_name
         if not v:
             return None
@@ -307,7 +321,14 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['InverterList'])
 
     @property
-    def electrical_storage_object(self) -> IDFBaseModel | None:
+    def electrical_storage_object(
+        self,
+    ) -> (
+        ElectricLoadCenterStorageBattery
+        | ElectricLoadCenterStorageLiIonNMCBattery
+        | ElectricLoadCenterStorageSimple
+        | None
+    ):
         v = self.electrical_storage_object_name
         if not v:
             return None
@@ -317,7 +338,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ElecStorageList'])
 
     @property
-    def transformer_object(self) -> IDFBaseModel | None:
+    def transformer_object(self) -> ElectricLoadCenterTransformer | None:
         v = self.transformer_object_name
         if not v:
             return None
@@ -327,7 +348,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['TransformerNames'])
 
     @property
-    def storage_converter_object(self) -> IDFBaseModel | None:
+    def storage_converter_object(self) -> ElectricLoadCenterStorageConverter | None:
         v = self.storage_converter_object_name
         if not v:
             return None
@@ -375,6 +396,7 @@ class ElectricLoadCenterGenerators(IDFBaseModel):
     power output, and thermal-to-electrical power ratio."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Generators'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     generator_outputs: list[ElectricLoadCenterGeneratorsGeneratorOutputsItem] | None = (
         Field(default=None)
@@ -388,6 +410,7 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
     normalized power."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Inverter:FunctionOfPower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -437,7 +460,7 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -463,6 +486,7 @@ class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
     http://www.gosolarcalifornia.org/equipment/inverter_tests/summaries"""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Inverter:LookUpTable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -518,7 +542,7 @@ class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -534,6 +558,7 @@ class ElectricLoadCenterInverterPVWatts(IDFBaseModel):
     objects. It implements the PVWatts inverter performance curves."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Inverter:PVWatts'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     dc_to_ac_size_ratio: float | None = Field(default=1.1, gt=0.0)
     inverter_efficiency: float | None = Field(default=0.96, le=1.0, gt=0.0)
@@ -546,6 +571,7 @@ class ElectricLoadCenterInverterSimple(IDFBaseModel):
     efficiency."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Inverter:Simple'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -575,7 +601,7 @@ class ElectricLoadCenterInverterSimple(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -595,6 +621,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
     also modeled and reported at the end of each simulation run."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Storage:Battery'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -745,7 +772,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -790,6 +817,7 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
     storage"""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Storage:Converter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -872,7 +900,7 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -892,6 +920,7 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
     modeled and reported at the end of each simulation run."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Storage:LiIonNMCBattery'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1023,7 +1052,7 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1041,6 +1070,7 @@ class ElectricLoadCenterStorageSimple(IDFBaseModel):
     ElectricLoadCenter:Distribution object."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Storage:Simple'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1089,7 +1119,7 @@ class ElectricLoadCenterStorageSimple(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1105,6 +1135,7 @@ class ElectricLoadCenterTransformer(IDFBaseModel):
     transformers) or transfer electricity from onsite generators to the grid."""
 
     _idf_object_type: ClassVar[str] = 'ElectricLoadCenter:Transformer'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1228,7 +1259,7 @@ class ElectricLoadCenterTransformer(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1245,6 +1276,7 @@ class GeneratorCombustionTurbine(IDFBaseModel):
     Three sets of coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Generator:CombustionTurbine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_power_output: float | None = Field(
         default=None, json_schema_extra={'units': 'W'}
@@ -1419,6 +1451,7 @@ class GeneratorFuelCell(IDFBaseModel):
     """This generator model is the FC model from IEA Annex 42"""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     power_module_name: FCPMNamesRef = Field(
         ...,
@@ -1485,7 +1518,7 @@ class GeneratorFuelCell(IDFBaseModel):
     )
 
     @property
-    def power_module(self) -> IDFBaseModel | None:
+    def power_module(self) -> GeneratorFuelCellPowerModule | None:
         v = self.power_module_name
         if not v:
             return None
@@ -1495,7 +1528,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCPMNames'])
 
     @property
-    def air_supply(self) -> IDFBaseModel | None:
+    def air_supply(self) -> GeneratorFuelCellAirSupply | None:
         v = self.air_supply_name
         if not v:
             return None
@@ -1505,7 +1538,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCAirSupNames'])
 
     @property
-    def fuel_supply(self) -> IDFBaseModel | None:
+    def fuel_supply(self) -> GeneratorFuelSupply | None:
         v = self.fuel_supply_name
         if not v:
             return None
@@ -1515,7 +1548,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['GenFuelSupNames'])
 
     @property
-    def water_supply(self) -> IDFBaseModel | None:
+    def water_supply(self) -> GeneratorFuelCellWaterSupply | None:
         v = self.water_supply_name
         if not v:
             return None
@@ -1525,7 +1558,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCWaterSupNames'])
 
     @property
-    def auxiliary_heater(self) -> IDFBaseModel | None:
+    def auxiliary_heater(self) -> GeneratorFuelCellAuxiliaryHeater | None:
         v = self.auxiliary_heater_name
         if not v:
             return None
@@ -1535,7 +1568,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCAuxHeatNames'])
 
     @property
-    def heat_exchanger(self) -> IDFBaseModel | None:
+    def heat_exchanger(self) -> GeneratorFuelCellExhaustGasToWaterHeatExchanger | None:
         v = self.heat_exchanger_name
         if not v:
             return None
@@ -1545,7 +1578,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCExhaustHXNames'])
 
     @property
-    def electrical_storage(self) -> IDFBaseModel | None:
+    def electrical_storage(self) -> GeneratorFuelCellElectricalStorage | None:
         v = self.electrical_storage_name
         if not v:
             return None
@@ -1555,7 +1588,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCStorageNames'])
 
     @property
-    def inverter(self) -> IDFBaseModel | None:
+    def inverter(self) -> GeneratorFuelCellInverter | None:
         v = self.inverter_name
         if not v:
             return None
@@ -1565,7 +1598,7 @@ class GeneratorFuelCell(IDFBaseModel):
         return idf._resolve_forward(v, ['FCInverterNames'])
 
     @property
-    def stack_cooler(self) -> IDFBaseModel | None:
+    def stack_cooler(self) -> GeneratorFuelCellStackCooler | None:
         v = self.stack_cooler_name
         if not v:
             return None
@@ -1580,6 +1613,7 @@ class GeneratorFuelCellAirSupply(IDFBaseModel):
     generator."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:AirSupply'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     air_inlet_node_name: str | None = Field(default=None)
     blower_power_curve_name: UnivariateFunctionsRef | None = Field(
@@ -1658,6 +1692,7 @@ class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     used (so that internal data structures can be allocated)."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:AuxiliaryHeater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     excess_air_ratio: float | None = Field(default=None)
     ancillary_power_constant_term: float | None = Field(default=None)
@@ -1686,7 +1721,7 @@ class GeneratorFuelCellAuxiliaryHeater(IDFBaseModel):
     )
 
     @property
-    def zone_to_receive_skin_losses_ref(self) -> IDFBaseModel | None:
+    def zone_to_receive_skin_losses_ref(self) -> Zone | None:
         v = self.zone_name_to_receive_skin_losses
         if not v:
             return None
@@ -1703,6 +1738,7 @@ class GeneratorFuelCellElectricalStorage(IDFBaseModel):
     device."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:ElectricalStorage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     choice_of_model: Literal['SimpleEfficiencyWithConstraints'] | None = Field(
         default=None
@@ -1734,6 +1770,7 @@ class GeneratorFuelCellExhaustGasToWaterHeatExchanger(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Generator:FuelCell:ExhaustGasToWaterHeatExchanger'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heat_recovery_water_inlet_node_name: str | None = Field(default=None)
     heat_recovery_water_outlet_node_name: str | None = Field(default=None)
@@ -1780,6 +1817,7 @@ class GeneratorFuelCellInverter(IDFBaseModel):
     (AC)."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:Inverter'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     inverter_efficiency_calculation_mode: Literal['Constant', 'Quadratic'] | None = (
         Field(default=None)
@@ -1808,6 +1846,7 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
     the Generator:FuelCell objects can reference it."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:PowerModule'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     efficiency_curve_mode: Literal['Annex42', 'Normalized'] | None = Field(default=None)
     efficiency_curve_name: UnivariateFunctionsRef = Field(
@@ -1925,7 +1964,7 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1950,6 +1989,7 @@ class GeneratorFuelCellStackCooler(IDFBaseModel):
     stack cooler on PEMFC."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:StackCooler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heat_recovery_water_inlet_node_name: str | None = Field(default=None)
     heat_recovery_water_outlet_node_name: str | None = Field(default=None)
@@ -1999,6 +2039,7 @@ class GeneratorFuelCellWaterSupply(IDFBaseModel):
     same as the water used for thermal heat recovery."""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelCell:WaterSupply'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reformer_water_flow_rate_function_of_fuel_rate_curve_name: (
         UnivariateFunctionsRef | None
@@ -2060,6 +2101,7 @@ class GeneratorFuelSupply(IDFBaseModel):
     """Used only with Generator:FuelCell and Generator:MicroCHP"""
 
     _idf_object_type: ClassVar[str] = 'Generator:FuelSupply'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_temperature_modeling_mode: (
         Literal['Scheduled', 'TemperatureFromAirNode'] | None
@@ -2354,6 +2396,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
     Three sets of coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Generator:InternalCombustionEngine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     rated_power_output: float | None = Field(
         default=None, json_schema_extra={'units': 'W'}
@@ -2503,6 +2546,7 @@ class GeneratorMicroCHP(IDFBaseModel):
     be used for other types of residential CHP devices."""
 
     _idf_object_type: ClassVar[str] = 'Generator:MicroCHP'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     performance_parameters_name: MicroCHPParametersNamesRef | None = Field(
         default=None,
@@ -2534,7 +2578,7 @@ class GeneratorMicroCHP(IDFBaseModel):
     )
 
     @property
-    def performance_parameters(self) -> IDFBaseModel | None:
+    def performance_parameters(self) -> GeneratorMicroCHPNonNormalizedParameters | None:
         v = self.performance_parameters_name
         if not v:
             return None
@@ -2544,7 +2588,7 @@ class GeneratorMicroCHP(IDFBaseModel):
         return idf._resolve_forward(v, ['MicroCHPParametersNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2554,7 +2598,7 @@ class GeneratorMicroCHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def generator_fuel_supply(self) -> IDFBaseModel | None:
+    def generator_fuel_supply(self) -> GeneratorFuelSupply | None:
         v = self.generator_fuel_supply_name
         if not v:
             return None
@@ -2579,6 +2623,7 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
     non-normalized parameters for the MicroCHP generator model."""
 
     _idf_object_type: ClassVar[str] = 'Generator:MicroCHP:NonNormalizedParameters'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     maximum_electric_power: float | None = Field(
         default=None, json_schema_extra={'units': 'W'}
@@ -2661,7 +2706,9 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
     )
 
     @property
-    def electrical_efficiency_curve(self) -> IDFBaseModel | None:
+    def electrical_efficiency_curve(
+        self,
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.electrical_efficiency_curve_name
         if not v:
             return None
@@ -2671,7 +2718,9 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
         return idf._resolve_forward(v, ['TrivariateFunctions'])
 
     @property
-    def thermal_efficiency_curve(self) -> IDFBaseModel | None:
+    def thermal_efficiency_curve(
+        self,
+    ) -> CurveChillerPartLoadWithLift | CurveTriquadratic | TableLookup | None:
         v = self.thermal_efficiency_curve_name
         if not v:
             return None
@@ -2707,6 +2756,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     ancillary power. Energy recovery from exhaust air can be used to heat water."""
 
     _idf_object_type: ClassVar[str] = 'Generator:MicroTurbine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_electrical_power_output: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W'}
@@ -3099,6 +3149,7 @@ class GeneratorPVWatts(IDFBaseModel):
     in all shading calculations."""
 
     _idf_object_type: ClassVar[str] = 'Generator:PVWatts'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pvwatts_version: Literal['5'] | None = Field(default=None)
     dc_system_capacity: float = Field(
@@ -3171,6 +3222,7 @@ class GeneratorPhotovoltaic(IDFBaseModel):
     calculations."""
 
     _idf_object_type: ClassVar[str] = 'Generator:Photovoltaic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_name: AllShadingAndHTSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
@@ -3230,7 +3282,14 @@ class GeneratorPhotovoltaic(IDFBaseModel):
         return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
     @property
-    def module_performance(self) -> IDFBaseModel | None:
+    def module_performance(
+        self,
+    ) -> (
+        PhotovoltaicPerformanceEquivalentOneDiode
+        | PhotovoltaicPerformanceSandia
+        | PhotovoltaicPerformanceSimple
+        | None
+    ):
         v = self.module_performance_name
         if not v:
             return None
@@ -3244,6 +3303,7 @@ class GeneratorWindTurbine(IDFBaseModel):
     """Wind turbine generator."""
 
     _idf_object_type: ClassVar[str] = 'Generator:WindTurbine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3367,6 +3427,7 @@ class PhotovoltaicPerformanceEquivalentOneDiode(IDFBaseModel):
     the 4- or 5-parameter TRNSYS model for photovoltaics."""
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:EquivalentOne-Diode'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     cell_type: Literal['AmorphousSilicon', 'CrystallineSilicon'] | None = Field(
         default=None
@@ -3448,6 +3509,7 @@ class PhotovoltaicPerformanceSandia(IDFBaseModel):
     National Laboratory."""
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Sandia'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     active_area: float | None = Field(
         default=1.0,
@@ -3580,6 +3642,7 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
     not specify arrays of specific modules."""
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Simple'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     fraction_of_surface_area_with_active_solar_cells: float = Field(
         ..., ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}

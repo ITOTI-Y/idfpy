@@ -306,7 +306,7 @@ class FluidPropertiesConcentration(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -316,7 +316,7 @@ class FluidPropertiesConcentration(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None
@@ -330,6 +330,7 @@ class FluidPropertiesGlycolConcentration(IDFBaseModel):
     """glycol and what concentration it is"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:GlycolConcentration'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     glycol_type: Literal[
         'EthyleneGlycol', 'PropyleneGlycol', 'UserDefinedGlycolType'
@@ -345,7 +346,9 @@ class FluidPropertiesGlycolConcentration(IDFBaseModel):
     glycol_concentration: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def user_defined_glycol(self) -> IDFBaseModel | None:
+    def user_defined_glycol(
+        self,
+    ) -> FluidPropertiesGlycolConcentration | FluidPropertiesName | None:
         v = self.user_defined_glycol_name
         if not v:
             return None
@@ -360,6 +363,7 @@ class FluidPropertiesName(IDFBaseModel):
     fluid"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:Name'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'fluid_name'})
     fluid_name: str = Field(...)
     fluid_type: Literal['Glycol', 'Refrigerant'] = Field(...)
 
@@ -642,7 +646,7 @@ class FluidPropertiesSaturated(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -652,7 +656,7 @@ class FluidPropertiesSaturated(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None
@@ -940,7 +944,7 @@ class FluidPropertiesSuperheated(IDFBaseModel):
     property_value_250: float | None = Field(default=None)
 
     @property
-    def fluid(self) -> IDFBaseModel | None:
+    def fluid(self) -> FluidPropertiesName | None:
         v = self.fluid_name
         if not v:
             return None
@@ -950,7 +954,7 @@ class FluidPropertiesSuperheated(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def temperature_values(self) -> IDFBaseModel | None:
+    def temperature_values(self) -> FluidPropertiesTemperatures | None:
         v = self.temperature_values_name
         if not v:
             return None
@@ -968,6 +972,7 @@ class FluidPropertiesTemperatures(IDFBaseModel):
     all temperature inputs)"""
 
     _idf_object_type: ClassVar[str] = 'FluidProperties:Temperatures'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     temperature_1: float | None = Field(default=None, json_schema_extra={'units': 'C'})
     temperature_2: float | None = Field(default=None, json_schema_extra={'units': 'C'})

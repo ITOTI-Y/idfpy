@@ -7,7 +7,7 @@ Group: Location and Climate
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -21,6 +21,10 @@ from ._refs import (
     SpectrumDataNamesRef,
     UndisturbedGroundTempModelsRef,
 )
+
+if TYPE_CHECKING:
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
 
 
 class SiteSpectrumDataExtensionsItem(IDFBaseModel):
@@ -76,6 +80,7 @@ class RunPeriod(IDFBaseModel):
     periods may be input, but they may not overlap."""
 
     _idf_object_type: ClassVar[str] = 'RunPeriod'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -165,6 +170,7 @@ class RunPeriodControlSpecialDays(IDFBaseModel):
     shown here. (No error message on duplicate days or overlapping days)."""
 
     _idf_object_type: ClassVar[str] = 'RunPeriodControl:SpecialDays'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     start_date: str = Field(
         ...,
@@ -198,6 +204,7 @@ class SiteGroundDomainBasement(IDFBaseModel):
     zones."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundDomain:Basement'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ground_domain_depth: float | None = Field(
         default=10.0,
@@ -307,7 +314,14 @@ class SiteGroundDomainBasement(IDFBaseModel):
     mesh_density_parameter: int | None = Field(default=4, ge=2)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -317,7 +331,9 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def basement_floor_boundary_condition_model(self) -> IDFBaseModel | None:
+    def basement_floor_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.basement_floor_boundary_condition_model_name
         if not v:
             return None
@@ -337,7 +353,9 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def basement_wall_boundary_condition_model(self) -> IDFBaseModel | None:
+    def basement_wall_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.basement_wall_boundary_condition_model_name
         if not v:
             return None
@@ -362,6 +380,7 @@ class SiteGroundDomainSlab(IDFBaseModel):
     insulation."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundDomain:Slab'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ground_domain_depth: float | None = Field(
         default=10.0, gt=0.0, json_schema_extra={'units': 'm'}
@@ -475,7 +494,14 @@ class SiteGroundDomainSlab(IDFBaseModel):
     mesh_density_parameter: int | None = Field(default=6, ge=4)
 
     @property
-    def undisturbed_ground_temperature_model(self) -> IDFBaseModel | None:
+    def undisturbed_ground_temperature_model(
+        self,
+    ) -> (
+        SiteGroundTemperatureUndisturbedFiniteDifference
+        | SiteGroundTemperatureUndisturbedKusudaAchenbach
+        | SiteGroundTemperatureUndisturbedXing
+        | None
+    ):
         v = self.undisturbed_ground_temperature_model_name
         if not v:
             return None
@@ -485,7 +511,9 @@ class SiteGroundDomainSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['UndisturbedGroundTempModels'])
 
     @property
-    def slab_boundary_condition_model(self) -> IDFBaseModel | None:
+    def slab_boundary_condition_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.slab_boundary_condition_model_name
         if not v:
             return None
@@ -782,6 +810,7 @@ class SiteGroundTemperatureUndisturbedFiniteDifference(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Site:GroundTemperature:Undisturbed:FiniteDifference'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -814,6 +843,7 @@ class SiteGroundTemperatureUndisturbedKusudaAchenbach(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'Site:GroundTemperature:Undisturbed:KusudaAchenbach'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -853,6 +883,7 @@ class SiteGroundTemperatureUndisturbedXing(IDFBaseModel):
     parameter model."""
 
     _idf_object_type: ClassVar[str] = 'Site:GroundTemperature:Undisturbed:Xing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     soil_thermal_conductivity: float = Field(
         ..., gt=0.0, json_schema_extra={'units': 'W/m-K'}
@@ -911,6 +942,7 @@ class SiteLocation(IDFBaseModel):
     data file location, if it exists, will override this object."""
 
     _idf_object_type: ClassVar[str] = 'Site:Location'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     latitude: float | None = Field(
         default=0.0,
@@ -994,6 +1026,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     be used."""
 
     _idf_object_type: ClassVar[str] = 'Site:SolarAndVisibleSpectrum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     spectrum_data_method: Literal['', 'Default', 'UserDefined'] | None = Field(
         default='Default',
@@ -1009,7 +1042,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
     )
 
     @property
-    def solar_spectrum_data_object(self) -> IDFBaseModel | None:
+    def solar_spectrum_data_object(self) -> SiteSpectrumData | None:
         v = self.solar_spectrum_data_object_name
         if not v:
             return None
@@ -1019,7 +1052,7 @@ class SiteSolarAndVisibleSpectrum(IDFBaseModel):
         return idf._resolve_forward(v, ['SpectrumDataNames'])
 
     @property
-    def visible_spectrum_data_object(self) -> IDFBaseModel | None:
+    def visible_spectrum_data_object(self) -> SiteSpectrumData | None:
         v = self.visible_spectrum_data_object_name
         if not v:
             return None
@@ -1035,6 +1068,7 @@ class SiteSpectrumData(IDFBaseModel):
     (0.25 to 2.5 microns) or visible spectrum (0.38 to 0.78 microns)"""
 
     _idf_object_type: ClassVar[str] = 'Site:SpectrumData'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     spectrum_data_type: Literal['Solar', 'Visible'] = Field(...)
     wavelength: float | None = Field(
@@ -1053,6 +1087,7 @@ class SiteVariableLocation(IDFBaseModel):
     vessel"""
 
     _idf_object_type: ClassVar[str] = 'Site:VariableLocation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     building_location_latitude_schedule: ScheduleNamesRef | None = Field(
         default=None,
@@ -1195,6 +1230,7 @@ class SizingPeriodDesignDay(IDFBaseModel):
     radiation values."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:DesignDay'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     month: int = Field(..., ge=1, le=12)
     day_of_month: int = Field(
@@ -1412,7 +1448,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
     )
 
     @property
-    def dry_bulb_temperature_range_modifier_day_schedule(self) -> IDFBaseModel | None:
+    def dry_bulb_temperature_range_modifier_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.dry_bulb_temperature_range_modifier_day_schedule_name
         if not v:
             return None
@@ -1422,7 +1460,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def humidity_condition_day_schedule(self) -> IDFBaseModel | None:
+    def humidity_condition_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.humidity_condition_day_schedule_name
         if not v:
             return None
@@ -1432,7 +1472,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def beam_solar_day_schedule(self) -> IDFBaseModel | None:
+    def beam_solar_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.beam_solar_day_schedule_name
         if not v:
             return None
@@ -1442,7 +1484,9 @@ class SizingPeriodDesignDay(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
     @property
-    def diffuse_solar_day_schedule(self) -> IDFBaseModel | None:
+    def diffuse_solar_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
         v = self.diffuse_solar_day_schedule_name
         if not v:
             return None
@@ -1459,6 +1503,7 @@ class SizingPeriodWeatherFileConditionType(IDFBaseModel):
     document."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:WeatherFileConditionType'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'user supplied name for reporting'}
     )
@@ -1522,6 +1567,7 @@ class SizingPeriodWeatherFileDays(IDFBaseModel):
     """Use a weather file period for design sizing calculations."""
 
     _idf_object_type: ClassVar[str] = 'SizingPeriod:WeatherFileDays'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'user supplied name for reporting'}
     )
@@ -1566,6 +1612,7 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
     """This object is used to override internal sky temperature calculations."""
 
     _idf_object_type: ClassVar[str] = 'WeatherProperty:SkyTemperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: RunPeriodsAndDesignDaysRef | None = Field(
         default=None,
         json_schema_extra={
@@ -1606,7 +1653,15 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(
+        self,
+    ) -> (
+        RunPeriod
+        | SizingPeriodDesignDay
+        | SizingPeriodWeatherFileConditionType
+        | SizingPeriodWeatherFileDays
+        | None
+    ):
         v = self.name
         if not v:
             return None

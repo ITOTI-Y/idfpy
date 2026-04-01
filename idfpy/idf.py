@@ -13,7 +13,17 @@ import types
 import weakref
 from collections.abc import Iterator, Mapping
 from pathlib import Path
-from typing import Annotated, Any, Literal, Union, cast, get_args, get_origin
+from typing import (
+    Annotated,
+    Any,
+    Literal,
+    TypeVar,
+    Union,
+    cast,
+    get_args,
+    get_origin,
+    overload,
+)
 
 from loguru import logger
 
@@ -26,6 +36,8 @@ from idfpy.models._base import IDFBaseModel
 from idfpy.models._ref_errors import RefError, RefValidationError
 from idfpy.models._ref_meta import REF_CONSUMERS, REF_GROUP_PROVIDERS, REF_PROVIDERS
 from idfpy.models.simulation import Version
+
+_T = TypeVar('_T', bound=IDFBaseModel)
 
 
 def _find_list_item_class(annotation: Any) -> type[IDFBaseModel] | None:
@@ -129,7 +141,11 @@ class IDF:
             ValueError: If a named object with same type and name already exists.
         """
         object_type = obj.idf_object_type()
-        name = getattr(obj, 'name', None) or getattr(obj, 'zone_name', None) or ''
+        name = ''
+        for pf in obj._provider_fields:
+            name = getattr(obj, pf, None) or ''
+            if name:
+                break
 
         if object_type not in self._objects:
             self._objects[object_type] = {}
@@ -146,21 +162,29 @@ class IDF:
             name = f'_{idx}'
 
         objects[name] = obj
+        obj._idf_obj_key = name
         self._bind_recursive(obj)
         self._register_refs(obj)
         self._index_consumer_refs(obj, object_type, name)
         logger.debug(f'Added {object_type}: {name}')
 
-    def get(self, object_type: str, name: str) -> IDFBaseModel | None:
+    @overload
+    def get(self, object_type: type[_T], name: str) -> _T | None: ...
+    @overload
+    def get(self, object_type: str, name: str) -> IDFBaseModel | None: ...
+    def get(self, object_type: type[_T] | str, name: str) -> _T | IDFBaseModel | None:
         """Get an object by type and name.
 
         Args:
-            object_type: EnergyPlus object type (e.g., 'Zone').
+            object_type: EnergyPlus object type string (e.g., 'Zone')
+                or model class (e.g., Zone).
             name: Object name.
 
         Returns:
             IDF object or None if not found.
         """
+        if isinstance(object_type, type):
+            object_type = object_type._idf_object_type
         return self._objects.get(object_type, {}).get(name)
 
     def has(self, object_type: str, name: str) -> bool:
@@ -222,6 +246,7 @@ class IDF:
             self._unbind_recursive(obj)
             self._unregister_refs(obj)
             self._unindex_consumer_refs(obj, object_type, name)
+            obj._idf_obj_key = ''
         return obj
 
     # ── Binding ──────────────────────────────────────────────
@@ -332,6 +357,115 @@ class IDF:
                 for item in value:
                     if isinstance(item, IDFBaseModel):
                         self._unindex_consumer_refs(item, obj_type, obj_name)
+
+    # ── Cascade rename ──────────────────────────────────────
+
+    def _before_provider_change(
+        self,
+        obj: IDFBaseModel,
+        field_name: str,
+        old_value: str | None,
+        new_value: str,
+    ) -> None:
+        """Prepare index structures before a provider field changes."""
+        object_type = obj.idf_object_type()
+        old_obj_key = obj._idf_obj_key
+
+        # 0. Conflict check: reject rename if it would overwrite another object
+        #    Use case-insensitive comparison (matching _ref_registry/_reverse_index)
+        if old_obj_key == old_value or not old_value:
+            normalized_new = new_value.upper()
+            existing = next(
+                (
+                    v
+                    for k, v in self._objects.get(object_type, {}).items()
+                    if k.upper() == normalized_new and v is not obj
+                ),
+                None,
+            )
+            if existing is not None:
+                raise ValueError(
+                    f"Cannot rename {object_type} '{old_value}' to '{new_value}': "
+                    f'an object with that name already exists'
+                )
+
+        # 1. Tear down old index entries (obj still has old_value)
+        self._unregister_refs(obj)
+        self._unindex_consumer_refs(obj, object_type, old_obj_key)
+
+        # 2-4. Cascade only when old_value is a real name
+        if old_value:
+            # 2. Determine affected ref groups
+            affected_groups: set[str] = set()
+            for fn, groups in REF_PROVIDERS.get(object_type, []):
+                if fn == field_name:
+                    affected_groups.update(groups)
+
+            # 3. Cascade: update consumer reference fields
+            old_key = old_value.upper()
+            new_key = new_value.upper()
+            for group in affected_groups:
+                bucket = self._reverse_index.get(group, {})
+                for consumer_type, consumer_name in list(bucket.get(old_key, [])):
+                    consumer = self._objects.get(consumer_type, {}).get(consumer_name)
+                    if consumer is not None:
+                        self._cascade_consumer_fields(
+                            consumer,
+                            old_key,
+                            new_value,
+                            affected_groups,
+                        )
+                # 4. Move reverse_index bucket key
+                entries = bucket.pop(old_key, [])
+                if entries:
+                    bucket.setdefault(new_key, []).extend(entries)
+
+        # 5. Update _objects key when provider field is the key source
+        if old_obj_key == old_value or not old_value:
+            objs = self._objects.get(object_type, {})
+            if old_obj_key in objs:
+                objs[new_value] = objs.pop(old_obj_key)
+                obj._idf_obj_key = new_value
+
+    def _after_provider_change(
+        self,
+        obj: IDFBaseModel,
+        field_name: str,
+        new_value: str,
+    ) -> None:
+        """Rebuild index structures after a provider field has changed."""
+        object_type = obj.idf_object_type()
+        self._register_refs(obj)
+        self._index_consumer_refs(obj, object_type, obj._idf_obj_key)
+
+    def _cascade_consumer_fields(
+        self,
+        consumer: IDFBaseModel,
+        old_key: str,
+        new_value: str,
+        affected_groups: set[str],
+    ) -> None:
+        """Update consumer reference fields that point to old_key."""
+        cls_name = type(consumer).__name__
+        for field_name, field_groups in REF_CONSUMERS.get(cls_name, {}).items():
+            if not affected_groups.intersection(field_groups):
+                continue
+            val = getattr(consumer, field_name, None)
+            if isinstance(val, str) and val.upper() == old_key:
+                setattr(consumer, field_name, new_value)
+
+        # Recurse into extensible list items
+        for field_name in type(consumer)._get_list_field_names():
+            items = getattr(consumer, field_name, None)
+            if items:
+                for item in items:
+                    if isinstance(item, IDFBaseModel):
+                        self._cascade_consumer_fields(
+                            item,
+                            old_key,
+                            new_value,
+                            affected_groups,
+                        )
 
     # ── Forward resolution ───────────────────────────────────
 

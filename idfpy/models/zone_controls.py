@@ -7,7 +7,7 @@ Group: Zone HVAC Controls and Thermostats
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,10 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .internal_gains import People
+    from .thermal_zones import Zone, ZoneList
+
 
 class ThermostatSetpointDualSetpoint(IDFBaseModel):
     """Used for a heating and cooling thermostat with dual setpoints. The setpoints
@@ -29,6 +33,7 @@ class ThermostatSetpointDualSetpoint(IDFBaseModel):
     cooling."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:DualSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -63,6 +68,7 @@ class ThermostatSetpointSingleCooling(IDFBaseModel):
     throughout the simulation but only cooling is allowed."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -85,6 +91,7 @@ class ThermostatSetpointSingleHeating(IDFBaseModel):
     type."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleHeating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -107,6 +114,7 @@ class ThermostatSetpointSingleHeatingOrCooling(IDFBaseModel):
     heating and cooling."""
 
     _idf_object_type: ClassVar[str] = 'ThermostatSetpoint:SingleHeatingOrCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ScheduleNames']}
@@ -131,6 +139,7 @@ class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:DualSetpoint'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_heating_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -176,6 +185,7 @@ class ThermostatSetpointThermalComfortFangerSingleCooling(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleCooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -204,6 +214,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeating(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeating'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -232,6 +243,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling(IDFBaseModel)
     _idf_object_type: ClassVar[str] = (
         'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeatingOrCooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fanger_thermal_comfort_schedule_name: ScheduleNamesRef = Field(
         ...,
@@ -258,6 +270,7 @@ class ZoneControlContaminantController(IDFBaseModel):
     zone."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:ContaminantController'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -308,7 +321,7 @@ class ZoneControlContaminantController(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -383,6 +396,7 @@ class ZoneControlHumidistat(IDFBaseModel):
     dehumidifying."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Humidistat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -405,7 +419,7 @@ class ZoneControlHumidistat(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -441,6 +455,7 @@ class ZoneControlThermostat(IDFBaseModel):
     all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}
@@ -523,7 +538,7 @@ class ZoneControlThermostat(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -543,7 +558,15 @@ class ZoneControlThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_1(self) -> IDFBaseModel | None:
+    def control_1(
+        self,
+    ) -> (
+        ThermostatSetpointDualSetpoint
+        | ThermostatSetpointSingleCooling
+        | ThermostatSetpointSingleHeating
+        | ThermostatSetpointSingleHeatingOrCooling
+        | None
+    ):
         v = self.control_1_name
         if not v:
             return None
@@ -553,7 +576,15 @@ class ZoneControlThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlTypeNames'])
 
     @property
-    def control_2(self) -> IDFBaseModel | None:
+    def control_2(
+        self,
+    ) -> (
+        ThermostatSetpointDualSetpoint
+        | ThermostatSetpointSingleCooling
+        | ThermostatSetpointSingleHeating
+        | ThermostatSetpointSingleHeatingOrCooling
+        | None
+    ):
         v = self.control_2_name
         if not v:
             return None
@@ -563,7 +594,15 @@ class ZoneControlThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlTypeNames'])
 
     @property
-    def control_3(self) -> IDFBaseModel | None:
+    def control_3(
+        self,
+    ) -> (
+        ThermostatSetpointDualSetpoint
+        | ThermostatSetpointSingleCooling
+        | ThermostatSetpointSingleHeating
+        | ThermostatSetpointSingleHeatingOrCooling
+        | None
+    ):
         v = self.control_3_name
         if not v:
             return None
@@ -573,7 +612,15 @@ class ZoneControlThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlTypeNames'])
 
     @property
-    def control_4(self) -> IDFBaseModel | None:
+    def control_4(
+        self,
+    ) -> (
+        ThermostatSetpointDualSetpoint
+        | ThermostatSetpointSingleCooling
+        | ThermostatSetpointSingleHeating
+        | ThermostatSetpointSingleHeatingOrCooling
+        | None
+    ):
         v = self.control_4_name
         if not v:
             return None
@@ -627,7 +674,9 @@ class ZoneControlThermostatOperativeTemperature(IDFBaseModel):
     )
 
     @property
-    def thermostat(self) -> IDFBaseModel | None:
+    def thermostat(
+        self,
+    ) -> ZoneControlThermostat | ZoneControlThermostatStagedDualSetpoint | None:
         v = self.thermostat_name
         if not v:
             return None
@@ -653,6 +702,7 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
     definition applies to all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat:StagedDualSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}
@@ -751,7 +801,7 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -832,7 +882,9 @@ class ZoneControlThermostatTemperatureAndHumidity(IDFBaseModel):
     )
 
     @property
-    def thermostat(self) -> IDFBaseModel | None:
+    def thermostat(
+        self,
+    ) -> ZoneControlThermostat | ZoneControlThermostatStagedDualSetpoint | None:
         v = self.thermostat_name
         if not v:
             return None
@@ -867,6 +919,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
     definition applies to all the zones in the ZoneList."""
 
     _idf_object_type: ClassVar[str] = 'ZoneControl:Thermostat:ThermalComfort'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneAndZoneListNames']}
@@ -962,7 +1015,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -972,7 +1025,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def specific_people(self) -> IDFBaseModel | None:
+    def specific_people(self) -> People | None:
         v = self.specific_people_name
         if not v:
             return None
@@ -992,7 +1045,15 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermal_comfort_control_1(self) -> IDFBaseModel | None:
+    def thermal_comfort_control_1(
+        self,
+    ) -> (
+        ThermostatSetpointThermalComfortFangerDualSetpoint
+        | ThermostatSetpointThermalComfortFangerSingleCooling
+        | ThermostatSetpointThermalComfortFangerSingleHeating
+        | ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling
+        | None
+    ):
         v = self.thermal_comfort_control_1_name
         if not v:
             return None
@@ -1002,7 +1063,15 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
 
     @property
-    def thermal_comfort_control_2(self) -> IDFBaseModel | None:
+    def thermal_comfort_control_2(
+        self,
+    ) -> (
+        ThermostatSetpointThermalComfortFangerDualSetpoint
+        | ThermostatSetpointThermalComfortFangerSingleCooling
+        | ThermostatSetpointThermalComfortFangerSingleHeating
+        | ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling
+        | None
+    ):
         v = self.thermal_comfort_control_2_name
         if not v:
             return None
@@ -1012,7 +1081,15 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
 
     @property
-    def thermal_comfort_control_3(self) -> IDFBaseModel | None:
+    def thermal_comfort_control_3(
+        self,
+    ) -> (
+        ThermostatSetpointThermalComfortFangerDualSetpoint
+        | ThermostatSetpointThermalComfortFangerSingleCooling
+        | ThermostatSetpointThermalComfortFangerSingleHeating
+        | ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling
+        | None
+    ):
         v = self.thermal_comfort_control_3_name
         if not v:
             return None
@@ -1022,7 +1099,15 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ThermalComfortControlTypeNames'])
 
     @property
-    def thermal_comfort_control_4(self) -> IDFBaseModel | None:
+    def thermal_comfort_control_4(
+        self,
+    ) -> (
+        ThermostatSetpointThermalComfortFangerDualSetpoint
+        | ThermostatSetpointThermalComfortFangerSingleCooling
+        | ThermostatSetpointThermalComfortFangerSingleHeating
+        | ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling
+        | None
+    ):
         v = self.thermal_comfort_control_4_name
         if not v:
             return None

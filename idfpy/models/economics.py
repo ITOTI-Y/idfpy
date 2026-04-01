@@ -83,6 +83,7 @@ class ComponentCostLineItem(IDFBaseModel):
     the total for a cost estimate."""
 
     _idf_object_type: ClassVar[str] = 'ComponentCost:LineItem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     type: str | None = Field(default=None)
     line_item_type: Literal[
@@ -317,6 +318,7 @@ class LifeCycleCostNonrecurringCost(IDFBaseModel):
     the LifeCycleCost:RecurringCost object."""
 
     _idf_object_type: ClassVar[str] = 'LifeCycleCost:NonrecurringCost'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     category: Literal['', 'Construction', 'OtherCapital', 'Salvage'] | None = Field(
         default='Construction'
@@ -360,6 +362,7 @@ class LifeCycleCostParameters(IDFBaseModel):
     Cycle Cost Report."""
 
     _idf_object_type: ClassVar[str] = 'LifeCycleCost:Parameters'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     discounting_convention: (
         Literal['', 'BeginningOfYear', 'EndOfYear', 'MidYear'] | None
@@ -500,6 +503,7 @@ class LifeCycleCostRecurringCosts(IDFBaseModel):
     regular schedule, use LifeCycleCost:NonrecurringCost objects instead."""
 
     _idf_object_type: ClassVar[str] = 'LifeCycleCost:RecurringCosts'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     category: (
         Literal[
@@ -577,6 +581,7 @@ class LifeCycleCostUseAdjustment(IDFBaseModel):
     period."""
 
     _idf_object_type: ClassVar[str] = 'LifeCycleCost:UseAdjustment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     resource: Literal[
         'Coal',
@@ -913,7 +918,7 @@ class UtilityCostChargeBlock(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -981,7 +986,7 @@ class UtilityCostChargeSimple(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1000,6 +1005,7 @@ class UtilityCostComputation(IDFBaseModel):
     involved in the rate in the order that they should be computed."""
 
     _idf_object_type: ClassVar[str] = 'UtilityCost:Computation'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tariff_name: UtilityCostTariffsRef = Field(
         ...,
@@ -1045,7 +1051,7 @@ class UtilityCostComputation(IDFBaseModel):
     compute_step_30: str | None = Field(default=None)
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1113,7 +1119,7 @@ class UtilityCostQualify(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1131,6 +1137,7 @@ class UtilityCostRatchet(IDFBaseModel):
     higher demand charge."""
 
     _idf_object_type: ClassVar[str] = 'UtilityCost:Ratchet'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1184,7 +1191,7 @@ class UtilityCostRatchet(IDFBaseModel):
     )
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None
@@ -1202,6 +1209,7 @@ class UtilityCostTariff(IDFBaseModel):
     UtilityCost:Variable and UtilityCost:Computation objects."""
 
     _idf_object_type: ClassVar[str] = 'UtilityCost:Tariff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1373,6 +1381,7 @@ class UtilityCostVariable(IDFBaseModel):
     variable."""
 
     _idf_object_type: ClassVar[str] = 'UtilityCost:Variable'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tariff_name: UtilityCostTariffsRef = Field(
         ...,
@@ -1398,7 +1407,7 @@ class UtilityCostVariable(IDFBaseModel):
     december_value: float | None = Field(default=None)
 
     @property
-    def tariff(self) -> IDFBaseModel | None:
+    def tariff(self) -> UtilityCostTariff | None:
         v = self.tariff_name
         if not v:
             return None

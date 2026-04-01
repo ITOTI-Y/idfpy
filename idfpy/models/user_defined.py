@@ -7,7 +7,7 @@ Group: User Defined HVAC and Plant Component Models
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -18,12 +18,19 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .ems import EnergyManagementSystemProgramCallingManager
+    from .python_plugins import PythonPluginInstance
+    from .thermal_zones import Zone
+    from .water_systems import WaterUseStorage
+
 
 class AirTerminalSingleDuctUserDefined(IDFBaseModel):
     """Defines a generic single duct air terminal unit for custom modeling using
     Energy Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'AirTerminal:SingleDuct:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the air terminal'}
     )
@@ -91,7 +98,9 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
     )
 
     @property
-    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+    def overall_model_simulation_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.overall_model_simulation_program_calling_manager_name
         if not v:
             return None
@@ -101,7 +110,9 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+    def model_setup_and_sizing_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.model_setup_and_sizing_program_calling_manager_name
         if not v:
             return None
@@ -111,7 +122,7 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_inlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_inlet_water_storage_tank_name
         if not v:
             return None
@@ -121,7 +132,7 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def collection_outlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.collection_outlet_water_storage_tank_name
         if not v:
             return None
@@ -131,7 +142,7 @@ class AirTerminalSingleDuctUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def ambient_zone(self) -> IDFBaseModel | None:
+    def ambient_zone(self) -> Zone | None:
         v = self.ambient_zone_name
         if not v:
             return None
@@ -146,6 +157,7 @@ class CoilUserDefined(IDFBaseModel):
     Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'Coil:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'This is the name of the coil'})
     overall_model_simulation_program_calling_manager_name: ProgramNamesRef | None = (
         Field(
@@ -198,7 +210,9 @@ class CoilUserDefined(IDFBaseModel):
     )
 
     @property
-    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+    def overall_model_simulation_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.overall_model_simulation_program_calling_manager_name
         if not v:
             return None
@@ -208,7 +222,9 @@ class CoilUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+    def model_setup_and_sizing_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.model_setup_and_sizing_program_calling_manager_name
         if not v:
             return None
@@ -218,7 +234,7 @@ class CoilUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_inlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_inlet_water_storage_tank_name
         if not v:
             return None
@@ -228,7 +244,7 @@ class CoilUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def collection_outlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.collection_outlet_water_storage_tank_name
         if not v:
             return None
@@ -238,7 +254,7 @@ class CoilUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def ambient_zone(self) -> IDFBaseModel | None:
+    def ambient_zone(self) -> Zone | None:
         v = self.ambient_zone_name
         if not v:
             return None
@@ -253,6 +269,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     Management System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'PlantComponent:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the plant component'}
     )
@@ -403,7 +420,9 @@ class PlantComponentUserDefined(IDFBaseModel):
     )
 
     @property
-    def main_model_program_calling_manager(self) -> IDFBaseModel | None:
+    def main_model_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.main_model_program_calling_manager_name
         if not v:
             return None
@@ -415,7 +434,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_1_initialization_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_1_initialization_program_calling_manager_name
         if not v:
             return None
@@ -427,7 +446,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_1_simulation_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_1_simulation_program_calling_manager_name
         if not v:
             return None
@@ -439,7 +458,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_2_initialization_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_2_initialization_program_calling_manager_name
         if not v:
             return None
@@ -451,7 +470,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_2_simulation_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_2_simulation_program_calling_manager_name
         if not v:
             return None
@@ -463,7 +482,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_3_initialization_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_3_initialization_program_calling_manager_name
         if not v:
             return None
@@ -475,7 +494,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_3_simulation_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_3_simulation_program_calling_manager_name
         if not v:
             return None
@@ -487,7 +506,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_4_initialization_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_4_initialization_program_calling_manager_name
         if not v:
             return None
@@ -499,7 +518,7 @@ class PlantComponentUserDefined(IDFBaseModel):
     @property
     def plant_connection_4_simulation_program_calling_manager(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.plant_connection_4_simulation_program_calling_manager_name
         if not v:
             return None
@@ -509,7 +528,7 @@ class PlantComponentUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_inlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_inlet_water_storage_tank_name
         if not v:
             return None
@@ -519,7 +538,7 @@ class PlantComponentUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def collection_outlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.collection_outlet_water_storage_tank_name
         if not v:
             return None
@@ -529,7 +548,7 @@ class PlantComponentUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def ambient_zone(self) -> IDFBaseModel | None:
+    def ambient_zone(self) -> Zone | None:
         v = self.ambient_zone_name
         if not v:
             return None
@@ -544,6 +563,7 @@ class PlantEquipmentOperationUserDefined(IDFBaseModel):
     using Energy Management System or External Interface to dispatch loads"""
 
     _idf_object_type: ClassVar[str] = 'PlantEquipmentOperation:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={'note': 'This is the name of the plant operation scheme'},
@@ -576,7 +596,9 @@ class PlantEquipmentOperationUserDefined(IDFBaseModel):
     equipment_10_name: str | None = Field(default=None)
 
     @property
-    def main_model_program_calling_manager(self) -> IDFBaseModel | None:
+    def main_model_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.main_model_program_calling_manager_name
         if not v:
             return None
@@ -586,7 +608,9 @@ class PlantEquipmentOperationUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def initialization_program_calling_manager(self) -> IDFBaseModel | None:
+    def initialization_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.initialization_program_calling_manager_name
         if not v:
             return None
@@ -601,6 +625,7 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
     System or External Interface"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:ForcedAir:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ..., json_schema_extra={'note': 'This is the name of the zone unit'}
     )
@@ -670,7 +695,9 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
     )
 
     @property
-    def overall_model_simulation_program_calling_manager(self) -> IDFBaseModel | None:
+    def overall_model_simulation_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.overall_model_simulation_program_calling_manager_name
         if not v:
             return None
@@ -680,7 +707,9 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def model_setup_and_sizing_program_calling_manager(self) -> IDFBaseModel | None:
+    def model_setup_and_sizing_program_calling_manager(
+        self,
+    ) -> EnergyManagementSystemProgramCallingManager | PythonPluginInstance | None:
         v = self.model_setup_and_sizing_program_calling_manager_name
         if not v:
             return None
@@ -690,7 +719,7 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ProgramNames'])
 
     @property
-    def supply_inlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def supply_inlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.supply_inlet_water_storage_tank_name
         if not v:
             return None
@@ -700,7 +729,7 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def collection_outlet_water_storage_tank(self) -> IDFBaseModel | None:
+    def collection_outlet_water_storage_tank(self) -> WaterUseStorage | None:
         v = self.collection_outlet_water_storage_tank_name
         if not v:
             return None
@@ -710,7 +739,7 @@ class ZoneHVACForcedAirUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def ambient_zone(self) -> IDFBaseModel | None:
+    def ambient_zone(self) -> Zone | None:
         v = self.ambient_zone_name
         if not v:
             return None

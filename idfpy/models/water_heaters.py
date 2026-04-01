@@ -7,7 +7,7 @@ Group: Water Heaters and Thermal Storage
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -30,6 +30,16 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .coils import (
+        CoilSystemIntegratedHeatPumpAirSource,
+        CoilWaterHeatingAirToWaterHeatPumpPumped,
+        CoilWaterHeatingAirToWaterHeatPumpVariableSpeed,
+        CoilWaterHeatingAirToWaterHeatPumpWrapped,
+    )
+    from .fans import FanOnOff, FanSystemModel
+    from .thermal_zones import Zone
+
 
 class ThermalStorageChilledWaterMixed(IDFBaseModel):
     """Chilled water storage with a well-mixed, single-node tank. The chilled water
@@ -38,6 +48,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
     the water tank."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:ChilledWater:Mixed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float | None = Field(
         default=0.1, gt=0.0, json_schema_extra={'units': 'm3'}
@@ -130,7 +141,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -167,6 +178,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     the water tank."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:ChilledWater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float = Field(..., gt=0.0, json_schema_extra={'units': 'm3'})
     tank_height: float = Field(
@@ -339,7 +351,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -373,6 +385,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
     """ThermalStorage:HotWater:Stratified"""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:HotWater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float = Field(..., gt=0.0, json_schema_extra={'units': 'm3'})
     tank_height: float = Field(
@@ -573,7 +586,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -610,6 +623,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
     system performance."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Ice:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -713,7 +727,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def thermal_storage_sizing_object(self) -> IDFBaseModel | None:
+    def thermal_storage_sizing_object(self) -> ThermalStorageSizing | None:
         v = self.thermal_storage_sizing_object_name
         if not v:
             return None
@@ -730,6 +744,7 @@ class ThermalStorageIceSimple(IDFBaseModel):
     PlantEquipmentOperation:ComponentSetpoint plant operation scheme."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Ice:Simple'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ice_storage_type: Literal['IceOnCoilExternal', 'IceOnCoilInternal'] = Field(
         ...,
@@ -751,7 +766,7 @@ class ThermalStorageIceSimple(IDFBaseModel):
     )
 
     @property
-    def thermal_storage_sizing_object(self) -> IDFBaseModel | None:
+    def thermal_storage_sizing_object(self) -> ThermalStorageSizing | None:
         v = self.thermal_storage_sizing_object_name
         if not v:
             return None
@@ -768,6 +783,7 @@ class ThermalStoragePCM(IDFBaseModel):
     side nodes and 2 use side nodes."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:PCM'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -815,6 +831,7 @@ class ThermalStorageSizing(IDFBaseModel):
     """Sizing information for thermal energy stoarge capacity."""
 
     _idf_object_type: ClassVar[str] = 'ThermalStorage:Sizing'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     on_peak_period_start_time: float = Field(
         ...,
@@ -842,6 +859,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
     WaterHeater:Mixed or WaterHeater:Stratified"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:HeatPump:PumpedCondenser'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1170,7 +1188,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_zone(self) -> IDFBaseModel | None:
+    def inlet_air_zone(self) -> Zone | None:
         v = self.inlet_air_zone_name
         if not v:
             return None
@@ -1180,7 +1198,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def tank(self) -> IDFBaseModel | None:
+    def tank(self) -> WaterHeaterMixed | WaterHeaterStratified | None:
         v = self.tank_name
         if not v:
             return None
@@ -1190,7 +1208,14 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterHeaterNames'])
 
     @property
-    def dx_coil(self) -> IDFBaseModel | None:
+    def dx_coil(
+        self,
+    ) -> (
+        CoilSystemIntegratedHeatPumpAirSource
+        | CoilWaterHeatingAirToWaterHeatPumpPumped
+        | CoilWaterHeatingAirToWaterHeatPumpVariableSpeed
+        | None
+    ):
         v = self.dx_coil_name
         if not v:
             return None
@@ -1217,7 +1242,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -1246,6 +1271,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
     Fan:OnOff, WaterHeater:Mixed"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:HeatPump:WrappedCondenser'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -1555,7 +1581,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_zone(self) -> IDFBaseModel | None:
+    def inlet_air_zone(self) -> Zone | None:
         v = self.inlet_air_zone_name
         if not v:
             return None
@@ -1565,7 +1591,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def tank(self) -> IDFBaseModel | None:
+    def tank(self) -> WaterHeaterStratified | None:
         v = self.tank_name
         if not v:
             return None
@@ -1575,7 +1601,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterHeaterStratifiedNames'])
 
     @property
-    def dx_coil(self) -> IDFBaseModel | None:
+    def dx_coil(self) -> CoilWaterHeatingAirToWaterHeatPumpWrapped | None:
         v = self.dx_coil_name
         if not v:
             return None
@@ -1595,7 +1621,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanOnOff | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -1622,6 +1648,7 @@ class WaterHeaterMixed(IDFBaseModel):
     WaterHeater:HeatPump:PumpedCondenser.)"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:Mixed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tank_volume: float | Literal['', 'Autosize'] | None = Field(
         default=0.0, json_schema_extra={'units': 'm3'}
@@ -1847,7 +1874,7 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -2013,7 +2040,16 @@ class WaterHeaterSizing(IDFBaseModel):
     )
 
     @property
-    def waterheater(self) -> IDFBaseModel | None:
+    def waterheater(
+        self,
+    ) -> (
+        ThermalStorageChilledWaterMixed
+        | ThermalStorageChilledWaterStratified
+        | ThermalStorageHotWaterStratified
+        | WaterHeaterMixed
+        | WaterHeaterStratified
+        | None
+    ):
         v = self.waterheater_name
         if not v:
             return None
@@ -2029,6 +2065,7 @@ class WaterHeaterStratified(IDFBaseModel):
     heater capacity), or a heat pump water heater (see WaterHeater:HeatPump:*.)"""
 
     _idf_object_type: ClassVar[str] = 'WaterHeater:Stratified'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     end_use_subcategory: str | None = Field(
         default='General',
@@ -2344,7 +2381,7 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None

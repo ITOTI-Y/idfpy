@@ -2073,10 +2073,14 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'AFNOutdoorAirFlowNames': frozenset(
-        {'AirflowNetwork:Distribution:Component:OutdoorAirFlow'}
+        {
+            'AirflowNetwork:Distribution:Component:OutdoorAirFlow',
+        }
     ),
     'AFNReliefAirFlowNames': frozenset(
-        {'AirflowNetwork:Distribution:Component:ReliefAirFlow'}
+        {
+            'AirflowNetwork:Distribution:Component:ReliefAirFlow',
+        }
     ),
     'AFNTerminalUnitNames': frozenset(
         {
@@ -2085,14 +2089,37 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'AirTerminal:SingleDuct:VAV:Reheat',
         }
     ),
-    'AirFlowNetworkMultizoneZones': frozenset({'AirflowNetwork:MultiZone:Zone'}),
-    'AirLoopControllers': frozenset({'Controller:OutdoorAir', 'Controller:WaterCoil'}),
-    'AirLoopHVACMixerNames': frozenset({'AirLoopHVAC:Mixer'}),
-    'AirLoopHVACSplitterNames': frozenset({'AirLoopHVAC:Splitter'}),
-    'AirLoopOAEquipmentLists': frozenset(
-        {'AirLoopHVAC:OutdoorAirSystem:EquipmentList'}
+    'AirFlowNetworkMultizoneZones': frozenset(
+        {
+            'AirflowNetwork:MultiZone:Zone',
+        }
     ),
-    'AirPrimaryLoops': frozenset({'AirLoopHVAC'}),
+    'AirLoopControllers': frozenset(
+        {
+            'Controller:OutdoorAir',
+            'Controller:WaterCoil',
+        }
+    ),
+    'AirLoopHVACMixerNames': frozenset(
+        {
+            'AirLoopHVAC:Mixer',
+        }
+    ),
+    'AirLoopHVACSplitterNames': frozenset(
+        {
+            'AirLoopHVAC:Splitter',
+        }
+    ),
+    'AirLoopOAEquipmentLists': frozenset(
+        {
+            'AirLoopHVAC:OutdoorAirSystem:EquipmentList',
+        }
+    ),
+    'AirPrimaryLoops': frozenset(
+        {
+            'AirLoopHVAC',
+        }
+    ),
     'AirTerminalUnitNames': frozenset(
         {
             'AirTerminal:DualDuct:ConstantVolume',
@@ -2114,7 +2141,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'AirTerminal:SingleDuct:VAV:Reheat:VariableSpeedFan',
         }
     ),
-    'AirflowNetwork LinkageNames': frozenset({'AirflowNetwork:IntraZone:Linkage'}),
+    'AirflowNetwork LinkageNames': frozenset(
+        {
+            'AirflowNetwork:IntraZone:Linkage',
+        }
+    ),
     'AirflowNetworkComponentNames': frozenset(
         {
             'AirflowNetwork:Distribution:Component:Coil',
@@ -2130,17 +2161,30 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'AirflowNetworkDistributionLinkageNames': frozenset(
-        {'AirflowNetwork:Distribution:Linkage'}
+        {
+            'AirflowNetwork:Distribution:Linkage',
+        }
     ),
     'AirflowNetworkNodeAndZoneNames': frozenset(
-        {'AirflowNetwork:Distribution:Node', 'Zone'}
+        {
+            'AirflowNetwork:Distribution:Node',
+            'Zone',
+        }
     ),
-    'AirflowNetworkNodeNames': frozenset({'AirflowNetwork:IntraZone:Node'}),
+    'AirflowNetworkNodeNames': frozenset(
+        {
+            'AirflowNetwork:IntraZone:Node',
+        }
+    ),
     'AirflowNetworkOccupantVentilationControlNames': frozenset(
-        {'AirflowNetwork:OccupantVentilationControl'}
+        {
+            'AirflowNetwork:OccupantVentilationControl',
+        }
     ),
     'AirflowNetworkZoneControlPressureControllerNames': frozenset(
-        {'AirflowNetwork:ZoneControl:PressureController'}
+        {
+            'AirflowNetwork:ZoneControl:PressureController',
+        }
     ),
     'AllHeatTranAngFacNames': frozenset(
         {
@@ -2261,12 +2305,36 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Table:Lookup',
         }
     ),
-    'Boilers': frozenset({'Boiler:HotWater'}),
-    'BranchLists': frozenset({'BranchList'}),
-    'Branches': frozenset({'Branch'}),
-    'CFSGap': frozenset({'WindowMaterial:Gap'}),
-    'CFSGlazingName': frozenset({'WindowMaterial:Glazing'}),
-    'ChillerHeaterEIRNames': frozenset({'ChillerHeaterPerformance:Electric:EIR'}),
+    'Boilers': frozenset(
+        {
+            'Boiler:HotWater',
+        }
+    ),
+    'BranchLists': frozenset(
+        {
+            'BranchList',
+        }
+    ),
+    'Branches': frozenset(
+        {
+            'Branch',
+        }
+    ),
+    'CFSGap': frozenset(
+        {
+            'WindowMaterial:Gap',
+        }
+    ),
+    'CFSGlazingName': frozenset(
+        {
+            'WindowMaterial:Glazing',
+        }
+    ),
+    'ChillerHeaterEIRNames': frozenset(
+        {
+            'ChillerHeaterPerformance:Electric:EIR',
+        }
+    ),
     'Chillers': frozenset(
         {
             'Chiller:Absorption',
@@ -2280,16 +2348,36 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Chiller:EngineDriven',
         }
     ),
-    'CoilCoolingDX': frozenset({'Coil:Cooling:DX'}),
-    'CoilPerformanceDX': frozenset({'CoilPerformance:DX:Cooling'}),
+    'CoilCoolingDX': frozenset(
+        {
+            'Coil:Cooling:DX',
+        }
+    ),
+    'CoilPerformanceDX': frozenset(
+        {
+            'CoilPerformance:DX:Cooling',
+        }
+    ),
     'CollectorStoragePerformance': frozenset(
-        {'SolarCollectorPerformance:IntegralCollectorStorage'}
+        {
+            'SolarCollectorPerformance:IntegralCollectorStorage',
+        }
     ),
-    'ColorSchemes': frozenset({'OutputControl:SurfaceColorScheme'}),
+    'ColorSchemes': frozenset(
+        {
+            'OutputControl:SurfaceColorScheme',
+        }
+    ),
     'CompactHVACSystemConstantVolume': frozenset(
-        {'HVACTemplate:System:ConstantVolume'}
+        {
+            'HVACTemplate:System:ConstantVolume',
+        }
     ),
-    'CompactHVACSystemDualDuct': frozenset({'HVACTemplate:System:DualDuct'}),
+    'CompactHVACSystemDualDuct': frozenset(
+        {
+            'HVACTemplate:System:DualDuct',
+        }
+    ),
     'CompactHVACSystemUnitary': frozenset(
         {
             'HVACTemplate:System:Unitary',
@@ -2298,14 +2386,41 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'CompactHVACSystemVAV': frozenset(
-        {'HVACTemplate:System:PackagedVAV', 'HVACTemplate:System:VAV'}
+        {
+            'HVACTemplate:System:PackagedVAV',
+            'HVACTemplate:System:VAV',
+        }
     ),
-    'CompactHVACSystemVRF': frozenset({'HVACTemplate:System:VRF'}),
-    'CompactHVACThermostats': frozenset({'HVACTemplate:Thermostat'}),
-    'ComplexFenestrationStates': frozenset({'Construction:ComplexFenestrationState'}),
-    'CondenserEquipmentLists': frozenset({'CondenserEquipmentList'}),
-    'CondenserOperationSchemes': frozenset({'CondenserEquipmentOperationSchemes'}),
-    'ConnectorLists': frozenset({'ConnectorList'}),
+    'CompactHVACSystemVRF': frozenset(
+        {
+            'HVACTemplate:System:VRF',
+        }
+    ),
+    'CompactHVACThermostats': frozenset(
+        {
+            'HVACTemplate:Thermostat',
+        }
+    ),
+    'ComplexFenestrationStates': frozenset(
+        {
+            'Construction:ComplexFenestrationState',
+        }
+    ),
+    'CondenserEquipmentLists': frozenset(
+        {
+            'CondenserEquipmentList',
+        }
+    ),
+    'CondenserOperationSchemes': frozenset(
+        {
+            'CondenserEquipmentOperationSchemes',
+        }
+    ),
+    'ConnectorLists': frozenset(
+        {
+            'ConnectorList',
+        }
+    ),
     'ConstructionNames': frozenset(
         {
             'Construction',
@@ -2341,16 +2456,37 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ThermostatSetpoint:SingleHeatingOrCooling',
         }
     ),
-    'ControllerLists': frozenset({'AirLoopHVAC:ControllerList'}),
-    'ControllerMechanicalVentNames': frozenset({'Controller:MechanicalVentilation'}),
+    'ControllerLists': frozenset(
+        {
+            'AirLoopHVAC:ControllerList',
+        }
+    ),
+    'ControllerMechanicalVentNames': frozenset(
+        {
+            'Controller:MechanicalVentilation',
+        }
+    ),
     'ControllerStandAloneEnergyRecoveryVentilator': frozenset(
-        {'ZoneHVAC:EnergyRecoveryVentilator:Controller'}
+        {
+            'ZoneHVAC:EnergyRecoveryVentilator:Controller',
+        }
     ),
-    'ConverterList': frozenset({'ElectricLoadCenter:Storage:Converter'}),
+    'ConverterList': frozenset(
+        {
+            'ElectricLoadCenter:Storage:Converter',
+        }
+    ),
     'CoolingCoilName': frozenset(
-        {'Coil:Cooling:Water', 'Coil:Cooling:Water:DetailedGeometry'}
+        {
+            'Coil:Cooling:Water',
+            'Coil:Cooling:Water:DetailedGeometry',
+        }
     ),
-    'CoolingCoilSystemName': frozenset({'CoilSystem:Cooling:DX'}),
+    'CoolingCoilSystemName': frozenset(
+        {
+            'CoilSystem:Cooling:DX',
+        }
+    ),
     'CoolingCoilsDX': frozenset(
         {
             'Coil:Cooling:DX:SingleSpeed',
@@ -2368,7 +2504,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'CoilSystem:Cooling:DX:HeatExchangerAssisted',
         }
     ),
-    'CoolingCoilsDXMultiSpeed': frozenset({'Coil:Cooling:DX:MultiSpeed'}),
+    'CoolingCoilsDXMultiSpeed': frozenset(
+        {
+            'Coil:Cooling:DX:MultiSpeed',
+        }
+    ),
     'CoolingCoilsDXSingleSpeed': frozenset(
         {
             'Coil:Cooling:DX:SingleSpeed',
@@ -2377,12 +2517,20 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'CoolingCoilsDXVarRefrigFlow': frozenset(
-        {'Coil:Cooling:DX:VariableRefrigerantFlow'}
+        {
+            'Coil:Cooling:DX:VariableRefrigerantFlow',
+        }
     ),
     'CoolingCoilsDXVarRefrigFlowFluidTemperatureControl': frozenset(
-        {'Coil:Cooling:DX:VariableRefrigerantFlow:FluidTemperatureControl'}
+        {
+            'Coil:Cooling:DX:VariableRefrigerantFlow:FluidTemperatureControl',
+        }
     ),
-    'CoolingCoilsDXVariableSpeed': frozenset({'Coil:Cooling:DX:VariableSpeed'}),
+    'CoolingCoilsDXVariableSpeed': frozenset(
+        {
+            'Coil:Cooling:DX:VariableSpeed',
+        }
+    ),
     'CoolingCoilsWater': frozenset(
         {
             'Coil:Cooling:Water',
@@ -2391,7 +2539,10 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'CoolingCoilsWaterNoHX': frozenset(
-        {'Coil:Cooling:Water', 'Coil:Cooling:Water:DetailedGeometry'}
+        {
+            'Coil:Cooling:Water',
+            'Coil:Cooling:Water:DetailedGeometry',
+        }
     ),
     'CoolingCoilsWaterToAirHP': frozenset(
         {
@@ -2400,7 +2551,9 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'CoolingCoilsWaterToAirVSHP': frozenset(
-        {'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit'}
+        {
+            'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit',
+        }
     ),
     'CoolingTowers': frozenset(
         {
@@ -2417,7 +2570,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'CoolingTower:VariableSpeed:Merkel',
         }
     ),
-    'DOASAirLoops': frozenset({'AirLoopHVAC:DedicatedOutdoorAirSystem'}),
+    'DOASAirLoops': frozenset(
+        {
+            'AirLoopHVAC:DedicatedOutdoorAirSystem',
+        }
+    ),
     'DOAToZonalUnit': frozenset(
         {
             'AirLoopHVAC:UnitarySystem',
@@ -2429,20 +2586,49 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ZoneHVAC:WaterToAirHeatPump',
         }
     ),
-    'DSOASpaceListNames': frozenset({'DesignSpecification:OutdoorAir:SpaceList'}),
+    'DSOASpaceListNames': frozenset(
+        {
+            'DesignSpecification:OutdoorAir:SpaceList',
+        }
+    ),
     'DXCoolingOperatingModeNames': frozenset(
-        {'Coil:Cooling:DX:CurveFit:OperatingMode'}
+        {
+            'Coil:Cooling:DX:CurveFit:OperatingMode',
+        }
     ),
     'DXCoolingPerformanceNames': frozenset(
-        {'Coil:Cooling:DX:CurveFit:Performance', 'Coil:DX:ASHRAE205:Performance'}
+        {
+            'Coil:Cooling:DX:CurveFit:Performance',
+            'Coil:DX:ASHRAE205:Performance',
+        }
     ),
-    'DXCoolingSpeedNames': frozenset({'Coil:Cooling:DX:CurveFit:Speed'}),
-    'DataMatrices': frozenset({'Matrix:TwoDimension'}),
+    'DXCoolingSpeedNames': frozenset(
+        {
+            'Coil:Cooling:DX:CurveFit:Speed',
+        }
+    ),
+    'DataMatrices': frozenset(
+        {
+            'Matrix:TwoDimension',
+        }
+    ),
     'DayScheduleNames': frozenset(
-        {'Schedule:Day:Hourly', 'Schedule:Day:Interval', 'Schedule:Day:List'}
+        {
+            'Schedule:Day:Hourly',
+            'Schedule:Day:Interval',
+            'Schedule:Day:List',
+        }
     ),
-    'DaylightReferencePointNames': frozenset({'Daylighting:ReferencePoint'}),
-    'DaylightingControlNames': frozenset({'Daylighting:Controls'}),
+    'DaylightReferencePointNames': frozenset(
+        {
+            'Daylighting:ReferencePoint',
+        }
+    ),
+    'DaylightingControlNames': frozenset(
+        {
+            'Daylighting:Controls',
+        }
+    ),
     'DemandManagerNames': frozenset(
         {
             'DemandManager:ElectricEquipment',
@@ -2453,17 +2639,29 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'DesiccantHXPerfData': frozenset(
-        {'HeatExchanger:Desiccant:BalancedFlow:PerformanceDataType1'}
+        {
+            'HeatExchanger:Desiccant:BalancedFlow:PerformanceDataType1',
+        }
     ),
     'DesignSpecificationAirTerminalSizingName': frozenset(
-        {'DesignSpecification:AirTerminal:Sizing'}
+        {
+            'DesignSpecification:AirTerminal:Sizing',
+        }
     ),
-    'DesignSpecificationOutdoorAirNames': frozenset({'DesignSpecification:OutdoorAir'}),
+    'DesignSpecificationOutdoorAirNames': frozenset(
+        {
+            'DesignSpecification:OutdoorAir',
+        }
+    ),
     'DesignSpecificationZoneAirDistributionNames': frozenset(
-        {'DesignSpecification:ZoneAirDistribution'}
+        {
+            'DesignSpecification:ZoneAirDistribution',
+        }
     ),
     'DesignSpecificationZoneHVACSizingName': frozenset(
-        {'DesignSpecification:ZoneHVAC:Sizing'}
+        {
+            'DesignSpecification:ZoneHVAC:Sizing',
+        }
     ),
     'DesuperHeatingCoilSources': frozenset(
         {
@@ -2485,7 +2683,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit',
         }
     ),
-    'EarthTubeParameterNames': frozenset({'ZoneEarthtube:Parameters'}),
+    'EarthTubeParameterNames': frozenset(
+        {
+            'ZoneEarthtube:Parameters',
+        }
+    ),
     'ElecStorageList': frozenset(
         {
             'ElectricLoadCenter:Storage:Battery',
@@ -2493,9 +2695,16 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ElectricLoadCenter:Storage:Simple',
         }
     ),
-    'ElectricEquipmentNames': frozenset({'ElectricEquipment'}),
+    'ElectricEquipmentNames': frozenset(
+        {
+            'ElectricEquipment',
+        }
+    ),
     'ErlProgramNames': frozenset(
-        {'EnergyManagementSystem:Program', 'EnergyManagementSystem:Subroutine'}
+        {
+            'EnergyManagementSystem:Program',
+            'EnergyManagementSystem:Subroutine',
+        }
     ),
     'EvapCoolerNames': frozenset(
         {
@@ -2506,19 +2715,61 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'EvaporativeCooler:Indirect:WetCoil',
         }
     ),
-    'ExteriorLightsNames': frozenset({'Exterior:Lights'}),
-    'ExternalNodeNames': frozenset({'AirflowNetwork:MultiZone:ExternalNode'}),
-    'FCAirSupNames': frozenset({'Generator:FuelCell:AirSupply'}),
-    'FCAuxHeatNames': frozenset({'Generator:FuelCell:AuxiliaryHeater'}),
-    'FCExhaustHXNames': frozenset(
-        {'Generator:FuelCell:ExhaustGasToWaterHeatExchanger'}
+    'ExteriorLightsNames': frozenset(
+        {
+            'Exterior:Lights',
+        }
     ),
-    'FCInverterNames': frozenset({'Generator:FuelCell:Inverter'}),
-    'FCPMNames': frozenset({'Generator:FuelCell:PowerModule'}),
-    'FCStackCoolerNames': frozenset({'Generator:FuelCell:StackCooler'}),
-    'FCStorageNames': frozenset({'Generator:FuelCell:ElectricalStorage'}),
-    'FCWaterSupNames': frozenset({'Generator:FuelCell:WaterSupply'}),
-    'FMUFileName': frozenset({'ExternalInterface:FunctionalMockupUnitImport'}),
+    'ExternalNodeNames': frozenset(
+        {
+            'AirflowNetwork:MultiZone:ExternalNode',
+        }
+    ),
+    'FCAirSupNames': frozenset(
+        {
+            'Generator:FuelCell:AirSupply',
+        }
+    ),
+    'FCAuxHeatNames': frozenset(
+        {
+            'Generator:FuelCell:AuxiliaryHeater',
+        }
+    ),
+    'FCExhaustHXNames': frozenset(
+        {
+            'Generator:FuelCell:ExhaustGasToWaterHeatExchanger',
+        }
+    ),
+    'FCInverterNames': frozenset(
+        {
+            'Generator:FuelCell:Inverter',
+        }
+    ),
+    'FCPMNames': frozenset(
+        {
+            'Generator:FuelCell:PowerModule',
+        }
+    ),
+    'FCStackCoolerNames': frozenset(
+        {
+            'Generator:FuelCell:StackCooler',
+        }
+    ),
+    'FCStorageNames': frozenset(
+        {
+            'Generator:FuelCell:ElectricalStorage',
+        }
+    ),
+    'FCWaterSupNames': frozenset(
+        {
+            'Generator:FuelCell:WaterSupply',
+        }
+    ),
+    'FMUFileName': frozenset(
+        {
+            'ExternalInterface:FunctionalMockupUnitImport',
+        }
+    ),
     'Fans': frozenset(
         {
             'Fan:ComponentModel',
@@ -2528,18 +2779,61 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Fan:VariableVolume',
         }
     ),
-    'FansCV': frozenset({'Fan:ConstantVolume'}),
-    'FansCVandOnOff': frozenset({'Fan:ConstantVolume', 'Fan:OnOff'}),
-    'FansCVandOnOffandVAV': frozenset(
-        {'Fan:ConstantVolume', 'Fan:OnOff', 'Fan:VariableVolume'}
+    'FansCV': frozenset(
+        {
+            'Fan:ConstantVolume',
+        }
     ),
-    'FansCVandVAV': frozenset({'Fan:ConstantVolume', 'Fan:VariableVolume'}),
-    'FansComponentModel': frozenset({'Fan:ComponentModel'}),
-    'FansOnOff': frozenset({'Fan:OnOff'}),
-    'FansOnOffandVAV': frozenset({'Fan:OnOff', 'Fan:VariableVolume'}),
-    'FansSystemModel': frozenset({'Fan:SystemModel'}),
-    'FansVAV': frozenset({'Fan:VariableVolume'}),
-    'FansZoneExhaust': frozenset({'Fan:ZoneExhaust'}),
+    'FansCVandOnOff': frozenset(
+        {
+            'Fan:ConstantVolume',
+            'Fan:OnOff',
+        }
+    ),
+    'FansCVandOnOffandVAV': frozenset(
+        {
+            'Fan:ConstantVolume',
+            'Fan:OnOff',
+            'Fan:VariableVolume',
+        }
+    ),
+    'FansCVandVAV': frozenset(
+        {
+            'Fan:ConstantVolume',
+            'Fan:VariableVolume',
+        }
+    ),
+    'FansComponentModel': frozenset(
+        {
+            'Fan:ComponentModel',
+        }
+    ),
+    'FansOnOff': frozenset(
+        {
+            'Fan:OnOff',
+        }
+    ),
+    'FansOnOffandVAV': frozenset(
+        {
+            'Fan:OnOff',
+            'Fan:VariableVolume',
+        }
+    ),
+    'FansSystemModel': frozenset(
+        {
+            'Fan:SystemModel',
+        }
+    ),
+    'FansVAV': frozenset(
+        {
+            'Fan:VariableVolume',
+        }
+    ),
+    'FansZoneExhaust': frozenset(
+        {
+            'Fan:ZoneExhaust',
+        }
+    ),
     'FlatPlatePVTParameters': frozenset(
         {
             'SolarCollectorPerformance:PhotovoltaicThermal:BIPVT',
@@ -2547,7 +2841,9 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'FlatPlateSolarCollectorParameters': frozenset(
-        {'SolarCollectorPerformance:FlatPlate'}
+        {
+            'SolarCollectorPerformance:FlatPlate',
+        }
     ),
     'FloorSurfaceNames': frozenset(
         {
@@ -2559,12 +2855,31 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'FluidAndGlycolNames': frozenset(
-        {'FluidProperties:GlycolConcentration', 'FluidProperties:Name'}
+        {
+            'FluidProperties:GlycolConcentration',
+            'FluidProperties:Name',
+        }
     ),
-    'FluidNames': frozenset({'FluidProperties:Name'}),
-    'FluidPropertyTemperatures': frozenset({'FluidProperties:Temperatures'}),
-    'GenFuelSupNames': frozenset({'Generator:FuelSupply'}),
-    'GeneratorLists': frozenset({'ElectricLoadCenter:Generators'}),
+    'FluidNames': frozenset(
+        {
+            'FluidProperties:Name',
+        }
+    ),
+    'FluidPropertyTemperatures': frozenset(
+        {
+            'FluidProperties:Temperatures',
+        }
+    ),
+    'GenFuelSupNames': frozenset(
+        {
+            'Generator:FuelSupply',
+        }
+    ),
+    'GeneratorLists': frozenset(
+        {
+            'ElectricLoadCenter:Generators',
+        }
+    ),
     'GeneratorNames': frozenset(
         {
             'Generator:CombustionTurbine',
@@ -2578,7 +2893,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'GlazedExtSubSurfNames': frozenset(
-        {'FenestrationSurface:Detailed', 'GlazedDoor', 'Window'}
+        {
+            'FenestrationSurface:Detailed',
+            'GlazedDoor',
+            'Window',
+        }
     ),
     'GlazingMaterialName': frozenset(
         {
@@ -2589,23 +2908,45 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'GroundHeatExchangerVerticalArrayNames': frozenset(
-        {'GroundHeatExchanger:Vertical:Array'}
+        {
+            'GroundHeatExchanger:Vertical:Array',
+        }
     ),
     'GroundHeatExchangerVerticalPropertiesNames': frozenset(
-        {'GroundHeatExchanger:Vertical:Properties'}
+        {
+            'GroundHeatExchanger:Vertical:Properties',
+        }
     ),
     'GroundHeatExchangerVerticalResponseFactorNames': frozenset(
-        {'GroundHeatExchanger:ResponseFactors'}
+        {
+            'GroundHeatExchanger:ResponseFactors',
+        }
     ),
     'GroundHeatExchangerVerticalSingleNames': frozenset(
-        {'GroundHeatExchanger:Vertical:Single'}
+        {
+            'GroundHeatExchanger:Vertical:Single',
+        }
     ),
     'GroundHeatExchangerVerticalSizingNames': frozenset(
-        {'GroundHeatExchanger:Vertical:Sizing:Rectangle'}
+        {
+            'GroundHeatExchanger:Vertical:Sizing:Rectangle',
+        }
     ),
-    'GroundSurfacesNames': frozenset({'SurfaceProperty:GroundSurfaces'}),
-    'HVACTemplateConstantVolumeZones': frozenset({'HVACTemplate:Zone:ConstantVolume'}),
-    'HVACTemplateDOASSystems': frozenset({'HVACTemplate:System:DedicatedOutdoorAir'}),
+    'GroundSurfacesNames': frozenset(
+        {
+            'SurfaceProperty:GroundSurfaces',
+        }
+    ),
+    'HVACTemplateConstantVolumeZones': frozenset(
+        {
+            'HVACTemplate:Zone:ConstantVolume',
+        }
+    ),
+    'HVACTemplateDOASSystems': frozenset(
+        {
+            'HVACTemplate:System:DedicatedOutdoorAir',
+        }
+    ),
     'HVACTemplateSystems': frozenset(
         {
             'HVACTemplate:System:ConstantVolume',
@@ -2627,23 +2968,39 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'HXAirToAirSensibleAndLatentNames': frozenset(
-        {'HeatExchanger:AirToAir:SensibleAndLatent'}
+        {
+            'HeatExchanger:AirToAir:SensibleAndLatent',
+        }
     ),
-    'HXDesiccantBalanced': frozenset({'HeatExchanger:Desiccant:BalancedFlow'}),
+    'HXDesiccantBalanced': frozenset(
+        {
+            'HeatExchanger:Desiccant:BalancedFlow',
+        }
+    ),
     'HeatPumpAirToWaterFuelFiredCoolingNames': frozenset(
-        {'HeatPump:AirToWater:FuelFired:Cooling'}
+        {
+            'HeatPump:AirToWater:FuelFired:Cooling',
+        }
     ),
     'HeatPumpAirToWaterFuelFiredHeatingNames': frozenset(
-        {'HeatPump:AirToWater:FuelFired:Heating'}
+        {
+            'HeatPump:AirToWater:FuelFired:Heating',
+        }
     ),
     'HeatPumpWaterHeaterDXCoilsPumped': frozenset(
-        {'Coil:WaterHeating:AirToWaterHeatPump:Pumped'}
+        {
+            'Coil:WaterHeating:AirToWaterHeatPump:Pumped',
+        }
     ),
     'HeatPumpWaterHeaterDXCoilsVariableSpeed': frozenset(
-        {'Coil:WaterHeating:AirToWaterHeatPump:VariableSpeed'}
+        {
+            'Coil:WaterHeating:AirToWaterHeatPump:VariableSpeed',
+        }
     ),
     'HeatPumpWaterHeaterDXCoilsWrapped': frozenset(
-        {'Coil:WaterHeating:AirToWaterHeatPump:Wrapped'}
+        {
+            'Coil:WaterHeating:AirToWaterHeatPump:Wrapped',
+        }
     ),
     'HeatingCoilName': frozenset(
         {
@@ -2653,26 +3010,68 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Coil:Heating:Water',
         }
     ),
-    'HeatingCoilSystemName': frozenset({'CoilSystem:Heating:DX'}),
-    'HeatingCoilsDX': frozenset(
-        {'Coil:Heating:DX:SingleSpeed', 'Coil:Heating:DX:VariableRefrigerantFlow'}
+    'HeatingCoilSystemName': frozenset(
+        {
+            'CoilSystem:Heating:DX',
+        }
     ),
-    'HeatingCoilsDXMultiSpeed': frozenset({'Coil:Heating:DX:MultiSpeed'}),
+    'HeatingCoilsDX': frozenset(
+        {
+            'Coil:Heating:DX:SingleSpeed',
+            'Coil:Heating:DX:VariableRefrigerantFlow',
+        }
+    ),
+    'HeatingCoilsDXMultiSpeed': frozenset(
+        {
+            'Coil:Heating:DX:MultiSpeed',
+        }
+    ),
     'HeatingCoilsDXSingleSpeed': frozenset(
-        {'Coil:Heating:DX:SingleSpeed', 'Coil:Heating:DX:VariableRefrigerantFlow'}
+        {
+            'Coil:Heating:DX:SingleSpeed',
+            'Coil:Heating:DX:VariableRefrigerantFlow',
+        }
     ),
     'HeatingCoilsDXVarRefrigFlow': frozenset(
-        {'Coil:Heating:DX:VariableRefrigerantFlow'}
+        {
+            'Coil:Heating:DX:VariableRefrigerantFlow',
+        }
     ),
     'HeatingCoilsDXVarRefrigFlowFluidTemperatureControl': frozenset(
-        {'Coil:Heating:DX:VariableRefrigerantFlow:FluidTemperatureControl'}
+        {
+            'Coil:Heating:DX:VariableRefrigerantFlow:FluidTemperatureControl',
+        }
     ),
-    'HeatingCoilsDXVariableSpeed': frozenset({'Coil:Heating:DX:VariableSpeed'}),
-    'HeatingCoilsDesuperheater': frozenset({'Coil:Heating:Desuperheater'}),
-    'HeatingCoilsElectric': frozenset({'Coil:Heating:Electric'}),
-    'HeatingCoilsElectricMultiStage': frozenset({'Coil:Heating:Electric:MultiStage'}),
-    'HeatingCoilsGasMultiStage': frozenset({'Coil:Heating:Gas:MultiStage'}),
-    'HeatingCoilsWater': frozenset({'Coil:Heating:Water'}),
+    'HeatingCoilsDXVariableSpeed': frozenset(
+        {
+            'Coil:Heating:DX:VariableSpeed',
+        }
+    ),
+    'HeatingCoilsDesuperheater': frozenset(
+        {
+            'Coil:Heating:Desuperheater',
+        }
+    ),
+    'HeatingCoilsElectric': frozenset(
+        {
+            'Coil:Heating:Electric',
+        }
+    ),
+    'HeatingCoilsElectricMultiStage': frozenset(
+        {
+            'Coil:Heating:Electric:MultiStage',
+        }
+    ),
+    'HeatingCoilsGasMultiStage': frozenset(
+        {
+            'Coil:Heating:Gas:MultiStage',
+        }
+    ),
+    'HeatingCoilsWater': frozenset(
+        {
+            'Coil:Heating:Water',
+        }
+    ),
     'HeatingCoilsWaterToAirHP': frozenset(
         {
             'Coil:Heating:WaterToAirHeatPump:EquationFit',
@@ -2680,15 +3079,36 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'HeatingCoilsWaterToAirVSHP': frozenset(
-        {'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit'}
+        {
+            'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit',
+        }
     ),
     'IceThermalStorageEquipment': frozenset(
-        {'ThermalStorage:Ice:Detailed', 'ThermalStorage:Ice:Simple'}
+        {
+            'ThermalStorage:Ice:Detailed',
+            'ThermalStorage:Ice:Simple',
+        }
     ),
-    'IndependentVariableListName': frozenset({'Table:IndependentVariableList'}),
-    'IndependentVariableName': frozenset({'Table:IndependentVariable'}),
-    'IntegratedHeatPumps': frozenset({'CoilSystem:IntegratedHeatPump:AirSource'}),
-    'InternalHeatSourceNames': frozenset({'ConstructionProperty:InternalHeatSource'}),
+    'IndependentVariableListName': frozenset(
+        {
+            'Table:IndependentVariableList',
+        }
+    ),
+    'IndependentVariableName': frozenset(
+        {
+            'Table:IndependentVariable',
+        }
+    ),
+    'IntegratedHeatPumps': frozenset(
+        {
+            'CoilSystem:IntegratedHeatPump:AirSource',
+        }
+    ),
+    'InternalHeatSourceNames': frozenset(
+        {
+            'ConstructionProperty:InternalHeatSource',
+        }
+    ),
     'InverterList': frozenset(
         {
             'ElectricLoadCenter:Inverter:FunctionOfPower',
@@ -2697,7 +3117,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ElectricLoadCenter:Inverter:Simple',
         }
     ),
-    'LightsNames': frozenset({'Lights'}),
+    'LightsNames': frozenset(
+        {
+            'Lights',
+        }
+    ),
     'MaterialName': frozenset(
         {
             'Material',
@@ -2717,12 +3141,30 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'MicroCHPParametersNames': frozenset(
-        {'Generator:MicroCHP:NonNormalizedParameters'}
+        {
+            'Generator:MicroCHP:NonNormalizedParameters',
+        }
     ),
-    'MicroTurbineGeneratorNames': frozenset({'Generator:MicroTurbine'}),
-    'MultivariateFunctions': frozenset({'Table:Lookup'}),
-    'OAControllerNames': frozenset({'Controller:OutdoorAir'}),
-    'OSCMNames': frozenset({'SurfaceProperty:OtherSideConditionsModel'}),
+    'MicroTurbineGeneratorNames': frozenset(
+        {
+            'Generator:MicroTurbine',
+        }
+    ),
+    'MultivariateFunctions': frozenset(
+        {
+            'Table:Lookup',
+        }
+    ),
+    'OAControllerNames': frozenset(
+        {
+            'Controller:OutdoorAir',
+        }
+    ),
+    'OSCMNames': frozenset(
+        {
+            'SurfaceProperty:OtherSideConditionsModel',
+        }
+    ),
     'OutFaceEnvNames': frozenset(
         {
             'BuildingSurface:Detailed',
@@ -2746,14 +3188,36 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Zone',
         }
     ),
-    'OutdoorAirMixers': frozenset({'OutdoorAir:Mixer'}),
-    'OutdoorAirNodeNames': frozenset({'OutdoorAir:Node'}),
-    'OutdoorAirUnitEquipmentLists': frozenset(
-        {'ZoneHVAC:OutdoorAirUnit:EquipmentList'}
+    'OutdoorAirMixers': frozenset(
+        {
+            'OutdoorAir:Mixer',
+        }
     ),
-    'PLHPCoolingNames': frozenset({'HeatPump:PlantLoop:EIR:Cooling'}),
-    'PLHPHeatingNames': frozenset({'HeatPump:PlantLoop:EIR:Heating'}),
-    'PVGeneratorNames': frozenset({'Generator:Photovoltaic'}),
+    'OutdoorAirNodeNames': frozenset(
+        {
+            'OutdoorAir:Node',
+        }
+    ),
+    'OutdoorAirUnitEquipmentLists': frozenset(
+        {
+            'ZoneHVAC:OutdoorAirUnit:EquipmentList',
+        }
+    ),
+    'PLHPCoolingNames': frozenset(
+        {
+            'HeatPump:PlantLoop:EIR:Cooling',
+        }
+    ),
+    'PLHPHeatingNames': frozenset(
+        {
+            'HeatPump:PlantLoop:EIR:Heating',
+        }
+    ),
+    'PVGeneratorNames': frozenset(
+        {
+            'Generator:Photovoltaic',
+        }
+    ),
     'PVModules': frozenset(
         {
             'PhotovoltaicPerformance:EquivalentOne-Diode',
@@ -2761,24 +3225,62 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'PhotovoltaicPerformance:Simple',
         }
     ),
-    'PeopleNames': frozenset({'People'}),
+    'PeopleNames': frozenset(
+        {
+            'People',
+        }
+    ),
     'PipingSystemUndergroundCircuitNames': frozenset(
-        {'PipingSystem:Underground:PipeCircuit'}
+        {
+            'PipingSystem:Underground:PipeCircuit',
+        }
     ),
     'PipingSystemUndergroundSegmentNames': frozenset(
-        {'PipingSystem:Underground:PipeSegment'}
+        {
+            'PipingSystem:Underground:PipeSegment',
+        }
     ),
     'PlantAndCondenserEquipmentLists': frozenset(
-        {'CondenserEquipmentList', 'PlantEquipmentList'}
+        {
+            'CondenserEquipmentList',
+            'PlantEquipmentList',
+        }
     ),
-    'PlantConnectors': frozenset({'Connector:Mixer', 'Connector:Splitter'}),
-    'PlantLoops': frozenset({'CondenserLoop', 'PlantLoop'}),
-    'PlantOperationSchemes': frozenset({'PlantEquipmentOperationSchemes'}),
+    'PlantConnectors': frozenset(
+        {
+            'Connector:Mixer',
+            'Connector:Splitter',
+        }
+    ),
+    'PlantLoops': frozenset(
+        {
+            'CondenserLoop',
+            'PlantLoop',
+        }
+    ),
+    'PlantOperationSchemes': frozenset(
+        {
+            'PlantEquipmentOperationSchemes',
+        }
+    ),
     'ProgramNames': frozenset(
-        {'EnergyManagementSystem:ProgramCallingManager', 'PythonPlugin:Instance'}
+        {
+            'EnergyManagementSystem:ProgramCallingManager',
+            'PythonPlugin:Instance',
+        }
     ),
-    'QuadvariateFunctions': frozenset({'Curve:QuadLinear', 'Table:Lookup'}),
-    'QuintvariateFunctions': frozenset({'Curve:QuintLinear', 'Table:Lookup'}),
+    'QuadvariateFunctions': frozenset(
+        {
+            'Curve:QuadLinear',
+            'Table:Lookup',
+        }
+    ),
+    'QuintvariateFunctions': frozenset(
+        {
+            'Curve:QuintLinear',
+            'Table:Lookup',
+        }
+    ),
     'RadiantDesignObject': frozenset(
         {
             'ZoneHVAC:Baseboard:RadiantConvective:Water:Design',
@@ -2786,7 +3288,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design',
         }
     ),
-    'RadiantGroupNames': frozenset({'ZoneHVAC:LowTemperatureRadiant:SurfaceGroup'}),
+    'RadiantGroupNames': frozenset(
+        {
+            'ZoneHVAC:LowTemperatureRadiant:SurfaceGroup',
+        }
+    ),
     'RadiantSurfaceNames': frozenset(
         {
             'BuildingSurface:Detailed',
@@ -2810,9 +3316,15 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'ReferenceCrackConditions': frozenset(
-        {'AirflowNetwork:MultiZone:ReferenceCrackConditions'}
+        {
+            'AirflowNetwork:MultiZone:ReferenceCrackConditions',
+        }
     ),
-    'RefrigerationAirChillerNames': frozenset({'Refrigeration:AirChiller'}),
+    'RefrigerationAirChillerNames': frozenset(
+        {
+            'Refrigeration:AirChiller',
+        }
+    ),
     'RefrigerationAllTypesCondenserNames': frozenset(
         {
             'Refrigeration:Condenser:AirCooled',
@@ -2822,10 +3334,15 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'RefrigerationAllTypesGasCoolerNames': frozenset(
-        {'Refrigeration:GasCooler:AirCooled'}
+        {
+            'Refrigeration:GasCooler:AirCooled',
+        }
     ),
     'RefrigerationCascadeCondenserAndSecondarySystemNames': frozenset(
-        {'Refrigeration:Condenser:Cascade', 'Refrigeration:SecondarySystem'}
+        {
+            'Refrigeration:Condenser:Cascade',
+            'Refrigeration:SecondarySystem',
+        }
     ),
     'RefrigerationCaseAndWalkInAndListNames': frozenset(
         {
@@ -2836,12 +3353,23 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'RefrigerationCaseAndWalkInNames': frozenset(
-        {'Refrigeration:AirChiller', 'Refrigeration:Case', 'Refrigeration:WalkIn'}
+        {
+            'Refrigeration:AirChiller',
+            'Refrigeration:Case',
+            'Refrigeration:WalkIn',
+        }
     ),
     'RefrigerationCompressorAndListNames': frozenset(
-        {'Refrigeration:Compressor', 'Refrigeration:CompressorList'}
+        {
+            'Refrigeration:Compressor',
+            'Refrigeration:CompressorList',
+        }
     ),
-    'RefrigerationCompressorNames': frozenset({'Refrigeration:Compressor'}),
+    'RefrigerationCompressorNames': frozenset(
+        {
+            'Refrigeration:Compressor',
+        }
+    ),
     'RefrigerationSecondarySystemAndCascadeCondenserAndTransferLoadListNames': frozenset(
         {
             'Refrigeration:Condenser:Cascade',
@@ -2849,22 +3377,48 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Refrigeration:TransferLoadList',
         }
     ),
-    'RefrigerationSubcoolerNames': frozenset({'Refrigeration:Subcooler'}),
+    'RefrigerationSubcoolerNames': frozenset(
+        {
+            'Refrigeration:Subcooler',
+        }
+    ),
     'RefrigerationSystemNames': frozenset(
-        {'Refrigeration:System', 'Refrigeration:TranscriticalSystem'}
+        {
+            'Refrigeration:System',
+            'Refrigeration:TranscriticalSystem',
+        }
     ),
     'ReturnPathComponentNames': frozenset(
-        {'AirLoopHVAC:ReturnPlenum', 'AirLoopHVAC:ZoneMixer'}
+        {
+            'AirLoopHVAC:ReturnPlenum',
+            'AirLoopHVAC:ZoneMixer',
+        }
     ),
-    'RoomAirNodeGains': frozenset({'RoomAir:Node:AirflowNetwork:InternalGains'}),
+    'RoomAirNodeGains': frozenset(
+        {
+            'RoomAir:Node:AirflowNetwork:InternalGains',
+        }
+    ),
     'RoomAirNodeHVACEquipment': frozenset(
-        {'RoomAir:Node:AirflowNetwork:HVACEquipment'}
+        {
+            'RoomAir:Node:AirflowNetwork:HVACEquipment',
+        }
     ),
     'RoomAirNodeSurfaceLists': frozenset(
-        {'RoomAir:Node:AirflowNetwork:AdjacentSurfaceList'}
+        {
+            'RoomAir:Node:AirflowNetwork:AdjacentSurfaceList',
+        }
     ),
-    'RoomAirNodes': frozenset({'RoomAir:Node'}),
-    'RoomAirflowNetworkNodes': frozenset({'RoomAir:Node:AirflowNetwork'}),
+    'RoomAirNodes': frozenset(
+        {
+            'RoomAir:Node',
+        }
+    ),
+    'RoomAirflowNetworkNodes': frozenset(
+        {
+            'RoomAir:Node:AirflowNetwork',
+        }
+    ),
     'RunPeriodsAndDesignDays': frozenset(
         {
             'RunPeriod',
@@ -2884,18 +3438,59 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Schedule:Year',
         }
     ),
-    'ScheduleTypeLimitsNames': frozenset({'ScheduleTypeLimits'}),
-    'SimpleCoils': frozenset({'Coil:Cooling:Water', 'Coil:Heating:Water'}),
-    'SizingPeriodWeatherFileDays': frozenset({'SizingPeriod:WeatherFileDays'}),
-    'SpaceAndSpaceListNames': frozenset({'Space', 'SpaceList'}),
-    'SpaceListNames': frozenset({'SpaceList'}),
-    'SpaceMixerNames': frozenset(
-        {'SpaceHVAC:ZoneEquipmentMixer', 'SpaceHVAC:ZoneReturnMixer'}
+    'ScheduleTypeLimitsNames': frozenset(
+        {
+            'ScheduleTypeLimits',
+        }
     ),
-    'SpaceNames': frozenset({'Space'}),
-    'SpaceSplitterNames': frozenset({'SpaceHVAC:ZoneEquipmentSplitter'}),
-    'SpectralDataSets': frozenset({'MaterialProperty:GlazingSpectralData'}),
-    'SpectrumDataNames': frozenset({'Site:SpectrumData'}),
+    'SimpleCoils': frozenset(
+        {
+            'Coil:Cooling:Water',
+            'Coil:Heating:Water',
+        }
+    ),
+    'SizingPeriodWeatherFileDays': frozenset(
+        {
+            'SizingPeriod:WeatherFileDays',
+        }
+    ),
+    'SpaceAndSpaceListNames': frozenset(
+        {
+            'Space',
+            'SpaceList',
+        }
+    ),
+    'SpaceListNames': frozenset(
+        {
+            'SpaceList',
+        }
+    ),
+    'SpaceMixerNames': frozenset(
+        {
+            'SpaceHVAC:ZoneEquipmentMixer',
+            'SpaceHVAC:ZoneReturnMixer',
+        }
+    ),
+    'SpaceNames': frozenset(
+        {
+            'Space',
+        }
+    ),
+    'SpaceSplitterNames': frozenset(
+        {
+            'SpaceHVAC:ZoneEquipmentSplitter',
+        }
+    ),
+    'SpectralDataSets': frozenset(
+        {
+            'MaterialProperty:GlazingSpectralData',
+        }
+    ),
+    'SpectrumDataNames': frozenset(
+        {
+            'Site:SpectrumData',
+        }
+    ),
     'SubSurfNames': frozenset(
         {
             'Door',
@@ -2908,7 +3503,10 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'SupplyPathComponentNames': frozenset(
-        {'AirLoopHVAC:SupplyPlenum', 'AirLoopHVAC:ZoneSplitter'}
+        {
+            'AirLoopHVAC:SupplyPlenum',
+            'AirLoopHVAC:ZoneSplitter',
+        }
     ),
     'SurfAndSubSurfNames': frozenset(
         {
@@ -2946,7 +3544,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea',
         }
     ),
-    'SurfaceLocalEnvironmentNames': frozenset({'SurfaceProperty:LocalEnvironment'}),
+    'SurfaceLocalEnvironmentNames': frozenset(
+        {
+            'SurfaceProperty:LocalEnvironment',
+        }
+    ),
     'SurfaceNames': frozenset(
         {
             'BuildingSurface:Detailed',
@@ -2965,9 +3567,21 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Wall:Underground',
         }
     ),
-    'SurfacePropUnderWaterNames': frozenset({'SurfaceProperty:Underwater'}),
-    'SurroundingSurfacesNames': frozenset({'SurfaceProperty:SurroundingSurfaces'}),
-    'SystemAvailabilityManagerLists': frozenset({'AvailabilityManagerAssignmentList'}),
+    'SurfacePropUnderWaterNames': frozenset(
+        {
+            'SurfaceProperty:Underwater',
+        }
+    ),
+    'SurroundingSurfacesNames': frozenset(
+        {
+            'SurfaceProperty:SurroundingSurfaces',
+        }
+    ),
+    'SystemAvailabilityManagerLists': frozenset(
+        {
+            'AvailabilityManagerAssignmentList',
+        }
+    ),
     'SystemAvailabilityManagers': frozenset(
         {
             'AvailabilityManager:DifferentialThermostat',
@@ -2992,7 +3606,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeatingOrCooling',
         }
     ),
-    'ThermalStorageSizing': frozenset({'ThermalStorage:Sizing'}),
+    'ThermalStorageSizing': frozenset(
+        {
+            'ThermalStorage:Sizing',
+        }
+    ),
     'ThermalStorageWaterNames': frozenset(
         {
             'ThermalStorage:ChilledWater:Mixed',
@@ -3000,12 +3618,28 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ThermalStorage:HotWater:Stratified',
         }
     ),
-    'ThermostatOffsetFaults': frozenset({'FaultModel:ThermostatOffset'}),
-    'TransformerNames': frozenset({'ElectricLoadCenter:Transformer'}),
-    'TrivariateFunctions': frozenset(
-        {'Curve:ChillerPartLoadWithLift', 'Curve:Triquadratic', 'Table:Lookup'}
+    'ThermostatOffsetFaults': frozenset(
+        {
+            'FaultModel:ThermostatOffset',
+        }
     ),
-    'UTSCNames': frozenset({'SolarCollector:UnglazedTranspired'}),
+    'TransformerNames': frozenset(
+        {
+            'ElectricLoadCenter:Transformer',
+        }
+    ),
+    'TrivariateFunctions': frozenset(
+        {
+            'Curve:ChillerPartLoadWithLift',
+            'Curve:Triquadratic',
+            'Table:Lookup',
+        }
+    ),
+    'UTSCNames': frozenset(
+        {
+            'SolarCollector:UnglazedTranspired',
+        }
+    ),
     'UndisturbedGroundTempModels': frozenset(
         {
             'Site:GroundTemperature:Undisturbed:FiniteDifference',
@@ -3013,7 +3647,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Site:GroundTemperature:Undisturbed:Xing',
         }
     ),
-    'UnitarySystemPerformanceNames': frozenset({'UnitarySystemPerformance:Multispeed'}),
+    'UnitarySystemPerformanceNames': frozenset(
+        {
+            'UnitarySystemPerformance:Multispeed',
+        }
+    ),
     'UnivariateFunctions': frozenset(
         {
             'Curve:Cubic',
@@ -3032,7 +3670,9 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'UserConvectionInsideModels': frozenset(
-        {'SurfaceConvectionAlgorithm:Inside:UserCurve'}
+        {
+            'SurfaceConvectionAlgorithm:Inside:UserCurve',
+        }
     ),
     'UserConvectionModels': frozenset(
         {
@@ -3041,31 +3681,99 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
         }
     ),
     'UserConvectionOutsideModels': frozenset(
-        {'SurfaceConvectionAlgorithm:Outside:UserCurve'}
+        {
+            'SurfaceConvectionAlgorithm:Outside:UserCurve',
+        }
     ),
-    'UserDefinedCoil': frozenset({'Coil:UserDefined'}),
-    'UtilityCostTariffs': frozenset({'UtilityCost:Tariff'}),
+    'UserDefinedCoil': frozenset(
+        {
+            'Coil:UserDefined',
+        }
+    ),
+    'UtilityCostTariffs': frozenset(
+        {
+            'UtilityCost:Tariff',
+        }
+    ),
     'VariableSpeedTowerCoefficient': frozenset(
-        {'CoolingTowerPerformance:CoolTools', 'CoolingTowerPerformance:YorkCalc'}
+        {
+            'CoolingTowerPerformance:CoolTools',
+            'CoolingTowerPerformance:YorkCalc',
+        }
     ),
-    'VentSlabGroupNames': frozenset({'ZoneHVAC:VentilatedSlab:SlabGroup'}),
+    'VentSlabGroupNames': frozenset(
+        {
+            'ZoneHVAC:VentilatedSlab:SlabGroup',
+        }
+    ),
     'VentilationNames': frozenset(
-        {'ZoneVentilation:DesignFlowRate', 'ZoneVentilation:WindandStackOpenArea'}
+        {
+            'ZoneVentilation:DesignFlowRate',
+            'ZoneVentilation:WindandStackOpenArea',
+        }
     ),
-    'WPCSetNames': frozenset({'AirflowNetwork:MultiZone:WindPressureCoefficientArray'}),
+    'WPCSetNames': frozenset(
+        {
+            'AirflowNetwork:MultiZone:WindPressureCoefficientArray',
+        }
+    ),
     'WPCValueNames': frozenset(
-        {'AirflowNetwork:MultiZone:WindPressureCoefficientValues'}
+        {
+            'AirflowNetwork:MultiZone:WindPressureCoefficientValues',
+        }
     ),
-    'WWHPCoolingNames': frozenset({'HeatPump:WaterToWater:EquationFit:Cooling'}),
-    'WWHPHeatingNames': frozenset({'HeatPump:WaterToWater:EquationFit:Heating'}),
-    'WaterCoilControllers': frozenset({'Controller:WaterCoil'}),
-    'WaterHeaterMixedNames': frozenset({'WaterHeater:Mixed'}),
-    'WaterHeaterNames': frozenset({'WaterHeater:Mixed', 'WaterHeater:Stratified'}),
-    'WaterHeaterStratifiedNames': frozenset({'WaterHeater:Stratified'}),
-    'WaterStorageTankNames': frozenset({'WaterUse:Storage'}),
-    'WaterUseEquipmentNames': frozenset({'WaterUse:Equipment'}),
-    'WeekScheduleNames': frozenset({'Schedule:Week:Compact', 'Schedule:Week:Daily'}),
-    'WindowComplexShades': frozenset({'WindowMaterial:ComplexShade'}),
+    'WWHPCoolingNames': frozenset(
+        {
+            'HeatPump:WaterToWater:EquationFit:Cooling',
+        }
+    ),
+    'WWHPHeatingNames': frozenset(
+        {
+            'HeatPump:WaterToWater:EquationFit:Heating',
+        }
+    ),
+    'WaterCoilControllers': frozenset(
+        {
+            'Controller:WaterCoil',
+        }
+    ),
+    'WaterHeaterMixedNames': frozenset(
+        {
+            'WaterHeater:Mixed',
+        }
+    ),
+    'WaterHeaterNames': frozenset(
+        {
+            'WaterHeater:Mixed',
+            'WaterHeater:Stratified',
+        }
+    ),
+    'WaterHeaterStratifiedNames': frozenset(
+        {
+            'WaterHeater:Stratified',
+        }
+    ),
+    'WaterStorageTankNames': frozenset(
+        {
+            'WaterUse:Storage',
+        }
+    ),
+    'WaterUseEquipmentNames': frozenset(
+        {
+            'WaterUse:Equipment',
+        }
+    ),
+    'WeekScheduleNames': frozenset(
+        {
+            'Schedule:Week:Compact',
+            'Schedule:Week:Daily',
+        }
+    ),
+    'WindowComplexShades': frozenset(
+        {
+            'WindowMaterial:ComplexShade',
+        }
+    ),
     'WindowEquivalentLayerMaterialNames': frozenset(
         {
             'WindowMaterial:Blind:EquivalentLayer',
@@ -3076,26 +3784,74 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'WindowMaterial:Shade:EquivalentLayer',
         }
     ),
-    'WindowFrameAndDividerNames': frozenset({'WindowProperty:FrameAndDivider'}),
-    'WindowGapDeflectionStates': frozenset({'WindowGap:DeflectionState'}),
-    'WindowGapSupportPillars': frozenset({'WindowGap:SupportPillar'}),
+    'WindowFrameAndDividerNames': frozenset(
+        {
+            'WindowProperty:FrameAndDivider',
+        }
+    ),
+    'WindowGapDeflectionStates': frozenset(
+        {
+            'WindowGap:DeflectionState',
+        }
+    ),
+    'WindowGapSupportPillars': frozenset(
+        {
+            'WindowGap:SupportPillar',
+        }
+    ),
     'WindowGasAndGasMixtures': frozenset(
-        {'WindowMaterial:Gas', 'WindowMaterial:GasMixture'}
+        {
+            'WindowMaterial:Gas',
+            'WindowMaterial:GasMixture',
+        }
     ),
-    'WindowShadeControlNames': frozenset({'WindowShadingControl'}),
+    'WindowShadeControlNames': frozenset(
+        {
+            'WindowShadingControl',
+        }
+    ),
     'WindowShadesScreensAndBlinds': frozenset(
-        {'WindowMaterial:Blind', 'WindowMaterial:Screen', 'WindowMaterial:Shade'}
+        {
+            'WindowMaterial:Blind',
+            'WindowMaterial:Screen',
+            'WindowMaterial:Shade',
+        }
     ),
-    'WindowThermalModelParameters': frozenset({'WindowThermalModel:Params'}),
+    'WindowThermalModelParameters': frozenset(
+        {
+            'WindowThermalModel:Params',
+        }
+    ),
     'ZoneAndZoneListAndSpaceAndSpaceListNames': frozenset(
-        {'Space', 'SpaceList', 'Zone', 'ZoneList'}
+        {
+            'Space',
+            'SpaceList',
+            'Zone',
+            'ZoneList',
+        }
     ),
-    'ZoneAndZoneListNames': frozenset({'Zone', 'ZoneList'}),
-    'ZoneControlHumidistatNames': frozenset({'ZoneControl:Humidistat'}),
+    'ZoneAndZoneListNames': frozenset(
+        {
+            'Zone',
+            'ZoneList',
+        }
+    ),
+    'ZoneControlHumidistatNames': frozenset(
+        {
+            'ZoneControl:Humidistat',
+        }
+    ),
     'ZoneControlThermostaticNames': frozenset(
-        {'ZoneControl:Thermostat', 'ZoneControl:Thermostat:StagedDualSetpoint'}
+        {
+            'ZoneControl:Thermostat',
+            'ZoneControl:Thermostat:StagedDualSetpoint',
+        }
     ),
-    'ZoneEquipmentLists': frozenset({'ZoneHVAC:EquipmentList'}),
+    'ZoneEquipmentLists': frozenset(
+        {
+            'ZoneHVAC:EquipmentList',
+        }
+    ),
     'ZoneEquipmentNames': frozenset(
         {
             'AirLoopHVAC:UnitarySystem',
@@ -3134,13 +3890,35 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ZoneHVAC:WindowAirConditioner',
         }
     ),
-    'ZoneListNames': frozenset({'ZoneList'}),
-    'ZoneLocalEnvironmentNames': frozenset({'ZoneProperty:LocalEnvironment'}),
-    'ZoneMixers': frozenset({'AirLoopHVAC:ZoneMixer'}),
-    'ZoneNames': frozenset({'Zone'}),
-    'ZoneTerminalUnitListNames': frozenset({'ZoneTerminalUnitList'}),
+    'ZoneListNames': frozenset(
+        {
+            'ZoneList',
+        }
+    ),
+    'ZoneLocalEnvironmentNames': frozenset(
+        {
+            'ZoneProperty:LocalEnvironment',
+        }
+    ),
+    'ZoneMixers': frozenset(
+        {
+            'AirLoopHVAC:ZoneMixer',
+        }
+    ),
+    'ZoneNames': frozenset(
+        {
+            'Zone',
+        }
+    ),
+    'ZoneTerminalUnitListNames': frozenset(
+        {
+            'ZoneTerminalUnitList',
+        }
+    ),
     'ZoneTerminalUnitNames': frozenset(
-        {'ZoneHVAC:TerminalUnit:VariableRefrigerantFlow'}
+        {
+            'ZoneHVAC:TerminalUnit:VariableRefrigerantFlow',
+        }
     ),
     'validBranchEquipmentNames': frozenset(
         {

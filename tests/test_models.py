@@ -300,6 +300,123 @@ def test_epjson_save_load(tmp_path):
     assert len(loaded.all_of_type('Version')) == 1
 
 
+def test_rename_to_existing_name_raises():
+    """Renaming an object to a name already taken by another object must raise."""
+    from idfpy import IDF
+    from idfpy.models.schedules import ScheduleCompact
+
+    idf = IDF()
+    idf.add(ScheduleCompact(name='Sched_A'))
+    idf.add(ScheduleCompact(name='Sched_B'))
+
+    sched_a = idf.get('Schedule:Compact', 'Sched_A')
+    assert sched_a is not None
+    with pytest.raises(ValueError, match='already exists'):
+        sched_a.name = 'Sched_B'
+
+    assert idf.get('Schedule:Compact', 'Sched_A') is sched_a
+    assert idf.get('Schedule:Compact', 'Sched_B') is not sched_a
+
+
+def test_add_nonstandard_provider_field_fluid_name():
+    """FluidPropertiesName uses 'fluid_name' as provider; add() must index by it."""
+    from idfpy import IDF
+    from idfpy.models.fluids import FluidPropertiesName
+
+    idf = IDF()
+    obj = FluidPropertiesName(fluid_name='R410a', fluid_type='Refrigerant')
+    idf.add(obj)
+
+    assert idf.get('FluidProperties:Name', 'R410a') is obj
+    assert obj._idf_obj_key == 'R410a'
+
+
+def test_add_nonstandard_provider_field_coil_name():
+    """AirflowNetworkDistributionComponentCoil uses 'coil_name' as provider."""
+    from idfpy import IDF
+    from idfpy.models.misc import AirflowNetworkDistributionComponentCoil
+
+    idf = IDF()
+    obj = AirflowNetworkDistributionComponentCoil(
+        coil_name='MyCoil',
+        coil_object_type='Coil:Cooling:DX:SingleSpeed',
+        air_path_length=0.5,
+        air_path_hydraulic_diameter=0.1,
+    )
+    idf.add(obj)
+
+    assert idf.get('AirflowNetwork:Distribution:Component:Coil', 'MyCoil') is obj
+    assert obj._idf_obj_key == 'MyCoil'
+
+
+def test_add_nonstandard_provider_field_fan_name():
+    """AirflowNetworkDistributionComponentFan uses 'fan_name' as provider."""
+    from idfpy import IDF
+    from idfpy.models.misc import AirflowNetworkDistributionComponentFan
+
+    idf = IDF()
+    obj = AirflowNetworkDistributionComponentFan(
+        fan_name='MyFan',
+        supply_fan_object_type='Fan:ConstantVolume',
+    )
+    idf.add(obj)
+
+    assert idf.get('AirflowNetwork:Distribution:Component:Fan', 'MyFan') is obj
+    assert obj._idf_obj_key == 'MyFan'
+
+
+def test_provider_rename_from_none():
+    """Setting a provider field from None to a value must update the index key."""
+    from idfpy import IDF
+    from idfpy.models.room_air import RoomAirNode
+
+    idf = IDF()
+    node = RoomAirNode(
+        name=None,
+        node_type='Control',
+        zone_name='Zone1',
+        height_of_nodal_control_volume_center=1.5,
+    )
+    idf.add(node)
+
+    # Initially auto-keyed
+    assert node._idf_obj_key == '_0'
+    assert idf.get('RoomAir:Node', '_0') is node
+
+    # Assign a real name
+    node.name = 'MyNode'
+
+    assert node._idf_obj_key == 'MyNode'
+    assert idf.get('RoomAir:Node', 'MyNode') is node
+    assert idf.get('RoomAir:Node', '_0') is None
+
+
+def test_provider_rename_from_none_conflict_raises():
+    """Renaming from None to an existing name must raise."""
+    from idfpy import IDF
+    from idfpy.models.room_air import RoomAirNode
+
+    idf = IDF()
+    idf.add(
+        RoomAirNode(
+            name='Existing',
+            node_type='Control',
+            zone_name='Zone1',
+            height_of_nodal_control_volume_center=1.5,
+        )
+    )
+    node2 = RoomAirNode(
+        name=None,
+        node_type='Floor',
+        zone_name='Zone1',
+        height_of_nodal_control_volume_center=0.0,
+    )
+    idf.add(node2)
+
+    with pytest.raises(ValueError, match='already exists'):
+        node2.name = 'Existing'
+
+
 def test_actual_idf_file(tmp_path):
     from pathlib import Path
 

@@ -7,7 +7,7 @@ Group: Plant Heating and Cooling Equipment
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -30,6 +30,13 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .curves import CurveQuadLinear
+    from .electric_load import GeneratorMicroTurbine
+    from .misc import TableLookup
+    from .node_branch import OutdoorAirNode
+    from .thermal_zones import Zone
+
 
 class BoilerHotWater(IDFBaseModel):
     """This boiler model is an adaptation of the empirical model from the Building
@@ -39,6 +46,7 @@ class BoilerHotWater(IDFBaseModel):
     curve name input blank."""
 
     _idf_object_type: ClassVar[str] = 'Boiler:HotWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: Literal[
         'Coal',
@@ -132,6 +140,7 @@ class BoilerSteam(IDFBaseModel):
     as follows: N9=1, N10=0, N11=0"""
 
     _idf_object_type: ClassVar[str] = 'Boiler:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fuel_type: Literal[
         'Coal',
@@ -190,6 +199,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     to connect the source water to the evaporator or condenser side."""
 
     _idf_object_type: ClassVar[str] = 'CentralHeatPumpSystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_method: Literal['', 'SmartMixing'] | None = Field(default='SmartMixing')
     cooling_loop_inlet_node_name: str = Field(...)
@@ -463,7 +473,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_1_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_1_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_1
         if not v:
             return None
@@ -483,7 +495,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_2_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_2_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_2
         if not v:
             return None
@@ -503,7 +517,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_performance_component_3_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_performance_component_3_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_performance_component_name_3
         if not v:
             return None
@@ -523,7 +539,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_4_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_4_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_4
         if not v:
             return None
@@ -543,7 +561,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_models_performance_component_5_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_models_performance_component_5_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_models_performance_component_name_5
         if not v:
             return None
@@ -563,7 +583,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_6_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_6_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_6
         if not v:
             return None
@@ -583,7 +605,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_7_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_7_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_7
         if not v:
             return None
@@ -603,7 +627,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_8_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_8_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_8
         if not v:
             return None
@@ -623,7 +649,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_heater_modules_performance_component_9_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_performance_component_9_ref(
+        self,
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_9
         if not v:
             return None
@@ -645,7 +673,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_10_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_10
         if not v:
             return None
@@ -667,7 +695,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_11_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_11
         if not v:
             return None
@@ -689,7 +717,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_12_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_12
         if not v:
             return None
@@ -711,7 +739,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_13_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_13
         if not v:
             return None
@@ -733,7 +761,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_14_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_14
         if not v:
             return None
@@ -755,7 +783,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_15_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_15
         if not v:
             return None
@@ -777,7 +805,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_16_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_16
         if not v:
             return None
@@ -799,7 +827,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_17_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_17
         if not v:
             return None
@@ -821,7 +849,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_18_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_18
         if not v:
             return None
@@ -845,7 +873,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_19_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_19
         if not v:
             return None
@@ -867,7 +895,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_performance_component_20_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ChillerHeaterPerformanceElectricEIR | None:
         v = self.chiller_heater_modules_performance_component_name_20
         if not v:
             return None
@@ -894,6 +922,7 @@ class ChillerAbsorption(IDFBaseModel):
     polynomial equations. Two sets of coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Absorption'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -991,6 +1020,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     part-load ratio, condenser temperature, and chilled water temperature."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Absorption:Indirect'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -1242,6 +1272,7 @@ class ChillerCombustionTurbine(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:CombustionTurbine'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -1435,6 +1466,7 @@ class ChillerConstantCOP(IDFBaseModel):
     Chiller where performance data is not available."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:ConstantCOP'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -1540,6 +1572,7 @@ class ChillerElectric(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -1717,6 +1750,7 @@ class ChillerElectricASHRAE205(IDFBaseModel):
     for chillers (Representation Specification RS0001)."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:ASHRAE205'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     representation_file_name: str = Field(
         ...,
@@ -1826,7 +1860,7 @@ class ChillerElectricASHRAE205(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_zone(self) -> IDFBaseModel | None:
+    def ambient_temperature_zone(self) -> Zone | None:
         v = self.ambient_temperature_zone_name
         if not v:
             return None
@@ -1842,6 +1876,7 @@ class ChillerElectricEIR(IDFBaseModel):
     modeled using three polynomial equations. Three curves objects are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:EIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -2186,6 +2221,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     polynomial equations. Three curve objects are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:Electric:ReformulatedEIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -2481,6 +2517,7 @@ class ChillerEngineDriven(IDFBaseModel):
     coefficients are required."""
 
     _idf_object_type: ClassVar[str] = 'Chiller:EngineDriven'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     condenser_type: (
         Literal['', 'AirCooled', 'EvaporativelyCooled', 'WaterCooled'] | None
@@ -2726,6 +2763,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     to DOE-2"""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeater:Absorption:DirectFired'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
         default='Autosize', json_schema_extra={'units': 'W'}
@@ -3024,6 +3062,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     DOE-2"""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeater:Absorption:DoubleEffect'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     nominal_cooling_capacity: float | Literal['', 'Autosize'] | None = Field(
         default='Autosize', json_schema_extra={'units': 'W'}
@@ -3304,7 +3343,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def exhaust_source_object(self) -> IDFBaseModel | None:
+    def exhaust_source_object(self) -> GeneratorMicroTurbine | None:
         v = self.exhaust_source_object_name
         if not v:
             return None
@@ -3323,6 +3362,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     required."""
 
     _idf_object_type: ClassVar[str] = 'ChillerHeaterPerformance:Electric:EIR'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     reference_cooling_mode_evaporator_capacity: float | Literal['Autosize'] = Field(
         ..., json_schema_extra={'units': 'W'}
@@ -3568,6 +3608,7 @@ class DistrictCooling(IDFBaseModel):
     """Centralized source of chilled water, such as a district cooling system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     chilled_water_inlet_node_name: str = Field(...)
     chilled_water_outlet_node_name: str = Field(...)
@@ -3597,6 +3638,7 @@ class DistrictHeatingSteam(IDFBaseModel):
     """Centralized source of Steam, such as a district heating system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictHeating:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     steam_inlet_node_name: str = Field(...)
     steam_outlet_node_name: str = Field(...)
@@ -3626,6 +3668,7 @@ class DistrictHeatingWater(IDFBaseModel):
     """Centralized source of hot water, such as a district heating system."""
 
     _idf_object_type: ClassVar[str] = 'DistrictHeating:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hot_water_inlet_node_name: str = Field(...)
     hot_water_outlet_node_name: str = Field(...)
@@ -3656,6 +3699,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     with single- or variable speed compressors."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name_heating: ScheduleNamesRef | None = Field(
         default=None,
@@ -4878,6 +4922,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     models."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater:FuelFired:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5078,7 +5123,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     )
 
     @property
-    def air_source_node(self) -> IDFBaseModel | None:
+    def air_source_node(self) -> OutdoorAirNode | None:
         v = self.air_source_node_name
         if not v:
             return None
@@ -5088,7 +5133,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
     @property
-    def companion_heating_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heating_heat_pump(self) -> HeatPumpAirToWaterFuelFiredHeating | None:
         v = self.companion_heating_heat_pump_name
         if not v:
             return None
@@ -5169,6 +5214,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     models."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:AirToWater:FuelFired:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5407,7 +5453,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     )
 
     @property
-    def air_source_node(self) -> IDFBaseModel | None:
+    def air_source_node(self) -> OutdoorAirNode | None:
         v = self.air_source_node_name
         if not v:
             return None
@@ -5417,7 +5463,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['OutdoorAirNodeNames'])
 
     @property
-    def companion_cooling_heat_pump(self) -> IDFBaseModel | None:
+    def companion_cooling_heat_pump(self) -> HeatPumpAirToWaterFuelFiredCooling | None:
         v = self.companion_cooling_heat_pump_name
         if not v:
             return None
@@ -5507,6 +5553,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     """An EIR formulated water to water heat pump model, cooling operation."""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:PlantLoop:EIR:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_side_inlet_node_name: str = Field(...)
     load_side_outlet_node_name: str = Field(...)
@@ -5669,7 +5716,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     )
 
     @property
-    def companion_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heat_pump(self) -> HeatPumpPlantLoopEIRHeating | None:
         v = self.companion_heat_pump_name
         if not v:
             return None
@@ -5771,6 +5818,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     """An EIR formulated water to water heat pump model, heating operation"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:PlantLoop:EIR:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     load_side_inlet_node_name: str = Field(...)
     load_side_outlet_node_name: str = Field(...)
@@ -5988,7 +6036,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     )
 
     @property
-    def companion_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heat_pump(self) -> HeatPumpPlantLoopEIRCooling | None:
         v = self.companion_heat_pump_name
         if not v:
             return None
@@ -6134,6 +6182,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
     """simple water-water heat pump curve-fit model"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:WaterToWater:EquationFit:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6179,7 +6228,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.cooling_capacity_curve_name
         if not v:
             return None
@@ -6189,7 +6238,7 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def cooling_compressor_power_curve(self) -> IDFBaseModel | None:
+    def cooling_compressor_power_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.cooling_compressor_power_curve_name
         if not v:
             return None
@@ -6199,7 +6248,9 @@ class HeatPumpWaterToWaterEquationFitCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def companion_heating_heat_pump(self) -> IDFBaseModel | None:
+    def companion_heating_heat_pump(
+        self,
+    ) -> HeatPumpWaterToWaterEquationFitHeating | None:
         v = self.companion_heating_heat_pump_name
         if not v:
             return None
@@ -6213,6 +6264,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
     """simple water-water hp curve-fit model"""
 
     _idf_object_type: ClassVar[str] = 'HeatPump:WaterToWater:EquationFit:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6254,7 +6306,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
     )
 
     @property
-    def heating_capacity_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_capacity_curve_name
         if not v:
             return None
@@ -6264,7 +6316,7 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def heating_compressor_power_curve(self) -> IDFBaseModel | None:
+    def heating_compressor_power_curve(self) -> CurveQuadLinear | TableLookup | None:
         v = self.heating_compressor_power_curve_name
         if not v:
             return None
@@ -6274,7 +6326,9 @@ class HeatPumpWaterToWaterEquationFitHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def companion_cooling_heat_pump(self) -> IDFBaseModel | None:
+    def companion_cooling_heat_pump(
+        self,
+    ) -> HeatPumpWaterToWaterEquationFitCooling | None:
         v = self.companion_cooling_heat_pump_name
         if not v:
             return None
@@ -6290,6 +6344,7 @@ class HeatPumpWaterToWaterParameterEstimationCooling(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatPump:WaterToWater:ParameterEstimation:Cooling'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6350,6 +6405,7 @@ class HeatPumpWaterToWaterParameterEstimationHeating(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'HeatPump:WaterToWater:ParameterEstimation:Heating'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     source_side_inlet_node_name: str = Field(...)
     source_side_outlet_node_name: str = Field(...)
@@ -6412,6 +6468,7 @@ class PlantComponentTemperatureSource(IDFBaseModel):
     system"""
 
     _idf_object_type: ClassVar[str] = 'PlantComponent:TemperatureSource'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Component Name'})
     inlet_node: str = Field(
         ..., json_schema_extra={'note': 'Name of the source inlet node'}

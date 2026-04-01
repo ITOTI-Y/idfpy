@@ -7,7 +7,7 @@ Group: Setpoint Managers
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -19,6 +19,12 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .air_distribution import AirLoopHVAC
+    from .curves import CurveQuadLinear
+    from .misc import TableLookup
+    from .thermal_zones import Zone
+
 
 class SetpointManagerColdest(IDFBaseModel):
     """This SetpointManager is used in dual duct systems to reset the setpoint
@@ -27,6 +33,7 @@ class SetpointManagerColdest(IDFBaseModel):
     air in the cooling supply duct."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:Coldest'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
@@ -50,7 +57,7 @@ class SetpointManagerColdest(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -66,6 +73,7 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
     place boundary conditions on the setpoint value."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:CondenserEnteringReset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     default_condenser_entering_water_temperature_schedule_name: ScheduleNamesRef = Field(
@@ -110,7 +118,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_design_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_design_wetbulb_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.minimum_design_wetbulb_temperature_curve_name
         if not v:
             return None
@@ -120,7 +130,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def minimum_outside_air_wetbulb_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_outside_air_wetbulb_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.minimum_outside_air_wetbulb_temperature_curve_name
         if not v:
             return None
@@ -130,7 +142,9 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def optimized_cond_entering_water_temperature_curve(self) -> IDFBaseModel | None:
+    def optimized_cond_entering_water_temperature_curve(
+        self,
+    ) -> CurveQuadLinear | TableLookup | None:
         v = self.optimized_cond_entering_water_temperature_curve_name
         if not v:
             return None
@@ -145,6 +159,7 @@ class SetpointManagerCondenserEnteringResetIdeal(IDFBaseModel):
     temperature setpoint for a given timestep."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:CondenserEnteringReset:Ideal'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     minimum_lift: float | None = Field(
@@ -166,6 +181,7 @@ class SetpointManagerFollowGroundTemperature(IDFBaseModel):
     condenser or plant loops using some type of ground heat exchanger."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:FollowGroundTemperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: (
         Literal['', 'MaximumTemperature', 'MinimumTemperature', 'Temperature'] | None
@@ -200,6 +216,7 @@ class SetpointManagerFollowOutdoorAirTemperature(IDFBaseModel):
     the simulation."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:FollowOutdoorAirTemperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: (
         Literal['', 'MaximumTemperature', 'MinimumTemperature', 'Temperature'] | None
@@ -231,6 +248,7 @@ class SetpointManagerFollowSystemNodeTemperature(IDFBaseModel):
     altitude."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:FollowSystemNodeTemperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: (
         Literal['', 'MaximumTemperature', 'MinimumTemperature', 'Temperature'] | None
@@ -259,6 +277,7 @@ class SetpointManagerMixedAir(IDFBaseModel):
     temperature setpoint at the mixed air node."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:MixedAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     reference_setpoint_node_name: str = Field(...)
@@ -295,6 +314,7 @@ class SetpointManagerMultiZoneCoolingAverage(IDFBaseModel):
     central air-conditioner."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:MultiZone:Cooling:Average'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -314,7 +334,7 @@ class SetpointManagerMultiZoneCoolingAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -330,6 +350,7 @@ class SetpointManagerMultiZoneHeatingAverage(IDFBaseModel):
     central air-conditioner."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:MultiZone:Heating:Average'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -349,7 +370,7 @@ class SetpointManagerMultiZoneHeatingAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -366,6 +387,7 @@ class SetpointManagerMultiZoneHumidityMaximum(IDFBaseModel):
     air loop served by a central air-conditioner."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:MultiZone:Humidity:Maximum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -386,7 +408,7 @@ class SetpointManagerMultiZoneHumidityMaximum(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -403,6 +425,7 @@ class SetpointManagerMultiZoneHumidityMinimum(IDFBaseModel):
     air loop served by a central air-conditioner."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:MultiZone:Humidity:Minimum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -423,7 +446,7 @@ class SetpointManagerMultiZoneHumidityMinimum(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -441,6 +464,7 @@ class SetpointManagerMultiZoneMaximumHumidityAverage(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SetpointManager:MultiZone:MaximumHumidity:Average'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -461,7 +485,7 @@ class SetpointManagerMultiZoneMaximumHumidityAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -479,6 +503,7 @@ class SetpointManagerMultiZoneMinimumHumidityAverage(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SetpointManager:MultiZone:MinimumHumidity:Average'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
         ...,
@@ -499,7 +524,7 @@ class SetpointManagerMultiZoneMinimumHumidityAverage(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -515,6 +540,7 @@ class SetpointManagerOutdoorAirPretreat(IDFBaseModel):
     air node when mixed with the return air stream"""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:OutdoorAirPretreat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: (
         Literal[
@@ -584,6 +610,7 @@ class SetpointManagerOutdoorAirReset(IDFBaseModel):
     temperature is obtained from the weather information during the simulation."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:OutdoorAirReset'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: (
         Literal['', 'MaximumTemperature', 'MinimumTemperature', 'Temperature'] | None
@@ -651,6 +678,7 @@ class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
     return air bypass duct to meet the specified temperature setpoint"""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:ReturnAirBypassFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Flow'] | None = Field(default='Flow')
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
@@ -665,7 +693,7 @@ class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -693,6 +721,7 @@ class SetpointManagerReturnTemperatureChilledWater(IDFBaseModel):
     each system time step."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:ReturnTemperature:ChilledWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     plant_loop_supply_outlet_node: str = Field(
         ...,
@@ -762,6 +791,7 @@ class SetpointManagerReturnTemperatureHotWater(IDFBaseModel):
     each system time step."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:ReturnTemperature:HotWater'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     plant_loop_supply_outlet_node: str = Field(
         ...,
@@ -828,6 +858,7 @@ class SetpointManagerScheduled(IDFBaseModel):
     more setpoints. Values of the nodes are not used as input."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:Scheduled'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal[
         'HumidityRatio',
@@ -863,6 +894,7 @@ class SetpointManagerScheduledDualSetpoint(IDFBaseModel):
     nodes."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:Scheduled:DualSetpoint'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     high_setpoint_schedule_name: ScheduleNamesRef = Field(
@@ -903,6 +935,7 @@ class SetpointManagerSingleZoneCooling(IDFBaseModel):
     zone cooling load for the control zone."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:Cooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     minimum_supply_air_temperature: float | None = Field(
@@ -921,7 +954,7 @@ class SetpointManagerSingleZoneCooling(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -938,6 +971,7 @@ class SetpointManagerSingleZoneHeating(IDFBaseModel):
     zone heating load for the control zone."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:Heating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     minimum_supply_air_temperature: float | None = Field(
@@ -956,7 +990,7 @@ class SetpointManagerSingleZoneHeating(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -972,6 +1006,7 @@ class SetpointManagerSingleZoneHumidityMaximum(IDFBaseModel):
     conjunction with object ZoneControl:Humidistat to detect humidity levels."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:Humidity:Maximum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_node_or_nodelist_name: str = Field(
         ...,
@@ -993,6 +1028,7 @@ class SetpointManagerSingleZoneHumidityMinimum(IDFBaseModel):
     conjunction with object ZoneControl:Humidistat to detect humidity levels."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:Humidity:Minimum'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     setpoint_node_or_nodelist_name: str = Field(
         ...,
@@ -1015,6 +1051,7 @@ class SetpointManagerSingleZoneOneStageCooling(IDFBaseModel):
     ZoneControl:Thermostat:StagedDualSetpoint"""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:OneStageCooling'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     cooling_stage_on_supply_air_setpoint_temperature: float | None = Field(
         default=-99.0,
@@ -1038,7 +1075,7 @@ class SetpointManagerSingleZoneOneStageCooling(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1056,6 +1093,7 @@ class SetpointManagerSingleZoneOneStageHeating(IDFBaseModel):
     ZoneControl:Thermostat:StagedDualSetpoint."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:OneStageHeating'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_stage_on_supply_air_setpoint_temperature: float | None = Field(
         default=99.0,
@@ -1079,7 +1117,7 @@ class SetpointManagerSingleZoneOneStageHeating(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1096,6 +1134,7 @@ class SetpointManagerSingleZoneReheat(IDFBaseModel):
     control zone. This setpoint manager is not limited to reheat applications."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SingleZone:Reheat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     minimum_supply_air_temperature: float | None = Field(
@@ -1114,7 +1153,7 @@ class SetpointManagerSingleZoneReheat(IDFBaseModel):
     )
 
     @property
-    def control_zone(self) -> IDFBaseModel | None:
+    def control_zone(self) -> Zone | None:
         v = self.control_zone_name
         if not v:
             return None
@@ -1131,6 +1170,7 @@ class SetpointManagerSystemNodeResetHumidity(IDFBaseModel):
     ratio of the user specified reference system node."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SystemNodeReset:Humidity'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal[
         'HumidityRatio', 'MaximumHumidityRatio', 'MinimumHumidityRatio'
@@ -1165,6 +1205,7 @@ class SetpointManagerSystemNodeResetTemperature(IDFBaseModel):
     the user specified reference system node."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:SystemNodeReset:Temperature'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal[
         'MaximumTemperature', 'MinimumTemperature', 'Temperature'
@@ -1193,6 +1234,7 @@ class SetpointManagerWarmest(IDFBaseModel):
     forced air HVAC system according to the cooling demand of the warmest zone."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:Warmest'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['', 'Temperature'] | None = Field(default='Temperature')
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
@@ -1216,7 +1258,7 @@ class SetpointManagerWarmest(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -1231,6 +1273,7 @@ class SetpointManagerWarmestTemperatureFlow(IDFBaseModel):
     air flow rate."""
 
     _idf_object_type: ClassVar[str] = 'SetpointManager:WarmestTemperatureFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_variable: Literal['Temperature'] | None = Field(default=None)
     hvac_air_loop_name: AirPrimaryLoopsRef = Field(
@@ -1265,7 +1308,7 @@ class SetpointManagerWarmestTemperatureFlow(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirLoopHVAC | None:
         v = self.hvac_air_loop_name
         if not v:
             return None

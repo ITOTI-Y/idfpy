@@ -1,0 +1,49 @@
+"""Auto-generated reference types for EnergyPlus object validation.
+
+DO NOT EDIT MANUALLY.
+Generated from Energy+.schema.epJSON version {{ schema_version }}.
+
+This module provides type aliases with runtime validation for object
+references. Use with validation context for reference checking.
+"""
+from __future__ import annotations
+
+from typing import Annotated, Any
+
+from pydantic import BeforeValidator
+
+
+class RefValidator:
+    """Type marker and string coercer for EnergyPlus object list references.
+
+    Carries the object_list name as metadata; actual reference validation
+    is deferred to IDF.validate().
+    """
+
+    def __init__(self, object_list: str):
+        self.object_list = object_list
+
+    def __call__(self, v: Any) -> str | None:
+        """Coerce to string. Reference existence checking is deferred to IDF.validate()."""
+        if v is None:
+            return None
+        return str(v)
+
+    def __repr__(self) -> str:
+        return f"RefValidator({self.object_list!r})"
+
+
+# ============================================================
+# Reference type aliases
+# ============================================================
+
+{% for ref in ref_types %}
+{{ ref.type_name }} = Annotated[str, BeforeValidator(RefValidator("{{ ref.object_list }}"))]
+{% endfor %}
+
+__all__ = [
+    "RefValidator",
+{% for ref in ref_types %}
+    "{{ ref.type_name }}",
+{% endfor %}
+]

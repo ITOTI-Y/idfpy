@@ -7,7 +7,7 @@ Group: Simulation Parameters
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -17,6 +17,9 @@ from ._refs import (
     ZoneAndZoneListNamesRef,
     ZoneListNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone, ZoneList
 
 
 class ShadowCalculationShadingZoneGroupsItem(IDFBaseModel):
@@ -31,7 +34,7 @@ class ShadowCalculationShadingZoneGroupsItem(IDFBaseModel):
     )
 
     @property
-    def shading_zone_group_zonelist(self) -> IDFBaseModel | None:
+    def shading_zone_group_zonelist(self) -> ZoneList | None:
         v = self.shading_zone_group_zonelist_name
         if not v:
             return None
@@ -48,6 +51,7 @@ class Building(IDFBaseModel):
     specifically the Terrain field."""
 
     _idf_object_type: ClassVar[str] = 'Building'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default='NONE')
     north_axis: float | None = Field(
         default=0.0,
@@ -619,6 +623,7 @@ class ZoneCapacitanceMultiplierResearchSpecial(IDFBaseModel):
     zone"""
 
     _idf_object_type: ClassVar[str] = 'ZoneCapacitanceMultiplier:ResearchSpecial'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_or_zonelist_name: ZoneAndZoneListNamesRef | None = Field(
         default=None,
@@ -657,7 +662,7 @@ class ZoneCapacitanceMultiplierResearchSpecial(IDFBaseModel):
     )
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None

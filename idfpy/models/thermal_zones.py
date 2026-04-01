@@ -7,7 +7,7 @@ Group: Thermal Zones and Surfaces
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -31,6 +31,18 @@ from ._refs import (
     ZoneListNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .constructions import (
+        WindowMaterialBlind,
+        WindowMaterialGlazing,
+        WindowMaterialGlazingGroupThermochromic,
+        WindowMaterialGlazingRefractionExtinctionMethod,
+        WindowMaterialScreen,
+        WindowMaterialShade,
+        WindowMaterialSimpleGlazingSystem,
+    )
+    from .daylighting import DaylightingControls
 
 
 class BuildingSurfaceDetailedVerticesItem(IDFBaseModel):
@@ -57,7 +69,7 @@ class SpaceListSpacesItem(IDFBaseModel):
     )
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -79,7 +91,9 @@ class WindowShadingControlFenestrationSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def fenestration_surface(self) -> IDFBaseModel | None:
+    def fenestration_surface(
+        self,
+    ) -> FenestrationSurfaceDetailed | GlazedDoor | Window | None:
         v = self.fenestration_surface_name
         if not v:
             return None
@@ -97,7 +111,7 @@ class ZoneListZonesItem(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -112,6 +126,7 @@ class BuildingSurfaceDetailed(IDFBaseModel):
     include subsurfaces such as windows or doors."""
 
     _idf_object_type: ClassVar[str] = 'BuildingSurface:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_type: Literal['Ceiling', 'Floor', 'Roof', 'Wall'] = Field(...)
     construction_name: ConstructionNamesRef = Field(
@@ -192,7 +207,7 @@ class BuildingSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -202,7 +217,7 @@ class BuildingSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -226,6 +241,7 @@ class CeilingAdiabatic(IDFBaseModel):
     """Allows for simplified entry of interior ceilings."""
 
     _idf_object_type: ClassVar[str] = 'Ceiling:Adiabatic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -297,7 +313,7 @@ class CeilingAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -307,7 +323,7 @@ class CeilingAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -322,6 +338,7 @@ class CeilingInterzone(IDFBaseModel):
     transfer - adjacent surface should be a floor"""
 
     _idf_object_type: ClassVar[str] = 'Ceiling:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -400,7 +417,7 @@ class CeilingInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -410,7 +427,7 @@ class CeilingInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -434,6 +451,7 @@ class Door(IDFBaseModel):
     """Allows for simplified entry of opaque Doors."""
 
     _idf_object_type: ClassVar[str] = 'Door'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -499,6 +517,7 @@ class DoorInterzone(IDFBaseModel):
     to other zones)."""
 
     _idf_object_type: ClassVar[str] = 'Door:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -581,6 +600,7 @@ class FenestrationSurfaceDetailed(IDFBaseModel):
     tubular daylighting devices)."""
 
     _idf_object_type: ClassVar[str] = 'FenestrationSurface:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_type: Literal[
         'Door', 'GlassDoor', 'TubularDaylightDiffuser', 'TubularDaylightDome', 'Window'
@@ -680,7 +700,7 @@ class FenestrationSurfaceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -695,6 +715,7 @@ class FloorAdiabatic(IDFBaseModel):
     interior floors. View Factor to Ground is automatically calculated."""
 
     _idf_object_type: ClassVar[str] = 'Floor:Adiabatic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -760,7 +781,7 @@ class FloorAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -770,7 +791,7 @@ class FloorAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -784,6 +805,7 @@ class FloorDetailed(IDFBaseModel):
     """Allows for detailed entry of floor heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'Floor:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -863,7 +885,7 @@ class FloorDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -873,7 +895,7 @@ class FloorDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -898,6 +920,7 @@ class FloorGroundContact(IDFBaseModel):
     Factors to Ground is automatically calculated."""
 
     _idf_object_type: ClassVar[str] = 'Floor:GroundContact'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -963,7 +986,7 @@ class FloorGroundContact(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -973,7 +996,7 @@ class FloorGroundContact(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -988,6 +1011,7 @@ class FloorInterzone(IDFBaseModel):
     transfer - adjacent surface should be a ceiling."""
 
     _idf_object_type: ClassVar[str] = 'Floor:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1060,7 +1084,7 @@ class FloorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1070,7 +1094,7 @@ class FloorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1115,6 +1139,7 @@ class GlazedDoor(IDFBaseModel):
     """Allows for simplified entry of glass Doors."""
 
     _idf_object_type: ClassVar[str] = 'GlazedDoor'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1182,7 +1207,7 @@ class GlazedDoor(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -1197,6 +1222,7 @@ class GlazedDoorInterzone(IDFBaseModel):
     other zones)."""
 
     _idf_object_type: ClassVar[str] = 'GlazedDoor:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1320,6 +1346,7 @@ class InternalMass(IDFBaseModel):
     SpaceList."""
 
     _idf_object_type: ClassVar[str] = 'InternalMass'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1355,7 +1382,7 @@ class InternalMass(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone_or_zonelist(self) -> IDFBaseModel | None:
+    def zone_or_zonelist(self) -> Zone | ZoneList | None:
         v = self.zone_or_zonelist_name
         if not v:
             return None
@@ -1365,7 +1392,7 @@ class InternalMass(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def space_or_spacelist(self) -> IDFBaseModel | None:
+    def space_or_spacelist(self) -> Space | SpaceList | None:
         v = self.space_or_spacelist_name
         if not v:
             return None
@@ -1380,6 +1407,7 @@ class Roof(IDFBaseModel):
     automatically calculated."""
 
     _idf_object_type: ClassVar[str] = 'Roof'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1448,7 +1476,7 @@ class Roof(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1458,7 +1486,7 @@ class Roof(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1472,6 +1500,7 @@ class RoofCeilingDetailed(IDFBaseModel):
     """Allows for detailed entry of roof/ceiling heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'RoofCeiling:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -1549,7 +1578,7 @@ class RoofCeilingDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1559,7 +1588,7 @@ class RoofCeilingDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -1585,6 +1614,7 @@ class ShadingBuilding(IDFBaseModel):
     and would move with relative geometry"""
 
     _idf_object_type: ClassVar[str] = 'Shading:Building'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     azimuth_angle: float | None = Field(
         default=None,
@@ -1621,6 +1651,7 @@ class ShadingBuildingDetailed(IDFBaseModel):
     and would move with relative geometry"""
 
     _idf_object_type: ClassVar[str] = 'Shading:Building:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     transmittance_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1653,6 +1684,7 @@ class ShadingFin(IDFBaseModel):
     door."""
 
     _idf_object_type: ClassVar[str] = 'Shading:Fin'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     window_or_door_name: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -1712,6 +1744,7 @@ class ShadingFinProjection(IDFBaseModel):
     door."""
 
     _idf_object_type: ClassVar[str] = 'Shading:Fin:Projection'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     window_or_door_name: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -1770,6 +1803,7 @@ class ShadingOverhang(IDFBaseModel):
     """Overhangs are usually flat shading surfaces that reference a window or door."""
 
     _idf_object_type: ClassVar[str] = 'Shading:Overhang'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     window_or_door_name: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -1808,6 +1842,7 @@ class ShadingOverhangProjection(IDFBaseModel):
     door."""
 
     _idf_object_type: ClassVar[str] = 'Shading:Overhang:Projection'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     window_or_door_name: SubSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SubSurfNames']}
@@ -1883,6 +1918,7 @@ class ShadingSite(IDFBaseModel):
     would not move with relative geometry"""
 
     _idf_object_type: ClassVar[str] = 'Shading:Site'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     azimuth_angle: float | None = Field(
         default=None,
@@ -1918,6 +1954,7 @@ class ShadingSiteDetailed(IDFBaseModel):
     would not move with relative geometry"""
 
     _idf_object_type: ClassVar[str] = 'Shading:Site:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     transmittance_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1950,6 +1987,7 @@ class ShadingZoneDetailed(IDFBaseModel):
     the building but are not part of the heat transfer calculations"""
 
     _idf_object_type: ClassVar[str] = 'Shading:Zone:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     base_surface_name: SurfaceNamesRef = Field(
         ..., json_schema_extra={'object_list': ['SurfaceNames']}
@@ -2000,6 +2038,7 @@ class Space(IDFBaseModel):
     names may not be referenced except in output variable keys)."""
 
     _idf_object_type: ClassVar[str] = 'Space'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2039,7 +2078,7 @@ class Space(IDFBaseModel):
     tags: list[SpaceTagsItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2057,6 +2096,7 @@ class SpaceList(IDFBaseModel):
     HotWaterEquipment, and others."""
 
     _idf_object_type: ClassVar[str] = 'SpaceList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -2070,6 +2110,7 @@ class WallAdiabatic(IDFBaseModel):
     """Allows for simplified entry of interior walls."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Adiabatic'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2137,7 +2178,7 @@ class WallAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2147,7 +2188,7 @@ class WallAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2161,6 +2202,7 @@ class WallDetailed(IDFBaseModel):
     """Allows for detailed entry of wall heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Detailed'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2240,7 +2282,7 @@ class WallDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2250,7 +2292,7 @@ class WallDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2275,6 +2317,7 @@ class WallExterior(IDFBaseModel):
     automatically calculated."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Exterior'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2342,7 +2385,7 @@ class WallExterior(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2352,7 +2395,7 @@ class WallExterior(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2366,6 +2409,7 @@ class WallInterzone(IDFBaseModel):
     """Allows for simplified entry of interzone walls (walls between zones)."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2440,7 +2484,7 @@ class WallInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2450,7 +2494,7 @@ class WallInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2474,6 +2518,7 @@ class WallUnderground(IDFBaseModel):
     """Allows for simplified entry of underground walls."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Underground'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2541,7 +2586,7 @@ class WallUnderground(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -2551,7 +2596,7 @@ class WallUnderground(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def space(self) -> IDFBaseModel | None:
+    def space(self) -> Space | None:
         v = self.space_name
         if not v:
             return None
@@ -2565,6 +2610,7 @@ class Window(IDFBaseModel):
     """Allows for simplified entry of Windows."""
 
     _idf_object_type: ClassVar[str] = 'Window'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2632,7 +2678,7 @@ class Window(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def frame_and_divider(self) -> IDFBaseModel | None:
+    def frame_and_divider(self) -> WindowPropertyFrameAndDivider | None:
         v = self.frame_and_divider_name
         if not v:
             return None
@@ -2646,6 +2692,7 @@ class WindowInterzone(IDFBaseModel):
     """Allows for simplified entry of interzone windows (adjacent to other zones)."""
 
     _idf_object_type: ClassVar[str] = 'Window:Interzone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     construction_name: ConstructionNamesRef = Field(
         ...,
@@ -2727,6 +2774,7 @@ class WindowPropertyAirflowControl(IDFBaseModel):
     """Used to control forced airflow through a gap between glass layers"""
 
     _idf_object_type: ClassVar[str] = 'WindowProperty:AirflowControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: SubSurfNamesRef = Field(
         ...,
         json_schema_extra={
@@ -2808,6 +2856,7 @@ class WindowPropertyFrameAndDivider(IDFBaseModel):
     doors (ref: FenestrationSurface:Detailed, Window, and GlazedDoor)."""
 
     _idf_object_type: ClassVar[str] = 'WindowProperty:FrameAndDivider'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -3042,7 +3091,15 @@ class WindowPropertyStormWindow(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def storm_glass_layer(self) -> IDFBaseModel | None:
+    def storm_glass_layer(
+        self,
+    ) -> (
+        WindowMaterialGlazing
+        | WindowMaterialGlazingGroupThermochromic
+        | WindowMaterialGlazingRefractionExtinctionMethod
+        | WindowMaterialSimpleGlazingSystem
+        | None
+    ):
         v = self.storm_glass_layer_name
         if not v:
             return None
@@ -3058,6 +3115,7 @@ class WindowShadingControl(IDFBaseModel):
     and glass doors (ref: FenestrationSurface:Detailed, Window, and GlazedDoor)."""
 
     _idf_object_type: ClassVar[str] = 'WindowShadingControl'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -3195,7 +3253,7 @@ class WindowShadingControl(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -3225,7 +3283,9 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def shading_device_material(self) -> IDFBaseModel | None:
+    def shading_device_material(
+        self,
+    ) -> WindowMaterialBlind | WindowMaterialScreen | WindowMaterialShade | None:
         v = self.shading_device_material_name
         if not v:
             return None
@@ -3245,7 +3305,7 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def daylighting_control_object(self) -> IDFBaseModel | None:
+    def daylighting_control_object(self) -> DaylightingControls | None:
         v = self.daylighting_control_object_name
         if not v:
             return None
@@ -3265,6 +3325,7 @@ class Zone(IDFBaseModel):
     referenced except in output variable keys)."""
 
     _idf_object_type: ClassVar[str] = 'Zone'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -3342,6 +3403,7 @@ class ZoneGroup(IDFBaseModel):
     floors of a multi-story building."""
 
     _idf_object_type: ClassVar[str] = 'ZoneGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'Name of the Zone Group'})
     zone_list_name: ZoneListNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneListNames']}
@@ -3349,7 +3411,7 @@ class ZoneGroup(IDFBaseModel):
     zone_list_multiplier: int | None = Field(default=1, ge=1)
 
     @property
-    def zone_list(self) -> IDFBaseModel | None:
+    def zone_list(self) -> ZoneList | None:
         v = self.zone_list_name
         if not v:
             return None
@@ -3368,6 +3430,7 @@ class ZoneList(IDFBaseModel):
     Sizing:Zone, ZoneControl:Thermostat, and others."""
 
     _idf_object_type: ClassVar[str] = 'ZoneList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={

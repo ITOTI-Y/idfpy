@@ -7,7 +7,7 @@ Group: HVAC Templates
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -33,12 +33,35 @@ from ._refs import (
     ZoneNamesRef,
 )
 
+if TYPE_CHECKING:
+    from .condensers import (
+        CoolingTowerSingleSpeed,
+        CoolingTowerTwoSpeed,
+        CoolingTowerVariableSpeed,
+    )
+    from .hvac_design import (
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+        DesignSpecificationZoneAirDistribution,
+    )
+    from .plant_control import (
+        CondenserEquipmentOperationSchemes,
+        PlantEquipmentOperationSchemes,
+    )
+    from .plant_equipment import (
+        BoilerHotWater,
+        ChillerElectricEIR,
+        ChillerElectricReformulatedEIR,
+    )
+    from .thermal_zones import Zone
+
 
 class HVACTemplatePlantBoiler(IDFBaseModel):
     """This object adds a boiler to an HVACTemplate:Plant:HotWaterLoop or
     MixedWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Boiler'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     boiler_type: Literal[
         'CondensingHotWaterBoiler', 'DistrictHotWater', 'HotWaterBoiler'
@@ -106,6 +129,7 @@ class HVACTemplatePlantBoilerObjectReference(IDFBaseModel):
     objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Boiler:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     boiler_object_type: Literal['', 'Boiler:HotWater'] | None = Field(
         default='Boiler:HotWater'
@@ -131,7 +155,7 @@ class HVACTemplatePlantBoilerObjectReference(IDFBaseModel):
     )
 
     @property
-    def boiler(self) -> IDFBaseModel | None:
+    def boiler(self) -> BoilerHotWater | None:
         v = self.boiler_name
         if not v:
             return None
@@ -146,6 +170,7 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
     chillers, and towers."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:ChilledWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -433,7 +458,9 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_plant_equipment_operation_schemes(self) -> IDFBaseModel | None:
+    def chiller_plant_equipment_operation_schemes(
+        self,
+    ) -> PlantEquipmentOperationSchemes | None:
         v = self.chiller_plant_equipment_operation_schemes_name
         if not v:
             return None
@@ -453,7 +480,9 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def condenser_equipment_operation_schemes(self) -> IDFBaseModel | None:
+    def condenser_equipment_operation_schemes(
+        self,
+    ) -> CondenserEquipmentOperationSchemes | None:
         v = self.condenser_equipment_operation_schemes_name
         if not v:
             return None
@@ -477,6 +506,7 @@ class HVACTemplatePlantChiller(IDFBaseModel):
     """This object adds a chiller to an HVACTemplate:Plant:ChilledWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Chiller'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     chiller_type: Literal[
         'DistrictChilledWater',
@@ -553,6 +583,7 @@ class HVACTemplatePlantChillerObjectReference(IDFBaseModel):
     detailed chiller object with all required curve or performance objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Chiller:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     chiller_object_type: (
         Literal['', 'Chiller:Electric:EIR', 'Chiller:Electric:ReformulatedEIR'] | None
@@ -572,7 +603,7 @@ class HVACTemplatePlantChillerObjectReference(IDFBaseModel):
     )
 
     @property
-    def chiller(self) -> IDFBaseModel | None:
+    def chiller(self) -> ChillerElectricEIR | ChillerElectricReformulatedEIR | None:
         v = self.chiller_name
         if not v:
             return None
@@ -586,6 +617,7 @@ class HVACTemplatePlantHotWaterLoop(IDFBaseModel):
     """Plant loop to serve all HVACTemplate hot water coils and boilers."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:HotWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -756,7 +788,9 @@ class HVACTemplatePlantHotWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def hot_water_plant_equipment_operation_schemes(self) -> IDFBaseModel | None:
+    def hot_water_plant_equipment_operation_schemes(
+        self,
+    ) -> PlantEquipmentOperationSchemes | None:
         v = self.hot_water_plant_equipment_operation_schemes_name
         if not v:
             return None
@@ -780,6 +814,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
     """Central plant loop portion of a water source heat pump system."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:MixedWaterLoop'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     pump_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -925,7 +960,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def equipment_operation_schemes(self) -> IDFBaseModel | None:
+    def equipment_operation_schemes(self) -> PlantEquipmentOperationSchemes | None:
         v = self.equipment_operation_schemes_name
         if not v:
             return None
@@ -960,6 +995,7 @@ class HVACTemplatePlantTower(IDFBaseModel):
     or MixedWaterLoop."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Tower'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     tower_type: Literal['SingleSpeed', 'TwoSpeed'] = Field(...)
     high_speed_nominal_capacity: float | Literal['', 'Autosize'] | None = Field(
@@ -1023,6 +1059,7 @@ class HVACTemplatePlantTowerObjectReference(IDFBaseModel):
     performance objects."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Plant:Tower:ObjectReference'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(..., json_schema_extra={'note': 'The name of this object.'})
     cooling_tower_object_type: (
         Literal[
@@ -1054,7 +1091,14 @@ class HVACTemplatePlantTowerObjectReference(IDFBaseModel):
     )
 
     @property
-    def cooling_tower(self) -> IDFBaseModel | None:
+    def cooling_tower(
+        self,
+    ) -> (
+        CoolingTowerSingleSpeed
+        | CoolingTowerTwoSpeed
+        | CoolingTowerVariableSpeed
+        | None
+    ):
         v = self.cooling_tower_name
         if not v:
             return None
@@ -1069,6 +1113,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
     optional heating coil and optional preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1493,7 +1538,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_control_zone(self) -> IDFBaseModel | None:
+    def cooling_coil_control_zone(self) -> HVACTemplateZoneConstantVolume | None:
         v = self.cooling_coil_control_zone_name
         if not v:
             return None
@@ -1523,7 +1568,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_control_zone(self) -> IDFBaseModel | None:
+    def heating_coil_control_zone(self) -> HVACTemplateZoneConstantVolume | None:
         v = self.heating_coil_control_zone_name
         if not v:
             return None
@@ -1573,7 +1618,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -1583,7 +1628,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -1593,7 +1638,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -1603,7 +1648,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def dehumidification_control_zone(self) -> IDFBaseModel | None:
+    def dehumidification_control_zone(self) -> Zone | None:
         v = self.dehumidification_control_zone_name
         if not v:
             return None
@@ -1635,7 +1680,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -1662,6 +1707,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
     central multizone systems"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:DedicatedOutdoorAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2011,6 +2057,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
     """Dual-duct constant volume or variable volume air loop"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:DualDuct'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -2612,7 +2659,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cold_supply_plenum(self) -> IDFBaseModel | None:
+    def cold_supply_plenum(self) -> Zone | None:
         v = self.cold_supply_plenum_name
         if not v:
             return None
@@ -2622,7 +2669,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def hot_supply_plenum(self) -> IDFBaseModel | None:
+    def hot_supply_plenum(self) -> Zone | None:
         v = self.hot_supply_plenum_name
         if not v:
             return None
@@ -2632,7 +2679,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -2642,7 +2689,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -2652,7 +2699,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def dehumidification_control_zone(self) -> IDFBaseModel | None:
+    def dehumidification_control_zone(self) -> Zone | None:
         v = self.dehumidification_control_zone_name
         if not v:
             return None
@@ -2684,7 +2731,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -2709,6 +2756,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
     optional preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:PackagedVAV'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3110,7 +3158,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -3120,7 +3168,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -3130,7 +3178,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -3140,7 +3188,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def dehumidification_control_zone(self) -> IDFBaseModel | None:
+    def dehumidification_control_zone(self) -> Zone | None:
         v = self.dehumidification_control_zone_name
         if not v:
             return None
@@ -3160,7 +3208,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -3174,6 +3222,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
     """Unitary furnace with air conditioner"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:Unitary'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3437,7 +3486,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_zone_or_thermostat_location(self) -> IDFBaseModel | None:
+    def control_zone_or_thermostat_location(self) -> Zone | None:
         v = self.control_zone_or_thermostat_location_name
         if not v:
             return None
@@ -3487,7 +3536,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -3497,7 +3546,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -3507,7 +3556,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -3527,7 +3576,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -3541,6 +3590,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
     """Unitary furnace with electric air-to-air heat pump"""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:UnitaryHeatPump:AirToAir'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3878,7 +3928,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_zone_or_thermostat_location(self) -> IDFBaseModel | None:
+    def control_zone_or_thermostat_location(self) -> Zone | None:
         v = self.control_zone_or_thermostat_location_name
         if not v:
             return None
@@ -3938,7 +3988,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -3948,7 +3998,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -3958,7 +4008,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -3978,7 +4028,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -3994,6 +4044,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
     water-to-air heat pumps."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:UnitarySystem'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4429,7 +4480,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_zone_or_thermostat_location(self) -> IDFBaseModel | None:
+    def control_zone_or_thermostat_location(self) -> Zone | None:
         v = self.control_zone_or_thermostat_location_name
         if not v:
             return None
@@ -4491,7 +4542,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -4501,7 +4552,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -4533,7 +4584,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -4558,6 +4609,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
     preheat."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:VAV'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -4982,7 +5034,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -4992,7 +5044,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -5002,7 +5054,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def night_cycle_control_zone(self) -> IDFBaseModel | None:
+    def night_cycle_control_zone(self) -> Zone | None:
         v = self.night_cycle_control_zone_name
         if not v:
             return None
@@ -5012,7 +5064,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def dehumidification_control_zone(self) -> IDFBaseModel | None:
+    def dehumidification_control_zone(self) -> Zone | None:
         v = self.dehumidification_control_zone_name
         if not v:
             return None
@@ -5032,7 +5084,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_control_zone(self) -> IDFBaseModel | None:
+    def humidifier_control_zone(self) -> Zone | None:
         v = self.humidifier_control_zone_name
         if not v:
             return None
@@ -5047,6 +5099,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
     more VRF zone terminal units (HVACTemplate:Zone:VRF)."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:System:VRF'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     system_availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -5355,7 +5408,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_for_master_thermostat_location_ref(self) -> IDFBaseModel | None:
+    def zone_for_master_thermostat_location_ref(self) -> Zone | None:
         v = self.zone_name_for_master_thermostat_location
         if not v:
             return None
@@ -5393,6 +5446,7 @@ class HVACTemplateThermostat(IDFBaseModel):
     thermostat objects, one for \"Office\" and one for \"Storage\"."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Thermostat'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
         json_schema_extra={
@@ -5552,7 +5606,7 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -5562,7 +5616,7 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -5582,7 +5636,9 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -5592,7 +5648,9 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -5604,7 +5662,9 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -5619,6 +5679,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
     must be defined elsewhere in the idf."""
 
     _idf_object_type: ClassVar[str] = 'HVACTemplate:Zone:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'zone_name'})
     zone_name: ZoneNamesRef = Field(
         ...,
         json_schema_extra={
@@ -5814,7 +5875,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -5824,7 +5885,9 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_constant_volume_system(self) -> IDFBaseModel | None:
+    def template_constant_volume_system(
+        self,
+    ) -> HVACTemplateSystemConstantVolume | None:
         v = self.template_constant_volume_system_name
         if not v:
             return None
@@ -5834,7 +5897,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemConstantVolume'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -5844,7 +5907,9 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -5856,7 +5921,9 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -5876,7 +5943,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -5886,7 +5953,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -6117,7 +6184,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -6127,7 +6194,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_dual_duct_system(self) -> IDFBaseModel | None:
+    def template_dual_duct_system(self) -> HVACTemplateSystemDualDuct | None:
         v = self.template_dual_duct_system_name
         if not v:
             return None
@@ -6137,7 +6204,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemDualDuct'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -6149,7 +6216,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
     @property
     def design_specification_outdoor_air_object_for_sizing_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing
         if not v:
             return None
@@ -6161,7 +6228,9 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -6173,7 +6242,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
     @property
     def design_specification_outdoor_air_object_for_control_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name_for_control
         if not v:
             return None
@@ -6185,7 +6254,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         )
 
     @property
-    def cold_supply_plenum(self) -> IDFBaseModel | None:
+    def cold_supply_plenum(self) -> Zone | None:
         v = self.cold_supply_plenum_name
         if not v:
             return None
@@ -6195,7 +6264,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def hot_supply_plenum(self) -> IDFBaseModel | None:
+    def hot_supply_plenum(self) -> Zone | None:
         v = self.hot_supply_plenum_name
         if not v:
             return None
@@ -6205,7 +6274,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -6458,7 +6527,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -6468,7 +6537,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -6508,7 +6577,9 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -6518,7 +6589,9 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -6530,7 +6603,9 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -6783,7 +6858,7 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -6793,7 +6868,7 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -6833,7 +6908,9 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -7107,7 +7184,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -7117,7 +7194,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -7167,7 +7244,9 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -7177,7 +7256,9 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -7189,7 +7270,9 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -7531,7 +7614,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -7541,7 +7624,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -7601,7 +7684,9 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -7611,7 +7696,9 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -7623,7 +7710,9 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -7830,7 +7919,7 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -7840,7 +7929,14 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_unitary_system(self) -> IDFBaseModel | None:
+    def template_unitary_system(
+        self,
+    ) -> (
+        HVACTemplateSystemUnitary
+        | HVACTemplateSystemUnitaryHeatPumpAirToAir
+        | HVACTemplateSystemUnitarySystem
+        | None
+    ):
         v = self.template_unitary_system_name
         if not v:
             return None
@@ -7850,7 +7946,7 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemUnitary'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -7860,7 +7956,7 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -7870,7 +7966,7 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -7890,7 +7986,9 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -7902,7 +8000,9 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -8172,7 +8272,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -8182,7 +8282,9 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_vav_system(self) -> IDFBaseModel | None:
+    def template_vav_system(
+        self,
+    ) -> HVACTemplateSystemPackagedVAV | HVACTemplateSystemVAV | None:
         v = self.template_vav_system_name
         if not v:
             return None
@@ -8192,7 +8294,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemVAV'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -8224,7 +8326,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
     @property
     def design_specification_outdoor_air_object_for_control_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name_for_control
         if not v:
             return None
@@ -8236,7 +8338,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         )
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -8246,7 +8348,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -8268,7 +8370,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
     @property
     def design_specification_outdoor_air_object_for_sizing_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing
         if not v:
             return None
@@ -8280,7 +8382,9 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -8516,7 +8620,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -8526,7 +8630,9 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_vav_system(self) -> IDFBaseModel | None:
+    def template_vav_system(
+        self,
+    ) -> HVACTemplateSystemPackagedVAV | HVACTemplateSystemVAV | None:
         v = self.template_vav_system_name
         if not v:
             return None
@@ -8536,7 +8642,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemVAV'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -8556,7 +8662,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -8566,7 +8672,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -8596,7 +8702,9 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -8608,7 +8716,9 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -8826,7 +8936,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -8836,7 +8946,9 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_vav_system(self) -> IDFBaseModel | None:
+    def template_vav_system(
+        self,
+    ) -> HVACTemplateSystemPackagedVAV | HVACTemplateSystemVAV | None:
         v = self.template_vav_system_name
         if not v:
             return None
@@ -8846,7 +8958,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemVAV'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -8858,7 +8970,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
     @property
     def design_specification_outdoor_air_object_for_sizing_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name_for_sizing
         if not v:
             return None
@@ -8870,7 +8982,9 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -8890,7 +9004,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_plenum(self) -> IDFBaseModel | None:
+    def supply_plenum(self) -> Zone | None:
         v = self.supply_plenum_name
         if not v:
             return None
@@ -8900,7 +9014,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def return_plenum(self) -> IDFBaseModel | None:
+    def return_plenum(self) -> Zone | None:
         v = self.return_plenum_name
         if not v:
             return None
@@ -9217,7 +9331,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -9227,7 +9341,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_vrf_system(self) -> IDFBaseModel | None:
+    def template_vrf_system(self) -> HVACTemplateSystemVRF | None:
         v = self.template_vrf_system_name
         if not v:
             return None
@@ -9237,7 +9351,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACSystemVRF'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -9247,7 +9361,9 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -9259,7 +9375,9 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None
@@ -9309,7 +9427,9 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -9623,7 +9743,7 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -9633,7 +9753,7 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def template_thermostat(self) -> IDFBaseModel | None:
+    def template_thermostat(self) -> HVACTemplateThermostat | None:
         v = self.template_thermostat_name
         if not v:
             return None
@@ -9673,7 +9793,9 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dedicated_outdoor_air_system(self) -> IDFBaseModel | None:
+    def dedicated_outdoor_air_system(
+        self,
+    ) -> HVACTemplateSystemDedicatedOutdoorAir | None:
         v = self.dedicated_outdoor_air_system_name
         if not v:
             return None
@@ -9683,7 +9805,9 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def design_specification_outdoor_air_object(self) -> IDFBaseModel | None:
+    def design_specification_outdoor_air_object(
+        self,
+    ) -> DesignSpecificationOutdoorAir | DesignSpecificationOutdoorAirSpaceList | None:
         v = self.design_specification_outdoor_air_object_name
         if not v:
             return None
@@ -9695,7 +9819,9 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         )
 
     @property
-    def design_specification_zone_air_distribution_object(self) -> IDFBaseModel | None:
+    def design_specification_zone_air_distribution_object(
+        self,
+    ) -> DesignSpecificationZoneAirDistribution | None:
         v = self.design_specification_zone_air_distribution_object_name
         if not v:
             return None

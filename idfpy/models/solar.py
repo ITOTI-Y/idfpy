@@ -7,7 +7,7 @@ Group: Solar Collectors
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,10 @@ from ._refs import (
     ScheduleNamesRef,
     UTSCNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .electric_load import GeneratorPhotovoltaic
 
 
 class SolarCollectorUnglazedTranspiredSurfacesItem(IDFBaseModel):
@@ -57,6 +61,7 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
     heating air or water."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:FlatPlate:PhotovoltaicThermal'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     surface_name: AllShadingAndHTSurfNamesRef = Field(
         ..., json_schema_extra={'object_list': ['AllShadingAndHTSurfNames']}
@@ -93,7 +98,13 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
         return idf._resolve_forward(v, ['AllShadingAndHTSurfNames'])
 
     @property
-    def photovoltaic_thermal_model_performance(self) -> IDFBaseModel | None:
+    def photovoltaic_thermal_model_performance(
+        self,
+    ) -> (
+        SolarCollectorPerformancePhotovoltaicThermalBIPVT
+        | SolarCollectorPerformancePhotovoltaicThermalSimple
+        | None
+    ):
         v = self.photovoltaic_thermal_model_performance_name
         if not v:
             return None
@@ -103,7 +114,7 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
         return idf._resolve_forward(v, ['FlatPlatePVTParameters'])
 
     @property
-    def photovoltaic(self) -> IDFBaseModel | None:
+    def photovoltaic(self) -> GeneratorPhotovoltaic | None:
         v = self.photovoltaic_name
         if not v:
             return None
@@ -122,6 +133,7 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
     calculations."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:FlatPlate:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     solarcollectorperformance_name: FlatPlateSolarCollectorParametersRef = Field(
         ..., json_schema_extra={'object_list': ['FlatPlateSolarCollectorParameters']}
@@ -136,7 +148,7 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
     )
 
     @property
-    def solarcollectorperformance(self) -> IDFBaseModel | None:
+    def solarcollectorperformance(self) -> SolarCollectorPerformanceFlatPlate | None:
         v = self.solarcollectorperformance_name
         if not v:
             return None
@@ -165,6 +177,7 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
     calculations."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:IntegralCollectorStorage'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     integralcollectorstorageparameters_name: CollectorStoragePerformanceRef = Field(
         ..., json_schema_extra={'object_list': ['CollectorStoragePerformance']}
@@ -188,7 +201,9 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
     )
 
     @property
-    def integralcollectorstorageparameters(self) -> IDFBaseModel | None:
+    def integralcollectorstorageparameters(
+        self,
+    ) -> SolarCollectorPerformanceIntegralCollectorStorage | None:
         v = self.integralcollectorstorageparameters_name
         if not v:
             return None
@@ -216,6 +231,7 @@ class SolarCollectorPerformanceFlatPlate(IDFBaseModel):
     Ratings. See EnergyPlus DataSets file SolarCollectors.idf."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollectorPerformance:FlatPlate'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     gross_area: float = Field(..., gt=0.0, json_schema_extra={'units': 'm2'})
     test_fluid: Literal['', 'Water'] | None = Field(default='Water')
@@ -245,6 +261,7 @@ class SolarCollectorPerformanceIntegralCollectorStorage(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:IntegralCollectorStorage'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     ics_collector_type: Literal['', 'RectangularTank'] | None = Field(
         default='RectangularTank',
@@ -396,6 +413,7 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:PhotovoltaicThermal:BIPVT'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     boundary_conditions_model_name: OSCMNamesRef = Field(
         ...,
@@ -450,7 +468,9 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
     )
 
     @property
-    def boundary_conditions_model(self) -> IDFBaseModel | None:
+    def boundary_conditions_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.boundary_conditions_model_name
         if not v:
             return None
@@ -477,6 +497,7 @@ class SolarCollectorPerformancePhotovoltaicThermalSimple(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'SolarCollectorPerformance:PhotovoltaicThermal:Simple'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     fraction_of_surface_area_with_active_thermal_collector: float = Field(
         ..., le=1.0, gt=0.0, json_schema_extra={'units': 'dimensionless'}
@@ -517,6 +538,7 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
     systems."""
 
     _idf_object_type: ClassVar[str] = 'SolarCollector:UnglazedTranspired'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     boundary_conditions_model_name: OSCMNamesRef = Field(
         ...,
@@ -630,7 +652,9 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
     )
 
     @property
-    def boundary_conditions_model(self) -> IDFBaseModel | None:
+    def boundary_conditions_model(
+        self,
+    ) -> SurfacePropertyOtherSideConditionsModel | None:
         v = self.boundary_conditions_model_name
         if not v:
             return None
@@ -677,7 +701,7 @@ class SolarCollectorUnglazedTranspiredMultisystem(IDFBaseModel):
     )
 
     @property
-    def solar_collector(self) -> IDFBaseModel | None:
+    def solar_collector(self) -> SolarCollectorUnglazedTranspired | None:
         v = self.solar_collector_name
         if not v:
             return None

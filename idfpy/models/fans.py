@@ -7,7 +7,7 @@ Group: Fans
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -20,6 +20,9 @@ from ._refs import (
     UnivariateFunctionsRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class FanSystemModelSpeedFractionsItem(IDFBaseModel):
@@ -43,6 +46,7 @@ class FanComponentModel(IDFBaseModel):
     drive (if used)."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ComponentModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     air_inlet_node_name: str = Field(...)
     air_outlet_node_name: str = Field(...)
@@ -440,6 +444,7 @@ class FanConstantVolume(IDFBaseModel):
     or other control signals."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ConstantVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -488,6 +493,7 @@ class FanOnOff(IDFBaseModel):
     continuously like Fan:ConstantVolume."""
 
     _idf_object_type: ClassVar[str] = 'Fan:OnOff'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -585,7 +591,7 @@ class FanPerformanceNightVentilation(IDFBaseModel):
     )
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanComponentModel | FanConstantVolume | FanVariableVolume | None:
         v = self.fan_name
         if not v:
             return None
@@ -603,6 +609,7 @@ class FanSystemModel(IDFBaseModel):
     levels for two-speed or multi-speed fans."""
 
     _idf_object_type: ClassVar[str] = 'Fan:SystemModel'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -726,7 +733,7 @@ class FanSystemModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def motor_loss_zone(self) -> IDFBaseModel | None:
+    def motor_loss_zone(self) -> Zone | None:
         v = self.motor_loss_zone_name
         if not v:
             return None
@@ -741,6 +748,7 @@ class FanVariableVolume(IDFBaseModel):
     performance curve as a function of flow fraction."""
 
     _idf_object_type: ClassVar[str] = 'Fan:VariableVolume'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -804,6 +812,7 @@ class FanZoneExhaust(IDFBaseModel):
     """Models a fan that exhausts air from a zone."""
 
     _idf_object_type: ClassVar[str] = 'Fan:ZoneExhaust'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,

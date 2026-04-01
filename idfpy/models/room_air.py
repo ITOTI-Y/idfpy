@@ -7,7 +7,7 @@ Group: Room Air Models
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -21,6 +21,9 @@ from ._refs import (
     ScheduleNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .thermal_zones import Zone
 
 
 class RoomAirNodeAirflowNetworkAdjacentSurfaceListSurfacesItem(IDFBaseModel):
@@ -174,7 +177,7 @@ class RoomAirSettingsAirflowNetworkNodesItem(IDFBaseModel):
     )
 
     @property
-    def roomairflownetwork_node(self) -> IDFBaseModel | None:
+    def roomairflownetwork_node(self) -> RoomAirNodeAirflowNetwork | None:
         v = self.roomairflownetwork_node_name
         if not v:
             return None
@@ -220,6 +223,7 @@ class RoomAirModelType(IDFBaseModel):
     air at the same temperature) will be used."""
 
     _idf_object_type: ClassVar[str] = 'RoomAirModelType'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -248,7 +252,7 @@ class RoomAirModelType(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -262,6 +266,7 @@ class RoomAirNode(IDFBaseModel):
     """Define an air node for some types of nodal room air models"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     node_type: Literal[
         'Ceiling', 'Control', 'Floor', 'Inlet', 'MundtRoom', 'Return'
@@ -337,7 +342,7 @@ class RoomAirNode(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -561,6 +566,7 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
     """define an air node for some types of nodal air models"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -581,7 +587,7 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -591,7 +597,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def roomair_node_airflownetwork_adjacentsurfacelist(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_adjacentsurfacelist(
+        self,
+    ) -> RoomAirNodeAirflowNetworkAdjacentSurfaceList | None:
         v = self.roomair_node_airflownetwork_adjacentsurfacelist_name
         if not v:
             return None
@@ -601,7 +609,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodeSurfaceLists'])
 
     @property
-    def roomair_node_airflownetwork_internalgains(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_internalgains(
+        self,
+    ) -> RoomAirNodeAirflowNetworkInternalGains | None:
         v = self.roomair_node_airflownetwork_internalgains_name
         if not v:
             return None
@@ -611,7 +621,9 @@ class RoomAirNodeAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['RoomAirNodeGains'])
 
     @property
-    def roomair_node_airflownetwork_hvacequipment(self) -> IDFBaseModel | None:
+    def roomair_node_airflownetwork_hvacequipment(
+        self,
+    ) -> RoomAirNodeAirflowNetworkHVACEquipment | None:
         v = self.roomair_node_airflownetwork_hvacequipment_name
         if not v:
             return None
@@ -625,6 +637,7 @@ class RoomAirNodeAirflowNetworkAdjacentSurfaceList(IDFBaseModel):
     """RoomAir:Node:AirflowNetwork:AdjacentSurfaceList"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:AdjacentSurfaceList'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     surfaces: list[RoomAirNodeAirflowNetworkAdjacentSurfaceListSurfacesItem] | None = (
         Field(default=None)
@@ -635,6 +648,7 @@ class RoomAirNodeAirflowNetworkHVACEquipment(IDFBaseModel):
     """define the zone equipment associated with one particular RoomAir:Node"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:HVACEquipment'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     equipment_fractions: (
         list[RoomAirNodeAirflowNetworkHVACEquipmentEquipmentFractionsItem] | None
@@ -646,6 +660,7 @@ class RoomAirNodeAirflowNetworkInternalGains(IDFBaseModel):
     RoomAir:Node"""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:Node:AirflowNetwork:InternalGains'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     gains: list[RoomAirNodeAirflowNetworkInternalGainsGainsItem] | None = Field(
         default=None
@@ -656,6 +671,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
     """RoomAir modeling using Airflow pressure network solver"""
 
     _idf_object_type: ClassVar[str] = 'RoomAirSettings:AirflowNetwork'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ...,
@@ -672,7 +688,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
     nodes: list[RoomAirSettingsAirflowNetworkNodesItem] | None = Field(default=None)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -682,7 +698,7 @@ class RoomAirSettingsAirflowNetwork(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def control_point_roomairflownetwork_node(self) -> IDFBaseModel | None:
+    def control_point_roomairflownetwork_node(self) -> RoomAirNodeAirflowNetwork | None:
         v = self.control_point_roomairflownetwork_node_name
         if not v:
             return None
@@ -724,7 +740,7 @@ class RoomAirSettingsCrossVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -759,7 +775,7 @@ class RoomAirSettingsOneNodeDisplacementVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -820,7 +836,7 @@ class RoomAirSettingsThreeNodeDisplacementVentilation(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -948,7 +964,7 @@ class RoomAirSettingsUnderFloorAirDistributionExterior(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1059,7 +1075,7 @@ class RoomAirSettingsUnderFloorAirDistributionInterior(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1112,6 +1128,7 @@ class RoomAirTemperaturePatternNondimensionalHeight(IDFBaseModel):
     combination with RoomAir:TemperaturePattern:UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:NondimensionalHeight'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_integer_for_pattern_control_schedule_name: int = Field(
         ...,
@@ -1151,6 +1168,7 @@ class RoomAirTemperaturePatternSurfaceMapping(IDFBaseModel):
     in combination with RoomAir:TemperaturePattern:UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:SurfaceMapping'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     control_integer_for_pattern_control_schedule_name: int = Field(
         ..., json_schema_extra={'note': 'reference this entry in schedule'}
@@ -1246,6 +1264,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
     UserDefined."""
 
     _idf_object_type: ClassVar[str] = 'RoomAir:TemperaturePattern:UserDefined'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
@@ -1266,7 +1285,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
     )
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None

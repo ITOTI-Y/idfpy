@@ -7,7 +7,7 @@ Group: Zone HVAC Radiative/Convective Units
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -27,6 +27,21 @@ from ._refs import (
     VentSlabGroupNamesRef,
     ZoneNamesRef,
 )
+
+if TYPE_CHECKING:
+    from .availability_managers import AvailabilityManagerAssignmentList
+    from .coils import (
+        CoilCoolingWater,
+        CoilCoolingWaterDetailedGeometry,
+        CoilHeatingElectric,
+        CoilHeatingFuel,
+        CoilHeatingSteam,
+        CoilHeatingWater,
+        CoilSystemCoolingWaterHeatExchangerAssisted,
+    )
+    from .fans import FanConstantVolume, FanSystemModel
+    from .hvac_design import DesignSpecificationZoneHVACSizing
+    from .thermal_zones import Zone
 
 
 class ZoneHVACBaseboardRadiantConvectiveElectricSurfaceFractionsItem(IDFBaseModel):
@@ -93,7 +108,7 @@ class ZoneHVACVentilatedSlabSlabGroupDataItem(IDFBaseModel):
     slab_outlet_node_name_for_surface: str = Field(...)
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -118,6 +133,7 @@ class ZoneHVACBaseboardConvectiveElectric(IDFBaseModel):
     heating unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:Convective:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -180,6 +196,7 @@ class ZoneHVACBaseboardConvectiveWater(IDFBaseModel):
     heating unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:Convective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -250,6 +267,7 @@ class ZoneHVACBaseboardRadiantConvectiveElectric(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -319,6 +337,7 @@ class ZoneHVACBaseboardRadiantConvectiveSteam(IDFBaseModel):
     more groups to the end of the list."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Steam'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -350,7 +369,14 @@ class ZoneHVACBaseboardRadiantConvectiveSteam(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def design_object_ref(self) -> IDFBaseModel | None:
+    def design_object_ref(
+        self,
+    ) -> (
+        ZoneHVACBaseboardRadiantConvectiveWaterDesign
+        | ZoneHVACLowTemperatureRadiantConstantFlowDesign
+        | ZoneHVACLowTemperatureRadiantVariableFlowDesign
+        | None
+    ):
         v = self.design_object
         if not v:
             return None
@@ -376,6 +402,7 @@ class ZoneHVACBaseboardRadiantConvectiveSteamDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:Baseboard:RadiantConvective:Steam:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_design_capacity_method: (
         Literal[
@@ -418,6 +445,7 @@ class ZoneHVACBaseboardRadiantConvectiveWater(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:Baseboard:RadiantConvective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -464,7 +492,14 @@ class ZoneHVACBaseboardRadiantConvectiveWater(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def design_object_ref(self) -> IDFBaseModel | None:
+    def design_object_ref(
+        self,
+    ) -> (
+        ZoneHVACBaseboardRadiantConvectiveWaterDesign
+        | ZoneHVACLowTemperatureRadiantConstantFlowDesign
+        | ZoneHVACLowTemperatureRadiantVariableFlowDesign
+        | None
+    ):
         v = self.design_object
         if not v:
             return None
@@ -490,6 +525,7 @@ class ZoneHVACBaseboardRadiantConvectiveWaterDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:Baseboard:RadiantConvective:Water:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     heating_design_capacity_method: (
         Literal[
@@ -532,6 +568,7 @@ class ZoneHVACCoolingPanelRadiantConvectiveWater(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:CoolingPanel:RadiantConvective:Water'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ScheduleNames']}
@@ -649,6 +686,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
     more groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:HighTemperatureRadiant'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -774,7 +812,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -800,6 +838,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
     chilled water temperature circulating through the unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:ConstantFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -895,7 +934,14 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
     )
 
     @property
-    def design_object_ref(self) -> IDFBaseModel | None:
+    def design_object_ref(
+        self,
+    ) -> (
+        ZoneHVACBaseboardRadiantConvectiveWaterDesign
+        | ZoneHVACLowTemperatureRadiantConstantFlowDesign
+        | ZoneHVACLowTemperatureRadiantVariableFlowDesign
+        | None
+    ):
         v = self.design_object
         if not v:
             return None
@@ -915,7 +961,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1031,6 +1077,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlowDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:LowTemperatureRadiant:ConstantFlow:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     fluid_to_radiant_surface_heat_transfer_model: (
         Literal['', 'ConvectionOnly', 'ISOStandard'] | None
@@ -1112,6 +1159,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
     """Electric resistance low temperature radiant system"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:Electric'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1210,7 +1258,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1247,6 +1295,7 @@ class ZoneHVACLowTemperatureRadiantSurfaceGroup(IDFBaseModel):
     groups to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:SurfaceGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_fractions: (
         list[ZoneHVACLowTemperatureRadiantSurfaceGroupSurfaceFractionsItem] | None
@@ -1259,6 +1308,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
     chilled water flow to the unit."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:LowTemperatureRadiant:VariableFlow'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     design_object: RadiantDesignObjectRef = Field(
         ..., json_schema_extra={'object_list': ['RadiantDesignObject']}
@@ -1325,7 +1375,14 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
     )
 
     @property
-    def design_object_ref(self) -> IDFBaseModel | None:
+    def design_object_ref(
+        self,
+    ) -> (
+        ZoneHVACBaseboardRadiantConvectiveWaterDesign
+        | ZoneHVACLowTemperatureRadiantConstantFlowDesign
+        | ZoneHVACLowTemperatureRadiantVariableFlowDesign
+        | None
+    ):
         v = self.design_object
         if not v:
             return None
@@ -1345,7 +1402,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1371,6 +1428,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlowDesign(IDFBaseModel):
     _idf_object_type: ClassVar[str] = (
         'ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design'
     )
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
     fluid_to_radiant_surface_heat_transfer_model: (
         Literal['', 'ConvectionOnly', 'ISOStandard'] | None
@@ -1535,6 +1593,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
     building surface (wall, ceiling, or floor)."""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:VentilatedSlab'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     availability_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -1754,7 +1813,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone(self) -> IDFBaseModel | None:
+    def zone(self) -> Zone | None:
         v = self.zone_name
         if not v:
             return None
@@ -1876,7 +1935,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan(self) -> IDFBaseModel | None:
+    def fan(self) -> FanConstantVolume | FanSystemModel | None:
         v = self.fan_name
         if not v:
             return None
@@ -1886,7 +1945,15 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCV', 'FansSystemModel'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -1896,7 +1963,14 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -1906,7 +1980,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['CoolingCoilsWater'])
 
     @property
-    def availability_manager_list(self) -> IDFBaseModel | None:
+    def availability_manager_list(self) -> AvailabilityManagerAssignmentList | None:
         v = self.availability_manager_list_name
         if not v:
             return None
@@ -1916,7 +1990,9 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def design_specification_zonehvac_sizing_object(self) -> IDFBaseModel | None:
+    def design_specification_zonehvac_sizing_object(
+        self,
+    ) -> DesignSpecificationZoneHVACSizing | None:
         v = self.design_specification_zonehvac_sizing_object_name
         if not v:
             return None
@@ -1933,5 +2009,6 @@ class ZoneHVACVentilatedSlabSlabGroup(IDFBaseModel):
     to the end of the list"""
 
     _idf_object_type: ClassVar[str] = 'ZoneHVAC:VentilatedSlab:SlabGroup'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     data: list[ZoneHVACVentilatedSlabSlabGroupDataItem] | None = Field(default=None)

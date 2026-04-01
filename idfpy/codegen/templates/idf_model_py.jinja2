@@ -39,7 +39,7 @@ class {{ class_info.name }}(IDFBaseModel):
 {% if spec.object_list and not spec | is_class_name_ref %}
 
     @property
-    def {{ spec | nav_name }}(self) -> IDFBaseModel | None:
+    def {{ spec | nav_name }}(self) -> {{ spec | nav_return_type }}:
         v = self.{{ spec.python_name }}
         if not v:
             return None
@@ -59,6 +59,9 @@ class {{ obj.class_name }}(IDFBaseModel):
     """{{ obj.memo | format_docstring if obj.memo else obj.name }}"""
 
     _idf_object_type: ClassVar[str] = "{{ obj.name }}"
+{% if obj.provider_field_names %}
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({{ obj.provider_field_names }})
+{% endif %}
 {% for spec in obj.fields %}
 {{ render_field(spec) }}
 {% endfor %}
@@ -66,7 +69,7 @@ class {{ obj.class_name }}(IDFBaseModel):
 {% if spec.object_list and not spec | is_class_name_ref %}
 
     @property
-    def {{ spec | nav_name }}(self) -> IDFBaseModel | None:
+    def {{ spec | nav_name }}(self) -> {{ spec | nav_return_type(obj) }}:
         v = self.{{ spec.python_name }}
         if not v:
             return None
@@ -86,6 +89,9 @@ Group: {{ group_name }}
 from __future__ import annotations
 
 from typing import Any, ClassVar, Literal  # noqa: F401
+{% if nav_imports %}
+from typing import TYPE_CHECKING
+{% endif %}
 
 from pydantic import Field
 
@@ -96,6 +102,13 @@ from ._refs import (
     {{ ref_type }},
 {% endfor %}
 )
+{% endif %}
+{% if nav_imports %}
+
+if TYPE_CHECKING:
+{% for module, classes in nav_imports.items() %}
+    from .{{ module }} import {{ classes | join(', ') }}
+{% endfor %}
 {% endif %}
 
 {% for nested in nested_classes %}
