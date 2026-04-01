@@ -150,7 +150,7 @@ from idfpy import IDF
 idf = IDF.load(Path("LargeOffice.idf"))
 
 # Modify all exterior walls' insulation
-for con_name, con in idf.all_of_type("Construction"):
+for con_name, con in idf.all_of_type("Construction").items():
     layer = con.outside_layer_ref
     if layer and hasattr(layer, "conductivity"):
         print(f"{con.name}: k={layer.conductivity} W/m·K")
