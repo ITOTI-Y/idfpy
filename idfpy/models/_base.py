@@ -71,6 +71,11 @@ class IDFBaseModel(BaseModel):
             ref = getattr(self, '_idf_ref', None)
             idf = ref() if ref is not None else None
             if idf is not None:
+                if value is None:
+                    raise ValueError(
+                        f"Cannot set provider field '{name}' to None on a "
+                        f"bound {type(self).__name__}; remove the object first"
+                    )
                 old = getattr(self, name, None)
                 if old != value:
                     idf._before_provider_change(self, name, old, value)

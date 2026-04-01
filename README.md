@@ -7,7 +7,7 @@
 [![CI](https://img.shields.io/badge/Autoupdate-CI-orange)](https://github.com/ITOTI-Y/idfpy/actions)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
 
-Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, Optimized for LLM tool calling and IDE auto-completion.
+Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, optimized for LLM tool calling and IDE auto-completion.
 
 Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 

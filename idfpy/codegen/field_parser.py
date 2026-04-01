@@ -109,7 +109,7 @@ class FieldParser:
 
         # Normalize: string field with numeric default → convert to str
         # (e.g., Version.version_identifier has type="string" but default=25.1)
-        if spec.field_type == 'string' and isinstance(spec.default, (int, float)):
+        if spec.field_type == 'string' and type(spec.default) in (int, float):
             spec.default = str(spec.default)
 
         if field_type == 'array' and 'items' in field_schema:
@@ -151,7 +151,7 @@ class FieldParser:
 
         default = field_schema.get('default', _UNSET)
         # Normalize: string field with numeric default → convert to str
-        if primary_type == 'string' and isinstance(default, (int, float)):
+        if primary_type == 'string' and type(default) in (int, float):
             default = str(default)
 
         return FieldSpec(

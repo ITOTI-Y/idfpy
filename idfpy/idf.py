@@ -372,9 +372,18 @@ class IDF:
         old_obj_key = obj._idf_obj_key
 
         # 0. Conflict check: reject rename if it would overwrite another object
+        #    Use case-insensitive comparison (matching _ref_registry/_reverse_index)
         if old_obj_key == old_value or not old_value:
-            existing = self._objects.get(object_type, {}).get(new_value)
-            if existing is not None and existing is not obj:
+            normalized_new = new_value.upper()
+            existing = next(
+                (
+                    v
+                    for k, v in self._objects.get(object_type, {}).items()
+                    if k.upper() == normalized_new and v is not obj
+                ),
+                None,
+            )
+            if existing is not None:
                 raise ValueError(
                     f"Cannot rename {object_type} '{old_value}' to '{new_value}': "
                     f'an object with that name already exists'
