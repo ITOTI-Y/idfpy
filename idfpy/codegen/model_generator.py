@@ -141,9 +141,9 @@ class ModelGenerator:
         }
         set_object_list_ref_types(self._object_list_to_ref_type)
 
-        # Collect reference-class-name groups to skip _ref property generation
-        rcn_groups = self._collect_reference_class_name_groups(specs)
-        set_reference_class_name_groups(rcn_groups)
+        # Collect reference-class-name groups and their member type names
+        self._rcn_groups = self._collect_reference_class_name_groups(specs)
+        set_reference_class_name_groups(set(self._rcn_groups.keys()))
 
         # Build IDF object type -> class name mapping for discriminant intersection
         set_object_type_to_class({s.name: s.class_name for s in specs.values()})
@@ -419,18 +419,25 @@ class ModelGenerator:
             for cls_name in sorted(consumers)
         ]
 
+        # Prepare reference-class-name type data
+        rcn_types_data = [
+            (group, sorted(types)) for group, types in sorted(self._rcn_groups.items())
+        ]
+
         content = template.render(
             schema_version=schema_version,
             providers=providers_data,
             group_providers=group_providers_data,
             consumers=consumers_data,
+            rcn_types=rcn_types_data,
         )
 
         output_path = self.output_dir / '_ref_meta.py'
         output_path.write_text(content, encoding='utf-8')
         logger.info(
             f'Generated _ref_meta.py: {len(providers)} providers, '
-            f'{len(group_providers)} groups, {len(consumers)} consumers'
+            f'{len(group_providers)} groups, {len(consumers)} consumers, '
+            f'{len(rcn_types_data)} reference-class-name groups'
         )
 
     def _generate_init_file(
@@ -541,13 +548,19 @@ class ModelGenerator:
 
     def _collect_reference_class_name_groups(
         self, specs: dict[str, ObjectSpec]
-    ) -> set[str]:
-        """Collect all reference-class-name group names from specifications."""
-        groups: set[str] = set()
-        for spec in specs.values():
+    ) -> dict[str, list[str]]:
+        """Collect reference-class-name groups and their member type names.
+
+        Returns:
+            Mapping of group name to list of object type names that belong
+            to that group (via reference-class-name on their name field).
+        """
+        groups: dict[str, list[str]] = {}
+        for obj_name, spec in specs.items():
             for field in spec.fields:
-                if field.reference_class_name:
-                    groups.update(field.reference_class_name)
+                if field.reference_class_name and field.is_name:
+                    for group in field.reference_class_name:
+                        groups.setdefault(group, []).append(obj_name)
         return groups
 
     def _object_list_to_type_name(self, object_list: str) -> str:

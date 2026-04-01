@@ -34,7 +34,12 @@ from idfpy.models import (
 )
 from idfpy.models._base import IDFBaseModel
 from idfpy.models._ref_errors import RefError, RefValidationError
-from idfpy.models._ref_meta import REF_CONSUMERS, REF_GROUP_PROVIDERS, REF_PROVIDERS
+from idfpy.models._ref_meta import (
+    REF_CLASS_NAME_TYPES,
+    REF_CONSUMERS,
+    REF_GROUP_PROVIDERS,
+    REF_PROVIDERS,
+)
 from idfpy.models.simulation import Version
 
 _T = TypeVar('_T', bound=IDFBaseModel)
@@ -651,10 +656,37 @@ class IDF:
         """
         key = value.upper()
 
-        # Phase 1: find the value in any group
+        # Phase 0: check reference-class-name groups (static type name validation)
+        # These groups contain object TYPE names, not instance names.
+        registry_groups: list[str] = []
+        for group in ref_groups:
+            valid_types = REF_CLASS_NAME_TYPES.get(group)
+            if valid_types is not None:
+                if value in valid_types:
+                    return  # Found in static type set — valid
+            else:
+                registry_groups.append(group)
+
+        # All groups were reference-class-name but none matched
+        if not registry_groups:
+            all_groups = ', '.join(ref_groups)
+            errors.append(
+                RefError(
+                    object_type=object_type,
+                    object_name=object_name,
+                    field_name=field_name,
+                    ref_group=all_groups,
+                    referenced_name=value,
+                    error_type='missing',
+                    detail=f'"{value}" not found in any of [{all_groups}]',
+                )
+            )
+            return
+
+        # Phase 1: find the value in any registry-based group
         found_in_group: str | None = None
         found_provider_types: list[str] = []
-        for group in ref_groups:
+        for group in registry_groups:
             candidates = self._ref_registry.get(group, {}).get(key)
             if candidates:
                 found_in_group = group
@@ -934,6 +966,10 @@ class IDF:
                     continue
 
             if value:
+                # Normalize autosize/autocalculate to match model's Literal
+                lower = value.lower()
+                if lower in ('autosize', 'autocalculate') and field_info is not None:
+                    value = cls._resolve_auto_keyword(lower, field_info.annotation)
                 field_dict[field_name] = value
 
         # Assemble extensible values into list of item dicts
@@ -957,6 +993,28 @@ class IDF:
                 field_dict[extensible_field_name] = items
 
         return field_dict
+
+    @staticmethod
+    def _resolve_auto_keyword(lower_value: str, annotation: Any) -> str:
+        """Resolve autosize/autocalculate to the keyword the model expects.
+
+        EnergyPlus IDF files may use Autosize and Autocalculate
+        interchangeably. This method checks the field's Literal type
+        and returns whichever keyword is accepted.
+        """
+        from idfpy.models._base import _extract_literal_values
+
+        literal_values = _extract_literal_values(annotation)
+        lower_map = {v.lower(): v for v in literal_values if isinstance(v, str)}
+        # Exact match (e.g., 'autosize' → 'Autosize')
+        if lower_value in lower_map:
+            return lower_map[lower_value]
+        # Cross-map: autosize ↔ autocalculate
+        other = 'autocalculate' if lower_value == 'autosize' else 'autosize'
+        if other in lower_map:
+            return lower_map[other]
+        # Fallback: capitalize
+        return lower_value.capitalize()
 
     def save(self, path: Path, output_type: Literal['idf', 'epjson'] = 'idf') -> None:
         """Save IDF container to file.
