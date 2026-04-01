@@ -254,27 +254,40 @@ class IDF:
             obj._idf_obj_key = ''
         return obj
 
+    # ── Helpers ──────────────────────────────────────────────
+
+    @staticmethod
+    def _iter_extensible_children(obj: IDFBaseModel) -> Iterator[IDFBaseModel]:
+        """Yield IDFBaseModel items from all extensible (list) fields."""
+        for field_name in type(obj)._get_list_field_names():
+            items = getattr(obj, field_name, None) or ()
+            yield from (item for item in items if isinstance(item, IDFBaseModel))
+
+    @staticmethod
+    def _prune_bucket(
+        outer: dict[str, dict[str, list]], group: str, key: str, keep: Any
+    ) -> None:
+        """Filter a bucket list, removing the key if the list becomes empty."""
+        bucket = outer.get(group)
+        if bucket is None or key not in bucket:
+            return
+        bucket[key] = [e for e in bucket[key] if keep(e)]
+        if not bucket[key]:
+            del bucket[key]
+
     # ── Binding ──────────────────────────────────────────────
 
     def _bind_recursive(self, obj: IDFBaseModel) -> None:
         """Bind object and its extensible children to this IDF."""
         obj._idf_ref = weakref.ref(self)
-        for field_name in type(obj)._get_list_field_names():
-            value = getattr(obj, field_name, None)
-            if value is not None:
-                for item in value:
-                    if isinstance(item, IDFBaseModel):
-                        self._bind_recursive(item)
+        for child in self._iter_extensible_children(obj):
+            self._bind_recursive(child)
 
     def _unbind_recursive(self, obj: IDFBaseModel) -> None:
         """Unbind object and its extensible children."""
         obj._idf_ref = None
-        for field_name in type(obj)._get_list_field_names():
-            value = getattr(obj, field_name, None)
-            if value is not None:
-                for item in value:
-                    if isinstance(item, IDFBaseModel):
-                        self._unbind_recursive(item)
+        for child in self._iter_extensible_children(obj):
+            self._unbind_recursive(child)
 
     # ── Reference registration ───────────────────────────────
 
@@ -288,12 +301,7 @@ class IDF:
             key = value.upper()
             entry = (object_type, value)
             for group in ref_groups:
-                bucket = self._ref_registry.setdefault(group, {})
-                candidates = bucket.get(key)
-                if candidates is None:
-                    bucket[key] = [entry]
-                else:
-                    candidates.append(entry)
+                self._ref_registry.setdefault(group, {}).setdefault(key, []).append(entry)
 
     def _unregister_refs(self, obj: IDFBaseModel) -> None:
         """Remove an object's provided references from the registry."""
@@ -304,12 +312,9 @@ class IDF:
                 continue
             key = value.upper()
             for group in ref_groups:
-                registry = self._ref_registry.get(group)
-                if registry and key in registry:
-                    entries = registry[key]
-                    registry[key] = [e for e in entries if e[0] != object_type]
-                    if not registry[key]:
-                        del registry[key]
+                self._prune_bucket(
+                    self._ref_registry, group, key, lambda e: e[0] != object_type
+                )
 
     # ── Consumer reverse index ──────────────────────────────
 
@@ -329,12 +334,8 @@ class IDF:
                 bucket.setdefault(key, []).append((obj_type, obj_name))
 
         # Also index extensible list items
-        for field_name in type(obj)._get_list_field_names():
-            value = getattr(obj, field_name, None)
-            if value is not None:
-                for item in value:
-                    if isinstance(item, IDFBaseModel):
-                        self._index_consumer_refs(item, obj_type, obj_name)
+        for child in self._iter_extensible_children(obj):
+            self._index_consumer_refs(child, obj_type, obj_name)
 
     def _unindex_consumer_refs(
         self, obj: IDFBaseModel, obj_type: str, obj_name: str
@@ -348,20 +349,13 @@ class IDF:
                 continue
             key = value.upper()
             for group in ref_groups:
-                bucket = self._reverse_index.get(group)
-                if bucket and key in bucket:
-                    entries = bucket[key]
-                    bucket[key] = [e for e in entries if e != (obj_type, obj_name)]
-                    if not bucket[key]:
-                        del bucket[key]
+                self._prune_bucket(
+                    self._reverse_index, group, key, lambda e: e != (obj_type, obj_name)
+                )
 
         # Also unindex extensible list items
-        for field_name in type(obj)._get_list_field_names():
-            value = getattr(obj, field_name, None)
-            if value is not None:
-                for item in value:
-                    if isinstance(item, IDFBaseModel):
-                        self._unindex_consumer_refs(item, obj_type, obj_name)
+        for child in self._iter_extensible_children(obj):
+            self._unindex_consumer_refs(child, obj_type, obj_name)
 
     # ── Cascade rename ──────────────────────────────────────
 
@@ -460,17 +454,8 @@ class IDF:
                 setattr(consumer, field_name, new_value)
 
         # Recurse into extensible list items
-        for field_name in type(consumer)._get_list_field_names():
-            items = getattr(consumer, field_name, None)
-            if items:
-                for item in items:
-                    if isinstance(item, IDFBaseModel):
-                        self._cascade_consumer_fields(
-                            item,
-                            old_key,
-                            new_value,
-                            affected_groups,
-                        )
+        for child in self._iter_extensible_children(consumer):
+            self._cascade_consumer_fields(child, old_key, new_value, affected_groups)
 
     # ── Forward resolution ───────────────────────────────────
 
@@ -510,9 +495,9 @@ class IDF:
     def _find_referencing(
         self,
         target: IDFBaseModel,
-        consumer_type: str,
+        consumer_type: str | None = None,
     ) -> list[IDFBaseModel]:
-        """Find all objects of consumer_type that reference target.
+        """Find objects that reference target, optionally filtered by type.
 
         Uses _reverse_index for O(R) lookup where R = referencing objects.
         """
@@ -525,41 +510,14 @@ class IDF:
         for group, key in provisions:
             bucket = self._reverse_index.get(group, {})
             for entry_type, entry_name in bucket.get(key, ()):
-                if entry_type != consumer_type:
+                if consumer_type is not None and entry_type != consumer_type:
                     continue
                 pair = (entry_type, entry_name)
-                if pair in seen:
-                    continue
-                seen.add(pair)
-                obj = self._objects.get(entry_type, {}).get(entry_name)
-                if obj is not None:
-                    results.append(obj)
-        return results
-
-    def _find_all_referencing(
-        self,
-        target: IDFBaseModel,
-    ) -> list[IDFBaseModel]:
-        """Find all objects across every type that reference target.
-
-        Uses _reverse_index for O(R) lookup.
-        """
-        provisions = self._target_provisions(target)
-        if not provisions:
-            return []
-
-        seen: set[tuple[str, str]] = set()
-        results: list[IDFBaseModel] = []
-        for group, key in provisions:
-            bucket = self._reverse_index.get(group, {})
-            for entry_type, entry_name in bucket.get(key, ()):
-                pair = (entry_type, entry_name)
-                if pair in seen:
-                    continue
-                seen.add(pair)
-                obj = self._objects.get(entry_type, {}).get(entry_name)
-                if obj is not None:
-                    results.append(obj)
+                if pair not in seen:
+                    seen.add(pair)
+                    obj = self._objects.get(entry_type, {}).get(entry_name)
+                    if obj is not None:
+                        results.append(obj)
         return results
 
     @staticmethod
@@ -627,18 +585,14 @@ class IDF:
             )
 
         # Recurse into extensible items
-        for field_name in type(obj)._get_list_field_names():
-            value = getattr(obj, field_name, None)
-            if value is not None:
-                for item in value:
-                    if isinstance(item, IDFBaseModel):
-                        self._validate_obj_refs(
-                            '',
-                            item,
-                            errors,
-                            parent_type=object_type,
-                            parent_name=object_name,
-                        )
+        for child in self._iter_extensible_children(obj):
+            self._validate_obj_refs(
+                '',
+                child,
+                errors,
+                parent_type=object_type,
+                parent_name=object_name,
+            )
 
     def _check_ref(
         self,
@@ -656,6 +610,20 @@ class IDF:
         """
         key = value.upper()
 
+        def _append_missing() -> None:
+            all_groups = ', '.join(ref_groups)
+            errors.append(
+                RefError(
+                    object_type=object_type,
+                    object_name=object_name,
+                    field_name=field_name,
+                    ref_group=all_groups,
+                    referenced_name=value,
+                    error_type='missing',
+                    detail=f'"{value}" not found in any of [{all_groups}]',
+                )
+            )
+
         # Phase 0: check reference-class-name groups (static type name validation)
         # These groups contain object TYPE names, not instance names.
         registry_groups: list[str] = []
@@ -669,18 +637,7 @@ class IDF:
 
         # All groups were reference-class-name but none matched
         if not registry_groups:
-            all_groups = ', '.join(ref_groups)
-            errors.append(
-                RefError(
-                    object_type=object_type,
-                    object_name=object_name,
-                    field_name=field_name,
-                    ref_group=all_groups,
-                    referenced_name=value,
-                    error_type='missing',
-                    detail=f'"{value}" not found in any of [{all_groups}]',
-                )
-            )
+            _append_missing()
             return
 
         # Phase 1: find the value in any registry-based group
@@ -695,18 +652,7 @@ class IDF:
 
         # Not found in ANY group -> missing
         if found_in_group is None:
-            all_groups = ', '.join(ref_groups)
-            errors.append(
-                RefError(
-                    object_type=object_type,
-                    object_name=object_name,
-                    field_name=field_name,
-                    ref_group=all_groups,
-                    referenced_name=value,
-                    error_type='missing',
-                    detail=f'"{value}" not found in any of [{all_groups}]',
-                )
-            )
+            _append_missing()
             return
 
         # Phase 2: type compatibility – at least one provider must be allowed

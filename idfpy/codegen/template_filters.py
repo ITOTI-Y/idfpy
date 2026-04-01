@@ -141,6 +141,11 @@ def python_type_filter(spec: FieldSpec) -> str:
     return base_type
 
 
+def _format_literal(values: list) -> str:
+    """Format values as a Literal type annotation."""
+    return f'Literal[{", ".join(repr(v) for v in values)}]'
+
+
 def _get_base_type_annotation(spec: FieldSpec) -> str:
     """Get base type annotation without optional suffix.
 
@@ -151,8 +156,7 @@ def _get_base_type_annotation(spec: FieldSpec) -> str:
         Base type annotation string.
     """
     if spec.enum_values:
-        escaped = [repr(v) for v in spec.enum_values]
-        return f'Literal[{", ".join(escaped)}]'
+        return _format_literal(spec.enum_values)
 
     if spec.anyof_specs:
         has_null = any(s.field_type == 'null' for s in spec.anyof_specs)
@@ -161,15 +165,13 @@ def _get_base_type_annotation(spec: FieldSpec) -> str:
         if len(non_null_types) == 1:
             base = _json_type_to_python(non_null_types[0].field_type)
             if non_null_types[0].enum_values:
-                escaped = [repr(v) for v in non_null_types[0].enum_values]
-                base = f'Literal[{", ".join(escaped)}]'
+                base = _format_literal(non_null_types[0].enum_values)
             return f'{base} | None' if has_null else base
 
         types = []
         for s in non_null_types:
             if s.enum_values:
-                escaped = [repr(v) for v in s.enum_values]
-                types.append(f'Literal[{", ".join(escaped)}]')
+                types.append(_format_literal(s.enum_values))
             else:
                 types.append(_json_type_to_python(s.field_type))
 
