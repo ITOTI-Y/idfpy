@@ -6,6 +6,7 @@ object specifications. Models are organized by EnergyPlus group categories.
 
 from __future__ import annotations
 
+import importlib
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -147,6 +148,12 @@ class ModelGenerator:
 
         # Build IDF object type -> class name mapping for discriminant intersection
         set_object_type_to_class({s.name: s.class_name for s in specs.values()})
+
+        # Discover ext plugin mixins
+        self._ext_mixins = self._discover_ext_mixins()
+        if self._ext_mixins:
+            affected = ', '.join(sorted(self._ext_mixins))
+            logger.info(f'Discovered ext mixins for: {affected}')
 
         # Group objects by output file
         file_groups = self._group_objects_by_file(specs)
@@ -326,6 +333,16 @@ class ModelGenerator:
             objects, nested_classes, file_name, self._class_to_module
         )
 
+        # Collect ext mixin info for this file
+        file_mixin_map: dict[str, list[str]] = {}
+        file_mixin_imports: dict[str, set[str]] = {}
+        for obj in objects:
+            if obj.class_name in self._ext_mixins:
+                mixins = self._ext_mixins[obj.class_name]
+                file_mixin_map[obj.class_name] = [m[0] for m in mixins]
+                for mixin_name, import_path in mixins:
+                    file_mixin_imports.setdefault(import_path, set()).add(mixin_name)
+
         # Render template
         content = template.render(
             schema_version=schema_version,
@@ -336,6 +353,8 @@ class ModelGenerator:
             has_refs=has_refs,
             used_ref_types=used_ref_types,
             nav_imports=nav_imports,
+            mixin_map=file_mixin_map,
+            mixin_imports={k: sorted(v) for k, v in sorted(file_mixin_imports.items())},
         )
 
         # Write file
@@ -606,3 +625,38 @@ class ModelGenerator:
         output_path = self.output_dir / '_refs.py'
         output_path.write_text(content, encoding='utf-8')
         logger.info(f'Generated _refs.py with {len(object_lists)} reference types')
+
+    def _discover_ext_mixins(self) -> dict[str, list[tuple[str, str]]]:
+        """Discover ext plugin mixin mappings.
+
+        Scans ``idfpy/ext/`` sub-packages for a ``MIXIN_MAP`` attribute and
+        collects ``(mixin_class_name, import_path)`` entries per target class.
+
+        Returns:
+            Mapping of model class name to list of
+            ``(mixin_class_name, mixin_module_path)`` tuples.
+        """
+        result: dict[str, list[tuple[str, str]]] = {}
+        ext_dir = self.output_dir.parent / 'ext'
+        if not ext_dir.is_dir():
+            return result
+
+        for subdir in sorted(ext_dir.iterdir()):
+            if not subdir.is_dir() or subdir.name.startswith('_'):
+                continue
+            init_file = subdir / '__init__.py'
+            if not init_file.exists():
+                continue
+            try:
+                plugin = importlib.import_module(f'idfpy.ext.{subdir.name}')
+            except Exception:
+                logger.warning(f'Failed to import ext plugin: {subdir.name}')
+                continue
+            mixin_map = getattr(plugin, 'MIXIN_MAP', None)
+            if not mixin_map or not isinstance(mixin_map, dict):
+                continue
+            for class_name, mixin_cls in mixin_map.items():
+                entry = (mixin_cls.__name__, mixin_cls.__module__)
+                result.setdefault(class_name, []).append(entry)
+
+        return result

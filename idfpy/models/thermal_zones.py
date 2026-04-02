@@ -11,6 +11,11 @@ from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
+from idfpy.ext.geometry.mixins import (
+    ExtensibleVertexGeometryMixin,
+    FixedVertexGeometryMixin,
+)
+
 from ._base import IDFBaseModel
 from ._refs import (
     AllShadingSurfNamesRef,
@@ -121,7 +126,7 @@ class ZoneListZonesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
 
-class BuildingSurfaceDetailed(IDFBaseModel):
+class BuildingSurfaceDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """Allows for detailed entry of building heat transfer surfaces. Does not
     include subsurfaces such as windows or doors."""
 
@@ -595,7 +600,7 @@ class DoorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['OutFaceEnvNames'])
 
 
-class FenestrationSurfaceDetailed(IDFBaseModel):
+class FenestrationSurfaceDetailed(FixedVertexGeometryMixin, IDFBaseModel):
     """Allows for detailed entry of subsurfaces (windows, doors, glass doors,
     tubular daylighting devices)."""
 
@@ -801,7 +806,7 @@ class FloorAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
 
-class FloorDetailed(IDFBaseModel):
+class FloorDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """Allows for detailed entry of floor heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'Floor:Detailed'
@@ -1496,7 +1501,7 @@ class Roof(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
 
-class RoofCeilingDetailed(IDFBaseModel):
+class RoofCeilingDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """Allows for detailed entry of roof/ceiling heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'RoofCeiling:Detailed'
@@ -1645,7 +1650,7 @@ class ShadingBuilding(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
 
-class ShadingBuildingDetailed(IDFBaseModel):
+class ShadingBuildingDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """used for shading elements such as trees, other buildings, parts of this
     building not being modeled these items are relative to the current building
     and would move with relative geometry"""
@@ -1949,7 +1954,7 @@ class ShadingSite(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
 
-class ShadingSiteDetailed(IDFBaseModel):
+class ShadingSiteDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """used for shading elements such as trees these items are fixed in space and
     would not move with relative geometry"""
 
@@ -1982,7 +1987,7 @@ class ShadingSiteDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
 
-class ShadingZoneDetailed(IDFBaseModel):
+class ShadingZoneDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """used For fins, overhangs, elements that shade the building, are attached to
     the building but are not part of the heat transfer calculations"""
 
@@ -2198,7 +2203,7 @@ class WallAdiabatic(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
 
-class WallDetailed(IDFBaseModel):
+class WallDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     """Allows for detailed entry of wall heat transfer surfaces."""
 
     _idf_object_type: ClassVar[str] = 'Wall:Detailed'
