@@ -74,7 +74,7 @@ class IDFBaseModel(BaseModel):
                 if value is None:
                     raise ValueError(
                         f"Cannot set provider field '{name}' to None on a "
-                        f"bound {type(self).__name__}; remove the object first"
+                        f'bound {type(self).__name__}; remove the object first'
                     )
                 old = getattr(self, name, None)
                 if old != value:
@@ -182,8 +182,6 @@ class IDFBaseModel(BaseModel):
         idf = self._idf
         if idf is None:
             raise RuntimeError('Not bound to IDF container')
-        if consumer_type is None:
-            return idf._find_all_referencing(self)
         if isinstance(consumer_type, type):
             consumer_type = consumer_type._idf_object_type
         return idf._find_referencing(self, consumer_type)

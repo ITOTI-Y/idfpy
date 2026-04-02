@@ -33,3 +33,16 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
 {% endfor %}
 }
+
+
+REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
+{% for group, types in rcn_types %}
+    "{{ group }}": frozenset(
+        {
+        {% for t in types %}
+            "{{ t | upper }}",
+        {% endfor %}
+        }
+    ),
+{% endfor %}
+}

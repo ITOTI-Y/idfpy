@@ -1,33 +1,8 @@
-{#
-    EnergyPlus IDF Model Code Generation Template
-
-    This template generates type-safe Pydantic models from EnergyPlus schema.
-    It is designed to be used with ModelGenerator (Node 2.4).
-
-    Expected context variables:
-        - schema_version: str - EnergyPlus schema version
-        - group_name: str - Object group name (e.g., "Thermal Zones and Surfaces")
-        - file_name: str - Output file name without extension
-        - objects: list[ObjectSpec] - List of object specifications to generate
-        - nested_classes: list[dict] - List of nested class definitions
-            Each dict has: {"name": str, "fields": list[FieldSpec]}
-
-    Required Jinja2 filters (registered by ModelGenerator):
-        - python_type: FieldSpec -> str (full type annotation including | None if optional)
-        - field_definition: FieldSpec -> str (complete Field(...) call)
-        - format_docstring: str -> str (format and wrap docstring text)
-#}
-{# ============================================================================
-   MACRO DEFINITIONS
-   ============================================================================ #}
-
-{#- Macro: Render a single field definition line -#}
 {% macro render_field(spec) %}
     {{ spec.python_name }}: {{ spec | python_type }} = {{ spec | field_definition }}
 {%- endmacro %}
 
 
-{#- Macro: Render a nested class (e.g., Vertex for coordinate arrays) -#}
 {% macro render_nested_class(class_info) %}
 
 class {{ class_info.name }}(IDFBaseModel):
@@ -52,10 +27,14 @@ class {{ class_info.name }}(IDFBaseModel):
 {%- endmacro %}
 
 
-{#- Macro: Render a main IDF object class -#}
 {% macro render_object_class(obj) %}
+{% if obj.class_name in mixin_map %}
+
+class {{ obj.class_name }}({{ mixin_map[obj.class_name] | join(', ') }}, IDFBaseModel):
+{% else %}
 
 class {{ obj.class_name }}(IDFBaseModel):
+{% endif %}
     """{{ obj.memo | format_docstring if obj.memo else obj.name }}"""
 
     _idf_object_type: ClassVar[str] = "{{ obj.name }}"
@@ -96,6 +75,11 @@ from typing import TYPE_CHECKING
 from pydantic import Field
 
 from ._base import IDFBaseModel
+{% if mixin_imports %}
+{% for import_path, mixin_names in mixin_imports.items() %}
+from {{ import_path }} import {{ mixin_names | join(', ') }}
+{% endfor %}
+{% endif %}
 {% if has_refs %}
 from ._refs import (
 {% for ref_type in used_ref_types %}
