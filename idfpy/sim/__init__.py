@@ -44,7 +44,9 @@ def simulate(
     Args:
         idf: IDF object or Path to IDF file.
         weather: Path to EPW weather file.
-        output_dir: Output directory. Defaults to IDF file's parent directory.
+        output_dir: Output directory. Defaults to the IDF file's parent
+            when *idf* is a Path. Required when *idf* is an in-memory IDF
+            object (raises ValueError if omitted).
         energyplus_bin: Path to EnergyPlus executable.
         design_day: Run design-day-only simulation (-D).
         annual: Run annual simulation (-a).
@@ -106,8 +108,10 @@ async def async_simulate(
 ) -> SimResult:
     """Run a single EnergyPlus simulation (async).
 
-    Same interface as simulate() but meant to be awaited
-    inside an existing event loop.
+    Same interface as simulate() but meant to be awaited inside an
+    existing event loop. *output_dir* is required when *idf* is an
+    in-memory IDF object; it defaults to the file's parent only when
+    *idf* is a Path.
     """
     with _resolve_idf(idf) as idf_path:
         if output_dir is None:
