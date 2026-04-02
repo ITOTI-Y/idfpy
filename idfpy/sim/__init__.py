@@ -111,6 +111,11 @@ async def async_simulate(
     """
     with _resolve_idf(idf) as idf_path:
         if output_dir is None:
+            if not isinstance(idf, Path):
+                raise ValueError(
+                    'output_dir is required when idf is an IDF object '
+                    '(temp IDF directory is cleaned up after simulation)'
+                )
             output_dir = idf_path.parent
 
         return await _run_one(
