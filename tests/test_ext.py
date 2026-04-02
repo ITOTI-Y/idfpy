@@ -18,20 +18,13 @@ from idfpy.models.thermal_zones import (
     FloorDetailed,
 )
 
-# ---------------------------------------------------------------------------
-# Pure geometry function tests
-# ---------------------------------------------------------------------------
-
 
 class TestPolygonArea3D:
     def test_triangle(self):
-        # Right triangle in XY plane: vertices (0,0,0), (1,0,0), (0,1,0)
-        # Area = 0.5
         verts = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         assert polygon_area_3d(verts) == pytest.approx(0.5)
 
     def test_rectangle(self):
-        # 2x3 rectangle in XZ plane
         verts = [
             (0.0, 0.0, 0.0),
             (2.0, 0.0, 0.0),
@@ -41,7 +34,6 @@ class TestPolygonArea3D:
         assert polygon_area_3d(verts) == pytest.approx(6.0)
 
     def test_tilted_rectangle(self):
-        # 1x1 square tilted at 45 degrees
         s = math.sqrt(2) / 2
         verts = [(0, 0, 0), (1, 0, 0), (1, s, s), (0, s, s)]
         assert polygon_area_3d(verts) == pytest.approx(1.0)
@@ -58,13 +50,11 @@ class TestPolygonArea3D:
 
 class TestPolygonNormal:
     def test_xy_plane(self):
-        # Counter-clockwise in XY plane → normal should be (0, 0, 1)
         verts = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0)]
         nx, ny, nz = polygon_normal(verts)
         assert (nx, ny, nz) == pytest.approx((0.0, 0.0, 1.0))
 
     def test_xz_plane(self):
-        # In XZ plane, normal should point in +Y or -Y direction
         verts = [(0, 0, 0), (1, 0, 0), (1, 0, 1), (0, 0, 1)]
         nx, ny, nz = polygon_normal(verts)
         assert abs(ny) == pytest.approx(1.0)
@@ -93,11 +83,6 @@ class TestPolygonCentroid:
 
     def test_empty(self):
         assert polygon_centroid([]) == (0.0, 0.0, 0.0)
-
-
-# ---------------------------------------------------------------------------
-# Mixin integration tests
-# ---------------------------------------------------------------------------
 
 
 def _make_vertex_item(x: float, y: float, z: float):
@@ -294,11 +279,6 @@ class TestFixedVertexGeometryMixin:
         ]
 
 
-# ---------------------------------------------------------------------------
-# Plugin discovery / MRO tests
-# ---------------------------------------------------------------------------
-
-
 class TestPluginIntegration:
     def test_mro_contains_mixin(self):
         from idfpy.ext.geometry.mixins import ExtensibleVertexGeometryMixin
@@ -326,5 +306,4 @@ class TestPluginIntegration:
         )
         data = surface.model_dump(exclude_none=True)
         assert data['name'] == 'W'
-        # Geometry properties should NOT appear in model_dump
         assert 'area' not in data

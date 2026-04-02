@@ -5,13 +5,31 @@ from __future__ import annotations
 from .functions import polygon_area_3d, polygon_centroid, polygon_normal
 
 
-class ExtensibleVertexGeometryMixin:
-    """Geometry mixin for surfaces with an extensible ``vertices`` list.
+class _BaseGeometryMixin:
+    """Base mixin providing area/normal/centroid from ``vertices_as_tuples``."""
 
-    Target classes: BuildingSurfaceDetailed, FloorDetailed,
-    RoofCeilingDetailed, WallDetailed, ShadingBuildingDetailed,
-    ShadingSiteDetailed, ShadingZoneDetailed.
-    """
+    @property
+    def vertices_as_tuples(self) -> list[tuple[float, float, float]]:
+        raise NotImplementedError
+
+    @property
+    def area(self) -> float:
+        """Surface area in m²."""
+        return polygon_area_3d(self.vertices_as_tuples)
+
+    @property
+    def normal(self) -> tuple[float, float, float]:
+        """Outward unit normal vector."""
+        return polygon_normal(self.vertices_as_tuples)
+
+    @property
+    def centroid(self) -> tuple[float, float, float]:
+        """Centroid (arithmetic mean of vertices)."""
+        return polygon_centroid(self.vertices_as_tuples)
+
+
+class ExtensibleVertexGeometryMixin(_BaseGeometryMixin):
+    """Geometry mixin for surfaces with an extensible ``vertices`` list."""
 
     @property
     def vertices_as_tuples(self) -> list[tuple[float, float, float]]:
@@ -28,27 +46,9 @@ class ExtensibleVertexGeometryMixin:
             for item in items
         ]
 
-    @property
-    def area(self) -> float:
-        """Surface area in m²."""
-        return polygon_area_3d(self.vertices_as_tuples)
 
-    @property
-    def normal(self) -> tuple[float, float, float]:
-        """Outward unit normal vector."""
-        return polygon_normal(self.vertices_as_tuples)
-
-    @property
-    def centroid(self) -> tuple[float, float, float]:
-        """Centroid (arithmetic mean of vertices)."""
-        return polygon_centroid(self.vertices_as_tuples)
-
-
-class FixedVertexGeometryMixin:
-    """Geometry mixin for surfaces with fixed ``vertex_N_x/y/z`` fields.
-
-    Target classes: FenestrationSurfaceDetailed.
-    """
+class FixedVertexGeometryMixin(_BaseGeometryMixin):
+    """Geometry mixin for surfaces with fixed ``vertex_N_x/y/z`` fields."""
 
     @property
     def vertices_as_tuples(self) -> list[tuple[float, float, float]]:
@@ -62,18 +62,3 @@ class FixedVertexGeometryMixin:
                 break
             result.append((x, y, z))
         return result
-
-    @property
-    def area(self) -> float:
-        """Surface area in m²."""
-        return polygon_area_3d(self.vertices_as_tuples)
-
-    @property
-    def normal(self) -> tuple[float, float, float]:
-        """Outward unit normal vector."""
-        return polygon_normal(self.vertices_as_tuples)
-
-    @property
-    def centroid(self) -> tuple[float, float, float]:
-        """Centroid (arithmetic mean of vertices)."""
-        return polygon_centroid(self.vertices_as_tuples)

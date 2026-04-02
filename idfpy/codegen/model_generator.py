@@ -49,7 +49,6 @@ class ModelGenerator:
         'Schedules': 'schedules',
         'Surface Construction Elements': 'constructions',
         'Thermal Zones and Surfaces': 'thermal_zones',
-        # Both short and full names map to the same file
         'Advanced Construction': 'advanced_construction',
         'Advanced Construction, Surface, Zone Concepts': 'advanced_construction',
         'Room Air Models': 'room_air',
@@ -86,7 +85,6 @@ class ModelGenerator:
         'Electric Load Center-Generator Specifications': 'electric_load',
         'Water Systems': 'water_systems',
         'Operational Faults': 'faults',
-        # Both short and full names map to the same file
         'Performance Curves': 'curves',
         'Performance Curves and Tables': 'curves',
         'Fluid Properties': 'fluids',
@@ -107,7 +105,6 @@ class ModelGenerator:
         'Plant-Condenser Flow Control': 'plant_flow_control',
     }
 
-    # Minimum number of objects to create a separate file
     MERGE_THRESHOLD = 5
 
     def __init__(self, output_dir: Path):
@@ -132,33 +129,26 @@ class ModelGenerator:
         """
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Collect all object_lists and generate _refs.py
         object_lists = self._collect_object_lists(specs)
         self._generate_refs_file(object_lists, schema_version)
 
-        # Build and set object_list -> ref type mapping for template filters
         self._object_list_to_ref_type = {
             ol: self._object_list_to_type_name(ol) for ol in object_lists
         }
         set_object_list_ref_types(self._object_list_to_ref_type)
 
-        # Collect reference-class-name groups and their member type names
         self._rcn_groups = self._collect_reference_class_name_groups(specs)
         set_reference_class_name_groups(set(self._rcn_groups.keys()))
 
-        # Build IDF object type -> class name mapping for discriminant intersection
         set_object_type_to_class({s.name: s.class_name for s in specs.values()})
 
-        # Discover ext plugin mixins
         self._ext_mixins = self._discover_ext_mixins()
         if self._ext_mixins:
             affected = ', '.join(sorted(self._ext_mixins))
             logger.info(f'Discovered ext mixins for: {affected}')
 
-        # Group objects by output file
         file_groups = self._group_objects_by_file(specs)
 
-        # Pre-compute ref_group -> provider class names for nav type narrowing
         group_to_classes: dict[str, set[str]] = {}
         class_to_module: dict[str, str] = {}
         for file_name, objs in file_groups.items():
@@ -170,31 +160,22 @@ class ModelGenerator:
                             group_to_classes.setdefault(group, set()).add(
                                 obj.class_name
                             )
-        # Also map nested class names to their modules (computed during generation)
-        # We'll update class_to_module as nested classes are discovered
         self._class_to_module = class_to_module
         set_nav_type_mapping(group_to_classes)
 
-        # Track all generated classes for __init__.py
-        all_classes: dict[str, list[str]] = {}  # file_name -> [class_names]
-        all_nested_classes: dict[str, list[dict]] = {}  # file_name -> nested dicts
-        object_type_registry: dict[str, str] = {}  # "Zone" -> "Zone"
-        # "Zone" -> ["field1", ...]
+        all_classes: dict[str, list[str]] = {}
+        all_nested_classes: dict[str, list[dict]] = {}
+        object_type_registry: dict[str, str] = {}
         field_order_registry: dict[str, list[str]] = {}
 
-        # Generate each model file
         for file_name, unsorted_objects in file_groups.items():
             logger.info(
                 f'Generating {file_name}.py with {len(unsorted_objects)} objects...'
             )
 
-            # Sort objects by name for consistent output
             sorted_objects = sorted(unsorted_objects, key=lambda o: o.class_name)
-
-            # Extract group name from first object
             group_name = sorted_objects[0].group if sorted_objects else 'Unknown'
 
-            # Generate the file
             class_names, nested_classes = self._generate_model_file(
                 file_name=file_name,
                 objects=sorted_objects,
@@ -205,15 +186,12 @@ class ModelGenerator:
             all_classes[file_name] = class_names
             all_nested_classes[file_name] = nested_classes
 
-            # Build registries
             for obj in sorted_objects:
                 object_type_registry[obj.name] = obj.class_name
                 field_order_registry[obj.name] = [f.python_name for f in obj.fields]
 
-        # Generate _ref_meta.py
         self._generate_ref_meta_file(specs, all_nested_classes, schema_version)
 
-        # Generate __init__.py
         self._generate_init_file(
             all_classes=all_classes,
             object_type_registry=object_type_registry,
@@ -253,7 +231,6 @@ class ModelGenerator:
             else:
                 unmapped_objects.append(spec)
 
-        # Add unmapped objects to misc
         if unmapped_objects:
             unmapped_groups = sorted({s.group for s in unmapped_objects})
             logger.warning(
@@ -262,7 +239,6 @@ class ModelGenerator:
             )
             file_groups['misc'].extend(unmapped_objects)
 
-        # Merge small groups into misc
         final_groups: dict[str, list[ObjectSpec]] = {}
         small_objects: list[ObjectSpec] = []
 
@@ -317,23 +293,18 @@ class ModelGenerator:
         env = self._get_jinja_env()
         template = env.get_template('idf_model_py.jinja2')
 
-        # Extract nested classes from array fields
         nested_classes = extract_nested_classes(objects, deduplicate=True)
 
-        # Update class_to_module for nested classes
         for nc in nested_classes:
             self._class_to_module[nc['name']] = file_name
 
-        # Collect reference types used by this file's objects
         used_ref_types = collect_used_ref_types(objects)
         has_refs = len(used_ref_types) > 0
 
-        # Collect TYPE_CHECKING imports for narrowed nav property types
         nav_imports = collect_nav_imports(
             objects, nested_classes, file_name, self._class_to_module
         )
 
-        # Collect ext mixin info for this file
         file_mixin_map: dict[str, list[str]] = {}
         file_mixin_imports: dict[str, set[str]] = {}
         for obj in objects:
@@ -343,7 +314,6 @@ class ModelGenerator:
                 for mixin_name, import_path in mixins:
                     file_mixin_imports.setdefault(import_path, set()).add(mixin_name)
 
-        # Render template
         content = template.render(
             schema_version=schema_version,
             group_name=group_name,
@@ -357,12 +327,10 @@ class ModelGenerator:
             mixin_imports={k: sorted(v) for k, v in sorted(file_mixin_imports.items())},
         )
 
-        # Write file
         output_path = self.output_dir / f'{file_name}.py'
         output_path.write_text(content, encoding='utf-8')
         logger.debug(f'Written {output_path}')
 
-        # Collect class names (main objects + nested)
         class_names = [obj.class_name for obj in objects]
         class_names.extend(nc['name'] for nc in nested_classes)
 
@@ -387,7 +355,6 @@ class ModelGenerator:
         consumers: dict[str, dict[str, list[str]]] = {}
 
         for obj_name, obj_spec in specs.items():
-            # Providers: fields with reference attribute
             obj_providers: list[tuple[str, list[str]]] = []
             for field in obj_spec.fields:
                 if field.reference:
@@ -397,7 +364,6 @@ class ModelGenerator:
             if obj_providers:
                 providers[obj_name] = obj_providers
 
-            # Consumers: fields with object_list attribute (top-level only)
             cls_fields: dict[str, list[str]] = {}
             for field in obj_spec.fields:
                 if field.object_list:
@@ -405,7 +371,6 @@ class ModelGenerator:
             if cls_fields:
                 consumers[obj_spec.class_name] = cls_fields
 
-        # Consumers from extensible item classes
         for _file_name, nested_list in all_nested_classes.items():
             for nc in nested_list:
                 item_fields: dict[str, list[str]] = {}
@@ -415,11 +380,9 @@ class ModelGenerator:
                 if item_fields:
                     consumers[nc['name']] = item_fields
 
-        # Render _ref_meta.py via template
         env = self._get_jinja_env()
         template = env.get_template('ref_meta_py.jinja2')
 
-        # Prepare sorted template data
         providers_data = []
         for obj_type in sorted(providers):
             entries = providers[obj_type]
@@ -438,7 +401,6 @@ class ModelGenerator:
             for cls_name in sorted(consumers)
         ]
 
-        # Prepare reference-class-name type data
         rcn_types_data = [
             (group, sorted(types)) for group, types in sorted(self._rcn_groups.items())
         ]
@@ -480,13 +442,11 @@ class ModelGenerator:
         env = self._get_jinja_env()
         template = env.get_template('init_py.jinja2')
 
-        # Invert: file_name -> [class_names] to class_name -> file_name
         class_to_module: dict[str, str] = {}
         for file_name, class_names in all_classes.items():
             for cls_name in class_names:
                 class_to_module[cls_name] = file_name
 
-        # Build sorted __all__ exports
         all_exports = ['IDFBaseModel', 'OBJECT_TYPE_REGISTRY', 'FIELD_ORDER_REGISTRY']
         all_exports.extend(['get_model_class', 'get_field_order'])
         for class_names in all_classes.values():
@@ -522,7 +482,6 @@ class ModelGenerator:
             keep_trailing_newline=True,
         )
 
-        # Register custom filters
         for name, func in TEMPLATE_FILTERS.items():
             self._env.filters[name] = func
 
@@ -591,9 +550,7 @@ class ModelGenerator:
         Returns:
             Type alias name (e.g., "ZoneNamesRef").
         """
-        # Remove special characters, ensure valid Python identifier
         name = re.sub(r'[^a-zA-Z0-9]', '', object_list)
-        # Ensure PascalCase (first letter uppercase)
         if name and name[0].islower():
             name = name[0].upper() + name[1:]
         return f'{name}Ref'
