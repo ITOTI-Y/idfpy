@@ -51,23 +51,18 @@ def simulate(
         expand_objects: Expand HVACTemplate objects (-x).
         echo: Print EnergyPlus output to terminal in real time.
     """
-    idf_path = _resolve_idf(idf)
-    if output_dir is None:
-        output_dir = idf_path.parent
-
-    async def _run() -> SimResult:
-        return await _run_one(
-            idf_path,
+    return anyio.run(
+        lambda: async_simulate(
+            idf,
             weather,
-            output_dir,  # type: ignore[arg-type]
-            energyplus_bin,
-            expand_objects=expand_objects,
+            output_dir=output_dir,
+            energyplus_bin=energyplus_bin,
             design_day=design_day,
             annual=annual,
+            expand_objects=expand_objects,
             echo=echo,
         )
-
-    return anyio.run(_run)
+    )
 
 
 def simulate_batch(
@@ -87,19 +82,66 @@ def simulate_batch(
         expand_objects: Expand HVACTemplate objects (-x).
         echo: Print EnergyPlus output to terminal.
     """
-
-    async def _run() -> list[SimResult]:
-        return await _batch(
+    return anyio.run(
+        lambda: async_simulate_batch(
             jobs,
-            max_concurrent,
-            energyplus_bin,
+            max_concurrent=max_concurrent,
+            energyplus_bin=energyplus_bin,
             expand_objects=expand_objects,
             echo=echo,
         )
+    )
 
-    return anyio.run(_run)
+
+async def async_simulate(
+    idf: object,
+    weather: Path,
+    *,
+    output_dir: Path | None = None,
+    energyplus_bin: str = 'energyplus',
+    design_day: bool = False,
+    annual: bool = False,
+    expand_objects: bool = True,
+    echo: bool = True,
+) -> SimResult:
+    """Run a single EnergyPlus simulation (async).
+
+    Same interface as simulate() but meant to be awaited
+    inside an existing event loop.
+    """
+    with _resolve_idf(idf) as idf_path:
+        if output_dir is None:
+            output_dir = idf_path.parent
+
+        return await _run_one(
+            idf_path,
+            weather,
+            output_dir,
+            energyplus_bin,
+            expand_objects=expand_objects,
+            design_day=design_day,
+            annual=annual,
+            echo=echo,
+        )
 
 
-# Async variants exposed directly
-async_simulate = _run_one
-async_simulate_batch = _batch
+async def async_simulate_batch(
+    jobs: list[SimJob],
+    *,
+    max_concurrent: int = 4,
+    energyplus_bin: str = 'energyplus',
+    expand_objects: bool = True,
+    echo: bool = False,
+) -> list[SimResult]:
+    """Run multiple EnergyPlus simulations concurrently (async).
+
+    Same interface as simulate_batch() but meant to be awaited
+    inside an existing event loop.
+    """
+    return await _batch(
+        jobs,
+        max_concurrent,
+        energyplus_bin,
+        expand_objects=expand_objects,
+        echo=echo,
+    )

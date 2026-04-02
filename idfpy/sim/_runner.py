@@ -5,7 +5,9 @@ from __future__ import annotations
 import subprocess
 import sys
 import tempfile
+from contextlib import contextmanager
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import anyio
 from anyio.streams.text import TextReceiveStream
@@ -13,6 +15,9 @@ from loguru import logger
 
 from .config import SimJob
 from .result import SimResult
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 def _build_cmd(
@@ -37,25 +42,32 @@ def _build_cmd(
     return cmd
 
 
-def _resolve_idf(idf: object) -> Path:
+@contextmanager
+def _resolve_idf(idf: object) -> Iterator[Path]:
     """Resolve IDF object or Path to a file path.
 
-    Accepts Path (used directly) or IDF instance (saved to temp file).
-    Uses duck typing to avoid importing IDF at module level.
+    Context manager that yields the resolved path. When *idf* is an IDF
+    object, a temporary directory is created, the model is saved into it,
+    and the directory is cleaned up on exit.
     """
     if isinstance(idf, Path):
         if not idf.exists():
             raise FileNotFoundError(f'IDF file not found: {idf}')
-        return idf
+        yield idf
+        return
 
     # Duck-type check for IDF objects with a save() method
     save = getattr(idf, 'save', None)
     if save is None:
         raise TypeError(f'Expected Path or IDF object, got {type(idf).__name__}')
 
-    tmp = Path(tempfile.mkdtemp()) / 'model.idf'
-    save(tmp)
-    return tmp
+    tmp_dir = tempfile.TemporaryDirectory()
+    try:
+        tmp_path = Path(tmp_dir.name) / 'model.idf'
+        save(tmp_path)
+        yield tmp_path
+    finally:
+        tmp_dir.cleanup()
 
 
 async def _run_one(
@@ -124,11 +136,25 @@ async def _batch(
     and create_task_group for structured concurrency. Individual task
     exceptions are caught and recorded as failed SimResults.
     """
+    # Pre-compute output dirs and validate uniqueness
+    output_dirs: list[Path] = []
+    for i, job in enumerate(jobs):
+        output_dirs.append(
+            job.output_dir.resolve()
+            if job.output_dir
+            else Path(f'run_{i:04d}').resolve()
+        )
+    seen: dict[Path, int] = {}
+    for i, d in enumerate(output_dirs):
+        if d in seen:
+            raise ValueError(f'Duplicate output_dir {d} for jobs {seen[d]} and {i}')
+        seen[d] = i
+
     limiter = anyio.CapacityLimiter(max_concurrent)
     results: list[SimResult | None] = [None] * len(jobs)
 
     async def _run_indexed(index: int, job: SimJob) -> None:
-        output_dir = job.output_dir or Path(f'run_{index:04d}')
+        output_dir = output_dirs[index]
         try:
             async with limiter:
                 results[index] = await _run_one(

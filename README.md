@@ -73,7 +73,7 @@ idf = IDF.load(Path('existing.epjson'))    # epJSON format
 # Run simulation
 from idfpy.sim import simulate
 
-result = simulate(Path('model.idf'), weather=Path('weather.epw'), output_dir=Path('results/'))
+result = simulate(Path('output.idf'), weather=Path('weather.epw'), output_dir=Path('results/'))
 print(result.success)  # True / False
 ```
 
