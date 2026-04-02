@@ -74,7 +74,7 @@ class IDFBaseModel(BaseModel):
                 if value is None:
                     raise ValueError(
                         f"Cannot set provider field '{name}' to None on a "
-                        f"bound {type(self).__name__}; remove the object first"
+                        f'bound {type(self).__name__}; remove the object first'
                     )
                 old = getattr(self, name, None)
                 if old != value:
