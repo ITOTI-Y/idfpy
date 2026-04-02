@@ -40,7 +40,7 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
     "{{ group }}": frozenset(
         {
         {% for t in types %}
-            "{{ t }}",
+            "{{ t | upper }}",
         {% endfor %}
         }
     ),

@@ -584,7 +584,7 @@ class IDF:
         for group in ref_groups:
             valid_types = REF_CLASS_NAME_TYPES.get(group)
             if valid_types is not None:
-                if value in valid_types:
+                if key in valid_types:
                     return  # Found in static type set — valid
             else:
                 registry_groups.append(group)
