@@ -962,7 +962,7 @@ class IDF:
                 lines.append('')
 
         path.write_text('\n'.join(lines), encoding='utf-8')
-        logger.info(f'Saved IDF with {len(self)} objects to {path}')
+        logger.info('Saved IDF with {} objects to {}', len(self), path)
 
     def _save_epjson(self, path: Path) -> None:
         """Save IDF container in epJSON format."""
@@ -970,7 +970,7 @@ class IDF:
         path.parent.mkdir(parents=True, exist_ok=True)
         data = self.to_dict()
         path.write_text(json.dumps(data, indent=4, sort_keys=True), encoding='utf-8')
-        logger.info(f'Saved epJSON with {len(self)} objects to {path}')
+        logger.info('Saved epJSON with {} objects to {}', len(self), path)
 
     def _format_object(
         self,
@@ -1099,7 +1099,7 @@ class IDF:
             str(output_dir),
             str(idf_path),
         ]
-        logger.info(f'Running EnergyPlus: {" ".join(cmd)}')
+        logger.info('Running EnergyPlus: {}', ' '.join(cmd))
 
         process = subprocess.Popen(
             cmd,
@@ -1119,7 +1119,7 @@ class IDF:
         if return_code == 0:
             logger.info('EnergyPlus simulation completed successfully')
         else:
-            logger.error(f'EnergyPlus simulation failed with return code {return_code}')
+            logger.error('EnergyPlus simulation failed with return code {}', return_code)
 
         return return_code
 
