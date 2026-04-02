@@ -9,19 +9,14 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-import types
 import weakref
-from collections.abc import Iterator, Mapping
+from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
 from typing import (
-    Annotated,
     Any,
     Literal,
     TypeVar,
-    Union,
     cast,
-    get_args,
-    get_origin,
     overload,
 )
 
@@ -33,10 +28,10 @@ from idfpy.models import (
     get_model_class,
 )
 from idfpy.models._base import IDFBaseModel
+from idfpy.models._metadata import get_model_metadata
 from idfpy.models._ref_errors import RefError, RefValidationError
 from idfpy.models._ref_meta import (
     REF_CLASS_NAME_TYPES,
-    REF_CONSUMERS,
     REF_GROUP_PROVIDERS,
     REF_PROVIDERS,
 )
@@ -45,62 +40,33 @@ from idfpy.models.simulation import Version
 _T = TypeVar('_T', bound=IDFBaseModel)
 
 
-def _find_list_item_class(annotation: Any) -> type[IDFBaseModel] | None:
-    """Extract the IDFBaseModel item class from a list type annotation.
-
-    Handles list[X], list[X] | None, Annotated[list[X], ...], etc.
-
-    Returns:
-        The item class if the annotation is a list of IDFBaseModel subclass,
-        None otherwise.
-    """
-    origin = get_origin(annotation)
-    args = get_args(annotation)
-
-    if origin is list and args:
-        item_type = args[0]
-        if isinstance(item_type, type) and issubclass(item_type, IDFBaseModel):
-            return item_type
-        return None
-
-    if origin is Union or isinstance(annotation, types.UnionType):
-        for arg in args:
-            result = _find_list_item_class(arg)
-            if result is not None:
-                return result
-
-    if origin is Annotated and args:
-        return _find_list_item_class(args[0])
-
-    return None
-
-
-def _finalize_fields(fields: dict[str, Any], obj: IDFBaseModel) -> dict[str, Any]:
+def _finalize_fields(
+    fields: dict[str, Any],
+    obj: IDFBaseModel,
+    alias_remap: dict[str, str],
+) -> dict[str, Any]:
     """Coerce numerics and apply validation_alias remapping in a single pass."""
-    model_fields = type(obj).model_fields
     result: dict[str, Any] = {}
     for k, v in fields.items():
         if isinstance(v, list):
             obj_list = getattr(obj, k)
-            coerced = [
-                _finalize_fields(cast(dict[str, Any], item), obj_list[i])
-                if isinstance(item, dict)
-                else item
-                for i, item in enumerate(v)
-            ]
-            out_key = k
+            if v and isinstance(v[0], dict) and obj_list:
+                child_remap = get_model_metadata(
+                    type(obj_list[0])
+                ).validation_alias_remap
+                coerced = [
+                    _finalize_fields(
+                        cast(dict[str, Any], item), obj_list[i], child_remap
+                    )
+                    if isinstance(item, dict)
+                    else item
+                    for i, item in enumerate(v)
+                ]
+            else:
+                coerced = v
         else:
             coerced = getattr(obj, k)
-            out_key = k
-
-        # Apply validation_alias remapping
-        fi = model_fields.get(k)
-        if fi is not None:
-            va = fi.validation_alias
-            if isinstance(va, str) and va != k and not fi.alias:
-                out_key = va
-
-        result[out_key] = coerced
+        result[alias_remap.get(k, k)] = coerced
     return result
 
 
@@ -171,7 +137,7 @@ class IDF:
         self._bind_recursive(obj)
         self._register_refs(obj)
         self._index_consumer_refs(obj, object_type, name)
-        logger.debug(f'Added {object_type}: {name}')
+        logger.debug('Added {}: {}', object_type, name)
 
     @overload
     def get(self, object_type: type[_T], name: str) -> _T | None: ...
@@ -257,11 +223,21 @@ class IDF:
     # ── Helpers ──────────────────────────────────────────────
 
     @staticmethod
-    def _iter_extensible_children(obj: IDFBaseModel) -> Iterator[IDFBaseModel]:
-        """Yield IDFBaseModel items from all extensible (list) fields."""
-        for field_name in type(obj)._get_list_field_names():
-            items = getattr(obj, field_name, None) or ()
-            yield from (item for item in items if isinstance(item, IDFBaseModel))
+    def _walk_obj_tree(obj: IDFBaseModel) -> Iterator[IDFBaseModel]:
+        """Yield obj and all extensible children (iterative, stack-based)."""
+        stack = [obj]
+        while stack:
+            current = stack.pop()
+            yield current
+            meta = get_model_metadata(type(current))
+            for field_name in meta.list_field_names:
+                items = getattr(current, field_name, None)
+                if items:
+                    stack.extend(
+                        item
+                        for item in reversed(items)
+                        if isinstance(item, IDFBaseModel)
+                    )
 
     @staticmethod
     def _prune_bucket(
@@ -279,15 +255,14 @@ class IDF:
 
     def _bind_recursive(self, obj: IDFBaseModel) -> None:
         """Bind object and its extensible children to this IDF."""
-        obj._idf_ref = weakref.ref(self)
-        for child in self._iter_extensible_children(obj):
-            self._bind_recursive(child)
+        ref = weakref.ref(self)
+        for current in self._walk_obj_tree(obj):
+            current._idf_ref = ref
 
     def _unbind_recursive(self, obj: IDFBaseModel) -> None:
         """Unbind object and its extensible children."""
-        obj._idf_ref = None
-        for child in self._iter_extensible_children(obj):
-            self._unbind_recursive(child)
+        for current in self._walk_obj_tree(obj):
+            current._idf_ref = None
 
     # ── Reference registration ───────────────────────────────
 
@@ -301,7 +276,9 @@ class IDF:
             key = value.upper()
             entry = (object_type, value)
             for group in ref_groups:
-                self._ref_registry.setdefault(group, {}).setdefault(key, []).append(entry)
+                self._ref_registry.setdefault(group, {}).setdefault(key, []).append(
+                    entry
+                )
 
     def _unregister_refs(self, obj: IDFBaseModel) -> None:
         """Remove an object's provided references from the registry."""
@@ -322,40 +299,33 @@ class IDF:
         self, obj: IDFBaseModel, obj_type: str, obj_name: str
     ) -> None:
         """Index an object's consumer references into the reverse index."""
-        cls_name = type(obj).__name__
-        consumer_fields = REF_CONSUMERS.get(cls_name, {})
-        for field_name, ref_groups in consumer_fields.items():
-            value = getattr(obj, field_name, None)
-            if not value or not isinstance(value, str):
-                continue
-            key = value.upper()
-            for group in ref_groups:
-                bucket = self._reverse_index.setdefault(group, {})
-                bucket.setdefault(key, []).append((obj_type, obj_name))
-
-        # Also index extensible list items
-        for child in self._iter_extensible_children(obj):
-            self._index_consumer_refs(child, obj_type, obj_name)
+        for current in self._walk_obj_tree(obj):
+            meta = get_model_metadata(type(current))
+            for field_name, ref_groups in meta.consumer_fields.items():
+                value = getattr(current, field_name, None)
+                if not value or not isinstance(value, str):
+                    continue
+                key = value.upper()
+                for group in ref_groups:
+                    bucket = self._reverse_index.setdefault(group, {})
+                    bucket.setdefault(key, []).append((obj_type, obj_name))
 
     def _unindex_consumer_refs(
         self, obj: IDFBaseModel, obj_type: str, obj_name: str
     ) -> None:
         """Remove an object's consumer references from the reverse index."""
-        cls_name = type(obj).__name__
-        consumer_fields = REF_CONSUMERS.get(cls_name, {})
-        for field_name, ref_groups in consumer_fields.items():
-            value = getattr(obj, field_name, None)
-            if not value or not isinstance(value, str):
-                continue
-            key = value.upper()
-            for group in ref_groups:
-                self._prune_bucket(
-                    self._reverse_index, group, key, lambda e: e != (obj_type, obj_name)
-                )
-
-        # Also unindex extensible list items
-        for child in self._iter_extensible_children(obj):
-            self._unindex_consumer_refs(child, obj_type, obj_name)
+        entry = (obj_type, obj_name)
+        for current in self._walk_obj_tree(obj):
+            meta = get_model_metadata(type(current))
+            for field_name, ref_groups in meta.consumer_fields.items():
+                value = getattr(current, field_name, None)
+                if not value or not isinstance(value, str):
+                    continue
+                key = value.upper()
+                for group in ref_groups:
+                    self._prune_bucket(
+                        self._reverse_index, group, key, lambda e, _e=entry: e != _e
+                    )
 
     # ── Cascade rename ──────────────────────────────────────
 
@@ -445,17 +415,14 @@ class IDF:
         affected_groups: set[str],
     ) -> None:
         """Update consumer reference fields that point to old_key."""
-        cls_name = type(consumer).__name__
-        for field_name, field_groups in REF_CONSUMERS.get(cls_name, {}).items():
-            if not affected_groups.intersection(field_groups):
-                continue
-            val = getattr(consumer, field_name, None)
-            if isinstance(val, str) and val.upper() == old_key:
-                setattr(consumer, field_name, new_value)
-
-        # Recurse into extensible list items
-        for child in self._iter_extensible_children(consumer):
-            self._cascade_consumer_fields(child, old_key, new_value, affected_groups)
+        for current in self._walk_obj_tree(consumer):
+            meta = get_model_metadata(type(current))
+            for field_name, field_groups in meta.consumer_fields.items():
+                if not affected_groups.intersection(field_groups):
+                    continue
+                val = getattr(current, field_name, None)
+                if isinstance(val, str) and val.upper() == old_key:
+                    setattr(current, field_name, new_value)
 
     # ── Forward resolution ───────────────────────────────────
 
@@ -561,38 +528,25 @@ class IDF:
         key: str,
         obj: IDFBaseModel,
         errors: list[RefError],
-        *,
-        parent_type: str | None = None,
-        parent_name: str | None = None,
     ) -> None:
         """Check one object's reference fields against the registry."""
-        cls_name = type(obj).__name__
-        object_type = parent_type or obj.idf_object_type()
-        object_name = parent_name or key or ''
+        object_type = obj.idf_object_type()
+        object_name = key or ''
 
-        consumer_fields = REF_CONSUMERS.get(cls_name, {})
-        for field_name, ref_groups in consumer_fields.items():
-            value = getattr(obj, field_name, None)
-            if value is None or not isinstance(value, str):
-                continue
-            self._check_ref(
-                object_type,
-                object_name,
-                field_name,
-                value,
-                ref_groups,
-                errors,
-            )
-
-        # Recurse into extensible items
-        for child in self._iter_extensible_children(obj):
-            self._validate_obj_refs(
-                '',
-                child,
-                errors,
-                parent_type=object_type,
-                parent_name=object_name,
-            )
+        for current in self._walk_obj_tree(obj):
+            meta = get_model_metadata(type(current))
+            for field_name, ref_groups in meta.consumer_fields.items():
+                value = getattr(current, field_name, None)
+                if value is None or not isinstance(value, str):
+                    continue
+                self._check_ref(
+                    object_type,
+                    object_name,
+                    field_name,
+                    value,
+                    ref_groups,
+                    errors,
+                )
 
     def _check_ref(
         self,
@@ -687,15 +641,17 @@ class IDF:
         for object_type, objects in self._objects.items():
             type_dict: dict[str, dict[str, Any]] = {}
             unnamed_counter = 1
+            meta = None
             for obj in objects.values():
+                if meta is None:
+                    meta = get_model_metadata(type(obj))
                 fields = obj.model_dump(
                     exclude_none=True, exclude_unset=True, by_alias=True
                 )
                 fields.pop('name', None)
-                fields = _finalize_fields(fields, obj)
-                has_name_field = 'name' in type(obj).model_fields
+                fields = _finalize_fields(fields, obj, meta.validation_alias_remap)
                 name_value = getattr(obj, 'name', None)
-                if has_name_field and name_value not in (None, ''):
+                if meta.has_name_field and name_value not in (None, ''):
                     obj_name = name_value
                 else:
                     while f'{object_type} {unnamed_counter}' in type_dict:
@@ -734,7 +690,7 @@ class IDF:
                 )
             model_class = get_model_class(object_type)
             if model_class is None:
-                logger.warning(f'Unknown object type: {object_type}')
+                logger.warning('Unknown object type: {}', object_type)
                 continue
             for obj_name, fields in objects.items():
                 if not isinstance(fields, Mapping):
@@ -749,7 +705,9 @@ class IDF:
                     obj = model_class(**field_dict)
                     idf.add(obj)
                 except Exception as e:
-                    logger.warning(f'Failed to parse {object_type} "{obj_name}": {e}')
+                    logger.warning(
+                        'Failed to parse {} "{}": {}', object_type, obj_name, e
+                    )
         return idf
 
     @classmethod
@@ -778,8 +736,8 @@ class IDF:
         if path.suffix.lower() in ('.epjson', '.json'):
             return cls._load_epjson(path)
 
-        content = path.read_text(encoding='utf-8')
-        return cls._parse_idf_content(content)
+        with path.open(encoding='utf-8') as f:
+            return cls._parse_idf_content(f)
 
     @classmethod
     def _load_epjson(cls, path: Path) -> IDF:
@@ -789,17 +747,21 @@ class IDF:
         return cls.from_dict(data)
 
     @classmethod
-    def _parse_idf_content(cls, content: str) -> IDF:
-        """Parse IDF content string into objects.
+    def _parse_idf_content(cls, lines: str | Iterable[str]) -> IDF:
+        """Parse IDF content from a string or line iterator.
 
         Single-pass parser: accumulates text chunks line by line,
         processes each complete object block when ';' is encountered.
-        Avoids the large intermediate string from join+split.
+        Accepts a string (split by lines) or any line iterable (file object,
+        list of strings, etc.) for streaming support.
         """
+        if isinstance(lines, str):
+            lines = lines.splitlines()
+
         idf = cls()
         chunks: list[str] = []  # accumulated text between ';' terminators
 
-        for raw_line in content.splitlines():
+        for raw_line in lines:
             # Strip comments
             bang = raw_line.find('!')
             line = raw_line[:bang] if bang >= 0 else raw_line
@@ -848,12 +810,12 @@ class IDF:
         field_values = fields[1:]
 
         if object_type not in OBJECT_TYPE_REGISTRY:
-            logger.warning(f'Unknown object type: {object_type}')
+            logger.warning('Unknown object type: {}', object_type)
             return
 
         model_class = get_model_class(object_type)
         if model_class is None:
-            logger.warning(f'No model class for: {object_type}')
+            logger.warning('No model class for: {}', object_type)
             return
 
         field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
@@ -863,7 +825,7 @@ class IDF:
             obj = model_class(**field_dict)
             idf.add(obj)
         except Exception as e:
-            logger.warning(f'Failed to parse {object_type}: {e}')
+            logger.warning('Failed to parse {}: {}', object_type, e)
 
     @classmethod
     def _build_field_dict(
@@ -885,6 +847,7 @@ class IDF:
         Returns:
             Dictionary mapping field names to values, ready for model construction.
         """
+        meta = get_model_metadata(model_class)
         field_dict: dict[str, Any] = {}
         extensible_field_name: str | None = None
         extensible_values: list[str] = []
@@ -902,28 +865,24 @@ class IDF:
             field_name = field_order[i]
 
             # Check if this field is an extensible (list) type
-            field_info = model_class.model_fields.get(field_name)
-            if field_info is not None:
-                item_class = _find_list_item_class(field_info.annotation)
-                if item_class is not None:
-                    # Mark as extensible and start collecting
-                    extensible_field_name = field_name
-                    extensible_values.append(value)
-                    continue
+            if field_name in meta.list_item_classes:
+                extensible_field_name = field_name
+                extensible_values.append(value)
+                continue
 
             if value:
                 # Normalize autosize/autocalculate to match model's Literal
                 lower = value.lower()
-                if lower in ('autosize', 'autocalculate') and field_info is not None:
-                    value = cls._resolve_auto_keyword(lower, field_info.annotation)
+                if lower in ('autosize', 'autocalculate'):
+                    value = cls._resolve_auto_keyword(
+                        lower, meta.literal_case_maps.get(field_name, {})
+                    )
                 field_dict[field_name] = value
 
         # Assemble extensible values into list of item dicts
         if extensible_field_name and extensible_values:
-            field_info = model_class.model_fields[extensible_field_name]
-            item_class = _find_list_item_class(field_info.annotation)
-            if item_class is not None:
-                item_field_names = list(item_class.model_fields.keys())
+            item_field_names = meta.list_item_field_names.get(extensible_field_name)
+            if item_field_names is not None:
                 item_field_count = len(item_field_names)
 
                 items: list[dict[str, str]] = []
@@ -941,24 +900,22 @@ class IDF:
         return field_dict
 
     @staticmethod
-    def _resolve_auto_keyword(lower_value: str, annotation: Any) -> str:
+    def _resolve_auto_keyword(lower_value: str, case_map: dict[str, str | int]) -> str:
         """Resolve autosize/autocalculate to the keyword the model expects.
 
         EnergyPlus IDF files may use Autosize and Autocalculate
-        interchangeably. This method checks the field's Literal type
+        interchangeably. This method checks the field's literal case map
         and returns whichever keyword is accepted.
         """
-        from idfpy.models._base import _extract_literal_values
-
-        literal_values = _extract_literal_values(annotation)
-        lower_map = {v.lower(): v for v in literal_values if isinstance(v, str)}
         # Exact match (e.g., 'autosize' → 'Autosize')
-        if lower_value in lower_map:
-            return lower_map[lower_value]
+        matched = case_map.get(lower_value)
+        if isinstance(matched, str):
+            return matched
         # Cross-map: autosize ↔ autocalculate
         other = 'autocalculate' if lower_value == 'autosize' else 'autosize'
-        if other in lower_map:
-            return lower_map[other]
+        matched = case_map.get(other)
+        if isinstance(matched, str):
+            return matched
         # Fallback: capitalize
         return lower_value.capitalize()
 
@@ -1037,7 +994,7 @@ class IDF:
             List of formatted lines for the object.
         """
         lines: list[str] = []
-        obj_dict = obj.model_dump(by_alias=True)
+        meta = get_model_metadata(type(obj))
 
         # Separate regular fields and extensible fields; track last non-empty
         regular_fields: list[tuple[str, str]] = []
@@ -1045,10 +1002,14 @@ class IDF:
         last_non_empty_idx = -1
 
         for field_name in field_order:
-            value = obj_dict.get(field_name)
-            if isinstance(value, list) and value and isinstance(value[0], dict):
-                extensible_items = value
+            if field_name in meta.list_field_names:
+                items = getattr(obj, field_name, None)
+                if items:
+                    extensible_items = [
+                        item.model_dump(by_alias=True) for item in items
+                    ]
             else:
+                value = getattr(obj, field_name, None)
                 formatted = self._format_value(value)
                 regular_fields.append((field_name, formatted))
                 if formatted:
