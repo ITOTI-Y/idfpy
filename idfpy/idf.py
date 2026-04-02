@@ -288,9 +288,10 @@ class IDF:
             if not value or not isinstance(value, str):
                 continue
             key = value.upper()
+            entry = (object_type, value)
             for group in ref_groups:
                 self._prune_bucket(
-                    self._ref_registry, group, key, lambda e: e[0] != object_type
+                    self._ref_registry, group, key, lambda e, _e=entry: e != _e
                 )
 
     # ── Consumer reverse index ──────────────────────────────
