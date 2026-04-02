@@ -18,6 +18,7 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 - **Forward navigation** — `surface.zone` resolves a reference field to the target object
 - **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
 - **Reference validation** — `idf.validate()` batch-checks all cross-object references for existence and type compatibility
+- **Extension plugin system** — `surface.area`, `.normal`, `.centroid` via auto-discovered geometry mixins with full IDE support
 - **Case-insensitive** Literal field matching (EnergyPlus IDF is case-insensitive)
 - **Extensible field** support (vertices, schedule data, etc.)
 - **IDF read/write** with positional field ordering
@@ -35,6 +36,7 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 | epJSON read/write | ✅ | ❌ |
 | Cross-reference validation | ✅ 275 ref groups | ❌ |
 | Forward/reverse navigation | ✅ 2847 properties | ❌ |
+| Surface geometry (area/normal) | ✅ ext plugin | ❌ |
 | `to_dict()` / `from_dict()` for LLM | ✅ | ❌ |
 | Dependencies | 4 (pydantic, jinja2, loguru, typer) | 12+ (lxml, pyparsing...) |
 
@@ -159,6 +161,52 @@ for con_name, con in idf.all_of_type("Construction").items():
 errors = idf.validate()
 print(f"{len(errors)} broken references")
 ```
+
+### Geometry extensions
+
+Surface models include geometry properties via the built-in `ext.geometry` plugin — area, normal vector, and centroid are computed from vertices using Newell's method, with full IDE autocompletion.
+
+```python
+from idfpy import IDF
+from pathlib import Path
+
+idf = IDF.load(Path('model.idf'))
+
+surface = idf.get('BuildingSurface:Detailed', 'Wall1')
+surface.area               # 30.0 (m²)
+surface.normal             # (0.0, -1.0, 0.0) — outward unit normal
+surface.centroid           # (5.0, 0.0, 1.5)
+surface.vertices_as_tuples # [(0,0,3), (0,0,0), (10,0,0), (10,0,3)]
+
+window = idf.get('FenestrationSurface:Detailed', 'Win1')
+window.area                # 16.0 (m²)
+```
+
+Supported surface types: `BuildingSurface:Detailed`, `FenestrationSurface:Detailed`, `Floor:Detailed`, `RoofCeiling:Detailed`, `Wall:Detailed`, `Shading:Building:Detailed`, `Shading:Site:Detailed`, `Shading:Zone:Detailed`.
+
+#### Creating custom plugins
+
+Extensions live in `idfpy/ext/` as sub-packages. Each plugin exposes a `MIXIN_MAP` that the code generator auto-discovers:
+
+```python
+# idfpy/ext/thermal/__init__.py
+from .mixins import ThermalPropertyMixin
+
+MIXIN_MAP: dict[str, type] = {
+    'BuildingSurfaceDetailed': ThermalPropertyMixin,
+}
+```
+
+```python
+# idfpy/ext/thermal/mixins.py
+class ThermalPropertyMixin:
+    @property
+    def u_value(self) -> float:
+        """Compute U-value from construction layers."""
+        ...
+```
+
+After adding a plugin, re-run `idfpy codegen` to regenerate models — the mixin is injected into the class hierarchy and IDE autocompletion works immediately.
 
 ### Container mutation
 
