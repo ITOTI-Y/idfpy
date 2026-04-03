@@ -7,8 +7,6 @@ and IDF file read/write functionality.
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
 import weakref
 from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
@@ -1060,68 +1058,6 @@ class IDF:
             result.append(f'    {value_str}{terminator}  {comment}')
 
         return result
-
-    def run(
-        self,
-        idf_path: Path,
-        weather_path: Path,
-        output_dir: Path | None = None,
-        energyplus_bin: str = 'energyplus',
-    ) -> int:
-        """Run EnergyPlus simulation with real-time terminal output.
-
-        Args:
-            idf_path: Path to IDF file.
-            weather_path: Path to EPW weather file.
-            output_dir: Output directory for simulation results. Defaults to idf_path parent.
-            energyplus_bin: Path to EnergyPlus executable.
-
-        Returns:
-            EnergyPlus process return code.
-        """
-        idf_path = Path(idf_path)
-        weather_path = Path(weather_path)
-        if not weather_path.exists():
-            raise FileNotFoundError(f'Weather file not found: {weather_path}')
-        if not idf_path.exists():
-            raise FileNotFoundError(f'IDF file not found: {idf_path}')
-        if output_dir is None:
-            output_dir = idf_path.parent
-
-        output_dir.mkdir(parents=True, exist_ok=True)
-
-        cmd = [
-            energyplus_bin,
-            '-x',
-            '-w',
-            str(weather_path),
-            '-d',
-            str(output_dir),
-            str(idf_path),
-        ]
-        logger.info('Running EnergyPlus: {}', ' '.join(cmd))
-
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-        )
-
-        if process.stdout is None:
-            raise RuntimeError('Failed to capture EnergyPlus output')
-        for line in process.stdout:
-            sys.stdout.write(line)
-            sys.stdout.flush()
-
-        return_code = process.wait()
-
-        if return_code == 0:
-            logger.info('EnergyPlus simulation completed successfully')
-        else:
-            logger.error('EnergyPlus simulation failed with return code {}', return_code)
-
-        return return_code
 
     @staticmethod
     def _format_value(value: object) -> str:

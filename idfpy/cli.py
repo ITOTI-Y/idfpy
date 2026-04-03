@@ -40,8 +40,7 @@ def run(
     ] = None,
 ) -> None:
     """Run EnergyPlus simulation."""
-    from idfpy.idf import IDF
+    from idfpy.sim import simulate
 
-    idf_runner = IDF()
-    rc = idf_runner.run(idf_path=idf, weather_path=weather, output_dir=output)
-    raise SystemExit(rc)
+    result = simulate(idf, weather=weather, output_dir=output)
+    raise SystemExit(result.return_code)

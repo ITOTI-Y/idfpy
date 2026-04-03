@@ -10,10 +10,12 @@ import importlib
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
-from jinja2 import Environment, FileSystemLoader
 from loguru import logger
+
+if TYPE_CHECKING:
+    from jinja2 import Environment
 
 from .field_parser import FieldSpec
 from .schema_parser import ObjectSpec
@@ -474,8 +476,11 @@ class ModelGenerator:
         if self._env is not None:
             return self._env
 
+        from jinja2 import Environment as Env
+        from jinja2 import FileSystemLoader
+
         template_dir = Path(__file__).parent / 'templates'
-        self._env = Environment(
+        self._env = Env(
             loader=FileSystemLoader(str(template_dir)),
             trim_blocks=True,
             lstrip_blocks=True,

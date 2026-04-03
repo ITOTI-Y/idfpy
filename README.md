@@ -71,11 +71,10 @@ idf = IDF.load(Path('existing.idf'))      # IDF format
 idf = IDF.load(Path('existing.epjson'))    # epJSON format
 
 # Run simulation
-idf.run(
-    idf_path=Path('model.idf'),
-    weather_path=Path('weather.epw'),
-    output_dir=Path('results/'),
-)
+from idfpy.sim import simulate
+
+result = simulate(Path('output.idf'), weather=Path('weather.epw'), output_dir=Path('results/'))
+print(result.success)  # True / False
 ```
 
 ### In-memory dict conversion
