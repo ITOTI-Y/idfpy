@@ -113,13 +113,14 @@ async def async_simulate(
     in-memory IDF object; it defaults to the file's parent only when
     *idf* is a Path.
     """
+    if output_dir is None and not isinstance(idf, Path):
+        raise ValueError(
+            'output_dir is required when idf is an IDF object '
+            '(temp IDF directory is cleaned up after simulation)'
+        )
+
     with _resolve_idf(idf) as idf_path:
         if output_dir is None:
-            if not isinstance(idf, Path):
-                raise ValueError(
-                    'output_dir is required when idf is an IDF object '
-                    '(temp IDF directory is cleaned up after simulation)'
-                )
             output_dir = idf_path.parent
 
         return await _run_one(
