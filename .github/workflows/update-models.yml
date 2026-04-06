@@ -118,8 +118,20 @@ jobs:
   publish:
     needs: update-models
     if: needs.update-models.outputs.updated == 'true'
-    uses: ./.github/workflows/publish.yml
-    with:
-      tag: v${{ needs.update-models.outputs.version }}
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: latest
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Build
+        run: |
+          uv sync --all-groups
+          uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
