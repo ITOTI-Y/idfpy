@@ -17,7 +17,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Need full history for tags
+          ref: latest
+          fetch-depth: 0
+
+      - name: Merge master into latest
+        run: git merge origin/master --no-edit
 
       - name: Get latest EnergyPlus release
         id: ep
@@ -28,15 +32,12 @@ jobs:
           TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
           VERSION=${TAG#v}
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-          # Pick Ubuntu 24.04 x86_64 tar.gz
           ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
             .assets[]
             | select(.name | test("Linux-Ubuntu24\\.04-x86_64\\.tar\\.gz$"))
             | .browser_download_url
           ')
           if [ -z "$ASSET_URL" ]; then
-            # Fallback: any Linux x86_64 tar.gz
             ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
               .assets[]
               | select(.name | test("Linux.*x86_64\\.tar\\.gz$"))
@@ -65,7 +66,6 @@ jobs:
           curl -L -o ep.tar.gz "${{ steps.ep.outputs.asset_url }}"
           tar -xzf ep.tar.gz --wildcards '*/Energy+.schema.epJSON' --strip-components=1
           rm ep.tar.gz
-          ls -lh 'Energy+.schema.epJSON'
 
       - uses: astral-sh/setup-uv@v4
         if: steps.check.outputs.skip == 'false'
@@ -88,15 +88,9 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
-
-          # Update pyproject.toml version
           sed -i "s/^version = .*/version = \"${EP_VERSION}\"/" pyproject.toml
-
-          # Count object types and ref types from generated code
           OBJ_COUNT=$(grep -r '_idf_object_type: ClassVar' idfpy/models/*.py | grep -cv '_base.py')
           REF_COUNT=$(grep -c 'Ref = Annotated' idfpy/models/_refs.py)
-
-          # Update README
           sed -i "s/version \*\*[0-9.]*\*\*/version **${EP_VERSION}**/" README.md
           sed -i "s/\*\*[0-9]* object types\*\*/\*\*${OBJ_COUNT} object types\*\*/" README.md
           sed -i "s/\*\*[0-9]* reference types\*\*/\*\*${REF_COUNT} reference types\*\*/" README.md
@@ -106,27 +100,19 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git add -A
           if git diff --cached --quiet; then
             echo "No changes detected"
             echo "updated=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-
           git commit -m "feat(models): update to EnergyPlus ${EP_VERSION}"
-
           TAG="v${EP_VERSION}"
           git tag -a "$TAG" -m "EnergyPlus ${EP_VERSION} models"
-          git tag -f latest -m "Latest EnergyPlus models (${EP_VERSION})"
-
-          git push origin HEAD
+          git push origin latest
           git push origin "$TAG"
-          git push origin latest --force
-
           echo "updated=true" >> "$GITHUB_OUTPUT"
 
   publish:
