@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
 
       - name: Merge master into latest
-        run: git merge origin/master --no-edit
+        run: git merge origin/master --no-edit -X theirs
 
       - name: Get latest EnergyPlus release
         id: ep
