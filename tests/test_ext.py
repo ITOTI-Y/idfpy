@@ -47,6 +47,30 @@ class TestPolygonArea3D:
         verts = [(0, 0, 0), (1, 0, 0), (2, 0, 0)]
         assert polygon_area_3d(verts) == pytest.approx(0.0)
 
+    def test_non_convex_l_shape(self):
+        # L 形 (2x2 方块去掉右上 1x1 角), 真实面积 = 3
+        verts = [
+            (0.0, 0.0, 0.0),
+            (2.0, 0.0, 0.0),
+            (2.0, 1.0, 0.0),
+            (1.0, 1.0, 0.0),
+            (1.0, 2.0, 0.0),
+            (0.0, 2.0, 0.0),
+        ]
+        assert polygon_area_3d(verts) == pytest.approx(3.0)
+
+    def test_non_convex_l_shape_tilted(self):
+        # 同样的 L 形映射到斜面 z = x 上, 面积放大 sqrt(2) 倍
+        verts = [
+            (0.0, 0.0, 0.0),
+            (2.0, 0.0, 2.0),
+            (2.0, 1.0, 2.0),
+            (1.0, 1.0, 1.0),
+            (1.0, 2.0, 1.0),
+            (0.0, 2.0, 0.0),
+        ]
+        assert polygon_area_3d(verts) == pytest.approx(3.0 * math.sqrt(2))
+
 
 class TestPolygonNormal:
     def test_xy_plane(self):
