@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Zone HVAC Air Loop Terminal Units
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -15,10 +16,10 @@ from ._base import IDFBaseModel
 from ._refs import (
     AirTerminalUnitNamesRef,
     CoolingCoilNameRef,
-    DesignSpecificationAirTerminalSizingNameRef,
-    DesignSpecificationOutdoorAirNamesRef,
     DOAToZonalUnitRef,
     DSOASpaceListNamesRef,
+    DesignSpecificationAirTerminalSizingNameRef,
+    DesignSpecificationOutdoorAirNamesRef,
     FansCVRef,
     FansSystemModelRef,
     FansVAVRef,
@@ -39,12 +40,12 @@ if TYPE_CHECKING:
         CoilHeatingSteam,
         CoilHeatingWater,
     )
-    from .fans import FanConstantVolume, FanSystemModel, FanVariableVolume
     from .hvac_design import (
         DesignSpecificationAirTerminalSizing,
         DesignSpecificationOutdoorAir,
         DesignSpecificationOutdoorAirSpaceList,
     )
+    from .fans import FanConstantVolume, FanSystemModel, FanVariableVolume
     from .thermal_zones import Zone
 
 
@@ -1016,9 +1017,6 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
     supply_air_inlet_node_name: str | None = Field(default=None)
     secondary_air_inlet_node_name: str | None = Field(default=None)
     outlet_node_name: str | None = Field(default=None)
-    reheat_coil_air_inlet_node_name: str | None = Field(
-        default=None, json_schema_extra={'note': 'mixer outlet node'}
-    )
     zone_mixer_name: ZoneMixersRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ZoneMixers']}
     )
@@ -1084,6 +1082,20 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
             'note': 'Only used if Heating Control Type is Modulated Used to determine end of third stage heating',
         },
     )
+    backdraft_damper_leakage_fraction_curve_name: UnivariateFunctionsRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['UnivariateFunctions'],
+            'note': 'Backdraft damper leakage fraction is the ratio of mass leakage flow rate to primary air flow rate at a constant static pressure setpoint. This curve should describe the ratio as a function primary ...',
+        },
+    )
+    backdraft_damper_leakage_zone_name: ZoneNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ZoneNames'],
+            'note': 'Name of a zone that will be impacted by the backdraft damper leakage.',
+        },
+    )
 
     @property
     def availability_schedule(self) -> IDFBaseModel | None:
@@ -1133,6 +1145,26 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
+    @property
+    def backdraft_damper_leakage_fraction_curve(self) -> IDFBaseModel | None:
+        v = self.backdraft_damper_leakage_fraction_curve_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['UnivariateFunctions'])
+
+    @property
+    def backdraft_damper_leakage_zone(self) -> Zone | None:
+        v = self.backdraft_damper_leakage_zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
+
 
 class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
     """Central air system terminal unit, single duct, variable volume, series
@@ -1164,7 +1196,6 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
     supply_air_inlet_node_name: str | None = Field(default=None)
     secondary_air_inlet_node_name: str | None = Field(default=None)
     outlet_node_name: str | None = Field(default=None)
-    reheat_coil_air_inlet_node_name: str | None = Field(default=None)
     zone_mixer_name: ZoneMixersRef | None = Field(
         default=None, json_schema_extra={'object_list': ['ZoneMixers']}
     )

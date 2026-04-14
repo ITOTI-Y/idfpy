@@ -1,7 +1,7 @@
 """Auto-generated reference types for EnergyPlus object validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 
 This module provides type aliases with runtime validation for object
 references. Use with validation context for reference checking.

@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Variable Refrigerant Flow Equipment
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -17,14 +18,14 @@ from ._refs import (
     AFNHeatExchangerNamesRef,
     AFNReliefAirFlowNamesRef,
     AFNTerminalUnitNamesRef,
+    AirFlowNetworkMultizoneZonesRef,
+    AirLoopControllersRef,
+    AirPrimaryLoopsRef,
     AirflowNetworkComponentNamesRef,
     AirflowNetworkDistributionLinkageNamesRef,
-    AirFlowNetworkMultizoneZonesRef,
     AirflowNetworkNodeAndZoneNamesRef,
     AirflowNetworkNodeNamesRef,
     AirflowNetworkOccupantVentilationControlNamesRef,
-    AirLoopControllersRef,
-    AirPrimaryLoopsRef,
     AllHeatTranSurfNamesRef,
     BivariateFunctionsRef,
     BranchListsRef,
@@ -33,10 +34,10 @@ from ._refs import (
     ControllerMechanicalVentNamesRef,
     CoolingCoilsDXMultiModeOrSingleSpeedRef,
     CoolingCoilsDXVariableSpeedRef,
+    DSOASpaceListNamesRef,
     DesiccantHXPerfDataRef,
     DesignSpecificationOutdoorAirNamesRef,
     DesignSpecificationZoneAirDistributionNamesRef,
-    DSOASpaceListNamesRef,
     ExternalNodeNamesRef,
     FansCVandOnOffandVAVRef,
     FansCVandVAVRef,
@@ -45,8 +46,8 @@ from ._refs import (
     FansZoneExhaustRef,
     FluidAndGlycolNamesRef,
     FluidNamesRef,
-    HeatingCoilNameRef,
     HXDesiccantBalancedRef,
+    HeatingCoilNameRef,
     IndependentVariableListNameRef,
     IndependentVariableNameRef,
     OutdoorAirMixersRef,
@@ -55,13 +56,13 @@ from ._refs import (
     ReferenceCrackConditionsRef,
     RoomAirflowNetworkNodesRef,
     ScheduleNamesRef,
-    SurfaceAirflowLeakageNamesRef,
     SurfAndSubSurfNamesRef,
+    SurfaceAirflowLeakageNamesRef,
     SystemAvailabilityManagerListsRef,
     UnivariateFunctionsRef,
-    WaterStorageTankNamesRef,
     WPCSetNamesRef,
     WPCValueNamesRef,
+    WaterStorageTankNamesRef,
     ZoneAndZoneListNamesRef,
     ZoneNamesRef,
     ZoneTerminalUnitListNamesRef,
@@ -70,7 +71,12 @@ from ._refs import (
 
 if TYPE_CHECKING:
     from .air_distribution import AirLoopHVAC, OutdoorAirMixer
+    from .zone_terminals import (
+        AirTerminalSingleDuctConstantVolumeReheat,
+        AirTerminalSingleDuctVAVReheat,
+    )
     from .availability_managers import AvailabilityManagerAssignmentList
+    from .node_branch import BranchList, ConnectorList, OutdoorAirNode
     from .coils import (
         CoilCoolingDXSingleSpeed,
         CoilCoolingDXTwoStageWithHumidityControlMode,
@@ -80,6 +86,15 @@ if TYPE_CHECKING:
         CoilHeatingSteam,
         CoilHeatingWater,
     )
+    from .plant_control import (
+        CondenserEquipmentOperationSchemes,
+        PlantEquipmentOperationSchemes,
+    )
+    from .hvac_design import (
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+        DesignSpecificationZoneAirDistribution,
+    )
     from .fans import (
         FanConstantVolume,
         FanOnOff,
@@ -88,24 +103,10 @@ if TYPE_CHECKING:
         FanZoneExhaust,
     )
     from .fluids import FluidPropertiesGlycolConcentration, FluidPropertiesName
-    from .hvac_design import (
-        DesignSpecificationOutdoorAir,
-        DesignSpecificationOutdoorAirSpaceList,
-        DesignSpecificationZoneAirDistribution,
-    )
-    from .node_branch import BranchList, ConnectorList, OutdoorAirNode
-    from .plant_control import (
-        CondenserEquipmentOperationSchemes,
-        PlantEquipmentOperationSchemes,
-    )
     from .room_air import RoomAirNodeAirflowNetwork
-    from .thermal_zones import Zone, ZoneList
     from .water_systems import WaterUseStorage
+    from .thermal_zones import Zone, ZoneList
     from .zone_forced_air import ZoneHVACTerminalUnitVariableRefrigerantFlow
-    from .zone_terminals import (
-        AirTerminalSingleDuctConstantVolumeReheat,
-        AirTerminalSingleDuctVAVReheat,
-    )
 
 
 class AirConditionerVariableRefrigerantFlowFluidTemperatureControlLoadingIndicesItem(

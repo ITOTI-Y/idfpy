@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Operational Faults
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -23,10 +24,10 @@ from ._refs import (
     FansCVandOnOffandVAVRef,
     FansSystemModelRef,
     HeatingCoilNameRef,
+    HeatingCoilSystemNameRef,
     HeatingCoilsDesuperheaterRef,
     HeatingCoilsElectricMultiStageRef,
     HeatingCoilsGasMultiStageRef,
-    HeatingCoilSystemNameRef,
     OAControllerNamesRef,
     ScheduleNamesRef,
     SimpleCoilsRef,
@@ -38,7 +39,9 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from .plant_equipment import BoilerHotWater
     from .coils import CoilCoolingWater, CoilHeatingWater
+    from .misc import ControllerOutdoorAir, ControllerWaterCoil
     from .condensers import (
         CoolingTowerSingleSpeed,
         CoolingTowerTwoSpeed,
@@ -46,8 +49,6 @@ if TYPE_CHECKING:
         CoolingTowerVariableSpeedMerkel,
     )
     from .fans import FanConstantVolume, FanOnOff, FanVariableVolume
-    from .misc import ControllerOutdoorAir, ControllerWaterCoil
-    from .plant_equipment import BoilerHotWater
     from .zone_controls import (
         ZoneControlHumidistat,
         ZoneControlThermostat,

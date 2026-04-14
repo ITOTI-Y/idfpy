@@ -449,7 +449,12 @@ class ModelGenerator:
             for cls_name in class_names:
                 class_to_module[cls_name] = file_name
 
-        all_exports = ['IDFBaseModel', 'OBJECT_TYPE_REGISTRY', 'FIELD_ORDER_REGISTRY']
+        all_exports = [
+            'IDFBaseModel',
+            'OBJECT_TYPE_REGISTRY',
+            'CLASS_NAME_REGISTRY',
+            'FIELD_ORDER_REGISTRY',
+        ]
         all_exports.extend(['get_model_class', 'get_field_order'])
         for class_names in all_classes.values():
             all_exports.extend(class_names)

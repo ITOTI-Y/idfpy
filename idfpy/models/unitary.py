@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Unitary Equipment
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -27,11 +28,11 @@ from ._refs import (
     FansRef,
     FansSystemModelRef,
     HeatingCoilNameRef,
-    HeatingCoilsDesuperheaterRef,
     HeatingCoilsDXMultiSpeedRef,
     HeatingCoilsDXRef,
     HeatingCoilsDXSingleSpeedRef,
     HeatingCoilsDXVariableSpeedRef,
+    HeatingCoilsDesuperheaterRef,
     HeatingCoilsElectricMultiStageRef,
     HeatingCoilsGasMultiStageRef,
     HeatingCoilsWaterToAirHPRef,
@@ -45,7 +46,6 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .air_distribution import OutdoorAirMixer
     from .coils import (
         CoilCoolingDXMultiSpeed,
         CoilCoolingDXSingleSpeed,
@@ -76,6 +76,7 @@ if TYPE_CHECKING:
         FanSystemModel,
         FanVariableVolume,
     )
+    from .air_distribution import OutdoorAirMixer
     from .thermal_zones import Zone
 
 

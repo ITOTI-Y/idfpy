@@ -27,14 +27,12 @@ jobs:
 
       - uses: astral-sh/setup-uv@v4
 
-      - name: Set version from tag
+      - name: Build
         run: |
           VERSION="${{ inputs.tag }}"
           VERSION="${VERSION#v}"
           sed -i "s/^version = .*/version = \"${VERSION}\"/" pyproject.toml
+          uv build
 
-      - name: Build
-        run: uv build
-
-      - name: Publish to PyPI
+      - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1
