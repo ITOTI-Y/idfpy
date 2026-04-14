@@ -1,0 +1,159 @@
+name: Sync EnergyPlus
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # Weekly Monday 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.push.outputs.updated }}
+      version: ${{ steps.ep.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Detect latest EnergyPlus release
+        id: ep
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASE_JSON=$(gh api repos/NREL/EnergyPlus/releases/latest)
+          TAG=$(echo "$RELEASE_JSON" | jq -r '.tag_name')
+          VERSION=${TAG#v}
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
+            .assets[]
+            | select(.name | test("Linux-Ubuntu24\\.04-x86_64\\.tar\\.gz$"))
+            | .browser_download_url
+          ')
+          if [ -z "$ASSET_URL" ]; then
+            ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
+              .assets[]
+              | select(.name | test("Linux.*x86_64\\.tar\\.gz$"))
+              | .browser_download_url
+            ' | head -1)
+          fi
+          {
+            echo "version=$VERSION"
+            echo "asset_url=$ASSET_URL"
+          } >> "$GITHUB_OUTPUT"
+          echo "EnergyPlus $VERSION -> $ASSET_URL"
+
+      - name: Skip if tag already exists
+        id: check
+        run: |
+          TAG="v${{ steps.ep.outputs.version }}"
+          if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then
+            echo "Tag $TAG already exists, skipping"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download schema
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          curl -fL -o ep.tar.gz "${{ steps.ep.outputs.asset_url }}"
+          tar -xzf ep.tar.gz --wildcards '*/Energy+.schema.epJSON' --strip-components=1
+          rm ep.tar.gz
+          ls -lh 'Energy+.schema.epJSON'
+
+      - uses: astral-sh/setup-uv@v4
+        if: steps.check.outputs.skip == 'false'
+
+      - name: Generate models
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          uv sync --all-groups
+          uv run idfpy codegen --schema 'Energy+.schema.epJSON' --output idfpy/models
+          uv run ruff check --fix .
+          uv run ruff format .
+          uv run ty check .
+          rm 'Energy+.schema.epJSON'
+
+      - name: Run tests
+        if: steps.check.outputs.skip == 'false'
+        run: uv run pytest tests/ -v
+
+      - name: Update version metadata
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          EP_VERSION="${{ steps.ep.outputs.version }}"
+          MAJOR_MINOR="${EP_VERSION%.*}"
+
+          OBJ_COUNT=$(grep -rh '_idf_object_type: ClassVar' idfpy/models/*.py \
+            | grep -cv '_base.py')
+          REF_COUNT=$(grep -c 'Ref = Annotated' idfpy/models/_refs.py)
+          PROP_COUNT=$(grep -rh '^    @property$' idfpy/models/*.py \
+            | grep -cv '_base.py')
+
+          sed -i "s/^version = .*/version = \"${EP_VERSION}\"/" pyproject.toml
+
+          # README badge: URL slug + alt text
+          sed -Ei "s|EnergyPlus-[0-9.]+-orange|EnergyPlus-${MAJOR_MINOR}-orange|" README.md
+          sed -Ei "s|\[!\[EnergyPlus [0-9.]+\]|[![EnergyPlus ${MAJOR_MINOR}]|" README.md
+
+          # Autoupdate badge: workflow filename (belt-and-braces; primary update is manual)
+          sed -Ei "s|update-models\.yml|sync-energyplus.yml|g" README.md
+
+          # Auto-generated schema version line
+          sed -Ei "s|version \*\*[0-9.]+\*\*|version **${EP_VERSION}**|" README.md
+
+          # Feature list counts + comparison table
+          sed -Ei "s|\*\*[0-9]+\+? object types\*\*|**${OBJ_COUNT} object types**|" README.md
+          sed -Ei "s|\*\*[0-9]+ reference types\*\*|**${REF_COUNT} reference types**|" README.md
+          sed -Ei "s|✅ [0-9]+ ref groups|✅ ${REF_COUNT} ref groups|" README.md
+          sed -Ei "s|✅ [0-9]+ properties|✅ ${PROP_COUNT} properties|" README.md
+
+      - name: Publish to latest branch and tag
+        id: push
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          EP_VERSION="${{ steps.ep.outputs.version }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Capture codegen + metadata changes before switching branch
+          git stash push --include-untracked -m "sync-${EP_VERSION}"
+
+          # Rebase latest on top of current master, then re-apply the stash
+          if git ls-remote --exit-code --heads origin latest > /dev/null; then
+            git fetch origin latest
+            git switch -C latest origin/master
+          else
+            git switch -C latest
+          fi
+
+          git stash pop
+
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish"
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "feat(models): sync to EnergyPlus ${EP_VERSION}"
+          git tag -a "v${EP_VERSION}" -m "EnergyPlus ${EP_VERSION} models"
+
+          git push origin latest --force-with-lease
+          git push origin "v${EP_VERSION}"
+
+          echo "updated=true" >> "$GITHUB_OUTPUT"
+
+  release:
+    needs: sync
+    if: needs.sync.outputs.updated == 'true'
+    uses: ./.github/workflows/publish-pypi.yml
+    with:
+      tag: v${{ needs.sync.outputs.version }}
+    permissions:
+      id-token: write
