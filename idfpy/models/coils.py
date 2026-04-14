@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Coils
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -21,17 +22,17 @@ from ._refs import (
     CoolingCoilsDXVariableSpeedRef,
     CoolingCoilsWaterNoHXRef,
     CoolingCoilsWaterRef,
-    DesuperHeatingCoilSourcesRef,
-    DesuperHeatingWaterOnlySourcesRef,
     DXCoolingOperatingModeNamesRef,
     DXCoolingPerformanceNamesRef,
     DXCoolingSpeedNamesRef,
+    DesuperHeatingCoilSourcesRef,
+    DesuperHeatingWaterOnlySourcesRef,
     FluidAndGlycolNamesRef,
     FluidNamesRef,
+    HXAirToAirNamesRef,
+    HeatPumpWaterHeaterDXCoilsVariableSpeedRef,
     HeatingCoilsDXSingleSpeedRef,
     HeatingCoilsDXVariableSpeedRef,
-    HeatPumpWaterHeaterDXCoilsVariableSpeedRef,
-    HXAirToAirNamesRef,
     QuadvariateFunctionsRef,
     QuintvariateFunctionsRef,
     ScheduleNamesRef,
@@ -57,9 +58,9 @@ if TYPE_CHECKING:
         HeatExchangerDesiccantBalancedFlow,
         TableLookup,
     )
-    from .thermal_zones import Zone
     from .water_heaters import WaterHeaterMixed, WaterHeaterStratified
     from .water_systems import WaterUseStorage
+    from .thermal_zones import Zone
 
 
 class CoilCoolingDX(IDFBaseModel):

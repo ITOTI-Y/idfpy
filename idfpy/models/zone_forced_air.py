@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Zone HVAC Forced Air Units
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -17,32 +18,32 @@ from ._refs import (
     CoilCoolingDXRef,
     ControllerStandAloneEnergyRecoveryVentilatorRef,
     CoolingCoilsDXSingleSpeedRef,
-    CoolingCoilsDXVariableSpeedRef,
     CoolingCoilsDXVarRefrigFlowFluidTemperatureControlRef,
     CoolingCoilsDXVarRefrigFlowRef,
+    CoolingCoilsDXVariableSpeedRef,
     CoolingCoilsWaterRef,
     CoolingCoilsWaterToAirHPRef,
     CoolingCoilsWaterToAirVSHPRef,
+    DSOASpaceListNamesRef,
     DesignSpecificationOutdoorAirNamesRef,
     DesignSpecificationZoneHVACSizingNameRef,
-    DSOASpaceListNamesRef,
     EvapCoolerNamesRef,
-    FansCVandOnOffandVAVRef,
     FansCVandOnOffRef,
+    FansCVandOnOffandVAVRef,
     FansCVandVAVRef,
     FansOnOffRef,
     FansRef,
     FansSystemModelRef,
+    HXAirToAirSensibleAndLatentNamesRef,
     HeatingCoilNameRef,
     HeatingCoilsDXSingleSpeedRef,
-    HeatingCoilsDXVariableSpeedRef,
     HeatingCoilsDXVarRefrigFlowFluidTemperatureControlRef,
     HeatingCoilsDXVarRefrigFlowRef,
+    HeatingCoilsDXVariableSpeedRef,
     HeatingCoilsElectricRef,
     HeatingCoilsWaterRef,
     HeatingCoilsWaterToAirHPRef,
     HeatingCoilsWaterToAirVSHPRef,
-    HXAirToAirSensibleAndLatentNamesRef,
     MultivariateFunctionsRef,
     OutdoorAirMixersRef,
     OutdoorAirUnitEquipmentListsRef,
@@ -55,7 +56,6 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .air_distribution import OutdoorAirMixer
     from .availability_managers import AvailabilityManagerAssignmentList
     from .coils import (
         CoilCoolingDX,
@@ -81,6 +81,11 @@ if TYPE_CHECKING:
         CoilSystemCoolingDXHeatExchangerAssisted,
         CoilSystemCoolingWaterHeatExchangerAssisted,
     )
+    from .hvac_design import (
+        DesignSpecificationOutdoorAir,
+        DesignSpecificationOutdoorAirSpaceList,
+        DesignSpecificationZoneHVACSizing,
+    )
     from .evap_coolers import (
         EvaporativeCoolerDirectCelDekPad,
         EvaporativeCoolerDirectResearchSpecial,
@@ -95,15 +100,11 @@ if TYPE_CHECKING:
         FanSystemModel,
         FanVariableVolume,
     )
-    from .hvac_design import (
-        DesignSpecificationOutdoorAir,
-        DesignSpecificationOutdoorAirSpaceList,
-        DesignSpecificationZoneHVACSizing,
-    )
     from .misc import HeatExchangerAirToAirSensibleAndLatent, TableLookup
-    from .thermal_zones import Zone
+    from .air_distribution import OutdoorAirMixer
     from .unitary import UnitarySystemPerformanceMultispeed
     from .water_systems import WaterUseStorage
+    from .thermal_zones import Zone
 
 
 class ZoneHVACHybridUnitaryHVACModesItem(IDFBaseModel):

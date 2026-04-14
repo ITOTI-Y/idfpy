@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Simulation Parameters
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -491,7 +492,7 @@ class Version(IDFBaseModel):
     """Specifies the EnergyPlus version of the IDF file."""
 
     _idf_object_type: ClassVar[str] = 'Version'
-    version_identifier: str | None = Field(default='25.2')
+    version_identifier: str | None = Field(default='26.1')
 
 
 class ZoneAirContaminantBalance(IDFBaseModel):

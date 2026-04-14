@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Electric Load Center-Generator Specifications
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -25,9 +26,9 @@ from ._refs import (
     FCStackCoolerNamesRef,
     FCStorageNamesRef,
     FCWaterSupNamesRef,
+    GenFuelSupNamesRef,
     GeneratorListsRef,
     GeneratorNamesRef,
-    GenFuelSupNamesRef,
     InverterListRef,
     MicroCHPParametersNamesRef,
     PVModulesRef,
@@ -3428,7 +3429,7 @@ class PhotovoltaicPerformanceEquivalentOneDiode(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:EquivalentOne-Diode'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str | None = Field(default=None)
+    name: str = Field(...)
     cell_type: Literal['AmorphousSilicon', 'CrystallineSilicon'] | None = Field(
         default=None
     )
@@ -3510,7 +3511,7 @@ class PhotovoltaicPerformanceSandia(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Sandia'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str | None = Field(default=None)
+    name: str = Field(...)
     active_area: float | None = Field(
         default=1.0,
         ge=0.0,
@@ -3643,7 +3644,7 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Simple'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str | None = Field(default=None)
+    name: str = Field(...)
     fraction_of_surface_area_with_active_solar_cells: float = Field(
         ..., ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}
     )

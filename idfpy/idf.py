@@ -21,6 +21,7 @@ from typing import (
 from loguru import logger
 
 from idfpy.models import (
+    CLASS_NAME_REGISTRY,
     FIELD_ORDER_REGISTRY,
     OBJECT_TYPE_REGISTRY,
     get_model_class,
@@ -137,6 +138,15 @@ class IDF:
         self._index_consumer_refs(obj, object_type, name)
         logger.debug('Added {}: {}', object_type, name)
 
+    @staticmethod
+    def _resolve_type(key: str) -> str:
+        """Resolve class name or EnergyPlus type name to EnergyPlus type name.
+
+        Lookup order: OBJECT_TYPE_REGISTRY (already an EnergyPlus name) →
+        CLASS_NAME_REGISTRY (Python class name) → return key unchanged.
+        """
+        return CLASS_NAME_REGISTRY.get(key, key)
+
     @overload
     def get(self, object_type: type[_T], name: str) -> _T | None: ...
     @overload
@@ -145,7 +155,8 @@ class IDF:
         """Get an object by type and name.
 
         Args:
-            object_type: EnergyPlus object type string (e.g., 'Zone')
+            object_type: EnergyPlus object type string (e.g., 'Zone'),
+                Python class name string (e.g., 'BuildingSurfaceDetailed'),
                 or model class (e.g., Zone).
             name: Object name.
 
@@ -154,18 +165,21 @@ class IDF:
         """
         if isinstance(object_type, type):
             object_type = object_type._idf_object_type
+        else:
+            object_type = self._resolve_type(object_type)
         return self._objects.get(object_type, {}).get(name)
 
     def has(self, object_type: str, name: str) -> bool:
         """Check if an object exists.
 
         Args:
-            object_type: EnergyPlus object type.
+            object_type: EnergyPlus object type or Python class name.
             name: Object name.
 
         Returns:
             True if object exists, False otherwise.
         """
+        object_type = self._resolve_type(object_type)
         return name in self._objects.get(object_type, {})
 
     def _objects_of_type(self, object_type: str) -> dict[str, IDFBaseModel]:
@@ -176,11 +190,12 @@ class IDF:
         """Get all objects of a specific type.
 
         Args:
-            object_type: EnergyPlus object type.
+            object_type: EnergyPlus object type or Python class name.
 
         Returns:
             Dictionary mapping name to object, empty dict if type not found.
         """
+        object_type = self._resolve_type(object_type)
         return self._objects.get(object_type, {}).copy()
 
     def __iter__(self) -> Iterator[IDFBaseModel]:
@@ -204,12 +219,13 @@ class IDF:
         """Remove an object and unregister its references.
 
         Args:
-            object_type: EnergyPlus object type.
+            object_type: EnergyPlus object type or Python class name.
             name: Object name.
 
         Returns:
             Removed object, or None if not found.
         """
+        object_type = self._resolve_type(object_type)
         obj = self._objects.get(object_type, {}).pop(name, None)
         if obj is not None:
             self._unbind_recursive(obj)
@@ -217,8 +233,6 @@ class IDF:
             self._unindex_consumer_refs(obj, object_type, name)
             obj._idf_obj_key = ''
         return obj
-
-    # ── Helpers ──────────────────────────────────────────────
 
     @staticmethod
     def _walk_obj_tree(obj: IDFBaseModel) -> Iterator[IDFBaseModel]:
@@ -249,8 +263,6 @@ class IDF:
         if not bucket[key]:
             del bucket[key]
 
-    # ── Binding ──────────────────────────────────────────────
-
     def _bind_recursive(self, obj: IDFBaseModel) -> None:
         """Bind object and its extensible children to this IDF."""
         ref = weakref.ref(self)
@@ -261,8 +273,6 @@ class IDF:
         """Unbind object and its extensible children."""
         for current in self._walk_obj_tree(obj):
             current._idf_ref = None
-
-    # ── Reference registration ───────────────────────────────
 
     def _register_refs(self, obj: IDFBaseModel) -> None:
         """Register an object's provided references into the registry."""
@@ -291,8 +301,6 @@ class IDF:
                 self._prune_bucket(
                     self._ref_registry, group, key, lambda e, _e=entry: e != _e
                 )
-
-    # ── Consumer reverse index ──────────────────────────────
 
     def _index_consumer_refs(
         self, obj: IDFBaseModel, obj_type: str, obj_name: str
@@ -325,8 +333,6 @@ class IDF:
                     self._prune_bucket(
                         self._reverse_index, group, key, lambda e, _e=entry: e != _e
                     )
-
-    # ── Cascade rename ──────────────────────────────────────
 
     def _before_provider_change(
         self,
@@ -423,8 +429,6 @@ class IDF:
                 if isinstance(val, str) and val.upper() == old_key:
                     setattr(current, field_name, new_value)
 
-    # ── Forward resolution ───────────────────────────────────
-
     def _resolve_forward(
         self,
         value: str,
@@ -456,8 +460,6 @@ class IDF:
                     return obj
         return None
 
-    # ── Reverse navigation ───────────────────────────────────
-
     def _find_referencing(
         self,
         target: IDFBaseModel,
@@ -467,6 +469,8 @@ class IDF:
 
         Uses _reverse_index for O(R) lookup where R = referencing objects.
         """
+        if consumer_type is not None:
+            consumer_type = self._resolve_type(consumer_type)
         provisions = self._target_provisions(target)
         if not provisions:
             return []
@@ -498,8 +502,6 @@ class IDF:
                 for group in groups:
                     provisions.append((group, key))
         return provisions
-
-    # ── Validation ───────────────────────────────────────────
 
     def validate(self) -> list[RefError]:
         """Validate all cross-object references.

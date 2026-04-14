@@ -1,13 +1,14 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 Group: Location and Climate
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
+from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING
 
 from pydantic import Field
 
@@ -23,8 +24,8 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
     from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
+    from .advanced_construction import SurfacePropertyOtherSideConditionsModel
 
 
 class SiteSpectrumDataExtensionsItem(IDFBaseModel):

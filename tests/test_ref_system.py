@@ -652,3 +652,63 @@ class TestCascadeRename:
         idf.remove('Zone', 'Zone 1')
 
         assert zone._idf_obj_key == ''
+
+
+# ── Class name string lookup ─────────────────────────────
+
+
+class TestClassNameLookup:
+    """Public API accepts both class name and EnergyPlus name strings."""
+
+    def test_get_by_class_name(self):
+        idf = IDF()
+        surface = _make_surface()
+        idf.add(surface)
+        assert idf.get('BuildingSurfaceDetailed', 'Wall1') is surface
+
+    def test_get_by_ep_name_still_works(self):
+        idf = IDF()
+        surface = _make_surface()
+        idf.add(surface)
+        assert idf.get('BuildingSurface:Detailed', 'Wall1') is surface
+
+    def test_get_identical_names(self):
+        """Types where class name == EP name (e.g. Zone) work."""
+        idf = IDF()
+        zone = _make_zone()
+        idf.add(zone)
+        assert idf.get('Zone', 'Zone1') is zone
+
+    def test_has_by_class_name(self):
+        idf = IDF()
+        idf.add(_make_surface())
+        assert idf.has('BuildingSurfaceDetailed', 'Wall1')
+        assert idf.has('BuildingSurface:Detailed', 'Wall1')
+
+    def test_remove_by_class_name(self):
+        idf = IDF()
+        idf.add(_make_surface())
+        obj = idf.remove('BuildingSurfaceDetailed', 'Wall1')
+        assert obj is not None
+        assert not idf.has('BuildingSurface:Detailed', 'Wall1')
+
+    def test_all_of_type_by_class_name(self):
+        idf = IDF()
+        idf.add(_make_surface('W1'))
+        idf.add(_make_surface('W2'))
+        assert len(idf.all_of_type('BuildingSurfaceDetailed')) == 2
+
+    def test_referencing_by_class_name_string(self):
+        idf = IDF()
+        zone = _make_zone()
+        surface = _make_surface()
+        idf.add(zone)
+        idf.add(surface)
+        refs = zone.referencing('BuildingSurfaceDetailed')
+        assert len(refs) == 1 and refs[0] is surface
+
+    def test_unknown_type_returns_empty(self):
+        idf = IDF()
+        assert idf.get('NonExistent', 'x') is None
+        assert not idf.has('NonExistent', 'x')
+        assert idf.all_of_type('NonExistent') == {}

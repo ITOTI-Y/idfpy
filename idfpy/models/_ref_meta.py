@@ -1,10 +1,11 @@
 """Auto-generated reference metadata for EnergyPlus validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 25.2.
+Generated from Energy+.schema.epJSON version 26.1.
 """
 
 from __future__ import annotations
+
 
 REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'AirConditioner:VariableRefrigerantFlow': [('name', ['validBranchEquipmentNames'])],
@@ -4564,6 +4565,8 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'zone_mixer_name': ['ZoneMixers'],
         'fan_name': ['FansCV', 'FansSystemModel'],
         'reheat_coil_name': ['HeatingCoilName'],
+        'backdraft_damper_leakage_fraction_curve_name': ['UnivariateFunctions'],
+        'backdraft_damper_leakage_zone_name': ['ZoneNames'],
     },
     'AirTerminalSingleDuctSeriesPIUReheat': {
         'availability_schedule_name': ['ScheduleNames'],
