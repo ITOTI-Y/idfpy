@@ -7,8 +7,7 @@ Group: Advanced Construction, Surface, Zone Concepts
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -38,6 +37,8 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from .constructions import ConstructionComplexFenestrationState
+    from .node_branch import OutdoorAirNode
     from .thermal_zones import (
         BuildingSurfaceDetailed,
         FloorAdiabatic,
@@ -49,8 +50,6 @@ if TYPE_CHECKING:
         Zone,
         ZoneList,
     )
-    from .constructions import ConstructionComplexFenestrationState
-    from .node_branch import OutdoorAirNode
 
 
 class FoundationKivaBlocksItem(IDFBaseModel):

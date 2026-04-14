@@ -7,8 +7,7 @@ Group: Zone HVAC Radiative/Convective Units
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -40,8 +39,8 @@ if TYPE_CHECKING:
         CoilHeatingWater,
         CoilSystemCoolingWaterHeatExchangerAssisted,
     )
-    from .hvac_design import DesignSpecificationZoneHVACSizing
     from .fans import FanConstantVolume, FanSystemModel
+    from .hvac_design import DesignSpecificationZoneHVACSizing
     from .thermal_zones import Zone
 
 
@@ -1124,7 +1123,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlowDesign(IDFBaseModel):
         ge=0.0,
         le=1.0,
         json_schema_extra={
-            'note': 'this is the weighting factor in the equation that calculate the running mean outdoor dry-bulb temperature as a weighted average of the previous dayâ€™s running mean outdoor dry-bulb temperature and...'
+            'note': 'this is the weighting factor in the equation that calculate the running mean outdoor dry-bulb temperature as a weighted average of the previous day’s running mean outdoor dry-bulb temperature and t...'
         },
     )
     motor_efficiency: float | None = Field(default=0.9, ge=0.0, le=1.0)

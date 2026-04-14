@@ -7,8 +7,7 @@ Group: HVAC Templates
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -24,9 +23,9 @@ from ._refs import (
     CompactHVACThermostatsRef,
     CondenserOperationSchemesRef,
     CoolingTowersRef,
-    DSOASpaceListNamesRef,
     DesignSpecificationOutdoorAirNamesRef,
     DesignSpecificationZoneAirDistributionNamesRef,
+    DSOASpaceListNamesRef,
     HVACTemplateConstantVolumeZonesRef,
     HVACTemplateDOASSystemsRef,
     PlantOperationSchemesRef,
@@ -35,15 +34,6 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .plant_equipment import (
-        BoilerHotWater,
-        ChillerElectricEIR,
-        ChillerElectricReformulatedEIR,
-    )
-    from .plant_control import (
-        CondenserEquipmentOperationSchemes,
-        PlantEquipmentOperationSchemes,
-    )
     from .condensers import (
         CoolingTowerSingleSpeed,
         CoolingTowerTwoSpeed,
@@ -53,6 +43,15 @@ if TYPE_CHECKING:
         DesignSpecificationOutdoorAir,
         DesignSpecificationOutdoorAirSpaceList,
         DesignSpecificationZoneAirDistribution,
+    )
+    from .plant_control import (
+        CondenserEquipmentOperationSchemes,
+        PlantEquipmentOperationSchemes,
+    )
+    from .plant_equipment import (
+        BoilerHotWater,
+        ChillerElectricEIR,
+        ChillerElectricReformulatedEIR,
     )
     from .thermal_zones import Zone
 

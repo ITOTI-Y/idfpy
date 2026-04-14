@@ -7,8 +7,7 @@ Group: User Defined HVAC and Plant Component Models
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,8 +21,8 @@ from ._refs import (
 if TYPE_CHECKING:
     from .ems import EnergyManagementSystemProgramCallingManager
     from .python_plugins import PythonPluginInstance
-    from .water_systems import WaterUseStorage
     from .thermal_zones import Zone
+    from .water_systems import WaterUseStorage
 
 
 class AirTerminalSingleDuctUserDefined(IDFBaseModel):

@@ -7,8 +7,7 @@ Group: Internal Gains
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,14 +21,15 @@ from ._refs import (
     ScheduleNamesRef,
     SpaceAndSpaceListNamesRef,
     SpaceNamesRef,
-    SurfAndSubSurfNamesRef,
     SurfaceNamesRef,
+    SurfAndSubSurfNamesRef,
     UnivariateFunctionsRef,
     ZoneAndZoneListNamesRef,
     ZoneNamesRef,
 )
 
 if TYPE_CHECKING:
+    from .room_air import RoomAirNode
     from .thermal_zones import (
         BuildingSurfaceDetailed,
         FloorAdiabatic,
@@ -41,7 +41,6 @@ if TYPE_CHECKING:
         Zone,
         ZoneList,
     )
-    from .room_air import RoomAirNode
 
 
 class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):
@@ -739,7 +738,7 @@ class IndoorLivingWall(IDFBaseModel):
         default=None,
         json_schema_extra={
             'units': 'm2',
-            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the usersâ€™ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 f...',
+            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the users’ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 for...',
         },
     )
     led_nominal_intensity: float | None = Field(
