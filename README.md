@@ -3,17 +3,17 @@
 [![PyPI](https://img.shields.io/pypi/v/idfpy)](https://pypi.org/project/idfpy/)
 [![Python 3.12+](https://img.shields.io/pypi/pyversions/idfpy)](https://pypi.org/project/idfpy/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![EnergyPlus 25.2](https://img.shields.io/badge/EnergyPlus-25.2-orange)](https://energyplus.net/)
+[![EnergyPlus 26.1](https://img.shields.io/badge/EnergyPlus-26.1-orange)](https://energyplus.net/)
 [![Autoupdate](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml/badge.svg)](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
 
 Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, optimized for LLM tool calling and IDE auto-completion.
 
-Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
+Auto-generated from `Energy+.schema.epJSON` version **26.1.0**.
 
 ## Features
 
-- **960+ object types** as Pydantic v2 models with full validation
+- **859 object types** as Pydantic v2 models with full validation
 - **275 reference types** with cross-object validation
 - **Forward navigation** — `surface.zone` resolves a reference field to the target object
 - **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
@@ -35,7 +35,7 @@ Auto-generated from `Energy+.schema.epJSON` version **25.2.0**.
 | Type-safe field validation | ✅ Pydantic v2 | ❌ |
 | epJSON read/write | ✅ | ❌ |
 | Cross-reference validation | ✅ 275 ref groups | ❌ |
-| Forward/reverse navigation | ✅ 2847 properties | ❌ |
+| Forward/reverse navigation | ✅ 2849 properties | ❌ |
 | Surface geometry (area/normal) | ✅ ext plugin | ❌ |
 | `to_dict()` / `from_dict()` for LLM | ✅ | ❌ |
 | Dependencies | 4 (pydantic, jinja2, loguru, typer) | 12+ (lxml, pyparsing...) |
