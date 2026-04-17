@@ -7,8 +7,7 @@ Group: Plant-Condenser Control
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -17,9 +16,9 @@ from ._refs import (
     ChillersRef,
     ControlSchemeListRef,
     IceThermalStorageEquipmentRef,
+    PlantAndCondenserEquipmentListsRef,
     PLHPCoolingNamesRef,
     PLHPHeatingNamesRef,
-    PlantAndCondenserEquipmentListsRef,
     ScheduleNamesRef,
     ValidCondenserEquipmentNamesRef,
     ValidCondenserEquipmentTypesRef,

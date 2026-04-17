@@ -7,8 +7,7 @@ Group: Internal Gains
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,14 +21,15 @@ from ._refs import (
     ScheduleNamesRef,
     SpaceAndSpaceListNamesRef,
     SpaceNamesRef,
-    SurfAndSubSurfNamesRef,
     SurfaceNamesRef,
+    SurfAndSubSurfNamesRef,
     UnivariateFunctionsRef,
     ZoneAndZoneListNamesRef,
     ZoneNamesRef,
 )
 
 if TYPE_CHECKING:
+    from .room_air import RoomAirNode
     from .thermal_zones import (
         BuildingSurfaceDetailed,
         FloorAdiabatic,
@@ -41,7 +41,6 @@ if TYPE_CHECKING:
         Zone,
         ZoneList,
     )
-    from .room_air import RoomAirNode
 
 
 class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):

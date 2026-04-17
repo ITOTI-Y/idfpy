@@ -6,7 +6,6 @@ Generated from Energy+.schema.epJSON version 26.1.
 
 from __future__ import annotations
 
-
 REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'AirConditioner:VariableRefrigerantFlow': [('name', ['validBranchEquipmentNames'])],
     'AirLoopHVAC': [('name', ['AirPrimaryLoops'])],
