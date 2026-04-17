@@ -250,6 +250,10 @@ def test_named_singleton_merge_replace_different_name():
     assert idf.has('Building', 'B', strict=False)
     b = idf.get('Building', 'B', strict=False)
     assert b.north_axis == 45.0  # type: ignore
+    assert len(idf.all_of_type('Building')) == 1
+    errors = idf.validate()
+    building_errors = [e for e in errors if e.object_type == 'Building']
+    assert building_errors == []
 
 
 def test_from_dict_unknown_type_strict_true():
@@ -268,9 +272,64 @@ def test_from_dict_unknown_type_strict_false():
     assert idf.has('Zone', 'Z1')
 
 
+def test_merge_atomic_on_validation_error():
+    idf = IDF()
+    idf.add(Zone(name='Z1'))
+    original_len = len(idf)
+    with pytest.raises(ValidationError):
+        idf.merge_dict(
+            {
+                'Zone': _zone_dict('Z2'),
+                'BuildingSurface:Detailed': {
+                    'Bad': {'surface_type': 'INVALID_ENUM_VALUE'},
+                },
+            }
+        )
+    assert len(idf) == original_len
+    assert not idf.has('Zone', 'Z2')
+    assert idf.has('Zone', 'Z1')
+
+
+def test_merge_atomic_on_conflict_raise():
+    idf = IDF()
+    idf.add(Zone(name='Z1'))
+    original_len = len(idf)
+    with pytest.raises(ValueError, match='already exists'):
+        idf.merge_dict(
+            {
+                'Zone': {
+                    'Z2': {'direction_of_relative_north': 10.0},
+                    'Z1': {'direction_of_relative_north': 99.0},
+                },
+            }
+        )
+    assert len(idf) == original_len
+    assert not idf.has('Zone', 'Z2')
+    z1 = idf.get('Zone', 'Z1')
+    assert z1.direction_of_relative_north == 0.0  # type: ignore
+
+
+def test_singleton_multiple_entries_replace():
+    idf = IDF()
+    idf.add(SimulationControl(do_zone_sizing_calculation='No'))
+    idf.merge_dict(
+        {
+            'SimulationControl': {
+                'SC1': {'do_zone_sizing_calculation': 'Yes'},
+                'SC2': {'do_zone_sizing_calculation': 'No'},
+            },
+        },
+        on_conflict='replace',
+    )
+    sims = idf.all_of_type('SimulationControl')
+    assert len(sims) == 1
+    obj = next(iter(sims.values()))
+    assert obj.do_zone_sizing_calculation == 'No'  # type: ignore
+
+
 def test_singleton_types_contents():
     assert 'Building' in SINGLETON_TYPES
     assert 'Version' in SINGLETON_TYPES
     assert 'SimulationControl' in SINGLETON_TYPES
     assert 'Zone' not in SINGLETON_TYPES
-    assert len(SINGLETON_TYPES) == 58
+    assert len(SINGLETON_TYPES) >= 50

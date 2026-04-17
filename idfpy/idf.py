@@ -871,6 +871,10 @@ class IDF:
     ) -> None:
         """Merge epJSON-style dictionary into this IDF instance.
 
+        The merge is atomic: all input is validated and all model objects
+        are constructed before any mutation.  If any step raises, the IDF
+        is left unchanged.
+
         Args:
             data: Nested dict: object_type → object_name → fields.
             on_conflict: Strategy when a conflict is detected (named
@@ -891,6 +895,10 @@ class IDF:
             raise ValueError(
                 f'merge_dict expects a top-level dict, got {type(data).__name__}'
             )
+
+        plan: list[
+            tuple[str, IDFBaseModel, str | None, bool, bool]
+        ] = []
 
         for object_type, objects in data.items():
             if not isinstance(objects, dict):
@@ -918,12 +926,14 @@ class IDF:
                 if is_named:
                     field_dict['name'] = obj_name
 
+                remove_key: str | None = None
+
                 if is_named and self.has(object_type, obj_name, strict=False):
                     if on_conflict == 'raise':
                         raise ValueError(f'{object_type} "{obj_name}" already exists')
                     if on_conflict == 'skip':
                         continue
-                    self.remove(object_type, obj_name, strict=False)
+                    remove_key = obj_name
 
                 elif is_singleton and self._objects.get(object_type):
                     existing_key = next(iter(self._objects[object_type]))
@@ -933,17 +943,35 @@ class IDF:
                         )
                     if on_conflict == 'skip':
                         continue
-                    self.remove(object_type, existing_key, strict=False)
+                    remove_key = existing_key
 
                 try:
                     obj = model_class(**field_dict)
-                    self.add(obj)
                 except Exception as e:
                     if strict:
                         raise
                     logger.warning(
                         'Failed to parse {} "{}": {}', object_type, obj_name, e
                     )
+                    continue
+
+                plan.append((object_type, obj, remove_key, is_named, is_singleton))
+
+        for object_type, obj, remove_key, is_named, is_singleton in plan:
+            if remove_key is not None:
+                if is_singleton:
+                    current = self._objects.get(object_type, {})
+                    if current:
+                        actual_key = next(iter(current))
+                        if is_named:
+                            new_name = getattr(obj, 'name', None)
+                            if new_name and actual_key != new_name:
+                                current[actual_key].name = new_name
+                                actual_key = new_name
+                        self.remove(object_type, actual_key, strict=False)
+                else:
+                    self.remove(object_type, remove_key, strict=False)
+            self.add(obj)
 
     @classmethod
     def load(cls, path: Path) -> IDF:
