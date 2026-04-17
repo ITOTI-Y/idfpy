@@ -180,11 +180,12 @@ class IDF:
                 raise UnknownObjectTypeError(key)
             return None
 
-        if key in OBJECT_TYPE_REGISTRY:
-            return key
-        ep_name = CLASS_NAME_REGISTRY.get(key)
-        if ep_name is not None:
-            return ep_name
+        if isinstance(key, str):
+            if key in OBJECT_TYPE_REGISTRY:
+                return key
+            ep_name = CLASS_NAME_REGISTRY.get(key)
+            if ep_name is not None:
+                return ep_name
         if strict:
             raise UnknownObjectTypeError(key)
         return None
