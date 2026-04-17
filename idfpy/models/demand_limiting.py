@@ -7,8 +7,7 @@ Group: Demand Limiting Controls
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -24,8 +23,8 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .misc import ControllerOutdoorAir, ExteriorLights
     from .internal_gains import ElectricEquipment, Lights
+    from .misc import ControllerOutdoorAir, ExteriorLights
     from .zone_controls import (
         ZoneControlThermostat,
         ZoneControlThermostatStagedDualSetpoint,

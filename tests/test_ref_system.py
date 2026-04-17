@@ -707,8 +707,9 @@ class TestClassNameLookup:
         refs = zone.referencing('BuildingSurfaceDetailed')
         assert len(refs) == 1 and refs[0] is surface
 
-    def test_unknown_type_returns_empty(self):
+    def test_unknown_type_returns_empty_with_strict_false(self):
+        """Legacy silent behavior is preserved via strict=False."""
         idf = IDF()
-        assert idf.get('NonExistent', 'x') is None
-        assert not idf.has('NonExistent', 'x')
-        assert idf.all_of_type('NonExistent') == {}
+        assert idf.get('NonExistent', 'x', strict=False) is None
+        assert not idf.has('NonExistent', 'x', strict=False)
+        assert idf.all_of_type('NonExistent', strict=False) == {}

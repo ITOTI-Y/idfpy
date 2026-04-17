@@ -27,8 +27,8 @@ from idfpy.models import (
     get_model_class,
 )
 from idfpy.models._base import IDFBaseModel
+from idfpy.models._errors import RefError, RefValidationError, UnknownObjectTypeError
 from idfpy.models._metadata import get_model_metadata
-from idfpy.models._ref_errors import RefError, RefValidationError
 from idfpy.models._ref_meta import (
     REF_CLASS_NAME_TYPES,
     REF_GROUP_PROVIDERS,
@@ -139,19 +139,71 @@ class IDF:
         logger.debug('Added {}: {}', object_type, name)
 
     @staticmethod
-    def _resolve_type(key: str) -> str:
-        """Resolve class name or EnergyPlus type name to EnergyPlus type name.
+    def _resolve_type(
+        key: type[IDFBaseModel] | str,
+        *,
+        strict: bool = True,
+    ) -> str | None:
+        """Resolve a class, class name, or EnergyPlus type name to the
+        canonical EnergyPlus type name.
 
-        Lookup order: OBJECT_TYPE_REGISTRY (already an EnergyPlus name) →
-        CLASS_NAME_REGISTRY (Python class name) → return key unchanged.
+        Lookup order:
+
+        1. ``type[IDFBaseModel]`` subclass -> ``key._idf_object_type``
+           (validated against OBJECT_TYPE_REGISTRY).
+        2. ``key in OBJECT_TYPE_REGISTRY`` (already an EnergyPlus name).
+        3. ``key in CLASS_NAME_REGISTRY`` (Python class name translation).
+        4. Otherwise: raise UnknownObjectTypeError if ``strict`` else
+           return ``None``.
+
+        Args:
+            key: Model class, Python class name, or EnergyPlus object
+                type name.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable input. Pass ``strict=False`` to opt into
+                the legacy silent behavior (returns ``None``).
+
+        Returns:
+            Canonical EnergyPlus type name, or ``None`` when
+            ``strict=False`` and the key cannot be resolved.
+
+        Raises:
+            UnknownObjectTypeError: When ``strict=True`` and the key
+                cannot be resolved.
         """
-        return CLASS_NAME_REGISTRY.get(key, key)
+        if isinstance(key, type):
+            if issubclass(key, IDFBaseModel):
+                ep_name = key._idf_object_type
+                if ep_name and ep_name in OBJECT_TYPE_REGISTRY:
+                    return ep_name
+            if strict:
+                raise UnknownObjectTypeError(key)
+            return None
+
+        if key in OBJECT_TYPE_REGISTRY:
+            return key
+        ep_name = CLASS_NAME_REGISTRY.get(key)
+        if ep_name is not None:
+            return ep_name
+        if strict:
+            raise UnknownObjectTypeError(key)
+        return None
 
     @overload
-    def get(self, object_type: type[_T], name: str) -> _T | None: ...
+    def get(
+        self, object_type: type[_T], name: str, *, strict: bool = True
+    ) -> _T | None: ...
     @overload
-    def get(self, object_type: str, name: str) -> IDFBaseModel | None: ...
-    def get(self, object_type: type[_T] | str, name: str) -> _T | IDFBaseModel | None:
+    def get(
+        self, object_type: str, name: str, *, strict: bool = True
+    ) -> IDFBaseModel | None: ...
+    def get(
+        self,
+        object_type: type[_T] | str,
+        name: str,
+        *,
+        strict: bool = True,
+    ) -> _T | IDFBaseModel | None:
         """Get an object by type and name.
 
         Args:
@@ -159,44 +211,94 @@ class IDF:
                 Python class name string (e.g., 'BuildingSurfaceDetailed'),
                 or model class (e.g., Zone).
             name: Object name.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``object_type``. Pass ``strict=False`` for
+                the legacy silent-return behavior.
 
         Returns:
             IDF object or None if not found.
-        """
-        if isinstance(object_type, type):
-            object_type = object_type._idf_object_type
-        else:
-            object_type = self._resolve_type(object_type)
-        return self._objects.get(object_type, {}).get(name)
 
-    def has(self, object_type: str, name: str) -> bool:
+        Raises:
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``object_type`` cannot be resolved.
+        """
+        resolved = self._resolve_type(object_type, strict=strict)
+        if resolved is None:
+            return None
+        return self._objects.get(resolved, {}).get(name)
+
+    @overload
+    def has(
+        self, object_type: type[IDFBaseModel], name: str, *, strict: bool = True
+    ) -> bool: ...
+    @overload
+    def has(self, object_type: str, name: str, *, strict: bool = True) -> bool: ...
+    def has(
+        self,
+        object_type: type[IDFBaseModel] | str,
+        name: str,
+        *,
+        strict: bool = True,
+    ) -> bool:
         """Check if an object exists.
 
         Args:
-            object_type: EnergyPlus object type or Python class name.
+            object_type: EnergyPlus object type, Python class name, or
+                model class.
             name: Object name.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``object_type``.
 
         Returns:
             True if object exists, False otherwise.
+
+        Raises:
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``object_type`` cannot be resolved.
         """
-        object_type = self._resolve_type(object_type)
-        return name in self._objects.get(object_type, {})
+        resolved = self._resolve_type(object_type, strict=strict)
+        if resolved is None:
+            return False
+        return name in self._objects.get(resolved, {})
 
     def _objects_of_type(self, object_type: str) -> dict[str, IDFBaseModel]:
         """Get internal dict for a type (no copy, for internal use only)."""
         return self._objects.get(object_type, {})
 
-    def all_of_type(self, object_type: str) -> dict[str, IDFBaseModel]:
+    @overload
+    def all_of_type(
+        self, object_type: type[_T], *, strict: bool = True
+    ) -> dict[str, _T]: ...
+    @overload
+    def all_of_type(
+        self, object_type: str, *, strict: bool = True
+    ) -> dict[str, IDFBaseModel]: ...
+    def all_of_type(
+        self,
+        object_type: type[_T] | str,
+        *,
+        strict: bool = True,
+    ) -> dict[str, _T] | dict[str, IDFBaseModel]:
         """Get all objects of a specific type.
 
         Args:
-            object_type: EnergyPlus object type or Python class name.
+            object_type: EnergyPlus object type, Python class name, or
+                model class.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``object_type``.
 
         Returns:
-            Dictionary mapping name to object, empty dict if type not found.
+            Dictionary mapping name to object, empty dict if type is
+            resolvable but no objects exist.
+
+        Raises:
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``object_type`` cannot be resolved.
         """
-        object_type = self._resolve_type(object_type)
-        return self._objects.get(object_type, {}).copy()
+        resolved = self._resolve_type(object_type, strict=strict)
+        if resolved is None:
+            return {}
+        return self._objects.get(resolved, {}).copy()
 
     def __iter__(self) -> Iterator[IDFBaseModel]:
         """Iterate over all objects in the container.
@@ -215,22 +317,45 @@ class IDF:
         """
         return sum(len(objects) for objects in self._objects.values())
 
-    def remove(self, object_type: str, name: str) -> IDFBaseModel | None:
+    @overload
+    def remove(
+        self, object_type: type[_T], name: str, *, strict: bool = True
+    ) -> _T | None: ...
+    @overload
+    def remove(
+        self, object_type: str, name: str, *, strict: bool = True
+    ) -> IDFBaseModel | None: ...
+    def remove(
+        self,
+        object_type: type[_T] | str,
+        name: str,
+        *,
+        strict: bool = True,
+    ) -> _T | IDFBaseModel | None:
         """Remove an object and unregister its references.
 
         Args:
-            object_type: EnergyPlus object type or Python class name.
+            object_type: EnergyPlus object type, Python class name, or
+                model class.
             name: Object name.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``object_type``.
 
         Returns:
             Removed object, or None if not found.
+
+        Raises:
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``object_type`` cannot be resolved.
         """
-        object_type = self._resolve_type(object_type)
-        obj = self._objects.get(object_type, {}).pop(name, None)
+        resolved = self._resolve_type(object_type, strict=strict)
+        if resolved is None:
+            return None
+        obj = self._objects.get(resolved, {}).pop(name, None)
         if obj is not None:
             self._unbind_recursive(obj)
             self._unregister_refs(obj)
-            self._unindex_consumer_refs(obj, object_type, name)
+            self._unindex_consumer_refs(obj, resolved, name)
             obj._idf_obj_key = ''
         return obj
 
@@ -463,14 +588,19 @@ class IDF:
     def _find_referencing(
         self,
         target: IDFBaseModel,
-        consumer_type: str | None = None,
+        consumer_type: type[IDFBaseModel] | str | None = None,
+        *,
+        strict: bool = True,
     ) -> list[IDFBaseModel]:
         """Find objects that reference target, optionally filtered by type.
 
         Uses _reverse_index for O(R) lookup where R = referencing objects.
         """
+        resolved_consumer: str | None = None
         if consumer_type is not None:
-            consumer_type = self._resolve_type(consumer_type)
+            resolved_consumer = self._resolve_type(consumer_type, strict=strict)
+            if resolved_consumer is None:
+                return []
         provisions = self._target_provisions(target)
         if not provisions:
             return []
@@ -480,7 +610,7 @@ class IDF:
         for group, key in provisions:
             bucket = self._reverse_index.get(group, {})
             for entry_type, entry_name in bucket.get(key, ()):
-                if consumer_type is not None and entry_type != consumer_type:
+                if resolved_consumer is not None and entry_type != resolved_consumer:
                     continue
                 pair = (entry_type, entry_name)
                 if pair not in seen:

@@ -7,18 +7,17 @@ Group: Room Air Models
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
 from ._base import IDFBaseModel
 from ._refs import (
     AllHeatTranSurfNamesRef,
+    RoomAirflowNetworkNodesRef,
     RoomAirNodeGainsRef,
     RoomAirNodeHVACEquipmentRef,
     RoomAirNodeSurfaceListsRef,
-    RoomAirflowNetworkNodesRef,
     ScheduleNamesRef,
     ZoneNamesRef,
 )

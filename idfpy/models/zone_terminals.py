@@ -7,8 +7,7 @@ Group: Zone HVAC Air Loop Terminal Units
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -16,10 +15,10 @@ from ._base import IDFBaseModel
 from ._refs import (
     AirTerminalUnitNamesRef,
     CoolingCoilNameRef,
-    DOAToZonalUnitRef,
-    DSOASpaceListNamesRef,
     DesignSpecificationAirTerminalSizingNameRef,
     DesignSpecificationOutdoorAirNamesRef,
+    DOAToZonalUnitRef,
+    DSOASpaceListNamesRef,
     FansCVRef,
     FansSystemModelRef,
     FansVAVRef,
@@ -40,12 +39,12 @@ if TYPE_CHECKING:
         CoilHeatingSteam,
         CoilHeatingWater,
     )
+    from .fans import FanConstantVolume, FanSystemModel, FanVariableVolume
     from .hvac_design import (
         DesignSpecificationAirTerminalSizing,
         DesignSpecificationOutdoorAir,
         DesignSpecificationOutdoorAirSpaceList,
     )
-    from .fans import FanConstantVolume, FanSystemModel, FanVariableVolume
     from .thermal_zones import Zone
 
 

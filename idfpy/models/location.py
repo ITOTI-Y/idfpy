@@ -7,8 +7,7 @@ Group: Location and Climate
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -24,8 +23,8 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
     from .advanced_construction import SurfacePropertyOtherSideConditionsModel
+    from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
 
 
 class SiteSpectrumDataExtensionsItem(IDFBaseModel):

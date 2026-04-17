@@ -10,7 +10,14 @@ from importlib.metadata import version
 
 from idfpy.idf import IDF
 from idfpy.models._base import IDFBaseModel
-from idfpy.models._ref_errors import RefError, RefValidationError
+from idfpy.models._errors import RefError, RefValidationError, UnknownObjectTypeError
 
 __version__ = version('idfpy')
-__all__ = ['IDF', 'IDFBaseModel', 'RefError', 'RefValidationError', '__version__']
+__all__ = [
+    'IDF',
+    'IDFBaseModel',
+    'RefError',
+    'RefValidationError',
+    'UnknownObjectTypeError',
+    '__version__',
+]
