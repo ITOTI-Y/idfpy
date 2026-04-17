@@ -3,7 +3,7 @@
 Type-safe Pydantic models for all EnergyPlus IDF object types,
 plus IDF file read/write functionality.
 
-Generated from Energy+.schema.epJSON version 25.1.
+Generated from Energy+.schema.epJSON version 26.1.
 """
 
 from importlib.metadata import version

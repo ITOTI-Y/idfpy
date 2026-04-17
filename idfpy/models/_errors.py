@@ -8,11 +8,6 @@ from dataclasses import dataclass
 class UnknownObjectTypeError(ValueError):
     """Raised when an object type name or class cannot be resolved.
 
-    Raised by IDF query methods (``get`` / ``has`` / ``all_of_type`` /
-    ``remove``) and :meth:`IDFBaseModel.referencing` when ``strict=True``
-    (the default) and the input key does not map to any EnergyPlus
-    object type.
-
     Attributes:
         key: The input key that failed resolution (``type`` or ``str``).
     """
