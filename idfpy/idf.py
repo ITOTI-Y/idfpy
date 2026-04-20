@@ -12,9 +12,11 @@ from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
 from typing import (
     Any,
+    Final,
     Literal,
     TypeVar,
     cast,
+    get_args,
     overload,
 )
 
@@ -38,6 +40,8 @@ from idfpy.models._ref_meta import (
 from idfpy.models.simulation import Version
 
 _T = TypeVar('_T', bound=IDFBaseModel)
+ConflictPolicy = Literal['raise', 'skip', 'replace']
+_VALID_POLICIES: Final[tuple[ConflictPolicy, ...]] = get_args(ConflictPolicy)
 
 
 def _finalize_fields(
@@ -866,7 +870,7 @@ class IDF:
         self,
         data: dict[str, dict[str, dict[str, Any]]],
         *,
-        on_conflict: Literal['raise', 'replace', 'skip'] = 'raise',
+        on_conflict: ConflictPolicy = 'raise',
         strict: bool = True,
     ) -> None:
         """Merge epJSON-style dictionary into this IDF instance.
@@ -895,10 +899,13 @@ class IDF:
             raise ValueError(
                 f'merge_dict expects a top-level dict, got {type(data).__name__}'
             )
+        if on_conflict not in _VALID_POLICIES:
+            raise ValueError(
+                f'on_conflict must be one of {_VALID_POLICIES!r}, got {on_conflict!r}'
+            )
 
-        plan: list[
-            tuple[str, IDFBaseModel, str | None, bool, bool]
-        ] = []
+        plan: list[tuple[str, IDFBaseModel, str | None, bool, bool]] = []
+        singleton_seen: set[str] = set()
 
         for object_type, objects in data.items():
             if not isinstance(objects, dict):
@@ -945,6 +952,16 @@ class IDF:
                         continue
                     remove_key = existing_key
 
+                if is_singleton and object_type in singleton_seen:
+                    if on_conflict == 'raise':
+                        raise ValueError(
+                            f'{object_type} is a singleton; multiple entries '
+                            f'in input data are not allowed'
+                        )
+                    if on_conflict == 'skip':
+                        continue
+                    plan[:] = [e for e in plan if e[0] != object_type]
+
                 try:
                     obj = model_class(**field_dict)
                 except Exception as e:
@@ -955,6 +972,8 @@ class IDF:
                     )
                     continue
 
+                if is_singleton:
+                    singleton_seen.add(object_type)
                 plan.append((object_type, obj, remove_key, is_named, is_singleton))
 
         for object_type, obj, remove_key, is_named, is_singleton in plan:

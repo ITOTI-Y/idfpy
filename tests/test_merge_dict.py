@@ -327,6 +327,60 @@ def test_singleton_multiple_entries_replace():
     assert obj.do_zone_sizing_calculation == 'No'  # type: ignore
 
 
+def test_invalid_on_conflict_value():
+    idf = IDF()
+    with pytest.raises(ValueError, match='on_conflict must be one of'):
+        idf.merge_dict({'Zone': _zone_dict('Z1')}, on_conflict='invalid')  # type: ignore
+
+
+def test_intra_data_singleton_raise():
+    idf = IDF()
+    with pytest.raises(ValueError, match='multiple entries'):
+        idf.merge_dict(
+            {
+                'SimulationControl': {
+                    'SC1': {'do_zone_sizing_calculation': 'Yes'},
+                    'SC2': {'do_zone_sizing_calculation': 'No'},
+                },
+            },
+        )
+    assert len(idf.all_of_type('SimulationControl')) == 0
+
+
+def test_intra_data_singleton_skip():
+    idf = IDF()
+    idf.merge_dict(
+        {
+            'SimulationControl': {
+                'SC1': {'do_zone_sizing_calculation': 'Yes'},
+                'SC2': {'do_zone_sizing_calculation': 'No'},
+            },
+        },
+        on_conflict='skip',
+    )
+    sims = idf.all_of_type('SimulationControl')
+    assert len(sims) == 1
+    obj = next(iter(sims.values()))
+    assert obj.do_zone_sizing_calculation == 'Yes'  # type: ignore
+
+
+def test_intra_data_singleton_replace():
+    idf = IDF()
+    idf.merge_dict(
+        {
+            'SimulationControl': {
+                'SC1': {'do_zone_sizing_calculation': 'Yes'},
+                'SC2': {'do_zone_sizing_calculation': 'No'},
+            },
+        },
+        on_conflict='replace',
+    )
+    sims = idf.all_of_type('SimulationControl')
+    assert len(sims) == 1
+    obj = next(iter(sims.values()))
+    assert obj.do_zone_sizing_calculation == 'No'  # type: ignore
+
+
 def test_singleton_types_contents():
     assert 'Building' in SINGLETON_TYPES
     assert 'Version' in SINGLETON_TYPES
