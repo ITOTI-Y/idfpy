@@ -381,6 +381,24 @@ def test_intra_data_singleton_replace():
     assert obj.do_zone_sizing_calculation == 'No'  # type: ignore
 
 
+def test_singleton_replace_keeps_first_when_second_invalid():
+    idf = IDF()
+    idf.merge_dict(
+        {
+            'SimulationControl': {
+                'SC1': {'do_zone_sizing_calculation': 'Yes'},
+                'SC2': {'do_zone_sizing_calculation': 'INVALID'},
+            },
+        },
+        on_conflict='replace',
+        strict=False,
+    )
+    sims = idf.all_of_type('SimulationControl')
+    assert len(sims) == 1
+    obj = next(iter(sims.values()))
+    assert obj.do_zone_sizing_calculation == 'Yes'  # type: ignore
+
+
 def test_singleton_types_contents():
     assert 'Building' in SINGLETON_TYPES
     assert 'Version' in SINGLETON_TYPES

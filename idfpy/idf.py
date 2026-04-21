@@ -952,6 +952,7 @@ class IDF:
                         continue
                     remove_key = existing_key
 
+                replace_prior_in_plan = False
                 if is_singleton and object_type in singleton_seen:
                     if on_conflict == 'raise':
                         raise ValueError(
@@ -960,7 +961,7 @@ class IDF:
                         )
                     if on_conflict == 'skip':
                         continue
-                    plan[:] = [e for e in plan if e[0] != object_type]
+                    replace_prior_in_plan = True
 
                 try:
                     obj = model_class(**field_dict)
@@ -972,6 +973,8 @@ class IDF:
                     )
                     continue
 
+                if replace_prior_in_plan:
+                    plan[:] = [e for e in plan if e[0] != object_type]
                 if is_singleton:
                     singleton_seen.add(object_type)
                 plan.append((object_type, obj, remove_key, is_named, is_singleton))
