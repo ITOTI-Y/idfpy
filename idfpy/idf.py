@@ -1088,15 +1088,22 @@ class IDF:
 
         return idf
 
+    def _normalize_object_type(self, object_type: str) -> str | None:
+        lower = object_type.lower()
+        for canonical_name in OBJECT_TYPE_REGISTRY:
+            if canonical_name.lower() == lower:
+                return canonical_name
+        return None
+
     @classmethod
     def _process_block(cls, idf: IDF, fields: list[str]) -> None:
         """Parse a single object block from accumulated fields."""
         object_type = fields[0]
-        field_values = fields[1:]
-
-        if object_type not in OBJECT_TYPE_REGISTRY:
-            logger.warning('Unknown object type: {}', object_type)
+        object_type = idf._normalize_object_type(object_type)
+        if object_type is None:
+            logger.warning('Unknown object type: {}', fields[0])
             return
+        field_values = fields[1:]
 
         model_class = get_model_class(object_type)
         if model_class is None:
