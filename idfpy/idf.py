@@ -42,6 +42,9 @@ from idfpy.models.simulation import Version
 _T = TypeVar('_T', bound=IDFBaseModel)
 ConflictPolicy = Literal['raise', 'skip', 'replace']
 _VALID_POLICIES: Final[tuple[ConflictPolicy, ...]] = get_args(ConflictPolicy)
+_OBJECT_TYPE_BY_LOWER: Final[dict[str, str]] = {
+    object_type.lower(): object_type for object_type in OBJECT_TYPE_REGISTRY
+}
 
 
 def _finalize_fields(
@@ -1089,11 +1092,7 @@ class IDF:
         return idf
 
     def _normalize_object_type(self, object_type: str) -> str | None:
-        lower = object_type.lower()
-        for canonical_name in OBJECT_TYPE_REGISTRY:
-            if canonical_name.lower() == lower:
-                return canonical_name
-        return None
+        return _OBJECT_TYPE_BY_LOWER.get(object_type.lower())
 
     @classmethod
     def _process_block(cls, idf: IDF, fields: list[str]) -> None:
