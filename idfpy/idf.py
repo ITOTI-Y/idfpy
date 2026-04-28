@@ -12,9 +12,11 @@ from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
 from typing import (
     Any,
+    Final,
     Literal,
     TypeVar,
     cast,
+    get_args,
     overload,
 )
 
@@ -24,6 +26,7 @@ from idfpy.models import (
     CLASS_NAME_REGISTRY,
     FIELD_ORDER_REGISTRY,
     OBJECT_TYPE_REGISTRY,
+    SINGLETON_TYPES,
     get_model_class,
 )
 from idfpy.models._base import IDFBaseModel
@@ -37,6 +40,11 @@ from idfpy.models._ref_meta import (
 from idfpy.models.simulation import Version
 
 _T = TypeVar('_T', bound=IDFBaseModel)
+ConflictPolicy = Literal['raise', 'skip', 'replace']
+_VALID_POLICIES: Final[tuple[ConflictPolicy, ...]] = get_args(ConflictPolicy)
+_OBJECT_TYPE_BY_LOWER: Final[dict[str, str]] = {
+    object_type.lower(): object_type for object_type in OBJECT_TYPE_REGISTRY
+}
 
 
 def _finalize_fields(
@@ -124,6 +132,12 @@ class IDF:
 
         if name and name in objects:
             raise ValueError(f"Duplicate object: {object_type} '{name}' already exists")
+        elif object_type in SINGLETON_TYPES and objects:
+            existing = next(iter(objects))
+            raise ValueError(
+                f'Singleton constraint: {object_type} already has instance '
+                f"'{existing}'; only one allowed"
+            )
 
         if not name or name in objects:
             idx = len(objects)
@@ -795,11 +809,18 @@ class IDF:
         return result
 
     @classmethod
-    def from_dict(cls, data: dict[str, dict[str, dict[str, Any]]]) -> IDF:
+    def from_dict(
+        cls,
+        data: dict[str, dict[str, dict[str, Any]]],
+        *,
+        strict: bool = True,
+    ) -> IDF:
         """Construct IDF from epJSON-style nested dictionary.
 
         Args:
             data: Nested dict: object_type → object_name → fields.
+            strict: When True (default), raise on unknown object types
+                and validation errors. When False, log warnings and skip.
 
         Returns:
             IDF instance with parsed objects.
@@ -807,6 +828,8 @@ class IDF:
         Raises:
             ValueError: If *data* is not a dict, any object-type value is not
                 a dict, or any fields entry is not a mapping.
+            UnknownObjectTypeError: When ``strict=True`` and an object type
+                is not recognized.
         """
         if not isinstance(data, dict):
             raise ValueError(
@@ -822,6 +845,8 @@ class IDF:
                 )
             model_class = get_model_class(object_type)
             if model_class is None:
+                if strict:
+                    raise UnknownObjectTypeError(object_type)
                 logger.warning('Unknown object type: {}', object_type)
                 continue
             for obj_name, fields in objects.items():
@@ -837,10 +862,141 @@ class IDF:
                     obj = model_class(**field_dict)
                     idf.add(obj)
                 except Exception as e:
+                    if strict:
+                        raise
                     logger.warning(
                         'Failed to parse {} "{}": {}', object_type, obj_name, e
                     )
         return idf
+
+    def merge_dict(
+        self,
+        data: dict[str, dict[str, dict[str, Any]]],
+        *,
+        on_conflict: ConflictPolicy = 'raise',
+        strict: bool = True,
+    ) -> None:
+        """Merge epJSON-style dictionary into this IDF instance.
+
+        The merge is atomic: all input is validated and all model objects
+        are constructed before any mutation.  If any step raises, the IDF
+        is left unchanged.
+
+        Args:
+            data: Nested dict: object_type → object_name → fields.
+            on_conflict: Strategy when a conflict is detected (named
+                duplicate or singleton already present):
+                ``"raise"`` (default) raises ValueError,
+                ``"replace"`` removes the old object first,
+                ``"skip"`` keeps the existing object.
+            strict: When True (default), raise on unknown object types
+                and validation errors. When False, log warnings and skip.
+
+        Raises:
+            ValueError: If *data* structure is invalid, or
+                ``on_conflict="raise"`` and a conflict is detected.
+            UnknownObjectTypeError: When ``strict=True`` and an unknown
+                type is encountered.
+        """
+        if not isinstance(data, dict):
+            raise ValueError(
+                f'merge_dict expects a top-level dict, got {type(data).__name__}'
+            )
+        if on_conflict not in _VALID_POLICIES:
+            raise ValueError(
+                f'on_conflict must be one of {_VALID_POLICIES!r}, got {on_conflict!r}'
+            )
+
+        plan: list[tuple[str, IDFBaseModel, str | None, bool, bool]] = []
+        singleton_seen: set[str] = set()
+
+        for object_type, objects in data.items():
+            if not isinstance(objects, dict):
+                raise ValueError(
+                    f'Expected a dict of objects for object type '
+                    f'"{object_type}", got {type(objects).__name__}'
+                )
+            model_class = get_model_class(object_type)
+            if model_class is None:
+                if strict:
+                    raise UnknownObjectTypeError(object_type)
+                logger.warning('Unknown object type: {}', object_type)
+                continue
+
+            is_named = 'name' in model_class.model_fields
+            is_singleton = object_type in SINGLETON_TYPES
+
+            for obj_name, fields in objects.items():
+                if not isinstance(fields, Mapping):
+                    raise ValueError(
+                        f'Expected a mapping of fields for {object_type} '
+                        f'"{obj_name}", got {type(fields).__name__}'
+                    )
+                field_dict = dict(fields)
+                if is_named:
+                    field_dict['name'] = obj_name
+
+                remove_key: str | None = None
+
+                if is_named and self.has(object_type, obj_name, strict=False):
+                    if on_conflict == 'raise':
+                        raise ValueError(f'{object_type} "{obj_name}" already exists')
+                    if on_conflict == 'skip':
+                        continue
+                    remove_key = obj_name
+
+                elif is_singleton and self._objects.get(object_type):
+                    existing_key = next(iter(self._objects[object_type]))
+                    if on_conflict == 'raise':
+                        raise ValueError(
+                            f'{object_type} is a singleton and already exists'
+                        )
+                    if on_conflict == 'skip':
+                        continue
+                    remove_key = existing_key
+
+                replace_prior_in_plan = False
+                if is_singleton and object_type in singleton_seen:
+                    if on_conflict == 'raise':
+                        raise ValueError(
+                            f'{object_type} is a singleton; multiple entries '
+                            f'in input data are not allowed'
+                        )
+                    if on_conflict == 'skip':
+                        continue
+                    replace_prior_in_plan = True
+
+                try:
+                    obj = model_class(**field_dict)
+                except Exception as e:
+                    if strict:
+                        raise
+                    logger.warning(
+                        'Failed to parse {} "{}": {}', object_type, obj_name, e
+                    )
+                    continue
+
+                if replace_prior_in_plan:
+                    plan[:] = [e for e in plan if e[0] != object_type]
+                if is_singleton:
+                    singleton_seen.add(object_type)
+                plan.append((object_type, obj, remove_key, is_named, is_singleton))
+
+        for object_type, obj, remove_key, is_named, is_singleton in plan:
+            if remove_key is not None:
+                if is_singleton:
+                    current = self._objects.get(object_type, {})
+                    if current:
+                        actual_key = next(iter(current))
+                        if is_named:
+                            new_name = getattr(obj, 'name', None)
+                            if new_name and actual_key != new_name:
+                                current[actual_key].name = new_name
+                                actual_key = new_name
+                        self.remove(object_type, actual_key, strict=False)
+                else:
+                    self.remove(object_type, remove_key, strict=False)
+            self.add(obj)
 
     @classmethod
     def load(cls, path: Path) -> IDF:
@@ -876,7 +1032,7 @@ class IDF:
         """Load epJSON file and parse into object container."""
         content = path.read_text(encoding='utf-8')
         data = json.loads(content)
-        return cls.from_dict(data)
+        return cls.from_dict(data, strict=False)
 
     @classmethod
     def _parse_idf_content(cls, lines: str | Iterable[str]) -> IDF:
@@ -935,15 +1091,18 @@ class IDF:
 
         return idf
 
+    def _normalize_object_type(self, object_type: str) -> str | None:
+        return _OBJECT_TYPE_BY_LOWER.get(object_type.lower())
+
     @classmethod
     def _process_block(cls, idf: IDF, fields: list[str]) -> None:
         """Parse a single object block from accumulated fields."""
         object_type = fields[0]
-        field_values = fields[1:]
-
-        if object_type not in OBJECT_TYPE_REGISTRY:
-            logger.warning('Unknown object type: {}', object_type)
+        object_type = idf._normalize_object_type(object_type)
+        if object_type is None:
+            logger.warning('Unknown object type: {}', fields[0])
             return
+        field_values = fields[1:]
 
         model_class = get_model_class(object_type)
         if model_class is None:

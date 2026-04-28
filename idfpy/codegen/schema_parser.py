@@ -46,6 +46,7 @@ class ObjectSpec:
     max_fields: int | None = None
     extensible_size: int | None = None
     format: str | None = None
+    is_singleton: bool = False
 
     @property
     def provider_field_names(self) -> str | None:
@@ -119,7 +120,7 @@ class SchemaParser:
         specs: dict[str, ObjectSpec] = {}
         total = len(properties)
 
-        logger.info(f'Parsing {total} object types from schema...')
+        logger.info('Parsing {} object types from schema...', total)
 
         for i, (name, obj_schema) in enumerate(properties.items(), 1):
             try:
@@ -127,13 +128,13 @@ class SchemaParser:
                 specs[name] = spec
 
                 if i % 100 == 0:
-                    logger.debug(f'Parsed {i}/{total} object types...')
+                    logger.debug('Parsed {}/{} object types...', i, total)
 
             except Exception as e:
-                logger.warning(f"Failed to parse object '{name}': {e}")
+                logger.warning("Failed to parse object '{}': {}", name, e)
                 continue
 
-        logger.info(f'Successfully parsed {len(specs)}/{total} object types')
+        logger.info('Successfully parsed {}/{} object types', len(specs), total)
         self._cached_specs = specs
         return specs
 
@@ -142,12 +143,12 @@ class SchemaParser:
         if self._raw_schema is not None:
             return
 
-        logger.debug(f'Loading schema from {self.schema_path}')
+        logger.debug('Loading schema from {}', self.schema_path)
         with self.schema_path.open(encoding='utf-8') as fh:
             self._raw_schema = json.load(fh)
 
         version = self._raw_schema.get('epJSON_schema_version', 'unknown')
-        logger.info(f'Loaded EnergyPlus schema version: {version}')
+        logger.info('Loaded EnergyPlus schema version: {}', version)
 
     def _parse_object(self, name: str, obj_schema: dict[str, Any]) -> ObjectSpec:
         """Parse a single object type definition.
@@ -168,6 +169,7 @@ class SchemaParser:
         max_fields = obj_schema.get('max_fields')
         extensible_size = obj_schema.get('extensible_size')
         format_hint = obj_schema.get('format')
+        is_singleton = obj_schema.get('maxProperties') == 1
 
         # Fields are nested under patternProperties.*.properties
         # or directly under legacy_idd.fields for some objects
@@ -183,6 +185,7 @@ class SchemaParser:
             max_fields=max_fields,
             extensible_size=extensible_size,
             format=format_hint,
+            is_singleton=is_singleton,
         )
 
     def _extract_fields(self, obj_schema: dict[str, Any]) -> list[FieldSpec]:

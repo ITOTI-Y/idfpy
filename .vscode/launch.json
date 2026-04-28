@@ -41,6 +41,18 @@
                 "-s",
                 "--no-header"
             ],
-        }
+        },
+        {
+            "name": "All test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "console": "integratedTerminal",
+            "args": [
+                "tests",
+                "-s",
+                "--no-header"
+            ],
+        },
     ]
 }
