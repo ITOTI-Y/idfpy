@@ -1,0 +1,144 @@
+name: Release EnergyPlus Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      ep_version:
+        description: "EnergyPlus version to target (e.g. 23.2.0)"
+        required: true
+        type: string
+      release_version:
+        description: "idfpy release version (PEP 440, e.g. 23.2.0 or 23.2.0.post1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Resolve EnergyPlus asset and target refs
+        id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EP_VERSION="${{ inputs.ep_version }}"
+          RELEASE_VERSION="${{ inputs.release_version }}"
+          TAG="v${RELEASE_VERSION}"
+          BRANCH="release/ep-${EP_VERSION}"
+
+          RELEASE_JSON=$(gh api "repos/NREL/EnergyPlus/releases/tags/v${EP_VERSION}")
+          ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
+            .assets[]
+            | select(.name | test("Linux-Ubuntu24\\.04-x86_64\\.tar\\.gz$"))
+            | .browser_download_url
+          ')
+          if [ -z "$ASSET_URL" ]; then
+            ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '
+              .assets[]
+              | select(.name | test("Linux.*x86_64\\.tar\\.gz$"))
+              | .browser_download_url
+            ' | head -1)
+          fi
+          if [ -z "$ASSET_URL" ]; then
+            echo "::error::No Linux x86_64 schema asset found for EnergyPlus ${EP_VERSION}"
+            exit 1
+          fi
+
+          {
+            echo "ep_version=$EP_VERSION"
+            echo "release_version=$RELEASE_VERSION"
+            echo "tag=$TAG"
+            echo "branch=$BRANCH"
+            echo "asset_url=$ASSET_URL"
+          } >> "$GITHUB_OUTPUT"
+          echo "EnergyPlus $EP_VERSION -> idfpy $TAG on $BRANCH"
+
+      - name: Inspect existing tag and PyPI release
+        id: check
+        run: |
+          TAG="${{ steps.ver.outputs.tag }}"
+          VERSION="${{ steps.ver.outputs.release_version }}"
+
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://pypi.org/pypi/idfpy/${VERSION}/json")
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "::error::PyPI release idfpy==${VERSION} already exists; bump release_version"
+            exit 1
+          fi
+
+          TAG_EXISTS=false
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
+            echo "::warning::Remote tag $TAG already exists; skipping git push, only re-publishing to PyPI"
+            TAG_EXISTS=true
+          fi
+          echo "tag_exists=$TAG_EXISTS" >> "$GITHUB_OUTPUT"
+
+      - name: Download schema
+        run: |
+          curl -fL -o ep.tar.gz "${{ steps.ver.outputs.asset_url }}"
+          tar -xzf ep.tar.gz --wildcards '*/Energy+.schema.epJSON' --strip-components=1
+          rm ep.tar.gz
+          ls -lh 'Energy+.schema.epJSON'
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Generate models
+        run: |
+          uv sync --all-groups
+          uv run idfpy codegen --schema 'Energy+.schema.epJSON' --output idfpy/models
+          uv run ruff check --fix .
+          uv run ruff format .
+          uv run ty check .
+          rm 'Energy+.schema.epJSON'
+
+      - name: Run tests
+        run: uv run pytest tests/ -v
+
+      - name: Set package version
+        run: |
+          VERSION="${{ steps.ver.outputs.release_version }}"
+          sed -i "s/^version = .*/version = \"${VERSION}\"/" pyproject.toml
+
+      - name: Push release branch and tag
+        if: steps.check.outputs.tag_exists == 'false'
+        run: |
+          EP_VERSION="${{ steps.ver.outputs.ep_version }}"
+          TAG="${{ steps.ver.outputs.tag }}"
+          BRANCH="${{ steps.ver.outputs.branch }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Capture codegen + version bump before switching branch
+          git stash push --include-untracked -m "release-${TAG}"
+
+          # Always rebuild the EP support branch on top of current master
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null; then
+            git fetch origin "$BRANCH"
+          fi
+          git switch -C "$BRANCH" origin/master
+
+          git stash pop
+
+          git add -A
+          git commit -m "feat(models): release ${TAG} for EnergyPlus ${EP_VERSION}"
+          git tag -a "$TAG" -m "idfpy ${TAG} (EnergyPlus ${EP_VERSION})"
+
+          git push origin "$BRANCH" --force-with-lease
+          git push origin "$TAG"
+
+      - name: Build distribution
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
