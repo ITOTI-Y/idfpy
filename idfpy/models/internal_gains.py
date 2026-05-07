@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Internal Gains
 """
 
@@ -43,25 +43,6 @@ if TYPE_CHECKING:
     )
 
 
-class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):
-    """Nested object type for array items."""
-
-    surface_name: AllHeatTranSurfNamesRef | None = Field(
-        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
-    )
-    angle_factor: float | None = Field(default=None, ge=0.0, le=1.0)
-
-    @property
-    def surface(self) -> IDFBaseModel | None:
-        v = self.surface_name
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
-
-
 class ComfortViewFactorAngles(IDFBaseModel):
     """Used to specify radiant view factors for thermal comfort calculations. Note
     that the following angle factor fractions must sum up to 1.0 All surfaces
@@ -70,7 +51,1406 @@ class ComfortViewFactorAngles(IDFBaseModel):
     _idf_object_type: ClassVar[str] = 'ComfortViewFactorAngles'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str | None = Field(default=None)
-    angles: list[ComfortViewFactorAnglesAnglesItem] | None = Field(default=None)
+    surface_1_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_1: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_2_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_2: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_3_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_3: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_4_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_4: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_5_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_5: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_6_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_6: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_7_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_7: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_8_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_8: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_9_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_9: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_10_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_10: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_11_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_11: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_12_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_12: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_13_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_13: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_14_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_14: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_15_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_15: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_16_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_16: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_17_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_17: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_18_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_18: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_19_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_19: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_20_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_20: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_21_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_21: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_22_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_22: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_23_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_23: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_24_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_24: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_25_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_25: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_26_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_26: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_27_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_27: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_28_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_28: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_29_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_29: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_30_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_30: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_31_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_31: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_32_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_32: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_33_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_33: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_34_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_34: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_35_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_35: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_36_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_36: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_37_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_37: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_38_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_38: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_39_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_39: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_40_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_40: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_41_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_41: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_42_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_42: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_43_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_43: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_44_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_44: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_45_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_45: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_46_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_46: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_47_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_47: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_48_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_48: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_49_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_49: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_50_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_50: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_51_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_51: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_52_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_52: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_53_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_53: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_54_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_54: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_55_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_55: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_56_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_56: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_57_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_57: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_58_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_58: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_59_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_59: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_60_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_60: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_61_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_61: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_62_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_62: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_63_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_63: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_64_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_64: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_65_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_65: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_66_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_66: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_67_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_67: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_68_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_68: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_69_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_69: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_70_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_70: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_71_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_71: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_72_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_72: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_73_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_73: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_74_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_74: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_75_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_75: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_76_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_76: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_77_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_77: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_78_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_78: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_79_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_79: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_80_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_80: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_81_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_81: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_82_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_82: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_83_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_83: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_84_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_84: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_85_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_85: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_86_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_86: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_87_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_87: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_88_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_88: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_89_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_89: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_90_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_90: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_91_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_91: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_92_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_92: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_93_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_93: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_94_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_94: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_95_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_95: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_96_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_96: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_97_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_97: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_98_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_98: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_99_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_99: float | None = Field(default=None, ge=0.0, le=1.0)
+    surface_100_name: AllHeatTranSurfNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['AllHeatTranSurfNames']}
+    )
+    angle_factor_100: float | None = Field(default=None, ge=0.0, le=1.0)
+
+    @property
+    def surface_1(self) -> IDFBaseModel | None:
+        v = self.surface_1_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_2(self) -> IDFBaseModel | None:
+        v = self.surface_2_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_3(self) -> IDFBaseModel | None:
+        v = self.surface_3_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_4(self) -> IDFBaseModel | None:
+        v = self.surface_4_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_5(self) -> IDFBaseModel | None:
+        v = self.surface_5_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_6(self) -> IDFBaseModel | None:
+        v = self.surface_6_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_7(self) -> IDFBaseModel | None:
+        v = self.surface_7_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_8(self) -> IDFBaseModel | None:
+        v = self.surface_8_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_9(self) -> IDFBaseModel | None:
+        v = self.surface_9_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_10(self) -> IDFBaseModel | None:
+        v = self.surface_10_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_11(self) -> IDFBaseModel | None:
+        v = self.surface_11_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_12(self) -> IDFBaseModel | None:
+        v = self.surface_12_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_13(self) -> IDFBaseModel | None:
+        v = self.surface_13_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_14(self) -> IDFBaseModel | None:
+        v = self.surface_14_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_15(self) -> IDFBaseModel | None:
+        v = self.surface_15_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_16(self) -> IDFBaseModel | None:
+        v = self.surface_16_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_17(self) -> IDFBaseModel | None:
+        v = self.surface_17_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_18(self) -> IDFBaseModel | None:
+        v = self.surface_18_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_19(self) -> IDFBaseModel | None:
+        v = self.surface_19_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_20(self) -> IDFBaseModel | None:
+        v = self.surface_20_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_21(self) -> IDFBaseModel | None:
+        v = self.surface_21_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_22(self) -> IDFBaseModel | None:
+        v = self.surface_22_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_23(self) -> IDFBaseModel | None:
+        v = self.surface_23_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_24(self) -> IDFBaseModel | None:
+        v = self.surface_24_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_25(self) -> IDFBaseModel | None:
+        v = self.surface_25_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_26(self) -> IDFBaseModel | None:
+        v = self.surface_26_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_27(self) -> IDFBaseModel | None:
+        v = self.surface_27_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_28(self) -> IDFBaseModel | None:
+        v = self.surface_28_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_29(self) -> IDFBaseModel | None:
+        v = self.surface_29_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_30(self) -> IDFBaseModel | None:
+        v = self.surface_30_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_31(self) -> IDFBaseModel | None:
+        v = self.surface_31_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_32(self) -> IDFBaseModel | None:
+        v = self.surface_32_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_33(self) -> IDFBaseModel | None:
+        v = self.surface_33_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_34(self) -> IDFBaseModel | None:
+        v = self.surface_34_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_35(self) -> IDFBaseModel | None:
+        v = self.surface_35_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_36(self) -> IDFBaseModel | None:
+        v = self.surface_36_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_37(self) -> IDFBaseModel | None:
+        v = self.surface_37_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_38(self) -> IDFBaseModel | None:
+        v = self.surface_38_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_39(self) -> IDFBaseModel | None:
+        v = self.surface_39_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_40(self) -> IDFBaseModel | None:
+        v = self.surface_40_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_41(self) -> IDFBaseModel | None:
+        v = self.surface_41_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_42(self) -> IDFBaseModel | None:
+        v = self.surface_42_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_43(self) -> IDFBaseModel | None:
+        v = self.surface_43_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_44(self) -> IDFBaseModel | None:
+        v = self.surface_44_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_45(self) -> IDFBaseModel | None:
+        v = self.surface_45_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_46(self) -> IDFBaseModel | None:
+        v = self.surface_46_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_47(self) -> IDFBaseModel | None:
+        v = self.surface_47_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_48(self) -> IDFBaseModel | None:
+        v = self.surface_48_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_49(self) -> IDFBaseModel | None:
+        v = self.surface_49_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_50(self) -> IDFBaseModel | None:
+        v = self.surface_50_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_51(self) -> IDFBaseModel | None:
+        v = self.surface_51_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_52(self) -> IDFBaseModel | None:
+        v = self.surface_52_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_53(self) -> IDFBaseModel | None:
+        v = self.surface_53_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_54(self) -> IDFBaseModel | None:
+        v = self.surface_54_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_55(self) -> IDFBaseModel | None:
+        v = self.surface_55_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_56(self) -> IDFBaseModel | None:
+        v = self.surface_56_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_57(self) -> IDFBaseModel | None:
+        v = self.surface_57_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_58(self) -> IDFBaseModel | None:
+        v = self.surface_58_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_59(self) -> IDFBaseModel | None:
+        v = self.surface_59_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_60(self) -> IDFBaseModel | None:
+        v = self.surface_60_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_61(self) -> IDFBaseModel | None:
+        v = self.surface_61_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_62(self) -> IDFBaseModel | None:
+        v = self.surface_62_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_63(self) -> IDFBaseModel | None:
+        v = self.surface_63_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_64(self) -> IDFBaseModel | None:
+        v = self.surface_64_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_65(self) -> IDFBaseModel | None:
+        v = self.surface_65_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_66(self) -> IDFBaseModel | None:
+        v = self.surface_66_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_67(self) -> IDFBaseModel | None:
+        v = self.surface_67_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_68(self) -> IDFBaseModel | None:
+        v = self.surface_68_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_69(self) -> IDFBaseModel | None:
+        v = self.surface_69_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_70(self) -> IDFBaseModel | None:
+        v = self.surface_70_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_71(self) -> IDFBaseModel | None:
+        v = self.surface_71_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_72(self) -> IDFBaseModel | None:
+        v = self.surface_72_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_73(self) -> IDFBaseModel | None:
+        v = self.surface_73_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_74(self) -> IDFBaseModel | None:
+        v = self.surface_74_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_75(self) -> IDFBaseModel | None:
+        v = self.surface_75_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_76(self) -> IDFBaseModel | None:
+        v = self.surface_76_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_77(self) -> IDFBaseModel | None:
+        v = self.surface_77_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_78(self) -> IDFBaseModel | None:
+        v = self.surface_78_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_79(self) -> IDFBaseModel | None:
+        v = self.surface_79_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_80(self) -> IDFBaseModel | None:
+        v = self.surface_80_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_81(self) -> IDFBaseModel | None:
+        v = self.surface_81_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_82(self) -> IDFBaseModel | None:
+        v = self.surface_82_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_83(self) -> IDFBaseModel | None:
+        v = self.surface_83_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_84(self) -> IDFBaseModel | None:
+        v = self.surface_84_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_85(self) -> IDFBaseModel | None:
+        v = self.surface_85_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_86(self) -> IDFBaseModel | None:
+        v = self.surface_86_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_87(self) -> IDFBaseModel | None:
+        v = self.surface_87_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_88(self) -> IDFBaseModel | None:
+        v = self.surface_88_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_89(self) -> IDFBaseModel | None:
+        v = self.surface_89_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_90(self) -> IDFBaseModel | None:
+        v = self.surface_90_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_91(self) -> IDFBaseModel | None:
+        v = self.surface_91_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_92(self) -> IDFBaseModel | None:
+        v = self.surface_92_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_93(self) -> IDFBaseModel | None:
+        v = self.surface_93_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_94(self) -> IDFBaseModel | None:
+        v = self.surface_94_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_95(self) -> IDFBaseModel | None:
+        v = self.surface_95_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_96(self) -> IDFBaseModel | None:
+        v = self.surface_96_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_97(self) -> IDFBaseModel | None:
+        v = self.surface_97_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_98(self) -> IDFBaseModel | None:
+        v = self.surface_98_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_99(self) -> IDFBaseModel | None:
+        v = self.surface_99_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
+
+    @property
+    def surface_100(self) -> IDFBaseModel | None:
+        v = self.surface_100_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
 
 class ElectricEquipment(IDFBaseModel):
@@ -738,7 +2118,7 @@ class IndoorLivingWall(IDFBaseModel):
         default=None,
         json_schema_extra={
             'units': 'm2',
-            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the usersâ€™ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 f...',
+            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the users’ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 for...',
         },
     )
     led_nominal_intensity: float | None = Field(

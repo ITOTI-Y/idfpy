@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Energy Management System (EMS)
 """
 
@@ -70,7 +70,7 @@ class EnergyManagementSystemActuator(IDFBaseModel):
     name: str = Field(
         ...,
         json_schema_extra={
-            'note': 'This name becomes a variable for use in Erl programs no spaces or other special characters (minus, plus, slashes, etc) allowed in name'
+            'note': 'This name becomes a variable for use in Erl programs no spaces or other special characters (-,+,/,\\) allowed in name'
         },
     )
     actuated_component_unique_name: str = Field(...)
