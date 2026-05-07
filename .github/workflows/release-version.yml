@@ -83,7 +83,15 @@ jobs:
           fi
           echo "tag_exists=$TAG_EXISTS" >> "$GITHUB_OUTPUT"
 
+      - name: Checkout existing tag for re-publish
+        if: steps.check.outputs.tag_exists == 'true'
+        run: |
+          TAG="${{ steps.ver.outputs.tag }}"
+          git fetch --tags origin "refs/tags/$TAG"
+          git checkout "tags/$TAG"
+
       - name: Download schema
+        if: steps.check.outputs.tag_exists == 'false'
         run: |
           curl -fL -o ep.tar.gz "${{ steps.ver.outputs.asset_url }}"
           tar -xzf ep.tar.gz --wildcards '*/Energy+.schema.epJSON' --strip-components=1
@@ -93,6 +101,7 @@ jobs:
       - uses: astral-sh/setup-uv@v4
 
       - name: Generate models
+        if: steps.check.outputs.tag_exists == 'false'
         run: |
           uv sync --all-groups
           uv run idfpy codegen --schema 'Energy+.schema.epJSON' --output idfpy/models
@@ -102,9 +111,11 @@ jobs:
           rm 'Energy+.schema.epJSON'
 
       - name: Run tests
+        if: steps.check.outputs.tag_exists == 'false'
         run: uv run pytest tests/ -v
 
       - name: Set package version
+        if: steps.check.outputs.tag_exists == 'false'
         run: |
           VERSION="${{ steps.ver.outputs.release_version }}"
           sed -i "s/^version = .*/version = \"${VERSION}\"/" pyproject.toml

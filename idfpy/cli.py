@@ -38,9 +38,12 @@ def run(
     output: Annotated[
         Path | None, Option('--output', '-o', help='Output directory')
     ] = None,
+    readvars: Annotated[
+        bool, Option('--readvars', '-r', help='Run ReadVarsESO to convert ESO to CSV')
+    ] = False,
 ) -> None:
     """Run EnergyPlus simulation."""
     from idfpy.sim import simulate
 
-    result = simulate(idf, weather=weather, output_dir=output)
+    result = simulate(idf, weather=weather, output_dir=output, readvars=readvars)
     raise SystemExit(result.return_code)

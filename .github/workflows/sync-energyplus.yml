@@ -51,18 +51,29 @@ jobs:
         run: |
           VERSION="${{ steps.ep.outputs.version }}"
           TAG="v${VERSION}"
-          SKIP=false
 
+          TAG_EXISTS=false
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
-            echo "Remote tag $TAG already exists"
-            SKIP=true
+            TAG_EXISTS=true
           fi
 
+          PYPI_EXISTS=false
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://pypi.org/pypi/idfpy/${VERSION}/json")
           if [ "$HTTP_CODE" = "200" ]; then
-            echo "PyPI release idfpy==${VERSION} already exists"
+            PYPI_EXISTS=true
+          fi
+
+          SKIP=false
+          if [ "$TAG_EXISTS" = "true" ] && [ "$PYPI_EXISTS" = "true" ]; then
+            echo "Tag $TAG and PyPI ${VERSION} both already exist; skipping"
             SKIP=true
+          elif [ "$TAG_EXISTS" = "true" ]; then
+            echo "::error::Tag $TAG already exists but PyPI ${VERSION} is missing; refusing to proceed"
+            exit 1
+          elif [ "$PYPI_EXISTS" = "true" ]; then
+            echo "::error::PyPI ${VERSION} already exists but tag $TAG is missing; refusing to proceed"
+            exit 1
           fi
 
           echo "skip=$SKIP" >> "$GITHUB_OUTPUT"

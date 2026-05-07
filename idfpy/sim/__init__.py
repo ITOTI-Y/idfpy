@@ -9,6 +9,7 @@ Public API:
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import anyio
@@ -37,6 +38,7 @@ def simulate(
     design_day: bool = False,
     annual: bool = False,
     expand_objects: bool = True,
+    readvars: bool = False,
     echo: bool = True,
 ) -> SimResult:
     """Run a single EnergyPlus simulation (sync).
@@ -51,6 +53,7 @@ def simulate(
         design_day: Run design-day-only simulation (-D).
         annual: Run annual simulation (-a).
         expand_objects: Expand HVACTemplate objects (-x).
+        readvars: Run ReadVarsESO to convert ESO to CSV (-r).
         echo: Print EnergyPlus output to terminal in real time.
     """
     return anyio.run(
@@ -62,6 +65,7 @@ def simulate(
             design_day=design_day,
             annual=annual,
             expand_objects=expand_objects,
+            readvars=readvars,
             echo=echo,
         )
     )
@@ -70,9 +74,10 @@ def simulate(
 def simulate_batch(
     jobs: list[SimJob],
     *,
-    max_concurrent: int = 4,
+    max_concurrent: int | None = None,
     energyplus_bin: str = 'energyplus',
     expand_objects: bool = True,
+    readvars: bool = False,
     echo: bool = False,
 ) -> list[SimResult]:
     """Run multiple EnergyPlus simulations concurrently (sync).
@@ -80,16 +85,21 @@ def simulate_batch(
     Args:
         jobs: List of simulation jobs.
         max_concurrent: Maximum concurrent EnergyPlus processes.
+            Defaults to ``os.cpu_count() - 1`` (minimum 1).
         energyplus_bin: Path to EnergyPlus executable.
         expand_objects: Expand HVACTemplate objects (-x).
+        readvars: Run ReadVarsESO to convert ESO to CSV (-r).
         echo: Print EnergyPlus output to terminal.
     """
+    if max_concurrent is None:
+        max_concurrent = max((os.cpu_count() or 2) - 1, 1)
     return anyio.run(
         lambda: async_simulate_batch(
             jobs,
             max_concurrent=max_concurrent,
             energyplus_bin=energyplus_bin,
             expand_objects=expand_objects,
+            readvars=readvars,
             echo=echo,
         )
     )
@@ -104,6 +114,7 @@ async def async_simulate(
     design_day: bool = False,
     annual: bool = False,
     expand_objects: bool = True,
+    readvars: bool = False,
     echo: bool = True,
 ) -> SimResult:
     """Run a single EnergyPlus simulation (async).
@@ -131,6 +142,7 @@ async def async_simulate(
             expand_objects=expand_objects,
             design_day=design_day,
             annual=annual,
+            readvars=readvars,
             echo=echo,
         )
 
@@ -138,9 +150,10 @@ async def async_simulate(
 async def async_simulate_batch(
     jobs: list[SimJob],
     *,
-    max_concurrent: int = 4,
+    max_concurrent: int | None = None,
     energyplus_bin: str = 'energyplus',
     expand_objects: bool = True,
+    readvars: bool = False,
     echo: bool = False,
 ) -> list[SimResult]:
     """Run multiple EnergyPlus simulations concurrently (async).
@@ -148,10 +161,13 @@ async def async_simulate_batch(
     Same interface as simulate_batch() but meant to be awaited
     inside an existing event loop.
     """
+    if max_concurrent is None:
+        max_concurrent = max((os.cpu_count() or 2) - 1, 1)
     return await _batch(
         jobs,
         max_concurrent,
         energyplus_bin,
         expand_objects=expand_objects,
+        readvars=readvars,
         echo=echo,
     )
