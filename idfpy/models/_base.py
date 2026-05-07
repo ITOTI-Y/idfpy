@@ -165,26 +165,32 @@ class IDFBaseModel(BaseModel):
     def referencing(
         self,
         consumer_type: str | type[IDFBaseModel] | None = None,
+        *,
+        strict: bool = True,
     ) -> list[IDFBaseModel]:
         """Find objects that reference this object.
 
         Args:
             consumer_type: EnergyPlus object type string
-                (e.g., "BuildingSurface:Detailed"), model class, or None.
-                When None, returns all objects across every type.
+                (e.g., "BuildingSurface:Detailed"), Python class name,
+                model class, or None. When None, returns all objects
+                across every type.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``consumer_type``. Pass ``strict=False``
+                for the legacy behavior of returning ``[]``.
 
         Returns:
             List of objects whose ref fields point to this object.
 
         Raises:
             RuntimeError: If not bound to an IDF container.
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``consumer_type`` cannot be resolved.
         """
         idf = self._idf
         if idf is None:
             raise RuntimeError('Not bound to IDF container')
-        if isinstance(consumer_type, type):
-            consumer_type = consumer_type._idf_object_type
-        return idf._find_referencing(self, consumer_type)
+        return idf._find_referencing(self, consumer_type, strict=strict)
 
     def to_idf_dict(self) -> dict[str, Any]:
         """Convert model to IDF-compatible dictionary.

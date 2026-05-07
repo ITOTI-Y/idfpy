@@ -1,8 +1,26 @@
-"""Reference validation error types."""
+"""Exception and error types for idfpy."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+
+class UnknownObjectTypeError(ValueError):
+    """Raised when an object type name or class cannot be resolved.
+
+    Attributes:
+        key: The input key that failed resolution (``type`` or ``str``).
+    """
+
+    def __init__(self, key: type | str) -> None:
+        self.key = key
+        repr_str = key.__name__ if isinstance(key, type) else repr(key)
+        super().__init__(
+            f'Unknown object type: {repr_str}. Must be a subclass of '
+            f'IDFBaseModel, an EnergyPlus object type name '
+            f'(e.g., "Zone", "BuildingSurface:Detailed"), or a Python '
+            f'class name (e.g., "Zone", "BuildingSurfaceDetailed").'
+        )
 
 
 @dataclass(frozen=True, slots=True)

@@ -99,27 +99,44 @@ idf = IDF.from_dict(data)
 
 ### Object navigation
 
-Every reference field generates a `@property` for forward navigation. Reverse navigation is available via `referencing()`.
+Every reference field generates a `@property` for forward navigation. Reverse navigation is available via `referencing()`. All query methods (`get` / `has` / `all_of_type` / `remove`) accept either an EnergyPlus type string, a Python class name, or the model class itself — passing the class preserves precise typing in your IDE.
 
 ```python
 from pathlib import Path
 from idfpy import IDF
+from idfpy.models.thermal_zones import BuildingSurfaceDetailed, Zone
 
 idf = IDF.load(Path('model.idf'))
 
 # Forward navigation — resolve reference to target object
-surface = idf.get('BuildingSurface:Detailed', 'Wall1')
+surface = idf.get(BuildingSurfaceDetailed, 'Wall1')   # → BuildingSurfaceDetailed | None
 surface.zone_name        # "Zone1" (raw string, always works)
 surface.zone             # Zone object (resolved via IDF)
 surface.construction     # Construction object
 
 # Reverse navigation — find all objects referencing a given object
-zone = idf.get('Zone', 'Zone1')
-zone.referencing('BuildingSurface:Detailed')  # → [Wall1, Wall2, ...]
-zone.referencing('Lights')                     # → [OfficeLights, ...]
+zone = idf.get(Zone, 'Zone1')
+zone.referencing(BuildingSurfaceDetailed)       # → [Wall1, Wall2, ...]
+zone.referencing('Lights')                       # → [OfficeLights, ...]
 
 # Chained navigation
-zone.referencing('BuildingSurface:Detailed')[0].construction
+zone.referencing(BuildingSurfaceDetailed)[0].construction
+```
+
+#### Strict type-name validation (default)
+
+Query methods raise `UnknownObjectTypeError` when the type name cannot be resolved — this surfaces typos immediately instead of returning an empty result. Pass `strict=False` for the legacy silent behavior.
+
+```python
+from idfpy import UnknownObjectTypeError
+
+try:
+    idf.get('BuildingSurface:detailed', 'Wall1')   # note the lowercase 'd'
+except UnknownObjectTypeError as e:
+    print(e)   # → Unknown object type: 'BuildingSurface:detailed'. ...
+
+# Opt-in legacy silent behavior
+idf.get('BuildingSurface:detailed', 'Wall1', strict=False)  # → None
 ```
 
 ### Reference validation
@@ -151,7 +168,7 @@ from idfpy import IDF
 idf = IDF.load(Path("LargeOffice.idf"))
 
 # Modify all exterior walls' insulation
-for con_name, con in idf.all_of_type("Construction").items():
+for con_name, con in idf.all_of_type('Construction').items():
     layer = con.outside_layer_ref
     if layer and hasattr(layer, "conductivity"):
         print(f"{con.name}: k={layer.conductivity} W/m·K")
@@ -210,7 +227,10 @@ After adding a plugin, re-run `idfpy codegen` to regenerate models — the mixin
 ### Container mutation
 
 ```python
-idf.remove('Zone', 'Zone1')  # unbinds + unregisters references
+from idfpy.models.thermal_zones import Zone
+
+idf.remove(Zone, 'Zone1')     # unbinds + unregisters references
+idf.remove('Zone', 'Zone1')   # string form (EnergyPlus or Python class name)
 ```
 
 ## License

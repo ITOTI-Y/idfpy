@@ -22,8 +22,6 @@ from idfpy.models.thermal_zones import (
     ZoneListZonesItem,
 )
 
-# ── Helpers ──────────────────────────────────────────────
-
 
 def _make_zone(name: str = 'Zone1') -> Zone:
     return Zone(name=name)
@@ -61,9 +59,6 @@ def _make_lights(
         zone_or_zonelist_or_space_or_spacelist_name=zone_name,
         schedule_name=schedule_name,
     )
-
-
-# ── Binding ──────────────────────────────────────────────
 
 
 class TestBinding:
@@ -120,9 +115,6 @@ class TestBinding:
         assert '_idf_ref' not in d
 
 
-# ── Forward Navigation ───────────────────────────────────
-
-
 class TestForwardNav:
     def test_basic_forward_nav(self):
         idf = IDF()
@@ -169,9 +161,6 @@ class TestForwardNav:
         surface = _make_surface()
         with pytest.raises(RuntimeError, match='Not bound to IDF'):
             _ = surface.zone
-
-
-# ── Reverse Navigation ──────────────────────────────────
 
 
 class TestReverseNav:
@@ -260,9 +249,6 @@ class TestReverseNav:
             zone.referencing()
 
 
-# ── Validation ───────────────────────────────────────────
-
-
 class TestValidation:
     def test_validate_clean(self):
         idf = IDF()
@@ -316,9 +302,6 @@ class TestValidation:
         assert len(exc_info.value.errors) > 0
 
 
-# ── Remove ───────────────────────────────────────────────
-
-
 class TestRemove:
     def test_remove_returns_object(self):
         idf = IDF()
@@ -366,9 +349,6 @@ class TestRemove:
         idf.remove('BuildingSurface:Detailed', 'Wall1')
         assert surface._idf is None
         assert vert._idf is None
-
-
-# ── Integration ──────────────────────────────────────────
 
 
 class TestIntegration:
@@ -426,9 +406,6 @@ class TestIntegration:
         # All objects should be bound
         for obj in idf:
             assert obj._idf is idf
-
-
-# ── Cascade Rename ──────────────────────────────────────
 
 
 class TestCascadeRename:
@@ -654,9 +631,6 @@ class TestCascadeRename:
         assert zone._idf_obj_key == ''
 
 
-# ── Class name string lookup ─────────────────────────────
-
-
 class TestClassNameLookup:
     """Public API accepts both class name and EnergyPlus name strings."""
 
@@ -707,8 +681,9 @@ class TestClassNameLookup:
         refs = zone.referencing('BuildingSurfaceDetailed')
         assert len(refs) == 1 and refs[0] is surface
 
-    def test_unknown_type_returns_empty(self):
+    def test_unknown_type_returns_empty_with_strict_false(self):
+        """Legacy silent behavior is preserved via strict=False."""
         idf = IDF()
-        assert idf.get('NonExistent', 'x') is None
-        assert not idf.has('NonExistent', 'x')
-        assert idf.all_of_type('NonExistent') == {}
+        assert idf.get('NonExistent', 'x', strict=False) is None
+        assert not idf.has('NonExistent', 'x', strict=False)
+        assert idf.all_of_type('NonExistent', strict=False) == {}

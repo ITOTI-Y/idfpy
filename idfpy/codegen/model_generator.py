@@ -147,7 +147,7 @@ class ModelGenerator:
         self._ext_mixins = self._discover_ext_mixins()
         if self._ext_mixins:
             affected = ', '.join(sorted(self._ext_mixins))
-            logger.info(f'Discovered ext mixins for: {affected}')
+            logger.info('Discovered ext mixins for: {}', affected)
 
         file_groups = self._group_objects_by_file(specs)
 
@@ -169,10 +169,11 @@ class ModelGenerator:
         all_nested_classes: dict[str, list[dict]] = {}
         object_type_registry: dict[str, str] = {}
         field_order_registry: dict[str, list[str]] = {}
+        singleton_types: set[str] = set()
 
         for file_name, unsorted_objects in file_groups.items():
             logger.info(
-                f'Generating {file_name}.py with {len(unsorted_objects)} objects...'
+                'Generating {}.py with {} objects...', file_name, len(unsorted_objects)
             )
 
             sorted_objects = sorted(unsorted_objects, key=lambda o: o.class_name)
@@ -191,6 +192,8 @@ class ModelGenerator:
             for obj in sorted_objects:
                 object_type_registry[obj.name] = obj.class_name
                 field_order_registry[obj.name] = [f.python_name for f in obj.fields]
+                if obj.is_singleton:
+                    singleton_types.add(obj.name)
 
         self._generate_ref_meta_file(specs, all_nested_classes, schema_version)
 
@@ -198,13 +201,15 @@ class ModelGenerator:
             all_classes=all_classes,
             object_type_registry=object_type_registry,
             field_order_registry=field_order_registry,
+            singleton_types=sorted(singleton_types),
             schema_version=schema_version,
         )
 
         total_objects = sum(len(objs) for objs in file_groups.values())
         logger.info(
-            f'Generated {len(file_groups)} model files '
-            f'with {total_objects} object types'
+            'Generated {} model files with {} object types',
+            len(file_groups),
+            total_objects,
         )
 
     def _group_objects_by_file(
@@ -236,8 +241,10 @@ class ModelGenerator:
         if unmapped_objects:
             unmapped_groups = sorted({s.group for s in unmapped_objects})
             logger.warning(
-                f'Found {len(unmapped_objects)} objects in {len(unmapped_groups)} '
-                f'unmapped groups: {unmapped_groups}'
+                'Found {} objects in {} unmapped groups: {}',
+                len(unmapped_objects),
+                len(unmapped_groups),
+                unmapped_groups,
             )
             file_groups['misc'].extend(unmapped_objects)
 
@@ -246,7 +253,9 @@ class ModelGenerator:
 
         for file_name, objects in file_groups.items():
             if len(objects) < self.MERGE_THRESHOLD and file_name != 'misc':
-                logger.debug(f'Merging {file_name} ({len(objects)} objects) into misc')
+                logger.debug(
+                    'Merging {} ({} objects) into misc', file_name, len(objects)
+                )
                 small_objects.extend(objects)
             else:
                 final_groups[file_name] = objects
@@ -331,7 +340,7 @@ class ModelGenerator:
 
         output_path = self.output_dir / f'{file_name}.py'
         output_path.write_text(content, encoding='utf-8')
-        logger.debug(f'Written {output_path}')
+        logger.debug('Written {}', output_path)
 
         class_names = [obj.class_name for obj in objects]
         class_names.extend(nc['name'] for nc in nested_classes)
@@ -418,9 +427,12 @@ class ModelGenerator:
         output_path = self.output_dir / '_ref_meta.py'
         output_path.write_text(content, encoding='utf-8')
         logger.info(
-            f'Generated _ref_meta.py: {len(providers)} providers, '
-            f'{len(group_providers)} groups, {len(consumers)} consumers, '
-            f'{len(rcn_types_data)} reference-class-name groups'
+            'Generated _ref_meta.py: {} providers, {} groups, '
+            '{} consumers, {} reference-class-name groups',
+            len(providers),
+            len(group_providers),
+            len(consumers),
+            len(rcn_types_data),
         )
 
     def _generate_init_file(
@@ -428,6 +440,7 @@ class ModelGenerator:
         all_classes: dict[str, list[str]],
         object_type_registry: dict[str, str],
         field_order_registry: dict[str, list[str]],
+        singleton_types: list[str],
         schema_version: str,
     ) -> None:
         """Generate __init__.py with lazy imports and registries.
@@ -439,6 +452,7 @@ class ModelGenerator:
             all_classes: Mapping of file names to class names.
             object_type_registry: Mapping of object type names to class names.
             field_order_registry: Mapping of object type names to field orders.
+            singleton_types: Sorted list of object type names with maxProperties=1.
             schema_version: Schema version for documentation.
         """
         env = self._get_jinja_env()
@@ -454,6 +468,7 @@ class ModelGenerator:
             'OBJECT_TYPE_REGISTRY',
             'CLASS_NAME_REGISTRY',
             'FIELD_ORDER_REGISTRY',
+            'SINGLETON_TYPES',
         ]
         all_exports.extend(['get_model_class', 'get_field_order'])
         for class_names in all_classes.values():
@@ -465,12 +480,13 @@ class ModelGenerator:
             class_to_module=sorted(class_to_module.items()),
             object_type_registry=sorted(object_type_registry.items()),
             field_order_registry=sorted(field_order_registry.items()),
+            singleton_types=singleton_types,
             all_exports=all_exports,
         )
 
         output_path = self.output_dir / '__init__.py'
         output_path.write_text(content, encoding='utf-8')
-        logger.debug(f'Written {output_path}')
+        logger.debug('Written {}', output_path)
 
     def _get_jinja_env(self) -> Environment:
         """Get or create the Jinja2 environment with filters.
@@ -591,7 +607,7 @@ class ModelGenerator:
 
         output_path = self.output_dir / '_refs.py'
         output_path.write_text(content, encoding='utf-8')
-        logger.info(f'Generated _refs.py with {len(object_lists)} reference types')
+        logger.info('Generated _refs.py with {} reference types', len(object_lists))
 
     def _discover_ext_mixins(self) -> dict[str, list[tuple[str, str]]]:
         """Discover ext plugin mixin mappings.
@@ -617,7 +633,7 @@ class ModelGenerator:
             try:
                 plugin = importlib.import_module(f'idfpy.ext.{subdir.name}')
             except Exception:
-                logger.warning(f'Failed to import ext plugin: {subdir.name}')
+                logger.warning('Failed to import ext plugin: {}', subdir.name)
                 continue
             mixin_map = getattr(plugin, 'MIXIN_MAP', None)
             if not mixin_map or not isinstance(mixin_map, dict):
