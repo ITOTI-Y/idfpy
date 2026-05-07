@@ -29,11 +29,14 @@ def _build_cmd(
     expand_objects: bool,
     design_day: bool,
     annual: bool,
+    readvars: bool,
 ) -> list[str]:
     """Build EnergyPlus command line arguments."""
     cmd = [energyplus_bin]
     if expand_objects:
         cmd.append('-x')
+    if readvars:
+        cmd.append('-r')
     if design_day:
         cmd.append('-D')
     if annual:
@@ -79,6 +82,7 @@ async def _run_one(
     expand_objects: bool = True,
     design_day: bool = False,
     annual: bool = False,
+    readvars: bool = False,
     echo: bool = True,
 ) -> SimResult:
     """Run a single EnergyPlus simulation (async core).
@@ -95,6 +99,7 @@ async def _run_one(
         expand_objects=expand_objects,
         design_day=design_day,
         annual=annual,
+        readvars=readvars,
     )
 
     logger.info('Running: {}', ' '.join(cmd))
@@ -128,6 +133,7 @@ async def _batch(
     energyplus_bin: str,
     *,
     expand_objects: bool = True,
+    readvars: bool = False,
     echo: bool = False,
 ) -> list[SimResult]:
     """Run multiple simulations concurrently.
@@ -165,6 +171,7 @@ async def _batch(
                     expand_objects=expand_objects,
                     design_day=job.design_day,
                     annual=job.annual,
+                    readvars=readvars,
                     echo=echo,
                 )
         except Exception as exc:
