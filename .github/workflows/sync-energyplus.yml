@@ -8,13 +8,12 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    outputs:
-      updated: ${{ steps.push.outputs.updated }}
-      version: ${{ steps.ep.outputs.version }}
+    environment: pypi
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,16 +46,26 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "EnergyPlus $VERSION -> $ASSET_URL"
 
-      - name: Skip if tag already exists
+      - name: Skip if version already released
         id: check
         run: |
-          TAG="v${{ steps.ep.outputs.version }}"
-          if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then
-            echo "Tag $TAG already exists, skipping"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+          VERSION="${{ steps.ep.outputs.version }}"
+          TAG="v${VERSION}"
+          SKIP=false
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
+            echo "Remote tag $TAG already exists"
+            SKIP=true
           fi
+
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://pypi.org/pypi/idfpy/${VERSION}/json")
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "PyPI release idfpy==${VERSION} already exists"
+            SKIP=true
+          fi
+
+          echo "skip=$SKIP" >> "$GITHUB_OUTPUT"
 
       - name: Download schema
         if: steps.check.outputs.skip == 'false'
@@ -150,6 +159,14 @@ jobs:
 
           echo "updated=true" >> "$GITHUB_OUTPUT"
 
+      - name: Build distribution
+        if: steps.push.outputs.updated == 'true'
+        run: uv build
+
+      - name: Publish to PyPI
+        if: steps.push.outputs.updated == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+
       - name: Open PR to sync README to master
         if: steps.push.outputs.updated == 'true'
         env:
@@ -188,12 +205,3 @@ jobs:
           else
             gh pr create --base master --head "$BRANCH" --title "$TITLE" --body "$BODY"
           fi
-
-  release:
-    needs: sync
-    if: needs.sync.outputs.updated == 'true'
-    uses: ./.github/workflows/publish-pypi.yml
-    with:
-      tag: v${{ needs.sync.outputs.version }}
-    permissions:
-      id-token: write
