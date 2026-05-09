@@ -192,6 +192,19 @@ class IDFBaseModel(BaseModel):
             raise RuntimeError('Not bound to IDF container')
         return idf._find_referencing(self, consumer_type, strict=strict)
 
+    def __getstate__(self) -> dict[str, Any]:
+        state = super().__getstate__()
+        private = (state.get('__pydantic_private__') or {}).copy()
+        private.pop('_idf_ref', None)
+        state['__pydantic_private__'] = private
+        return state
+
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        super().__setstate__(state)
+        if self.__pydantic_private__ is None:
+            self.__pydantic_private__ = {}
+        self.__pydantic_private__.setdefault('_idf_ref', None)
+
     def to_idf_dict(self) -> dict[str, Any]:
         """Convert model to IDF-compatible dictionary.
 

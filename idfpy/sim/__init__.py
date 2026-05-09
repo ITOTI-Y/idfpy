@@ -39,6 +39,7 @@ def simulate(
     annual: bool = False,
     expand_objects: bool = True,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = True,
 ) -> SimResult:
     """Run a single EnergyPlus simulation (sync).
@@ -54,6 +55,7 @@ def simulate(
         annual: Run annual simulation (-a).
         expand_objects: Expand HVACTemplate objects (-x).
         readvars: Run ReadVarsESO to convert ESO to CSV (-r).
+        output_prefix: Output file prefix (-p).
         echo: Print EnergyPlus output to terminal in real time.
     """
     return anyio.run(
@@ -66,6 +68,7 @@ def simulate(
             annual=annual,
             expand_objects=expand_objects,
             readvars=readvars,
+            output_prefix=output_prefix,
             echo=echo,
         )
     )
@@ -78,6 +81,7 @@ def simulate_batch(
     energyplus_bin: str = 'energyplus',
     expand_objects: bool = True,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = False,
 ) -> list[SimResult]:
     """Run multiple EnergyPlus simulations concurrently (sync).
@@ -89,6 +93,7 @@ def simulate_batch(
         energyplus_bin: Path to EnergyPlus executable.
         expand_objects: Expand HVACTemplate objects (-x).
         readvars: Run ReadVarsESO to convert ESO to CSV (-r).
+        output_prefix: Default output file prefix (-p), overridden by per-job prefix.
         echo: Print EnergyPlus output to terminal.
     """
     if max_concurrent is None:
@@ -100,6 +105,7 @@ def simulate_batch(
             energyplus_bin=energyplus_bin,
             expand_objects=expand_objects,
             readvars=readvars,
+            output_prefix=output_prefix,
             echo=echo,
         )
     )
@@ -115,6 +121,7 @@ async def async_simulate(
     annual: bool = False,
     expand_objects: bool = True,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = True,
 ) -> SimResult:
     """Run a single EnergyPlus simulation (async).
@@ -143,6 +150,7 @@ async def async_simulate(
             design_day=design_day,
             annual=annual,
             readvars=readvars,
+            output_prefix=output_prefix,
             echo=echo,
         )
 
@@ -154,6 +162,7 @@ async def async_simulate_batch(
     energyplus_bin: str = 'energyplus',
     expand_objects: bool = True,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = False,
 ) -> list[SimResult]:
     """Run multiple EnergyPlus simulations concurrently (async).
@@ -169,5 +178,6 @@ async def async_simulate_batch(
         energyplus_bin,
         expand_objects=expand_objects,
         readvars=readvars,
+        output_prefix=output_prefix,
         echo=echo,
     )

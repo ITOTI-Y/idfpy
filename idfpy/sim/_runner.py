@@ -30,6 +30,7 @@ def _build_cmd(
     design_day: bool,
     annual: bool,
     readvars: bool,
+    output_prefix: str | None = None,
 ) -> list[str]:
     """Build EnergyPlus command line arguments."""
     cmd = [energyplus_bin]
@@ -41,6 +42,8 @@ def _build_cmd(
         cmd.append('-D')
     if annual:
         cmd.append('-a')
+    if output_prefix is not None:
+        cmd.extend(['-p', output_prefix])
     cmd.extend(['-w', str(weather), '-d', str(output_dir), str(idf_path)])
     return cmd
 
@@ -83,13 +86,10 @@ async def _run_one(
     design_day: bool = False,
     annual: bool = False,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = True,
 ) -> SimResult:
-    """Run a single EnergyPlus simulation (async core).
-
-    Uses TextReceiveStream for line-buffered stdout reading, ensuring
-    complete lines in echo mode and faithful stdout capture.
-    """
+    """Run a single EnergyPlus simulation (async core)."""
     output_dir.mkdir(parents=True, exist_ok=True)
     cmd = _build_cmd(
         idf_path,
@@ -100,6 +100,7 @@ async def _run_one(
         design_day=design_day,
         annual=annual,
         readvars=readvars,
+        output_prefix=output_prefix,
     )
 
     logger.info('Running: {}', ' '.join(cmd))
@@ -124,6 +125,7 @@ async def _run_one(
         return_code=proc.returncode if proc.returncode is not None else -1,
         output_dir=output_dir,
         stdout=''.join(lines),
+        output_prefix=output_prefix,
     )
 
 
@@ -134,14 +136,10 @@ async def _batch(
     *,
     expand_objects: bool = True,
     readvars: bool = False,
+    output_prefix: str | None = None,
     echo: bool = False,
 ) -> list[SimResult]:
-    """Run multiple simulations concurrently.
-
-    Uses CapacityLimiter to control concurrent EnergyPlus processes
-    and create_task_group for structured concurrency. Individual task
-    exceptions are caught and recorded as failed SimResults.
-    """
+    """Run multiple simulations concurrently."""
     # Pre-compute output dirs and validate uniqueness
     output_dirs: list[Path] = []
     for i, job in enumerate(jobs):
@@ -161,6 +159,9 @@ async def _batch(
 
     async def _run_indexed(index: int, job: SimJob) -> None:
         output_dir = output_dirs[index]
+        effective_prefix = (
+            job.output_prefix if job.output_prefix is not None else output_prefix
+        )
         try:
             async with limiter:
                 results[index] = await _run_one(
@@ -172,6 +173,7 @@ async def _batch(
                     design_day=job.design_day,
                     annual=job.annual,
                     readvars=readvars,
+                    output_prefix=effective_prefix,
                     echo=echo,
                 )
         except Exception as exc:
@@ -180,10 +182,11 @@ async def _batch(
                 return_code=-1,
                 output_dir=output_dir,
                 stdout=str(exc),
+                output_prefix=effective_prefix,
             )
 
     async with anyio.create_task_group() as tg:
         for i, job in enumerate(jobs):
             tg.start_soon(_run_indexed, i, job)
 
-    return results  # ty: ignore[invalid-return-type]
+    return [r for r in results if r is not None]
