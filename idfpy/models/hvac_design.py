@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: HVAC Design Objects
 """
 
@@ -814,29 +814,6 @@ class SizingSystem(IDFBaseModel):
             'note': "The Occupant Diversity is used to determine a multi-zone system's outdoor air intake when the System Outdoor Air Method is Standard62.1VentilationRateProcedure or the Standard62.1SimplifiedProcedur..."
         },
     )
-    heating_coil_sizing_method: (
-        Literal[
-            '',
-            'CoolingCapacity',
-            'GreaterOfHeatingOrCooling',
-            'HeatingCapacity',
-            'None',
-        ]
-        | None
-    ) = Field(
-        default='None',
-        json_schema_extra={
-            'note': 'Size a heat pump heating coil using the Cooling, Heating or GreaterOfHeatingOrCooling capacities'
-        },
-    )
-    maximum_heating_capacity_to_cooling_capacity_sizing_ratio: float | None = Field(
-        default=1.0,
-        ge=1.0,
-        json_schema_extra={
-            'units': 'W/W',
-            'note': 'The limit of heating coil capacity to cooling coil capacity',
-        },
-    )
 
     @property
     def airloop(self) -> AirLoopHVAC | None:
@@ -1085,42 +1062,25 @@ class SizingZone(IDFBaseModel):
             },
         )
     )
-    zone_humidistat_dehumidification_set_point_schedule_name: (
-        ScheduleNamesRef | None
-    ) = Field(
+    zone_humidistat_dehumidification_set_point_schedule_name: str | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['ScheduleNames'],
+            'units': 'percent',
             'note': 'Enter the zone relative humidity schedule used for zone latent cooling calculations. A zone humidistat will take priority over this input. This field is not used if Zone Load Sizing Method = Sensib...',
         },
     )
-    zone_humidistat_humidification_set_point_schedule_name: ScheduleNamesRef | None = (
-        Field(
-            default=None,
-            json_schema_extra={
-                'object_list': ['ScheduleNames'],
-                'note': 'Enter the zone relative humidity schedule used for zone latent heating calculations. A zone humidistat will take priority over this input. This field is not used if Zone Load Sizing Method = Sensib...',
-            },
-        )
+    zone_humidistat_humidification_set_point_schedule_name: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'units': 'percent',
+            'note': 'Enter the zone relative humidity schedule used for zone latent heating calculations. A zone humidistat will take priority over this input. This field is not used if Zone Load Sizing Method = Sensib...',
+        },
     )
     type_of_space_sum_to_use: Literal['', 'Coincident', 'NonCoincident'] | None = Field(
         default='Coincident',
         json_schema_extra={
-            'note': 'NonCoincident is available only if Do Space Heat Balance for Sizing=Yes in ZoneAirHeatBalanceAlgorithm.'
+            'note': 'NonCoincident is available only if Do Space Heat Balance for Sizing=Yes in ZoneAirHeatBalanceAlgorithm. '
         },
-    )
-    heating_coil_sizing_method: (
-        Literal[
-            '',
-            'CoolingCapacity',
-            'GreaterOfHeatingOrCooling',
-            'HeatingCapacity',
-            'None',
-        ]
-        | None
-    ) = Field(default='None')
-    maximum_heating_capacity_to_cooling_load_sizing_ratio: float | None = Field(
-        default=1.0, ge=1.0, json_schema_extra={'units': 'W/W'}
     )
 
     @property
@@ -1158,25 +1118,3 @@ class SizingZone(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
-
-    @property
-    def zone_humidistat_dehumidification_set_point_schedule(
-        self,
-    ) -> IDFBaseModel | None:
-        v = self.zone_humidistat_dehumidification_set_point_schedule_name
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['ScheduleNames'])
-
-    @property
-    def zone_humidistat_humidification_set_point_schedule(self) -> IDFBaseModel | None:
-        v = self.zone_humidistat_humidification_set_point_schedule_name
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['ScheduleNames'])
