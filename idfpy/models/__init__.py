@@ -2,7 +2,7 @@
 
 This module exports all EnergyPlus object types as Pydantic models.
 Model classes are lazily imported on first access (PEP 562).
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 """
 
 from __future__ import annotations
@@ -3393,6 +3393,7 @@ FIELD_ORDER_REGISTRY: dict[str, list[str]] = {
         'supply_air_inlet_node_name',
         'secondary_air_inlet_node_name',
         'outlet_node_name',
+        'reheat_coil_air_inlet_node_name',
         'zone_mixer_name',
         'fan_name',
         'reheat_coil_object_type',
@@ -3405,8 +3406,6 @@ FIELD_ORDER_REGISTRY: dict[str, list[str]] = {
         'heating_control_type',
         'design_heating_discharge_air_temperature',
         'high_limit_heating_discharge_air_temperature',
-        'backdraft_damper_leakage_fraction_curve_name',
-        'backdraft_damper_leakage_zone_name',
     ],
     'AirTerminal:SingleDuct:SeriesPIU:Reheat': [
         'name',
@@ -3417,6 +3416,7 @@ FIELD_ORDER_REGISTRY: dict[str, list[str]] = {
         'supply_air_inlet_node_name',
         'secondary_air_inlet_node_name',
         'outlet_node_name',
+        'reheat_coil_air_inlet_node_name',
         'zone_mixer_name',
         'fan_name',
         'reheat_coil_object_type',
