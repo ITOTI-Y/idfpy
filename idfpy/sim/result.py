@@ -59,6 +59,11 @@ class SimResult(BaseModel):
     return_code: int
     output_dir: Path
     stdout: str
+    output_prefix: str | None = None
+
+    @property
+    def _prefix(self) -> str:
+        return self.output_prefix or 'eplus'
 
     @property
     def success(self) -> bool:
@@ -66,16 +71,16 @@ class SimResult(BaseModel):
 
     @property
     def end_message(self) -> str | None:
-        """Read eplusout.end file content."""
-        end_file = self.output_dir / 'eplusout.end'
+        """Read end file content."""
+        end_file = self.output_dir / f'{self._prefix}out.end'
         if end_file.exists():
             return end_file.read_text().strip()
         return None
 
     @property
     def err(self) -> ErrSummary | None:
-        """Parse eplusout.err file summary."""
-        err_file = self.output_dir / 'eplusout.err'
+        """Parse err file summary."""
+        err_file = self.output_dir / f'{self._prefix}out.err'
         if not err_file.exists():
             return None
         return ErrSummary.from_file(err_file)

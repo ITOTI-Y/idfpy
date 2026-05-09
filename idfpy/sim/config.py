@@ -15,3 +15,4 @@ class SimJob(BaseModel):
     output_dir: Path | None = None
     design_day: bool = False
     annual: bool = False
+    output_prefix: str | None = None

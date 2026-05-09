@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import weakref
-from collections.abc import Iterable, Iterator, Mapping
+from collections.abc import Iterable, Iterator, KeysView, Mapping
 from pathlib import Path
 from typing import (
     Any,
@@ -104,6 +104,10 @@ class IDF:
         """
         default_version = Version()
         return default_version.version_identifier or 'Unknown'
+
+    def types(self) -> KeysView[str]:
+        """Return the object type names present in this IDF."""
+        return self._objects.keys()
 
     def add(self, obj: IDFBaseModel) -> None:
         """Add an IDF object to the container.
