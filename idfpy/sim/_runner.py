@@ -159,7 +159,9 @@ async def _batch(
 
     async def _run_indexed(index: int, job: SimJob) -> None:
         output_dir = output_dirs[index]
-        effective_prefix = job.output_prefix or output_prefix
+        effective_prefix = (
+            job.output_prefix if job.output_prefix is not None else output_prefix
+        )
         try:
             async with limiter:
                 results[index] = await _run_one(
