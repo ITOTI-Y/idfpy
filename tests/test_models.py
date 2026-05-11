@@ -434,23 +434,31 @@ class TestPyiStub:
 
         import idfpy.models as models_pkg
 
-        pkg_dir = Path(models_pkg.__file__).parent
-        pyi_path = pkg_dir / '__init__.pyi'
+        pyi_path = Path(models_pkg.__file__).parent / '__init__.pyi'
         assert pyi_path.exists(), f'Missing type stub: {pyi_path}'
 
-        content = pyi_path.read_text()
-        assert 'IDFBaseModel' in content
-        assert 'get_model_class' in content
-        assert 'get_field_order' in content
-        assert 'OBJECT_TYPE_REGISTRY' in content
-
     def test_pyi_exports_match_all(self):
+        import ast
         from pathlib import Path
 
         import idfpy.models as models_pkg
 
         pkg_dir = Path(models_pkg.__file__).parent
-        pyi_content = (pkg_dir / '__init__.pyi').read_text()
+        pyi_tree = ast.parse((pkg_dir / '__init__.pyi').read_text())
+        pyi_all: set[str] = set()
+        for node in ast.walk(pyi_tree):
+            if (
+                isinstance(node, ast.Assign)
+                and any(
+                    isinstance(t, ast.Name) and t.id == '__all__' for t in node.targets
+                )
+                and isinstance(node.value, ast.List)
+            ):
+                pyi_all = {
+                    elt.value
+                    for elt in node.value.elts
+                    if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+                }
 
-        for name in models_pkg.__all__:
-            assert name in pyi_content, f'{name} missing from __init__.pyi'
+        missing = set(models_pkg.__all__) - pyi_all
+        assert not missing, f'Missing from __init__.pyi __all__: {sorted(missing)}'

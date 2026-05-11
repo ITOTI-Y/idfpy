@@ -11,7 +11,7 @@ import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 from loguru import logger
 
@@ -73,7 +73,7 @@ class SchemaParser:
     """
 
     _NON_ALNUM_PATTERN = re.compile(r'[^a-zA-Z0-9]+')
-    _ACRONYM_PATTERNS: dict[str, re.Pattern[str]] = {
+    _ACRONYM_PATTERNS: ClassVar[dict[str, re.Pattern[str]]] = {
         acronym: re.compile(acronym, re.IGNORECASE)
         for acronym in ['HVAC', 'VAV', 'CAV', 'VRF', 'DX', 'AHU', 'FCU', 'DOAS']
     }

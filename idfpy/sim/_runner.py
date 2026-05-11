@@ -109,7 +109,7 @@ async def _run_one(
     async with await anyio.open_process(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     ) as proc:
-        assert proc.stdout is not None  # noqa: S101
+        assert proc.stdout is not None
         async for line in TextReceiveStream(proc.stdout):
             lines.append(line)
             if echo:
