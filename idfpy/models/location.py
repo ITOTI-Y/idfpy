@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Location and Climate
 """
 
@@ -157,7 +157,7 @@ class RunPeriodControlDaylightSavingTime(IDFBaseModel):
     end_date: str = Field(
         ...,
         json_schema_extra={
-            'note': 'Dates can be several formats: <number>/<number>  (month/day) <number> <Month> <Month> <number> <Nth> <Weekday> in <Month> Last <WeekDay> in <Month> <Month> can be January, February, March, April, M...'
+            'note': 'Dates can be several formats: <number>/<number>  (month/day) <number> <Month> <Month> <number> <Nth> <Weekday> in <Month) Last <WeekDay> in <Month> <Month> can be January, February, March, April, M...'
         },
     )
 
@@ -1175,21 +1175,6 @@ class SiteWaterMainsTemperature(IDFBaseModel):
                 'note': 'If calculation method is CorrelationFromWeatherFile or Schedule, this input field is ignored.',
             },
         )
-    )
-    temperature_multiplier: float | None = Field(
-        default=1.0,
-        ge=0.0,
-        json_schema_extra={
-            'units': 'dimensionless',
-            'note': 'If calculation method is Schedule, this input field is ignored.',
-        },
-    )
-    temperature_offset: float | None = Field(
-        default=0.0,
-        json_schema_extra={
-            'units': 'deltaC',
-            'note': 'If calculation method is Schedule, this input field is ignored.',
-        },
     )
 
     @property
