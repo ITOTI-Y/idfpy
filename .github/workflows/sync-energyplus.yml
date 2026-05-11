@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: master
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Detect latest EnergyPlus release
@@ -145,10 +145,10 @@ jobs:
           # Capture codegen + metadata changes before switching branch
           git stash push --include-untracked -m "sync-${EP_VERSION}"
 
-          # Rebase latest on top of current master, then re-apply the stash
+          # Rebase latest on top of the triggering branch, then re-apply the stash
           if git ls-remote --exit-code --heads origin latest > /dev/null; then
             git fetch origin latest
-            git switch -C latest origin/master
+            git switch -C latest origin/${{ github.ref_name }}
           else
             git switch -C latest
           fi
