@@ -1,4 +1,4 @@
-"""Type checking fixture — verified by ty/pyright, not by pytest."""
+"""Type checking fixture — verified by ty/pyright"""
 
 from idfpy.models import Building, RunPeriod, Zone, get_model_class
 
