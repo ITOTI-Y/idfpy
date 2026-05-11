@@ -51,8 +51,7 @@ pip install idfpy
 ```python
 from pathlib import Path
 from idfpy import IDF
-from idfpy.models.simulation import Version, Building
-from idfpy.models.thermal_zones import Zone
+from idfpy.models import Version, Building, Zone
 
 # Create an IDF
 idf = IDF()
@@ -104,7 +103,7 @@ Every reference field generates a `@property` for forward navigation. Reverse na
 ```python
 from pathlib import Path
 from idfpy import IDF
-from idfpy.models.thermal_zones import BuildingSurfaceDetailed, Zone
+from idfpy.models import BuildingSurfaceDetailed, Zone
 
 idf = IDF.load(Path('model.idf'))
 
@@ -227,7 +226,7 @@ After adding a plugin, re-run `idfpy codegen` to regenerate models — the mixin
 ### Container mutation
 
 ```python
-from idfpy.models.thermal_zones import Zone
+from idfpy.models import Zone
 
 idf.remove(Zone, 'Zone1')     # unbinds + unregisters references
 idf.remove('Zone', 'Zone1')   # string form (EnergyPlus or Python class name)

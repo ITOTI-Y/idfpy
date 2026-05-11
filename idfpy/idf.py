@@ -759,7 +759,7 @@ class IDF:
             _append_missing()
             return
 
-        # Phase 2: type compatibility – at least one provider must be allowed
+        # Phase 2: type compatibility - at least one provider must be allowed
         allowed_types = REF_GROUP_PROVIDERS.get(found_in_group)
         if allowed_types:
             valid = [t for t in found_provider_types if t in allowed_types]

@@ -1,0 +1,36 @@
+"""Auto-generated type stubs for idfpy.models.
+
+Generated from Energy+.schema.epJSON version {{ schema_version }}.
+"""
+
+from ._base import IDFBaseModel
+{% for module_name, class_names in module_to_classes %}
+from .{{ module_name }} import (
+{% for cls_name in class_names %}
+    {{ cls_name }},
+{% endfor %}
+)
+{% endfor %}
+
+OBJECT_TYPE_REGISTRY: dict[str, str]
+CLASS_NAME_REGISTRY: dict[str, str]
+FIELD_ORDER_REGISTRY: dict[str, list[str]]
+SINGLETON_TYPES: frozenset[str]
+
+def get_model_class(object_type: str) -> type[IDFBaseModel] | None: ...
+def get_field_order(object_type: str) -> list[str]: ...
+
+__all__ = [
+    "IDFBaseModel",
+    "OBJECT_TYPE_REGISTRY",
+    "CLASS_NAME_REGISTRY",
+    "FIELD_ORDER_REGISTRY",
+    "SINGLETON_TYPES",
+    "get_model_class",
+    "get_field_order",
+{% for module_name, class_names in module_to_classes %}
+{% for cls_name in class_names %}
+    "{{ cls_name }}",
+{% endfor %}
+{% endfor %}
+]

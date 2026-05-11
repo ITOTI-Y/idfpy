@@ -443,10 +443,11 @@ class ModelGenerator:
         singleton_types: list[str],
         schema_version: str,
     ) -> None:
-        """Generate __init__.py with lazy imports and registries.
+        """Generate __init__.py with lazy imports and registries, plus __init__.pyi type stub.
 
         Uses PEP 562 module-level __getattr__ for lazy importing of model
-        classes. Only IDFBaseModel is eagerly imported.
+        classes. Only IDFBaseModel is eagerly imported. A companion .pyi stub
+        is generated with explicit imports for IDE autocompletion.
 
         Args:
             all_classes: Mapping of file names to class names.
@@ -487,6 +488,19 @@ class ModelGenerator:
         output_path = self.output_dir / '__init__.py'
         output_path.write_text(content, encoding='utf-8')
         logger.debug('Written {}', output_path)
+
+        pyi_template = env.get_template('init_pyi.jinja2')
+        module_to_classes = sorted(
+            (mod, sorted(classes, key=str.lower))
+            for mod, classes in all_classes.items()
+        )
+        pyi_content = pyi_template.render(
+            schema_version=schema_version,
+            module_to_classes=module_to_classes,
+        )
+        pyi_path = self.output_dir / '__init__.pyi'
+        pyi_path.write_text(pyi_content, encoding='utf-8')
+        logger.debug('Written {}', pyi_path)
 
     def _get_jinja_env(self) -> Environment:
         """Get or create the Jinja2 environment with filters.

@@ -79,7 +79,7 @@ def test_literal_case_normalization():
     """IDF files are case-insensitive; Literal fields should accept any case."""
     from idfpy.models import Building
 
-    b = Building(north_axis=0.0, terrain='SUBURBS')
+    b = Building(north_axis=0.0, terrain='SUBURBS')  # type: ignore
     assert b.terrain == 'Suburbs'
 
 
@@ -426,3 +426,44 @@ def test_actual_idf_file(tmp_path):
     dict_idf = idf.to_dict()
     loaded_idf = IDF.from_dict(dict_idf)
     assert len(idf) == len(loaded_idf)
+
+
+class TestPyiStub:
+    def test_pyi_stub_exists(self):
+        from pathlib import Path
+
+        import idfpy.models as models_pkg
+
+        pyi_path = Path(models_pkg.__file__).parent / '__init__.pyi'
+        assert pyi_path.exists(), f'Missing type stub: {pyi_path}'
+
+    def test_pyi_exports_match_all(self):
+        import ast
+        from pathlib import Path
+
+        import idfpy.models as models_pkg
+
+        pkg_dir = Path(models_pkg.__file__).parent
+        pyi_tree = ast.parse((pkg_dir / '__init__.pyi').read_text())
+        pyi_all: set[str] = set()
+        for node in ast.walk(pyi_tree):
+            if (
+                isinstance(node, ast.Assign)
+                and any(
+                    isinstance(t, ast.Name) and t.id == '__all__' for t in node.targets
+                )
+                and isinstance(node.value, ast.List)
+            ):
+                pyi_all = {
+                    elt.value
+                    for elt in node.value.elts
+                    if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
+                }
+
+        runtime_all = set(models_pkg.__all__)
+        missing = runtime_all - pyi_all
+        extra = pyi_all - runtime_all
+        assert not missing and not extra, (
+            f'__init__.pyi __all__ mismatch: '
+            f'missing {sorted(missing)}, extra {sorted(extra)}'
+        )
