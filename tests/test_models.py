@@ -79,7 +79,7 @@ def test_literal_case_normalization():
     """IDF files are case-insensitive; Literal fields should accept any case."""
     from idfpy.models import Building
 
-    b = Building(north_axis=0.0, terrain='SUBURBS')
+    b = Building(north_axis=0.0, terrain='SUBURBS')  # type: ignore
     assert b.terrain == 'Suburbs'
 
 
@@ -426,3 +426,31 @@ def test_actual_idf_file(tmp_path):
     dict_idf = idf.to_dict()
     loaded_idf = IDF.from_dict(dict_idf)
     assert len(idf) == len(loaded_idf)
+
+
+class TestPyiStub:
+    def test_pyi_stub_exists(self):
+        from pathlib import Path
+
+        import idfpy.models as models_pkg
+
+        pkg_dir = Path(models_pkg.__file__).parent
+        pyi_path = pkg_dir / '__init__.pyi'
+        assert pyi_path.exists(), f'Missing type stub: {pyi_path}'
+
+        content = pyi_path.read_text()
+        assert 'IDFBaseModel' in content
+        assert 'get_model_class' in content
+        assert 'get_field_order' in content
+        assert 'OBJECT_TYPE_REGISTRY' in content
+
+    def test_pyi_exports_match_all(self):
+        from pathlib import Path
+
+        import idfpy.models as models_pkg
+
+        pkg_dir = Path(models_pkg.__file__).parent
+        pyi_content = (pkg_dir / '__init__.pyi').read_text()
+
+        for name in models_pkg.__all__:
+            assert name in pyi_content, f'{name} missing from __init__.pyi'
