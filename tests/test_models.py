@@ -460,5 +460,10 @@ class TestPyiStub:
                     if isinstance(elt, ast.Constant) and isinstance(elt.value, str)
                 }
 
-        missing = set(models_pkg.__all__) - pyi_all
-        assert not missing, f'Missing from __init__.pyi __all__: {sorted(missing)}'
+        runtime_all = set(models_pkg.__all__)
+        missing = runtime_all - pyi_all
+        extra = pyi_all - runtime_all
+        assert not missing and not extra, (
+            f'__init__.pyi __all__ mismatch: '
+            f'missing {sorted(missing)}, extra {sorted(extra)}'
+        )
