@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: master
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Resolve EnergyPlus asset and target refs
@@ -133,11 +133,11 @@ jobs:
           # Capture codegen + version bump before switching branch
           git stash push --include-untracked -m "release-${TAG}"
 
-          # Always rebuild the EP support branch on top of current master
+          # Always rebuild the EP support branch on top of the triggering branch
           if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null; then
             git fetch origin "$BRANCH"
           fi
-          git switch -C "$BRANCH" origin/master
+          git switch -C "$BRANCH" origin/${{ github.ref_name }}
 
           git stash pop
 
