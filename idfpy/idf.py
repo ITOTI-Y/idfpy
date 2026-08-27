@@ -639,6 +639,50 @@ class IDF:
                         results.append(obj)
         return results
 
+    def _find_referenced(
+        self,
+        source: IDFBaseModel,
+        provider_type: type[IDFBaseModel] | str | None = None,
+        *,
+        strict: bool = True,
+    ) -> list[IDFBaseModel]:
+        """Find objects referenced by source, optionally filtered by type.
+
+        Uses _ref_registry for O(F + R) lookup where F is the number of
+        reference fields and R is the number of resolved objects.
+        """
+        resolved_provider: str | None = None
+        if provider_type is not None:
+            resolved_provider = self._resolve_type(provider_type, strict=strict)
+            if resolved_provider is None:
+                return []
+
+        seen: set[tuple[str, str]] = set()
+        results: list[IDFBaseModel] = []
+        for current in self._walk_obj_tree(source):
+            meta = get_model_metadata(type(current))
+            for field_name, ref_groups in meta.consumer_fields.items():
+                value = getattr(current, field_name, None)
+                if not value or not isinstance(value, str):
+                    continue
+                key = value.upper()
+                for group in ref_groups:
+                    bucket = self._ref_registry.get(group, {})
+                    for entry_type, entry_name in bucket.get(key, ()):
+                        if (
+                            resolved_provider is not None
+                            and entry_type != resolved_provider
+                        ):
+                            continue
+                        pair = (entry_type, entry_name)
+                        if pair in seen:
+                            continue
+                        obj = self._objects.get(entry_type, {}).get(entry_name)
+                        if obj is not None:
+                            seen.add(pair)
+                            results.append(obj)
+        return results
+
     @staticmethod
     def _target_provisions(target: IDFBaseModel) -> list[tuple[str, str]]:
         """Collect (group, UPPER(value)) pairs that target provides."""

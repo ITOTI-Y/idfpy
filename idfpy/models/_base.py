@@ -215,6 +215,49 @@ class IDFBaseModel(BaseModel):
             raise RuntimeError('Not bound to IDF container')
         return idf._find_referencing(self, consumer_type, strict=strict)
 
+    @overload
+    def referenced(
+        self,
+        provider_type: str | None = None,
+        *,
+        strict: bool = True,
+    ) -> list[IDFBaseModel]: ...
+    @overload
+    def referenced[T: IDFBaseModel](
+        self,
+        provider_type: type[T],
+        *,
+        strict: bool = True,
+    ) -> list[T]: ...
+    def referenced(
+        self,
+        provider_type: str | type[IDFBaseModel] | None = None,
+        *,
+        strict: bool = True,
+    ) -> list[IDFBaseModel]:
+        """Find objects referenced by this object.
+
+        Args:
+            provider_type: EnergyPlus object type string, Python class name,
+                model class, or None. When None, returns referenced objects
+                across every type.
+            strict: When True (default) raise UnknownObjectTypeError on
+                unresolvable ``provider_type``. Pass ``strict=False`` to
+                return ``[]`` instead.
+
+        Returns:
+            Unique objects targeted by this object's ref fields.
+
+        Raises:
+            RuntimeError: If not bound to an IDF container.
+            UnknownObjectTypeError: When ``strict=True`` and the
+                ``provider_type`` cannot be resolved.
+        """
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF container')
+        return idf._find_referenced(self, provider_type, strict=strict)
+
     def __getstate__(self) -> dict[str, Any]:
         state = super().__getstate__()
         private = (state.get('__pydantic_private__') or {}).copy()
