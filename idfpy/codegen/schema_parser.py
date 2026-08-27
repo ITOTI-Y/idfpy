@@ -128,7 +128,7 @@ class SchemaParser:
                 specs[name] = spec
 
                 if i % 100 == 0:
-                    logger.debug('Parsed {}/{} object types...', i, total)
+                    logger.trace('Parsed {}/{} object types...', i, total)
 
             except Exception as e:
                 logger.warning("Failed to parse object '{}': {}", name, e)
@@ -143,7 +143,7 @@ class SchemaParser:
         if self._raw_schema is not None:
             return
 
-        logger.debug('Loading schema from {}', self.schema_path)
+        logger.trace('Loading schema from {}', self.schema_path)
         with self.schema_path.open(encoding='utf-8') as fh:
             self._raw_schema = json.load(fh)
 
@@ -240,7 +240,7 @@ class SchemaParser:
 
         # Return fields (may only contain name field or be empty)
         if not fields:
-            logger.debug('No fields found in object schema')
+            logger.trace('No fields found in object schema')
         return fields
 
     def _to_class_name(self, name: str) -> str:

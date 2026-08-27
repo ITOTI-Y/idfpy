@@ -154,7 +154,7 @@ class IDF:
         self._bind_recursive(obj)
         self._register_refs(obj)
         self._index_consumer_refs(obj, object_type, name)
-        logger.debug('Added {}: {}', object_type, name)
+        logger.trace('Added {}: {}', object_type, name)
 
     @staticmethod
     def _resolve_type(

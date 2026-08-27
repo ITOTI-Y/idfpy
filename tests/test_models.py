@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from io import StringIO
+
 import pytest
+from loguru import logger
 
 
 def test_version():
@@ -19,6 +22,36 @@ def test_import_idf():
     assert len(idf) == 0
     assert isinstance(idf, IDF)
     assert issubclass(IDFBaseModel, IDFBaseModel)
+
+
+def test_idfpy_debug_logs_are_hidden_at_debug_level(tmp_path):
+    from idfpy import IDF
+
+    path = tmp_path / 'test.idf'
+    path.write_text('Zone,\n    Zone1;\n', encoding='utf-8')
+    sink = StringIO()
+    handler_id = logger.add(sink, level='DEBUG', format='{message}')
+    try:
+        IDF.load(path)
+        assert 'Added Zone: Zone1' not in sink.getvalue()
+    finally:
+        logger.remove(handler_id)
+
+
+def test_idfpy_info_logs_remain_visible(tmp_path):
+    from idfpy import IDF
+    from idfpy.models import Zone
+
+    path = tmp_path / 'test.idf'
+    idf = IDF()
+    idf.add(Zone(name='Zone1'))
+    sink = StringIO()
+    handler_id = logger.add(sink, level='INFO', format='{message}')
+    try:
+        idf.save(path)
+        assert 'Saved IDF with 1 objects' in sink.getvalue()
+    finally:
+        logger.remove(handler_id)
 
 
 def test_import_zone():
