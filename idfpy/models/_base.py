@@ -4,7 +4,16 @@ from __future__ import annotations
 
 import types
 import weakref
-from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
+from typing import (
+    Annotated,
+    Any,
+    ClassVar,
+    Literal,
+    Union,
+    get_args,
+    get_origin,
+    overload,
+)
 
 from pydantic import BaseModel, ConfigDict, PrivateAttr, model_validator
 
@@ -162,6 +171,20 @@ class IDFBaseModel(BaseModel):
         """
         return cls._idf_object_type
 
+    @overload
+    def referencing(
+        self,
+        consumer_type: str | None = None,
+        *,
+        strict: bool = True,
+    ) -> list[IDFBaseModel]: ...
+    @overload
+    def referencing[T: IDFBaseModel](
+        self,
+        consumer_type: type[T],
+        *,
+        strict: bool = True,
+    ) -> list[T]: ...
     def referencing(
         self,
         consumer_type: str | type[IDFBaseModel] | None = None,
