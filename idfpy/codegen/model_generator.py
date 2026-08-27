@@ -253,7 +253,7 @@ class ModelGenerator:
 
         for file_name, objects in file_groups.items():
             if len(objects) < self.MERGE_THRESHOLD and file_name != 'misc':
-                logger.debug(
+                logger.trace(
                     'Merging {} ({} objects) into misc', file_name, len(objects)
                 )
                 small_objects.extend(objects)
@@ -340,7 +340,7 @@ class ModelGenerator:
 
         output_path = self.output_dir / f'{file_name}.py'
         output_path.write_text(content, encoding='utf-8')
-        logger.debug('Written {}', output_path)
+        logger.trace('Written {}', output_path)
 
         class_names = [obj.class_name for obj in objects]
         class_names.extend(nc['name'] for nc in nested_classes)
@@ -487,7 +487,7 @@ class ModelGenerator:
 
         output_path = self.output_dir / '__init__.py'
         output_path.write_text(content, encoding='utf-8')
-        logger.debug('Written {}', output_path)
+        logger.trace('Written {}', output_path)
 
         pyi_template = env.get_template('init_pyi.jinja2')
         module_to_classes = sorted(
@@ -500,7 +500,7 @@ class ModelGenerator:
         )
         pyi_path = self.output_dir / '__init__.pyi'
         pyi_path.write_text(pyi_content, encoding='utf-8')
-        logger.debug('Written {}', pyi_path)
+        logger.trace('Written {}', pyi_path)
 
     def _get_jinja_env(self) -> Environment:
         """Get or create the Jinja2 environment with filters.

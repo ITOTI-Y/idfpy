@@ -96,6 +96,16 @@ data = idf.to_dict()
 idf = IDF.from_dict(data)
 ```
 
+### Logging
+
+`idfpy` keeps `INFO` and higher-level logs available through Loguru. Detailed per-object and internal progress messages use Loguru's `TRACE` level, so they do not appear in a handler configured at `DEBUG` level. To inspect these messages, configure a `TRACE` sink explicitly:
+
+```python
+from loguru import logger
+
+logger.add("idfpy.log", level="TRACE")
+```
+
 ### Object navigation
 
 Every reference field generates a `@property` for forward navigation. Reverse navigation is available via `referencing()`. All query methods (`get` / `has` / `all_of_type` / `remove`) accept either an EnergyPlus type string, a Python class name, or the model class itself — passing the class preserves precise typing in your IDE.
