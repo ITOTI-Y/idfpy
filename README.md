@@ -66,13 +66,15 @@ idf.save(Path('output.idf'))
 idf.save(Path('output.epjson'), output_type='epjson')
 
 # Load (auto-detects format by extension)
-idf = IDF.load(Path('existing.idf'))      # IDF format
-idf = IDF.load(Path('existing.epjson'))    # epJSON format
+idf = IDF.load(Path('existing.idf'))  # IDF format
+idf = IDF.load(Path('existing.epjson'))  # epJSON format
 
 # Run simulation
 from idfpy.sim import simulate
 
-result = simulate(Path('output.idf'), weather=Path('weather.epw'), output_dir=Path('results/'))
+result = simulate(
+    Path('output.idf'), weather=Path('weather.epw'), output_dir=Path('results/')
+)
 print(result.success)  # True / False
 ```
 
@@ -103,7 +105,7 @@ idf = IDF.from_dict(data)
 ```python
 from loguru import logger
 
-logger.add("idfpy.log", level="TRACE")
+logger.add('idfpy.log', level='TRACE')
 ```
 
 ### Object navigation
@@ -118,15 +120,15 @@ from idfpy.models import BuildingSurfaceDetailed, Zone
 idf = IDF.load(Path('model.idf'))
 
 # Forward navigation — resolve reference to target object
-surface = idf.get(BuildingSurfaceDetailed, 'Wall1')   # → BuildingSurfaceDetailed | None
-surface.zone_name        # "Zone1" (raw string, always works)
-surface.zone             # Zone object (resolved via IDF)
-surface.construction     # Construction object
+surface = idf.get(BuildingSurfaceDetailed, 'Wall1')  # → BuildingSurfaceDetailed | None
+surface.zone_name  # "Zone1" (raw string, always works)
+surface.zone  # Zone object (resolved via IDF)
+surface.construction  # Construction object
 
 # Reverse navigation — find all objects referencing a given object
 zone = idf.get(Zone, 'Zone1')
-zone.referencing(BuildingSurfaceDetailed)       # → [Wall1, Wall2, ...]
-zone.referencing('Lights')                       # → [OfficeLights, ...]
+zone.referencing(BuildingSurfaceDetailed)  # → [Wall1, Wall2, ...]
+zone.referencing('Lights')  # → [OfficeLights, ...]
 
 # Chained navigation
 zone.referencing(BuildingSurfaceDetailed)[0].construction
@@ -140,9 +142,9 @@ Query methods raise `UnknownObjectTypeError` when the type name cannot be resolv
 from idfpy import UnknownObjectTypeError
 
 try:
-    idf.get('BuildingSurface:detailed', 'Wall1')   # note the lowercase 'd'
+    idf.get('BuildingSurface:detailed', 'Wall1')  # note the lowercase 'd'
 except UnknownObjectTypeError as e:
-    print(e)   # → Unknown object type: 'BuildingSurface:detailed'. ...
+    print(e)  # → Unknown object type: 'BuildingSurface:detailed'. ...
 
 # Opt-in legacy silent behavior
 idf.get('BuildingSurface:detailed', 'Wall1', strict=False)  # → None
@@ -165,7 +167,7 @@ for e in errors:
 try:
     idf.validate_or_raise()
 except RefValidationError as exc:
-    print(f"{len(exc.errors)} broken reference(s)")
+    print(f'{len(exc.errors)} broken reference(s)')
 ```
 
 ## Real-world Example
@@ -174,17 +176,17 @@ from pathlib import Path
 from idfpy import IDF
 
 # Load a DOE reference building
-idf = IDF.load(Path("LargeOffice.idf"))
+idf = IDF.load(Path('LargeOffice.idf'))
 
 # Modify all exterior walls' insulation
 for con_name, con in idf.all_of_type('Construction').items():
     layer = con.outside_layer_ref
-    if layer and hasattr(layer, "conductivity"):
-        print(f"{con.name}: k={layer.conductivity} W/m·K")
+    if layer and hasattr(layer, 'conductivity'):
+        print(f'{con.name}: k={layer.conductivity} W/m·K')
 
 # Validate all references
 errors = idf.validate()
-print(f"{len(errors)} broken references")
+print(f'{len(errors)} broken references')
 ```
 
 ### Geometry extensions
@@ -198,13 +200,13 @@ from pathlib import Path
 idf = IDF.load(Path('model.idf'))
 
 surface = idf.get('BuildingSurface:Detailed', 'Wall1')
-surface.area               # 30.0 (m²)
-surface.normal             # (0.0, -1.0, 0.0) — outward unit normal
-surface.centroid           # (5.0, 0.0, 1.5)
-surface.vertices_as_tuples # [(0,0,3), (0,0,0), (10,0,0), (10,0,3)]
+surface.area  # 30.0 (m²)
+surface.normal  # (0.0, -1.0, 0.0) — outward unit normal
+surface.centroid  # (5.0, 0.0, 1.5)
+surface.vertices_as_tuples  # [(0,0,3), (0,0,0), (10,0,0), (10,0,3)]
 
 window = idf.get('FenestrationSurface:Detailed', 'Win1')
-window.area                # 16.0 (m²)
+window.area  # 16.0 (m²)
 ```
 
 Supported surface types: `BuildingSurface:Detailed`, `FenestrationSurface:Detailed`, `Floor:Detailed`, `RoofCeiling:Detailed`, `Wall:Detailed`, `Shading:Building:Detailed`, `Shading:Site:Detailed`, `Shading:Zone:Detailed`.
@@ -238,8 +240,8 @@ After adding a plugin, re-run `idfpy codegen` to regenerate models — the mixin
 ```python
 from idfpy.models import Zone
 
-idf.remove(Zone, 'Zone1')     # unbinds + unregisters references
-idf.remove('Zone', 'Zone1')   # string form (EnergyPlus or Python class name)
+idf.remove(Zone, 'Zone1')  # unbinds + unregisters references
+idf.remove('Zone', 'Zone1')  # string form (EnergyPlus or Python class name)
 ```
 
 ## License
