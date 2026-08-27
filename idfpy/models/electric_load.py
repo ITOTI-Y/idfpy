@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Electric Load Center-Generator Specifications
 """
 
@@ -3428,7 +3428,7 @@ class PhotovoltaicPerformanceEquivalentOneDiode(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:EquivalentOne-Diode'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     cell_type: Literal['AmorphousSilicon', 'CrystallineSilicon'] | None = Field(
         default=None
     )
@@ -3510,7 +3510,7 @@ class PhotovoltaicPerformanceSandia(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Sandia'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     active_area: float | None = Field(
         default=1.0,
         ge=0.0,
@@ -3643,7 +3643,7 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Simple'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     fraction_of_surface_area_with_active_solar_cells: float = Field(
         ..., ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}
     )
