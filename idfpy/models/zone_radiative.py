@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Zone HVAC Radiative/Convective Units
 """
 
@@ -1123,7 +1123,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlowDesign(IDFBaseModel):
         ge=0.0,
         le=1.0,
         json_schema_extra={
-            'note': 'this is the weighting factor in the equation that calculate the running mean outdoor dry-bulb temperature as a weighted average of the previous dayâ€™s running mean outdoor dry-bulb temperature and...'
+            'note': 'this is the weighting factor in the equation that calculate the running mean outdoor dry-bulb temperature as a weighted average of the previous day’s running mean outdoor dry-bulb temperature and t...'
         },
     )
     motor_efficiency: float | None = Field(default=0.9, ge=0.0, le=1.0)

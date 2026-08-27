@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Condenser Equipment and Heat Exchangers
 """
 
@@ -2796,6 +2796,7 @@ class HeatExchangerFluidToFluid(IDFBaseModel):
         Literal[
             '',
             'FreeCooling',
+            'HeatRecovery',
             'HeatRecoveryForCooling',
             'HeatRecoveryForHeating',
             'HeatRejection',
