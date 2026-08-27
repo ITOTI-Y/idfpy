@@ -15,7 +15,7 @@ Auto-generated from `Energy+.schema.epJSON` version **26.1.0**.
 
 - **859 object types** as Pydantic v2 models with full validation
 - **275 reference types** with cross-object validation
-- **Forward navigation** — `surface.zone` resolves a reference field to the target object
+- **Forward navigation** — `surface.zone` resolves one reference field; `surface.referenced()` returns every referenced object
 - **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
 - **Reference validation** — `idf.validate()` batch-checks all cross-object references for existence and type compatibility
 - **Extension plugin system** — `surface.area`, `.normal`, `.centroid` via auto-discovered geometry mixins with full IDE support
@@ -108,7 +108,7 @@ logger.add("idfpy.log", level="TRACE")
 
 ### Object navigation
 
-Every reference field generates a `@property` for forward navigation. Reverse navigation is available via `referencing()`. All query methods (`get` / `has` / `all_of_type` / `remove`) accept either an EnergyPlus type string, a Python class name, or the model class itself — passing the class preserves precise typing in your IDE.
+Every reference field generates a `@property` for direct forward navigation. `referenced()` returns all objects referenced by an object, while `referencing()` provides reverse navigation. These navigation methods and all query methods (`get` / `has` / `all_of_type` / `remove`) accept either an EnergyPlus type string, a Python class name, or the model class itself — passing the class preserves precise typing in your IDE.
 
 ```python
 from pathlib import Path
@@ -122,6 +122,8 @@ surface = idf.get(BuildingSurfaceDetailed, 'Wall1')   # → BuildingSurfaceDetai
 surface.zone_name        # "Zone1" (raw string, always works)
 surface.zone             # Zone object (resolved via IDF)
 surface.construction     # Construction object
+surface.referenced()     # [Construction object, Zone object, ...]
+surface.referenced(Zone) # [Zone object]
 
 # Reverse navigation — find all objects referencing a given object
 zone = idf.get(Zone, 'Zone1')

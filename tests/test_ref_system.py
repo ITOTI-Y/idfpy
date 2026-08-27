@@ -249,6 +249,75 @@ class TestReverseNav:
             zone.referencing()
 
 
+class TestReferencedNav:
+    def test_referenced_all(self):
+        idf = IDF()
+        zone = _make_zone()
+        construction = _make_construction()
+        surface = _make_surface()
+        idf.add(zone)
+        idf.add(construction)
+        idf.add(surface)
+
+        refs = surface.referenced()
+        assert len(refs) == 2
+        assert zone in refs
+        assert construction in refs
+
+    def test_referenced_type_filters(self):
+        idf = IDF()
+        zone = _make_zone()
+        schedule = _make_schedule()
+        light = _make_lights()
+        idf.add(zone)
+        idf.add(schedule)
+        idf.add(light)
+
+        assert light.referenced(Zone) == [zone]
+        assert light.referenced('ScheduleCompact') == [schedule]
+        assert light.referenced('Schedule:Compact') == [schedule]
+
+    def test_referenced_omits_missing_targets(self):
+        idf = IDF()
+        construction = _make_construction()
+        surface = _make_surface(zone_name='MissingZone')
+        idf.add(construction)
+        idf.add(surface)
+
+        assert surface.referenced() == [construction]
+
+    def test_referenced_unknown_type_respects_strict_mode(self):
+        idf = IDF()
+        surface = _make_surface()
+        idf.add(surface)
+
+        with pytest.raises(ValueError):
+            surface.referenced('NoSuchType')
+        assert surface.referenced('NoSuchType', strict=False) == []
+
+    def test_referenced_unbound_raises(self):
+        surface = _make_surface()
+        with pytest.raises(RuntimeError, match='Not bound to IDF'):
+            surface.referenced()
+
+    def test_referenced_walks_extensible_items_and_deduplicates(self):
+        idf = IDF()
+        zone = _make_zone()
+        zone_list = ZoneList(
+            name='ZoneList1',
+            zones=[
+                ZoneListZonesItem(zone_name='Zone1'),
+                ZoneListZonesItem(zone_name='Zone1'),
+            ],
+        )
+        idf.add(zone)
+        idf.add(zone_list)
+
+        assert zone_list.referenced() == [zone]
+        assert zone_list.zones is not None
+        assert zone_list.zones[0].referenced() == [zone]
+
+
 class TestValidation:
     def test_validate_clean(self):
         idf = IDF()
