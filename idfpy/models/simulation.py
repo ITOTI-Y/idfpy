@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 Group: Simulation Parameters
 """
 
@@ -491,7 +491,7 @@ class Version(IDFBaseModel):
     """Specifies the EnergyPlus version of the IDF file."""
 
     _idf_object_type: ClassVar[str] = 'Version'
-    version_identifier: str | None = Field(default='26.1')
+    version_identifier: str | None = Field(default='25.2')
 
 
 class ZoneAirContaminantBalance(IDFBaseModel):
