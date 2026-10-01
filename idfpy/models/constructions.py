@@ -11,6 +11,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
+from idfpy.ext.construction.mixins import ConstructionLayersMixin
+
 from ._base import IDFBaseModel
 from ._refs import (
     BivariateFunctionsRef,
@@ -107,7 +109,7 @@ class WindowMaterialGlazingGroupThermochromicTemperatureDataItem(IDFBaseModel):
         return idf._resolve_forward(v, ['GlazingMaterialName'])
 
 
-class Construction(IDFBaseModel):
+class Construction(ConstructionLayersMixin, IDFBaseModel):
     """Start with outside layer and work your way to the inside layer Up to 10
     layers total, 8 for windows Enter the material name for each layer"""
 
