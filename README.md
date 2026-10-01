@@ -3,18 +3,18 @@
 [![PyPI](https://img.shields.io/pypi/v/idfpy)](https://pypi.org/project/idfpy/)
 [![Python 3.12+](https://img.shields.io/pypi/pyversions/idfpy)](https://pypi.org/project/idfpy/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![EnergyPlus 26.1](https://img.shields.io/badge/EnergyPlus-26.1-orange)](https://energyplus.net/)
+[![EnergyPlus 26.2](https://img.shields.io/badge/EnergyPlus-26.2-orange)](https://energyplus.net/)
 [![Autoupdate](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml/badge.svg)](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
 
 Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, optimized for LLM tool calling and IDE auto-completion.
 
-Auto-generated from `Energy+.schema.epJSON` version **26.1.0**.
+Auto-generated from `Energy+.schema.epJSON` version **26.2.0**.
 
 ## Features
 
-- **859 object types** as Pydantic v2 models with full validation
-- **275 reference types** with cross-object validation
+- **881 object types** as Pydantic v2 models with full validation
+- **287 reference types** with cross-object validation
 - **Forward navigation** — `surface.zone` resolves one reference field; `surface.referenced()` returns every referenced object
 - **Reverse navigation** — `zone.referencing("Lights")` finds all objects that reference a given object
 - **Reference validation** — `idf.validate()` batch-checks all cross-object references for existence and type compatibility
@@ -34,8 +34,8 @@ Auto-generated from `Energy+.schema.epJSON` version **26.1.0**.
 | No EnergyPlus IDD required at runtime | ✅ | ❌ |
 | Type-safe field validation | ✅ Pydantic v2 | ❌ |
 | epJSON read/write | ✅ | ❌ |
-| Cross-reference validation | ✅ 275 ref groups | ❌ |
-| Forward/reverse navigation | ✅ 2849 properties | ❌ |
+| Cross-reference validation | ✅ 287 ref groups | ❌ |
+| Forward/reverse navigation | ✅ 2921 properties | ❌ |
 | Surface geometry (area/normal) | ✅ ext plugin | ❌ |
 | `to_dict()` / `from_dict()` for LLM | ✅ | ❌ |
 | Dependencies | 4 (pydantic, jinja2, loguru, typer) | 12+ (lxml, pyparsing...) |
