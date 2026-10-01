@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Electric Load Center-Generator Specifications
 """
 
@@ -944,14 +944,14 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
         ...,
         ge=1,
         json_schema_extra={
-            'note': 'Battery voltage is calculated by multiplying this field by the nominal cell voltage (Numeric Field 13, default 3.342V)'
+            'note': 'Battery voltage is calculated by multiplying this field by the nominal cell voltage (N13, default 3.342V)'
         },
     )
     number_of_strings_in_parallel: int = Field(
         ...,
         ge=1,
         json_schema_extra={
-            'note': 'Capacity (Ah) is determined by multiplying this field by the cell capacity (Numeric Field 14, default 3.2 Ah)'
+            'note': 'Capacity (Ah) is determined by multiplying this field by the cell capacity (N14, default 3.2 Ah)'
         },
     )
     initial_fractional_state_of_charge: float | None = Field(
@@ -3428,7 +3428,7 @@ class PhotovoltaicPerformanceEquivalentOneDiode(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:EquivalentOne-Diode'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     cell_type: Literal['AmorphousSilicon', 'CrystallineSilicon'] | None = Field(
         default=None
     )
@@ -3510,7 +3510,7 @@ class PhotovoltaicPerformanceSandia(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Sandia'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     active_area: float | None = Field(
         default=1.0,
         ge=0.0,
@@ -3643,7 +3643,7 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
 
     _idf_object_type: ClassVar[str] = 'PhotovoltaicPerformance:Simple'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
-    name: str = Field(...)
+    name: str | None = Field(default=None)
     fraction_of_surface_area_with_active_solar_cells: float = Field(
         ..., ge=0.0, le=1.0, json_schema_extra={'units': 'dimensionless'}
     )
