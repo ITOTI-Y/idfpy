@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Simulation Parameters
 """
 
@@ -13,12 +13,14 @@ from pydantic import Field
 
 from ._base import IDFBaseModel
 from ._refs import (
+    ConstructionAssignmentSetNamesRef,
     ScheduleNamesRef,
     ZoneAndZoneListNamesRef,
     ZoneListNamesRef,
 )
 
 if TYPE_CHECKING:
+    from .constructions import ConstructionAssignmentSet
     from .thermal_zones import Zone, ZoneList
 
 
@@ -105,6 +107,23 @@ class Building(IDFBaseModel):
             'note': 'The minimum number of warmup days that produce enough temperature and flux history to start EnergyPlus simulation for all reference buildings was suggested to be 6. However this can lead to excessi...'
         },
     )
+    construction_assignment_set_name: ConstructionAssignmentSetNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ConstructionAssignmentSetNames'],
+            'note': 'Optional. Provides inherited construction assignments for surfaces and sub-surfaces in the building. Assignments referenced by Space take precedence over assignments referenced by Building.',
+        },
+    )
+
+    @property
+    def construction_assignment_set(self) -> ConstructionAssignmentSet | None:
+        v = self.construction_assignment_set_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionAssignmentSetNames'])
 
 
 class ConvergenceLimits(IDFBaseModel):
@@ -491,7 +510,7 @@ class Version(IDFBaseModel):
     """Specifies the EnergyPlus version of the IDF file."""
 
     _idf_object_type: ClassVar[str] = 'Version'
-    version_identifier: str | None = Field(default='26.1')
+    version_identifier: str | None = Field(default='26.2')
 
 
 class ZoneAirContaminantBalance(IDFBaseModel):

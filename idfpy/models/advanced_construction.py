@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Advanced Construction, Surface, Zone Concepts
 """
 
@@ -22,6 +22,7 @@ from ._refs import (
     MaterialNameRef,
     OSCMNamesRef,
     OutdoorAirNodeNamesRef,
+    PeopleNamesRef,
     ScheduleNamesRef,
     SpaceListNamesRef,
     SpaceNamesRef,
@@ -38,6 +39,7 @@ from ._refs import (
 
 if TYPE_CHECKING:
     from .constructions import ConstructionComplexFenestrationState
+    from .internal_gains import People, PeopleInstance
     from .node_branch import OutdoorAirNode
     from .thermal_zones import (
         BuildingSurfaceDetailed,
@@ -204,6 +206,29 @@ class SurfacePropertySurroundingSurfacesSurfacesItem(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['ScheduleNames'])
+
+
+class ZoneMRTCalculationPeopleNamesItem(IDFBaseModel):
+    """Nested object type for array items."""
+
+    people_name: PeopleNamesRef = Field(
+        ...,
+        json_schema_extra={
+            'object_list': ['PeopleNames'],
+            'note': 'A People object assigned directly to a Space retains its input name. A People object expanded across multiple Spaces must use an expanded instance name formed as "<Space Name> <People Name>"; its o...',
+        },
+    )
+    mrt_weighting_factor: float = Field(..., ge=0.0, le=1.0)
+
+    @property
+    def people(self) -> People | PeopleInstance | None:
+        v = self.people_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['PeopleNames'])
 
 
 class ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem(IDFBaseModel):
@@ -3518,10 +3543,10 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:LocalEnvironment'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
-    exterior_surface_name: SurfaceNamesRef | None = Field(
+    exterior_surface_name: AllHeatTranSurfNamesRef | None = Field(
         default=None,
         json_schema_extra={
-            'object_list': ['SurfaceNames'],
+            'object_list': ['AllHeatTranSurfNames'],
             'note': 'Enter the name of an exterior surface object',
         },
     )
@@ -3562,7 +3587,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
         idf = self._idf
         if idf is None:
             raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['SurfaceNames'])
+        return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
     def sunlit_fraction_schedule(self) -> IDFBaseModel | None:
@@ -3777,8 +3802,8 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
     _idf_object_type: ClassVar[str] = 'SurfaceProperty:SurroundingSurfaces'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
-    sky_view_factor: float | None = Field(
-        default=0.5, ge=0.0, le=1.0, json_schema_extra={'note': 'optional'}
+    sky_view_factor: float | Literal['', 'Autocalculate'] | None = Field(
+        default='Autocalculate', json_schema_extra={'note': 'optional'}
     )
     sky_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3787,8 +3812,8 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
             'note': 'Schedule values are real numbers, -100.0 to 100.0, units C optional',
         },
     )
-    ground_view_factor: float | None = Field(
-        default=0.5, ge=0.0, le=1.0, json_schema_extra={'note': 'optional'}
+    ground_view_factor: float | Literal['', 'Autocalculate'] | None = Field(
+        default='Autocalculate', json_schema_extra={'note': 'optional'}
     )
     ground_temperature_schedule_name: ScheduleNamesRef | None = Field(
         default=None,
@@ -3865,6 +3890,34 @@ class SurfacePropertyUnderwater(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['ScheduleNames'])
+
+
+class ZoneMRTCalculation(IDFBaseModel):
+    """Blends MRT values calculated for People instances into one Zone MRT. The
+    weighting factors must sum to a value from 0.0 through 1.0. Only one
+    ZoneMRTCalculation object is allowed for each Zone. All referenced People
+    instances must be in the named Zone and must select at least one Thermal
+    Comfort Model Type."""
+
+    _idf_object_type: ClassVar[str] = 'ZoneMRTCalculation'
+    zone_name: ZoneNamesRef = Field(
+        ...,
+        json_schema_extra={
+            'object_list': ['ZoneNames'],
+            'note': 'This field accepts a Zone name only, not a Space or SpaceList name.',
+        },
+    )
+    people_names: list[ZoneMRTCalculationPeopleNamesItem] | None = Field(default=None)
+
+    @property
+    def zone(self) -> Zone | None:
+        v = self.zone_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ZoneNames'])
 
 
 class ZonePropertyLocalEnvironment(IDFBaseModel):

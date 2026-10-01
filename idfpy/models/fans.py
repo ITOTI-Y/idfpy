@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Fans
 """
 
@@ -14,8 +14,8 @@ from pydantic import Field
 from ._base import IDFBaseModel
 from ._refs import (
     BivariateFunctionsRef,
-    FansComponentModelRef,
-    FansCVandVAVRef,
+    FansCVandOnOffandVAVRef,
+    FansZoneExhaustRef,
     ScheduleNamesRef,
     UnivariateFunctionsRef,
     ZoneNamesRef,
@@ -566,14 +566,16 @@ class FanPerformanceNightVentilation(IDFBaseModel):
     """Specifies an alternate set of performance parameters for a fan. These
     alternate parameters are used when a system manager (such as
     AvailabilityManager:NightVentilation) sets a specified flow rate. May be
-    used with Fan:ConstantVolume, Fan:VariableVolume and Fan:ComponentModel. If
-    the fan model senses that a fixed flow rate has been set, it will use these
-    alternate performance parameters. It is assumed that the fan will run at a
-    fixed speed in the alternate mode."""
+    used with Fan:ConstantVolume, Fan:VariableVolume, Fan:ZoneExhaust, and
+    Fan:OnOff (not Fan:ComponentModel). Fan:SystemModel has its own night
+    ventilation settings. If the fan model senses that a fixed flow rate has
+    been set, it will use these alternate performance parameters. It is assumed
+    that the fan will run at a fixed speed in the alternate mode."""
 
     _idf_object_type: ClassVar[str] = 'FanPerformance:NightVentilation'
-    fan_name: FansCVandVAVRef | FansComponentModelRef = Field(
-        ..., json_schema_extra={'object_list': ['FansCVandVAV', 'FansComponentModel']}
+    fan_name: FansCVandOnOffandVAVRef | FansZoneExhaustRef = Field(
+        ...,
+        json_schema_extra={'object_list': ['FansCVandOnOffandVAV', 'FansZoneExhaust']},
     )
     fan_total_efficiency: float = Field(..., le=1.0, gt=0.0)
     pressure_rise: float = Field(..., json_schema_extra={'units': 'Pa'})
@@ -591,14 +593,16 @@ class FanPerformanceNightVentilation(IDFBaseModel):
     )
 
     @property
-    def fan(self) -> FanComponentModel | FanConstantVolume | FanVariableVolume | None:
+    def fan(
+        self,
+    ) -> FanConstantVolume | FanOnOff | FanVariableVolume | FanZoneExhaust | None:
         v = self.fan_name
         if not v:
             return None
         idf = self._idf
         if idf is None:
             raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['FansCVandVAV', 'FansComponentModel'])
+        return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansZoneExhaust'])
 
 
 class FanSystemModel(IDFBaseModel):

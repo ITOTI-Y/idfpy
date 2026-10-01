@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Thermal Zones and Surfaces
 """
 
@@ -20,6 +20,7 @@ from ._base import IDFBaseModel
 from ._refs import (
     AllShadingSurfNamesRef,
     ComplexFenestrationStatesRef,
+    ConstructionAssignmentSetNamesRef,
     ConstructionNamesRef,
     DaylightingControlNamesRef,
     GlazedExtSubSurfNamesRef,
@@ -39,6 +40,7 @@ from ._refs import (
 
 if TYPE_CHECKING:
     from .constructions import (
+        ConstructionAssignmentSet,
         WindowMaterialBlind,
         WindowMaterialGlazing,
         WindowMaterialGlazingGroupThermochromic,
@@ -134,11 +136,11 @@ class BuildingSurfaceDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_type: Literal['Ceiling', 'Floor', 'Roof', 'Wall'] = Field(...)
-    construction_name: ConstructionNamesRef = Field(
-        ...,
+    construction_name: ConstructionNamesRef | None = Field(
+        default=None,
         json_schema_extra={
             'object_list': ['ConstructionNames'],
-            'note': 'To be matched with a construction in this input file',
+            'note': "To be matched with a construction in this input file. If blank, a ConstructionAssignmentSet assigned to the surface's Space or Building is required.",
         },
     )
     zone_name: ZoneNamesRef = Field(
@@ -608,13 +610,28 @@ class FenestrationSurfaceDetailed(FixedVertexGeometryMixin, IDFBaseModel):
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
     surface_type: Literal[
-        'Door', 'GlassDoor', 'TubularDaylightDiffuser', 'TubularDaylightDome', 'Window'
-    ] = Field(...)
-    construction_name: ComplexFenestrationStatesRef | ConstructionNamesRef = Field(
+        'Door',
+        'FixedWindow',
+        'GlassDoor',
+        'OperableWindow',
+        'OverheadDoor',
+        'Skylight',
+        'TubularDaylightDiffuser',
+        'TubularDaylightDome',
+        'Window',
+    ] = Field(
         ...,
         json_schema_extra={
+            'note': 'Window is kept for backward compatibility and is treated as FixedWindow. Prefer FixedWindow, OperableWindow, or Skylight for new models.'
+        },
+    )
+    construction_name: (
+        ComplexFenestrationStatesRef | ConstructionNamesRef
+    ) | None = Field(
+        default=None,
+        json_schema_extra={
             'object_list': ['ComplexFenestrationStates', 'ConstructionNames'],
-            'note': 'To be matched with a construction in this input file',
+            'note': "To be matched with a construction in this input file. If blank, a ConstructionAssignmentSet assigned to the surface's Space or Building is required.",
         },
     )
     building_surface_name: SurfaceNamesRef = Field(
@@ -1353,11 +1370,11 @@ class InternalMass(IDFBaseModel):
     _idf_object_type: ClassVar[str] = 'InternalMass'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
-    construction_name: ConstructionNamesRef = Field(
-        ...,
+    construction_name: ConstructionNamesRef | None = Field(
+        default=None,
         json_schema_extra={
             'object_list': ['ConstructionNames'],
-            'note': 'To be matched with a construction in this input file',
+            'note': "To be matched with a construction in this input file. If blank, a ConstructionAssignmentSet assigned to the surface's Space or Building is required.",
         },
     )
     zone_or_zonelist_name: ZoneAndZoneListNamesRef | None = Field(
@@ -2080,6 +2097,13 @@ class Space(IDFBaseModel):
             'note': 'Space type is used to tag spaces by activity type, such as office, classroom, storage, etc.'
         },
     )
+    construction_assignment_set_name: ConstructionAssignmentSetNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ConstructionAssignmentSetNames'],
+            'note': 'Optional. Overrides the Building-level Construction Assignment Set for surfaces in this Space.',
+        },
+    )
     tags: list[SpaceTagsItem] | None = Field(default=None)
 
     @property
@@ -2091,6 +2115,16 @@ class Space(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['ZoneNames'])
+
+    @property
+    def construction_assignment_set(self) -> ConstructionAssignmentSet | None:
+        v = self.construction_assignment_set_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionAssignmentSetNames'])
 
 
 class SpaceList(IDFBaseModel):
@@ -2896,7 +2930,7 @@ class WindowPropertyFrameAndDivider(IDFBaseModel):
         },
     )
     frame_conductance: float | None = Field(
-        default=None,
+        default=0.0,
         ge=0.0,
         json_schema_extra={
             'units': 'W/m2-K',
@@ -2942,16 +2976,16 @@ class WindowPropertyFrameAndDivider(IDFBaseModel):
             'note': 'Width of dividers in plane of window Width assumed the same for all dividers',
         },
     )
-    number_of_horizontal_dividers: float | None = Field(
-        default=0.0,
-        ge=0.0,
+    number_of_horizontal_dividers: int | None = Field(
+        default=0,
+        ge=0,
         json_schema_extra={
             'note': '"Horizontal" means parallel to local window X-axis'
         },
     )
-    number_of_vertical_dividers: float | None = Field(
-        default=0.0,
-        ge=0.0,
+    number_of_vertical_dividers: int | None = Field(
+        default=0,
+        ge=0,
         json_schema_extra={'note': '"Vertical" means parallel to local window Y-axis'},
     )
     divider_outside_projection: float | None = Field(

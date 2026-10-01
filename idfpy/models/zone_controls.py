@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Zone HVAC Controls and Thermostats
 """
 
@@ -23,7 +23,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
-    from .internal_gains import People
+    from .internal_gains import People, PeopleInstance
     from .thermal_zones import Zone, ZoneList
 
 
@@ -282,11 +282,11 @@ class ZoneControlContaminantController(IDFBaseModel):
             'note': 'Availability schedule name for CO2 controller. Schedule value > 0 means the CO2 controller is enabled. If this field is blank, then CO2 controller is always enabled.',
         },
     )
-    carbon_dioxide_setpoint_schedule_name: ScheduleNamesRef | None = Field(
-        default=None,
+    carbon_dioxide_setpoint_schedule_name: ScheduleNamesRef = Field(
+        ...,
         json_schema_extra={
             'object_list': ['ScheduleNames'],
-            'note': 'Schedule values should be carbon dioxide concentration in parts per million (ppm)',
+            'note': 'Schedule values should be carbon dioxide concentration in parts per million (ppm) This field is required whenever this object is specified. The setpoint is used when Carbon Dioxide Concentration = ...',
         },
     )
     minimum_carbon_dioxide_concentration_schedule_name: ScheduleNamesRef | None = Field(
@@ -401,21 +401,25 @@ class ZoneControlHumidistat(IDFBaseModel):
     zone_name: ZoneNamesRef = Field(
         ..., json_schema_extra={'object_list': ['ZoneNames']}
     )
-    humidifying_relative_humidity_setpoint_schedule_name: ScheduleNamesRef = Field(
+    humidifying_setpoint_schedule_name: ScheduleNamesRef = Field(
         ...,
         json_schema_extra={
             'object_list': ['ScheduleNames'],
-            'note': 'hourly schedule values should be in Relative Humidity (percent)',
+            'note': 'Hourly schedule values should be in relative humidity (percent) or dew-point temperatures (deg. C).',
         },
     )
-    dehumidifying_relative_humidity_setpoint_schedule_name: ScheduleNamesRef | None = (
-        Field(
-            default=None,
-            json_schema_extra={
-                'object_list': ['ScheduleNames'],
-                'note': 'hourly schedule values should be in Relative Humidity (percent)',
-            },
-        )
+    dehumidifying_setpoint_schedule_name: ScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ScheduleNames'],
+            'note': 'Hourly schedule values should be in relative humidity (percent) or dew-point temperatures (deg. C).',
+        },
+    )
+    control_variable: Literal['', 'Dewpoint', 'RelativeHumidity'] | None = Field(
+        default='RelativeHumidity',
+        json_schema_extra={
+            'note': 'When using RelativeHumidity, the schedule values should be in percentages.'
+        },
     )
 
     @property
@@ -429,8 +433,8 @@ class ZoneControlHumidistat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
-        v = self.humidifying_relative_humidity_setpoint_schedule_name
+    def humidifying_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.humidifying_setpoint_schedule_name
         if not v:
             return None
         idf = self._idf
@@ -439,8 +443,8 @@ class ZoneControlHumidistat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dehumidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
-        v = self.dehumidifying_relative_humidity_setpoint_schedule_name
+    def dehumidifying_setpoint_schedule(self) -> IDFBaseModel | None:
+        v = self.dehumidifying_setpoint_schedule_name
         if not v:
             return None
         idf = self._idf
@@ -1025,7 +1029,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def specific_people(self) -> People | None:
+    def specific_people(self) -> People | PeopleInstance | None:
         v = self.specific_people_name
         if not v:
             return None
