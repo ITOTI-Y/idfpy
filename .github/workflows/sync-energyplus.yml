@@ -46,37 +46,40 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "EnergyPlus $VERSION -> $ASSET_URL"
 
-      - name: Skip if version already released
+      - name: Skip if EnergyPlus line already released
         id: check
         run: |
-          VERSION="${{ steps.ep.outputs.version }}"
-          TAG="v${VERSION}"
+          EP_VERSION="${{ steps.ep.outputs.version }}"
+          MAJOR_MINOR="${EP_VERSION%.*}"
 
-          TAG_EXISTS=false
-          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null 2>&1; then
-            TAG_EXISTS=true
-          fi
-
-          PYPI_EXISTS=false
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-            "https://pypi.org/pypi/idfpy/${VERSION}/json")
-          if [ "$HTTP_CODE" = "200" ]; then
-            PYPI_EXISTS=true
-          fi
+          # idfpy versions are <EP major>.<EP minor>.<idfpy patch>; any release
+          # on this line means the EnergyPlus version is already covered.
+          LINE_TAGS=$(git tag -l "v${MAJOR_MINOR}.*")
+          LINE_PYPI=$(curl -fsS "https://pypi.org/pypi/idfpy/json" \
+            | jq -r --arg p "${MAJOR_MINOR}." '.releases | keys[] | select(startswith($p))')
 
           SKIP=false
-          if [ "$TAG_EXISTS" = "true" ] && [ "$PYPI_EXISTS" = "true" ]; then
-            echo "Tag $TAG and PyPI ${VERSION} both already exist; skipping"
+          if [ -n "$LINE_TAGS" ] && [ -n "$LINE_PYPI" ]; then
+            echo "idfpy ${MAJOR_MINOR}.* already released for EnergyPlus ${EP_VERSION}; skipping"
             SKIP=true
-          elif [ "$TAG_EXISTS" = "true" ]; then
-            echo "::error::Tag $TAG already exists but PyPI ${VERSION} is missing; refusing to proceed"
+          elif [ -n "$LINE_TAGS" ]; then
+            echo "::error::Tags v${MAJOR_MINOR}.* exist but PyPI has no ${MAJOR_MINOR}.* release; refusing to proceed"
             exit 1
-          elif [ "$PYPI_EXISTS" = "true" ]; then
-            echo "::error::PyPI ${VERSION} already exists but tag $TAG is missing; refusing to proceed"
+          elif [ -n "$LINE_PYPI" ]; then
+            echo "::error::PyPI has ${MAJOR_MINOR}.* releases but tags v${MAJOR_MINOR}.* are missing; refusing to proceed"
             exit 1
           fi
 
-          echo "skip=$SKIP" >> "$GITHUB_OUTPUT"
+          # A new line starts at the current idfpy patch shared by all lines.
+          PATCH=$(git tag -l 'v*' \
+            | sed -nE 's/^v[0-9]+\.[0-9]+\.([0-9]+)$/\1/p' | sort -n | tail -1)
+          RELEASE_VERSION="${MAJOR_MINOR}.${PATCH:-0}"
+
+          {
+            echo "skip=$SKIP"
+            echo "release_version=$RELEASE_VERSION"
+          } >> "$GITHUB_OUTPUT"
+          echo "EnergyPlus ${EP_VERSION} -> idfpy ${RELEASE_VERSION} (skip=${SKIP})"
 
       - name: Download schema
         if: steps.check.outputs.skip == 'false'
@@ -107,6 +110,7 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
+          RELEASE_VERSION="${{ steps.check.outputs.release_version }}"
           MAJOR_MINOR="${EP_VERSION%.*}"
 
           OBJ_COUNT=$(grep -rh '_idf_object_type: ClassVar' idfpy/models/*.py \
@@ -115,7 +119,7 @@ jobs:
           PROP_COUNT=$(grep -rh '^    @property$' idfpy/models/*.py \
             | grep -cv '_base.py')
 
-          sed -i "s/^version = .*/version = \"${EP_VERSION}\"/" pyproject.toml
+          sed -i "s/^version = .*/version = \"${RELEASE_VERSION}\"/" pyproject.toml
 
           # README badge: URL slug + alt text
           sed -Ei "s|EnergyPlus-[0-9.]+-orange|EnergyPlus-${MAJOR_MINOR}-orange|" README.md
@@ -138,6 +142,7 @@ jobs:
         if: steps.check.outputs.skip == 'false'
         run: |
           EP_VERSION="${{ steps.ep.outputs.version }}"
+          TAG="v${{ steps.check.outputs.release_version }}"
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -162,11 +167,11 @@ jobs:
             exit 0
           fi
 
-          git commit -m "feat(models): sync to EnergyPlus ${EP_VERSION}"
-          git tag -a "v${EP_VERSION}" -m "EnergyPlus ${EP_VERSION} models"
+          git commit -m "feat(models): sync ${TAG} to EnergyPlus ${EP_VERSION}"
+          git tag -a "$TAG" -m "idfpy ${TAG} (EnergyPlus ${EP_VERSION})"
 
           git push origin latest --force-with-lease
-          git push origin "v${EP_VERSION}"
+          git push origin "$TAG"
 
           echo "updated=true" >> "$GITHUB_OUTPUT"
 
