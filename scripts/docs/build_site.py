@@ -182,6 +182,10 @@ def main(
         if missing:
             raise typer.BadParameter(f'no release branch for {sorted(missing)}')
         releases = [r for r in releases if r.ep_version in versions]
+    # Sites are keyed by major.minor, so an EnergyPlus patch branch such as
+    # release/ep-26.2.1 supersedes release/ep-26.2.0 instead of colliding.
+    newest_per_line = {r.short: r for r in sorted(releases, key=lambda r: r.key)}
+    releases = sorted(newest_per_line.values(), key=lambda r: r.key, reverse=True)
     if not releases:
         raise typer.BadParameter(
             f'no {remote}/release/ep-* branches found; run git fetch'
