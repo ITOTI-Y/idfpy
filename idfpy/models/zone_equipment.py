@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Zone HVAC Equipment Connections
 """
 
@@ -225,7 +225,7 @@ class SpaceHVACEquipmentConnections(IDFBaseModel):
     the air return node. If any space in a zone has a
     SpaceHVAC:EquipmentConnections object, then all spaces in the zone must have
     one. Used only when ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance for
-    Simulation\" is Yes."""
+    Sizing\"is Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:EquipmentConnections'
     space_name: SpaceNamesRef = Field(
@@ -278,7 +278,7 @@ class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
     """Mixes the airflow from one or more Spaces into a piece of zone equipment.
     All spaces in the zone must also have a SpaceHVAC:EquipmentConnections
     object. Used only when ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance
-    for Simulation\" is Yes."""
+    for Sizing\" = Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneEquipmentMixer'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
@@ -287,7 +287,7 @@ class SpaceHVACZoneEquipmentMixer(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['ZoneNames'],
-            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConnections object.',
+            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConfiguration object.',
         },
     )
     zone_equipment_inlet_node_name: str = Field(
@@ -331,7 +331,7 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
     SpaceHVAC:ZoneEquipmentSplitter, then all equipment in the zone must have
     one. except Fan:ZoneExhaust. All spaces in the zone must also have a
     SpaceHVAC:EquipmentConnections object. Used only when
-    ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance for Simulation\" is Yes."""
+    ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance for Sizing\" = Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneEquipmentSplitter'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
@@ -340,7 +340,7 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['ZoneNames'],
-            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConnections object.',
+            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConfiguration object.',
         },
     )
     zone_equipment_object_type: Literal[
@@ -454,7 +454,7 @@ class SpaceHVACZoneReturnMixer(IDFBaseModel):
     """Mixes the return airflow from one or more Spaces into a zone return node.
     All spaces in the zone must also have a SpaceHVAC:EquipmentConnections
     object. Used only when ZoneAirHeatBalanceAlgorithm \"Do Space Heat Balance
-    for Simulation\" is Yes."""
+    for Sizing\" = Yes."""
 
     _idf_object_type: ClassVar[str] = 'SpaceHVAC:ZoneReturnMixer'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
@@ -463,7 +463,7 @@ class SpaceHVACZoneReturnMixer(IDFBaseModel):
         ...,
         json_schema_extra={
             'object_list': ['ZoneNames'],
-            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConnections object.',
+            'note': 'Must be a controlled zone which has a ZoneHVAC:EquipmentConfiguration object.',
         },
     )
     zone_return_air_node_name: str = Field(

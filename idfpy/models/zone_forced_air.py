@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Zone HVAC Forced Air Units
 """
 
@@ -1941,58 +1941,6 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
             'note': 'Enter the name of a DesignSpecificationZoneHVACSizing object.',
         },
     )
-    heating_fuel_efficiency_schedule_name: ScheduleNamesRef | None = Field(
-        default=None,
-        json_schema_extra={
-            'object_list': ['ScheduleNames'],
-            'note': 'Reference heating fuel efficiency value for converting heating ideal loads into fuel energy consumption. The minimum schedule value must be greater than 0.0. The maximum value depends on the techno...',
-        },
-    )
-    heating_fuel_type: (
-        Literal[
-            '',
-            'Coal',
-            'Diesel',
-            'DistrictCooling',
-            'DistrictHeatingSteam',
-            'DistrictHeatingWater',
-            'Electricity',
-            'FuelOilNo1',
-            'FuelOilNo2',
-            'Gasoline',
-            'NaturalGas',
-            'OtherFuel1',
-            'OtherFuel2',
-            'Propane',
-        ]
-        | None
-    ) = Field(default='DistrictHeatingWater')
-    cooling_fuel_efficiency_schedule_name: ScheduleNamesRef | None = Field(
-        default=None,
-        json_schema_extra={
-            'object_list': ['ScheduleNames'],
-            'note': 'Reference cooling fuel efficiency value for converting cooling ideal loads into fuel energy consumption. The minimum schedule value must be greater than 0.0. The maximum value depends on the techno...',
-        },
-    )
-    cooling_fuel_type: (
-        Literal[
-            '',
-            'Coal',
-            'Diesel',
-            'DistrictCooling',
-            'DistrictHeatingSteam',
-            'DistrictHeatingWater',
-            'Electricity',
-            'FuelOilNo1',
-            'FuelOilNo2',
-            'Gasoline',
-            'NaturalGas',
-            'OtherFuel1',
-            'OtherFuel2',
-            'Propane',
-        ]
-        | None
-    ) = Field(default='DistrictCooling')
 
     @property
     def availability_schedule(self) -> IDFBaseModel | None:
@@ -2049,26 +1997,6 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['DesignSpecificationZoneHVACSizingName'])
-
-    @property
-    def heating_fuel_efficiency_schedule(self) -> IDFBaseModel | None:
-        v = self.heating_fuel_efficiency_schedule_name
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['ScheduleNames'])
-
-    @property
-    def cooling_fuel_efficiency_schedule(self) -> IDFBaseModel | None:
-        v = self.cooling_fuel_efficiency_schedule_name
-        if not v:
-            return None
-        idf = self._idf
-        if idf is None:
-            raise RuntimeError('Not bound to IDF')
-        return idf._resolve_forward(v, ['ScheduleNames'])
 
 
 class ZoneHVACOutdoorAirUnit(IDFBaseModel):
@@ -2987,13 +2915,6 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         json_schema_extra={
             'units': 'C',
             'note': 'For Capacity Control Method = SingleZoneVAV, enter the maximum air temperature limit for reduced fan speed.',
-        },
-    )
-    dx_heating_coil_sizing_ratio: float | None = Field(
-        default=1.0,
-        gt=0.0,
-        json_schema_extra={
-            'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
 
@@ -4114,13 +4035,6 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         json_schema_extra={
             'object_list': ['UnitarySystemPerformanceNames'],
             'note': 'The name of the performance specification object used to describe the multispeed coil or fan.',
-        },
-    )
-    dx_heating_coil_sizing_ratio: float | None = Field(
-        default=1.0,
-        gt=0.0,
-        json_schema_extra={
-            'note': 'Used to adjust heat pump heating capacity with respect to DX cooling capacity used only for heat pump configurations (i.e., a DX cooling and DX heating coil is used).'
         },
     )
 
