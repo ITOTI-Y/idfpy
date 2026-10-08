@@ -36,8 +36,8 @@ from idfpy.models import Zone
 
 idf = IDF.load(Path('existing.idf'))  # format detected from the extension
 
-zone = idf.get(Zone, 'Zone1')         # typed as Zone | None
-zone.multiplier = 2                   # validated on assignment
+zone = idf.get(Zone, 'Zone1')  # typed as Zone | None
+zone.multiplier = 2  # validated on assignment
 
 idf.save(Path('modified.idf'))
 ```

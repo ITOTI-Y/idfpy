@@ -15,8 +15,8 @@ result = simulate(
     Path('model.idf'),
     weather=Path('weather.epw'),
     output_dir=Path('results'),
-    annual=True,          # -a
-    readvars=True,        # -r, convert ESO output to CSV
+    annual=True,  # -a
+    readvars=True,  # -r, convert ESO output to CSV
 )
 ```
 
@@ -33,10 +33,10 @@ HVACTemplate objects are expanded with ExpandObjects unless you pass
 ## Reading the result
 
 ```python
-result.success        # True when EnergyPlus exited with code 0
+result.success  # True when EnergyPlus exited with code 0
 result.return_code
-result.end_message    # contents of eplusout.end
-result.err            # ErrSummary parsed from eplusout.err, or None
+result.end_message  # contents of eplusout.end
+result.err  # ErrSummary parsed from eplusout.err, or None
 
 if result.err:
     print(result.err.warning_count, result.err.severe_count, result.err.has_fatal)
@@ -50,8 +50,11 @@ if result.err:
 from idfpy.sim import SimJob, simulate_batch
 
 jobs = [
-    SimJob(idf=Path(f'variant_{i}.idf'), weather=Path('weather.epw'),
-           output_dir=Path(f'results/{i}'))
+    SimJob(
+        idf=Path(f'variant_{i}.idf'),
+        weather=Path('weather.epw'),
+        output_dir=Path(f'results/{i}'),
+    )
     for i in range(8)
 ]
 results = simulate_batch(jobs, max_concurrent=4)
