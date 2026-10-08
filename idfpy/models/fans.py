@@ -22,6 +22,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .thermal_zones import Zone
 
 
@@ -290,7 +295,7 @@ class FanComponentModel(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -300,7 +305,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_pressure_rise_curve(self) -> IDFBaseModel | None:
+    def fan_pressure_rise_curve(self) -> BivariateFunctionsTarget | None:
         v = self.fan_pressure_rise_curve_name
         if not v:
             return None
@@ -310,7 +315,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def duct_static_pressure_reset_curve(self) -> IDFBaseModel | None:
+    def duct_static_pressure_reset_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.duct_static_pressure_reset_curve_name
         if not v:
             return None
@@ -322,7 +327,7 @@ class FanComponentModel(IDFBaseModel):
     @property
     def normalized_fan_static_efficiency_curve_non_stall_region_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_fan_static_efficiency_curve_name_non_stall_region
         if not v:
             return None
@@ -334,7 +339,7 @@ class FanComponentModel(IDFBaseModel):
     @property
     def normalized_fan_static_efficiency_curve_stall_region_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_fan_static_efficiency_curve_name_stall_region
         if not v:
             return None
@@ -346,7 +351,7 @@ class FanComponentModel(IDFBaseModel):
     @property
     def normalized_dimensionless_airflow_curve_non_stall_region_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_dimensionless_airflow_curve_name_non_stall_region
         if not v:
             return None
@@ -358,7 +363,7 @@ class FanComponentModel(IDFBaseModel):
     @property
     def normalized_dimensionless_airflow_curve_stall_region_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_dimensionless_airflow_curve_name_stall_region
         if not v:
             return None
@@ -368,7 +373,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def maximum_belt_efficiency_curve(self) -> IDFBaseModel | None:
+    def maximum_belt_efficiency_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.maximum_belt_efficiency_curve_name
         if not v:
             return None
@@ -378,7 +383,9 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_region_1_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_1_ref(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_belt_efficiency_curve_name_region_1
         if not v:
             return None
@@ -388,7 +395,9 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_region_2_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_2_ref(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_belt_efficiency_curve_name_region_2
         if not v:
             return None
@@ -398,7 +407,9 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_belt_efficiency_curve_region_3_ref(self) -> IDFBaseModel | None:
+    def normalized_belt_efficiency_curve_region_3_ref(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.normalized_belt_efficiency_curve_name_region_3
         if not v:
             return None
@@ -408,7 +419,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def maximum_motor_efficiency_curve(self) -> IDFBaseModel | None:
+    def maximum_motor_efficiency_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.maximum_motor_efficiency_curve_name
         if not v:
             return None
@@ -418,7 +429,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def normalized_motor_efficiency_curve(self) -> IDFBaseModel | None:
+    def normalized_motor_efficiency_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.normalized_motor_efficiency_curve_name
         if not v:
             return None
@@ -428,7 +439,7 @@ class FanComponentModel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def vfd_efficiency_curve(self) -> IDFBaseModel | None:
+    def vfd_efficiency_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.vfd_efficiency_curve_name
         if not v:
             return None
@@ -477,7 +488,7 @@ class FanConstantVolume(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -532,7 +543,7 @@ class FanOnOff(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -542,7 +553,9 @@ class FanOnOff(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_power_ratio_function_of_speed_ratio_curve(self) -> IDFBaseModel | None:
+    def fan_power_ratio_function_of_speed_ratio_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fan_power_ratio_function_of_speed_ratio_curve_name
         if not v:
             return None
@@ -552,7 +565,9 @@ class FanOnOff(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def fan_efficiency_ratio_function_of_speed_ratio_curve(self) -> IDFBaseModel | None:
+    def fan_efficiency_ratio_function_of_speed_ratio_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fan_efficiency_ratio_function_of_speed_ratio_curve_name
         if not v:
             return None
@@ -713,7 +728,7 @@ class FanSystemModel(IDFBaseModel):
     speed_fractions: list[FanSystemModelSpeedFractionsItem] | None = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -723,7 +738,9 @@ class FanSystemModel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def electric_power_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def electric_power_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_power_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -798,7 +815,7 @@ class FanVariableVolume(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -865,7 +882,7 @@ class FanZoneExhaust(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -875,7 +892,7 @@ class FanZoneExhaust(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.flow_fraction_schedule_name
         if not v:
             return None
@@ -885,7 +902,7 @@ class FanZoneExhaust(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_zone_temperature_limit_schedule(self) -> IDFBaseModel | None:
+    def minimum_zone_temperature_limit_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_zone_temperature_limit_schedule_name
         if not v:
             return None
@@ -895,7 +912,7 @@ class FanZoneExhaust(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def balanced_exhaust_fraction_schedule(self) -> IDFBaseModel | None:
+    def balanced_exhaust_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.balanced_exhaust_fraction_schedule_name
         if not v:
             return None

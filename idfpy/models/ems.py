@@ -7,7 +7,7 @@ Group: Energy Management System (EMS)
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -22,6 +22,17 @@ from ._refs import (
     TrivariateFunctionsRef,
     UnivariateFunctionsRef,
 )
+
+if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ConstructionNamesTarget,
+        MultivariateFunctionsTarget,
+        QuadvariateFunctionsTarget,
+        QuintvariateFunctionsTarget,
+        TrivariateFunctionsTarget,
+        UnivariateFunctionsTarget,
+    )
 
 
 class EnergyManagementSystemGlobalVariableVariablesItem(IDFBaseModel):
@@ -94,7 +105,7 @@ class EnergyManagementSystemConstructionIndexVariable(IDFBaseModel):
     )
 
     @property
-    def construction_object(self) -> IDFBaseModel | None:
+    def construction_object(self) -> ConstructionNamesTarget | None:
         v = self.construction_object_name
         if not v:
             return None
@@ -137,7 +148,17 @@ class EnergyManagementSystemCurveOrTableIndexVariable(IDFBaseModel):
     )
 
     @property
-    def curve_or_table_object(self) -> IDFBaseModel | None:
+    def curve_or_table_object(
+        self,
+    ) -> (
+        BivariateFunctionsTarget
+        | MultivariateFunctionsTarget
+        | QuadvariateFunctionsTarget
+        | QuintvariateFunctionsTarget
+        | TrivariateFunctionsTarget
+        | UnivariateFunctionsTarget
+        | None
+    ):
         v = self.curve_or_table_object_name
         if not v:
             return None

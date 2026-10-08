@@ -34,6 +34,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .condensers import (
         CoolingTowerSingleSpeed,
         CoolingTowerTwoSpeed,
@@ -448,7 +449,7 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
     ) = Field(default='SequentialLoad')
 
     @property
-    def pump_schedule(self) -> IDFBaseModel | None:
+    def pump_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_schedule_name
         if not v:
             return None
@@ -470,7 +471,7 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantOperationSchemes'])
 
     @property
-    def chilled_water_setpoint_schedule(self) -> IDFBaseModel | None:
+    def chilled_water_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.chilled_water_setpoint_schedule_name
         if not v:
             return None
@@ -492,7 +493,7 @@ class HVACTemplatePlantChilledWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['CondenserOperationSchemes'])
 
     @property
-    def condenser_water_setpoint_schedule(self) -> IDFBaseModel | None:
+    def condenser_water_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.condenser_water_setpoint_schedule_name
         if not v:
             return None
@@ -778,7 +779,7 @@ class HVACTemplatePlantHotWaterLoop(IDFBaseModel):
     ) = Field(default='SequentialLoad')
 
     @property
-    def pump_schedule(self) -> IDFBaseModel | None:
+    def pump_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_schedule_name
         if not v:
             return None
@@ -800,7 +801,7 @@ class HVACTemplatePlantHotWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantOperationSchemes'])
 
     @property
-    def hot_water_setpoint_schedule(self) -> IDFBaseModel | None:
+    def hot_water_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.hot_water_setpoint_schedule_name
         if not v:
             return None
@@ -950,7 +951,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
     ) = Field(default='SequentialLoad')
 
     @property
-    def pump_schedule(self) -> IDFBaseModel | None:
+    def pump_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_schedule_name
         if not v:
             return None
@@ -970,7 +971,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['PlantOperationSchemes'])
 
     @property
-    def high_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def high_temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.high_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -980,7 +981,7 @@ class HVACTemplatePlantMixedWaterLoop(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def low_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def low_temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.low_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -1518,7 +1519,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -1528,7 +1529,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -1548,7 +1549,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateConstantVolumeZones'])
 
     @property
-    def cooling_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_setpoint_schedule_name
         if not v:
             return None
@@ -1558,7 +1559,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -1578,7 +1579,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateConstantVolumeZones'])
 
     @property
-    def heating_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_setpoint_schedule_name
         if not v:
             return None
@@ -1588,7 +1589,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_availability_schedule_name
         if not v:
             return None
@@ -1598,7 +1599,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_setpoint_schedule_name
         if not v:
             return None
@@ -1608,7 +1609,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -1660,7 +1661,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
     @property
     def dehumidification_relative_humidity_setpoint_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.dehumidification_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -1670,7 +1671,7 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -1690,7 +1691,9 @@ class HVACTemplateSystemConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def humidifier_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.humidifier_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -1973,7 +1976,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -1983,7 +1986,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -1993,7 +1996,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_setpoint_schedule_name
         if not v:
             return None
@@ -2003,7 +2006,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -2013,7 +2016,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_setpoint_schedule_name
         if not v:
             return None
@@ -2023,7 +2026,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -2033,7 +2036,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dehumidification_setpoint_schedule(self) -> IDFBaseModel | None:
+    def dehumidification_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.dehumidification_setpoint_schedule_name
         if not v:
             return None
@@ -2043,7 +2046,7 @@ class HVACTemplateSystemDedicatedOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_setpoint_schedule(self) -> IDFBaseModel | None:
+    def humidifier_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_setpoint_schedule_name
         if not v:
             return None
@@ -2579,7 +2582,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -2589,7 +2592,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -2599,7 +2602,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_setpoint_schedule_name
         if not v:
             return None
@@ -2609,7 +2612,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -2619,7 +2622,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_setpoint_schedule_name
         if not v:
             return None
@@ -2629,7 +2632,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_availability_schedule_name
         if not v:
             return None
@@ -2639,7 +2642,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_setpoint_schedule_name
         if not v:
             return None
@@ -2649,7 +2652,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -2711,7 +2714,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
     @property
     def dehumidification_relative_humidity_setpoint_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.dehumidification_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -2721,7 +2724,7 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -2741,7 +2744,9 @@ class HVACTemplateSystemDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def humidifier_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.humidifier_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -3098,7 +3103,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -3108,7 +3113,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -3118,7 +3123,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_setpoint_schedule_name
         if not v:
             return None
@@ -3128,7 +3133,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -3138,7 +3143,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_setpoint_schedule_name
         if not v:
             return None
@@ -3148,7 +3153,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -3198,7 +3203,7 @@ class HVACTemplateSystemPackagedVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -3476,7 +3481,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -3496,7 +3501,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -3506,7 +3511,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -3516,7 +3521,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -3526,7 +3531,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -3566,7 +3571,7 @@ class HVACTemplateSystemUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -3918,7 +3923,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -3938,7 +3943,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -3948,7 +3953,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -3958,7 +3963,9 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_pump_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heat_pump_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_pump_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -3968,7 +3975,9 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supplemental_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.supplemental_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -3978,7 +3987,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -4018,7 +4027,7 @@ class HVACTemplateSystemUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -4470,7 +4479,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -4490,7 +4499,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -4500,7 +4509,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -4510,7 +4519,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -4522,7 +4531,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
     @property
     def supplemental_heating_or_reheat_coil_availability_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.supplemental_heating_or_reheat_coil_availability_schedule_name
         if not v:
             return None
@@ -4532,7 +4541,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -4564,7 +4573,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
     @property
     def dehumidification_relative_humidity_setpoint_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.dehumidification_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -4574,7 +4583,7 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -4594,7 +4603,9 @@ class HVACTemplateSystemUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def humidifier_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.humidifier_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -4954,7 +4965,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -4964,7 +4975,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -4974,7 +4985,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_setpoint_schedule_name
         if not v:
             return None
@@ -4984,7 +4995,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -4994,7 +5005,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_setpoint_schedule_name
         if not v:
             return None
@@ -5004,7 +5015,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_availability_schedule_name
         if not v:
             return None
@@ -5014,7 +5025,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def preheat_coil_setpoint_schedule(self) -> IDFBaseModel | None:
+    def preheat_coil_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.preheat_coil_setpoint_schedule_name
         if not v:
             return None
@@ -5024,7 +5035,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -5074,7 +5085,7 @@ class HVACTemplateSystemVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifier_availability_schedule(self) -> IDFBaseModel | None:
+    def humidifier_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.humidifier_availability_schedule_name
         if not v:
             return None
@@ -5398,7 +5409,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
     )
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -5418,7 +5429,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def thermostat_priority_schedule(self) -> IDFBaseModel | None:
+    def thermostat_priority_schedule(self) -> ScheduleNamesTarget | None:
         v = self.thermostat_priority_schedule_name
         if not v:
             return None
@@ -5428,7 +5439,7 @@ class HVACTemplateSystemVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -5483,7 +5494,7 @@ class HVACTemplateThermostat(IDFBaseModel):
     )
 
     @property
-    def heating_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_setpoint_schedule_name
         if not v:
             return None
@@ -5493,7 +5504,7 @@ class HVACTemplateThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_setpoint_schedule(self) -> IDFBaseModel | None:
+    def cooling_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_setpoint_schedule_name
         if not v:
             return None
@@ -5626,7 +5637,7 @@ class HVACTemplateZoneBaseboardHeat(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -5933,7 +5944,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def reheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def reheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.reheat_coil_availability_schedule_name
         if not v:
             return None
@@ -5963,7 +5974,7 @@ class HVACTemplateZoneConstantVolume(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -6284,7 +6295,7 @@ class HVACTemplateZoneDualDuct(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -6547,7 +6558,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -6557,7 +6568,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -6567,7 +6578,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -6615,7 +6626,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_air_schedule_name
         if not v:
             return None
@@ -6625,7 +6636,7 @@ class HVACTemplateZoneFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -6878,7 +6889,7 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -6888,7 +6899,7 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_availability_schedule_name
         if not v:
             return None
@@ -6898,7 +6909,7 @@ class HVACTemplateZoneIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_availability_schedule_name
         if not v:
             return None
@@ -7204,7 +7215,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -7214,7 +7225,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -7224,7 +7235,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -7234,7 +7245,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_coil_availability_schedule_name
         if not v:
             return None
@@ -7282,7 +7293,7 @@ class HVACTemplateZonePTAC(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -7634,7 +7645,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -7644,7 +7655,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -7654,7 +7665,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -7664,7 +7675,9 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_pump_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heat_pump_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_pump_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -7674,7 +7687,9 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supplemental_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.supplemental_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -7722,7 +7737,7 @@ class HVACTemplateZonePTHP(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -7976,7 +7991,7 @@ class HVACTemplateZoneUnitary(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -8304,7 +8319,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def minimum_air_flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_fraction_schedule_name
         if not v:
             return None
@@ -8314,7 +8329,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def reheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def reheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.reheat_coil_availability_schedule_name
         if not v:
             return None
@@ -8358,7 +8373,7 @@ class HVACTemplateZoneVAV(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -8652,7 +8667,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def reheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def reheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.reheat_coil_availability_schedule_name
         if not v:
             return None
@@ -8682,7 +8697,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -8692,7 +8707,7 @@ class HVACTemplateZoneVAVFanPowered(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_piu_fan_schedule(self) -> IDFBaseModel | None:
+    def zone_piu_fan_schedule(self) -> ScheduleNamesTarget | None:
         v = self.zone_piu_fan_schedule_name
         if not v:
             return None
@@ -8994,7 +9009,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def reheat_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def reheat_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.reheat_coil_availability_schedule_name
         if not v:
             return None
@@ -9024,7 +9039,7 @@ class HVACTemplateZoneVAVHeatAndCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -9387,7 +9402,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -9397,7 +9412,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -9407,7 +9422,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_coil_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_coil_availability_schedule_name
         if not v:
             return None
@@ -9417,7 +9432,9 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_pump_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def heat_pump_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_pump_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -9439,7 +9456,7 @@ class HVACTemplateZoneVRF(IDFBaseModel):
         return idf._resolve_forward(v, ['HVACTemplateDOASSystems'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None
@@ -9763,7 +9780,7 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['CompactHVACThermostats'])
 
     @property
-    def system_availability_schedule(self) -> IDFBaseModel | None:
+    def system_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.system_availability_schedule_name
         if not v:
             return None
@@ -9773,7 +9790,7 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -9783,7 +9800,9 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supplemental_heating_coil_availability_schedule(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.supplemental_heating_coil_availability_schedule_name
         if not v:
             return None
@@ -9831,7 +9850,7 @@ class HVACTemplateZoneWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneAirDistributionNames'])
 
     @property
-    def baseboard_heating_availability_schedule(self) -> IDFBaseModel | None:
+    def baseboard_heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.baseboard_heating_availability_schedule_name
         if not v:
             return None

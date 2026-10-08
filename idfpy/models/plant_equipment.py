@@ -31,6 +31,12 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ScheduleNamesTarget,
+        TrivariateFunctionsTarget,
+        UnivariateFunctionsTarget,
+    )
     from .curves import CurveQuadLinear
     from .electric_load import GeneratorMicroTurbine
     from .misc import TableLookup
@@ -122,7 +128,9 @@ class BoilerHotWater(IDFBaseModel):
     )
 
     @property
-    def normalized_boiler_efficiency_curve(self) -> IDFBaseModel | None:
+    def normalized_boiler_efficiency_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.normalized_boiler_efficiency_curve_name
         if not v:
             return None
@@ -463,7 +471,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     number_of_chiller_heater_modules_20: int | None = Field(default=1, ge=1)
 
     @property
-    def ancillary_operation_schedule(self) -> IDFBaseModel | None:
+    def ancillary_operation_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ancillary_operation_schedule_name
         if not v:
             return None
@@ -485,7 +493,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_1_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_1_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_1
         if not v:
             return None
@@ -507,7 +517,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_2_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_2_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_2
         if not v:
             return None
@@ -529,7 +541,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_3_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_3_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_3
         if not v:
             return None
@@ -551,7 +565,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_4_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_4_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_4
         if not v:
             return None
@@ -573,7 +589,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_5_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_5_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_5
         if not v:
             return None
@@ -595,7 +613,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_6_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_6_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_6
         if not v:
             return None
@@ -617,7 +637,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_7_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_7_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_7
         if not v:
             return None
@@ -639,7 +661,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_8_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_8_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_8
         if not v:
             return None
@@ -661,7 +685,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_9_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_9_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_9
         if not v:
             return None
@@ -683,7 +709,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_10_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_10_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_10
         if not v:
             return None
@@ -705,7 +733,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_module_control_schedule_11_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_module_control_schedule_11_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_module_control_schedule_name_11
         if not v:
             return None
@@ -727,7 +757,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_12_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_12_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_12
         if not v:
             return None
@@ -749,7 +781,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_13_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_13_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_13
         if not v:
             return None
@@ -771,7 +805,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_14_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_14_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_14
         if not v:
             return None
@@ -793,7 +829,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_15_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_15_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_15
         if not v:
             return None
@@ -815,7 +853,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_16_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_16_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_16
         if not v:
             return None
@@ -837,7 +877,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_17_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_17_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_17
         if not v:
             return None
@@ -861,7 +903,7 @@ class CentralHeatPumpSystem(IDFBaseModel):
     @property
     def chiller_heater_modules_control_control_schedule_18_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_control_schedule_name_18
         if not v:
             return None
@@ -883,7 +925,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_19_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_19_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_19
         if not v:
             return None
@@ -905,7 +949,9 @@ class CentralHeatPumpSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ChillerHeaterEIRNames'])
 
     @property
-    def chiller_heater_modules_control_schedule_20_ref(self) -> IDFBaseModel | None:
+    def chiller_heater_modules_control_schedule_20_ref(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.chiller_heater_modules_control_schedule_name_20
         if not v:
             return None
@@ -1183,7 +1229,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def generator_heat_input_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.generator_heat_input_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -1195,7 +1241,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def pump_electric_input_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.pump_electric_input_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -1207,7 +1253,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def capacity_correction_function_of_condenser_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.capacity_correction_function_of_condenser_temperature_curve_name
         if not v:
             return None
@@ -1219,7 +1265,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def capacity_correction_function_of_chilled_water_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.capacity_correction_function_of_chilled_water_temperature_curve_name
         if not v:
             return None
@@ -1231,7 +1277,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def capacity_correction_function_of_generator_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.capacity_correction_function_of_generator_temperature_curve_name
         if not v:
             return None
@@ -1243,7 +1289,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def generator_heat_input_correction_function_of_condenser_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.generator_heat_input_correction_function_of_condenser_temperature_curve_name
         if not v:
             return None
@@ -1255,7 +1301,7 @@ class ChillerAbsorptionIndirect(IDFBaseModel):
     @property
     def generator_heat_input_correction_function_of_chilled_water_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.generator_heat_input_correction_function_of_chilled_water_temperature_curve_name
         if not v:
             return None
@@ -1451,7 +1497,7 @@ class ChillerCombustionTurbine(IDFBaseModel):
     )
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1545,7 +1591,7 @@ class ChillerConstantCOP(IDFBaseModel):
     )
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1555,7 +1601,7 @@ class ChillerConstantCOP(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermosiphon_capacity_fraction_curve(self) -> IDFBaseModel | None:
+    def thermosiphon_capacity_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermosiphon_capacity_fraction_curve_name
         if not v:
             return None
@@ -1713,7 +1759,7 @@ class ChillerElectric(IDFBaseModel):
     )
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1725,7 +1771,7 @@ class ChillerElectric(IDFBaseModel):
     @property
     def heat_recovery_inlet_high_temperature_limit_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_recovery_inlet_high_temperature_limit_schedule_name
         if not v:
             return None
@@ -1735,7 +1781,7 @@ class ChillerElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermosiphon_capacity_fraction_curve(self) -> IDFBaseModel | None:
+    def thermosiphon_capacity_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermosiphon_capacity_fraction_curve_name
         if not v:
             return None
@@ -1850,7 +1896,7 @@ class ChillerElectricASHRAE205(IDFBaseModel):
     )
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -2125,7 +2171,9 @@ class ChillerElectricEIR(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -2137,7 +2185,7 @@ class ChillerElectricEIR(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -2149,7 +2197,7 @@ class ChillerElectricEIR(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -2159,7 +2207,7 @@ class ChillerElectricEIR(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -2171,7 +2219,7 @@ class ChillerElectricEIR(IDFBaseModel):
     @property
     def heat_recovery_inlet_high_temperature_limit_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_recovery_inlet_high_temperature_limit_schedule_name
         if not v:
             return None
@@ -2183,7 +2231,7 @@ class ChillerElectricEIR(IDFBaseModel):
     @property
     def condenser_loop_flow_rate_fraction_function_of_loop_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.condenser_loop_flow_rate_fraction_function_of_loop_part_load_ratio_curve_name
         if not v:
             return None
@@ -2193,7 +2241,9 @@ class ChillerElectricEIR(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def temperature_difference_across_condenser_schedule(self) -> IDFBaseModel | None:
+    def temperature_difference_across_condenser_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.temperature_difference_across_condenser_schedule_name
         if not v:
             return None
@@ -2203,7 +2253,7 @@ class ChillerElectricEIR(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermosiphon_capacity_fraction_curve(self) -> IDFBaseModel | None:
+    def thermosiphon_capacity_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermosiphon_capacity_fraction_curve_name
         if not v:
             return None
@@ -2432,7 +2482,9 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -2444,7 +2496,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -2456,7 +2508,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | TrivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -2468,7 +2520,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     @property
     def heat_recovery_inlet_high_temperature_limit_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.heat_recovery_inlet_high_temperature_limit_schedule_name
         if not v:
             return None
@@ -2480,7 +2532,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
     @property
     def condenser_loop_flow_rate_fraction_function_of_loop_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.condenser_loop_flow_rate_fraction_function_of_loop_part_load_ratio_curve_name
         if not v:
             return None
@@ -2490,7 +2542,9 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def temperature_difference_across_condenser_schedule(self) -> IDFBaseModel | None:
+    def temperature_difference_across_condenser_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.temperature_difference_across_condenser_schedule_name
         if not v:
             return None
@@ -2500,7 +2554,7 @@ class ChillerElectricReformulatedEIR(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermosiphon_capacity_fraction_curve(self) -> IDFBaseModel | None:
+    def thermosiphon_capacity_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermosiphon_capacity_fraction_curve_name
         if not v:
             return None
@@ -2698,7 +2752,7 @@ class ChillerEngineDriven(IDFBaseModel):
     )
 
     @property
-    def fuel_use_curve(self) -> IDFBaseModel | None:
+    def fuel_use_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.fuel_use_curve_name
         if not v:
             return None
@@ -2708,7 +2762,7 @@ class ChillerEngineDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def jacket_heat_recovery_curve(self) -> IDFBaseModel | None:
+    def jacket_heat_recovery_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.jacket_heat_recovery_curve_name
         if not v:
             return None
@@ -2718,7 +2772,7 @@ class ChillerEngineDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def lube_heat_recovery_curve(self) -> IDFBaseModel | None:
+    def lube_heat_recovery_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.lube_heat_recovery_curve_name
         if not v:
             return None
@@ -2728,7 +2782,7 @@ class ChillerEngineDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def total_exhaust_energy_curve(self) -> IDFBaseModel | None:
+    def total_exhaust_energy_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.total_exhaust_energy_curve_name
         if not v:
             return None
@@ -2738,7 +2792,7 @@ class ChillerEngineDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def exhaust_temperature_curve(self) -> IDFBaseModel | None:
+    def exhaust_temperature_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_temperature_curve_name
         if not v:
             return None
@@ -2748,7 +2802,7 @@ class ChillerEngineDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -2975,7 +3029,9 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -2987,7 +3043,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def fuel_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.fuel_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -2999,7 +3055,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def fuel_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3011,7 +3067,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3023,7 +3079,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3035,7 +3091,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def heating_capacity_function_of_cooling_capacity_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_cooling_capacity_curve_name
         if not v:
             return None
@@ -3047,7 +3103,7 @@ class ChillerHeaterAbsorptionDirectFired(IDFBaseModel):
     @property
     def fuel_input_to_heat_output_ratio_during_heating_only_operation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_input_to_heat_output_ratio_during_heating_only_operation_curve_name
         if not v:
             return None
@@ -3261,7 +3317,9 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     )
 
     @property
-    def cooling_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3273,7 +3331,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def fuel_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.fuel_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3285,7 +3343,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def fuel_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3297,7 +3355,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3309,7 +3367,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3321,7 +3379,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def heating_capacity_function_of_cooling_capacity_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_cooling_capacity_curve_name
         if not v:
             return None
@@ -3333,7 +3391,7 @@ class ChillerHeaterAbsorptionDoubleEffect(IDFBaseModel):
     @property
     def fuel_input_to_heat_output_ratio_during_heating_only_operation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_input_to_heat_output_ratio_during_heating_only_operation_curve_name
         if not v:
             return None
@@ -3534,7 +3592,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def cooling_mode_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_mode_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3546,7 +3604,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def cooling_mode_electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_mode_electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3558,7 +3616,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def cooling_mode_electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.cooling_mode_electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3570,7 +3628,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def heating_mode_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_mode_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3582,7 +3640,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def heating_mode_electric_input_to_cooling_output_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_mode_electric_input_to_cooling_output_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3594,7 +3652,7 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
     @property
     def heating_mode_electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_mode_electric_input_to_cooling_output_ratio_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3624,7 +3682,7 @@ class DistrictCooling(IDFBaseModel):
     )
 
     @property
-    def capacity_fraction_schedule(self) -> IDFBaseModel | None:
+    def capacity_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.capacity_fraction_schedule_name
         if not v:
             return None
@@ -3654,7 +3712,7 @@ class DistrictHeatingSteam(IDFBaseModel):
     )
 
     @property
-    def capacity_fraction_schedule(self) -> IDFBaseModel | None:
+    def capacity_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.capacity_fraction_schedule_name
         if not v:
             return None
@@ -3684,7 +3742,7 @@ class DistrictHeatingWater(IDFBaseModel):
     )
 
     @property
-    def capacity_fraction_schedule(self) -> IDFBaseModel | None:
+    def capacity_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.capacity_fraction_schedule_name
         if not v:
             return None
@@ -4383,7 +4441,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule_heating_ref(self) -> IDFBaseModel | None:
+    def availability_schedule_heating_ref(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name_heating
         if not v:
             return None
@@ -4393,7 +4451,7 @@ class HeatPumpAirToWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def availability_schedule_cooling_ref(self) -> IDFBaseModel | None:
+    def availability_schedule_cooling_ref(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name_cooling
         if not v:
             return None
@@ -4403,7 +4461,7 @@ class HeatPumpAirToWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def operating_mode_control_schedule(self) -> IDFBaseModel | None:
+    def operating_mode_control_schedule(self) -> ScheduleNamesTarget | None:
         v = self.operating_mode_control_schedule_name
         if not v:
             return None
@@ -4415,7 +4473,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def minimum_leaving_water_temperature_curve_in_heating_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.minimum_leaving_water_temperature_curve_name_in_heating_mode
         if not v:
             return None
@@ -4427,7 +4485,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def maximum_leaving_water_temperature_curve_in_heating_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.maximum_leaving_water_temperature_curve_name_in_heating_mode
         if not v:
             return None
@@ -4439,7 +4497,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def minimum_leaving_water_temperature_curve_in_cooling_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.minimum_leaving_water_temperature_curve_name_in_cooling_mode
         if not v:
             return None
@@ -4451,7 +4509,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def maximum_leaving_water_temperature_curve_in_cooling_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.maximum_leaving_water_temperature_curve_name_in_cooling_mode
         if not v:
             return None
@@ -4463,7 +4521,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -4475,7 +4533,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -4487,7 +4545,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_at_speed_1
         if not v:
             return None
@@ -4499,7 +4557,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_1
         if not v:
             return None
@@ -4511,7 +4569,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_at_speed_1
         if not v:
             return None
@@ -4523,7 +4581,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_at_speed_2
         if not v:
             return None
@@ -4535,7 +4593,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_2
         if not v:
             return None
@@ -4547,7 +4605,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_at_speed_2
         if not v:
             return None
@@ -4559,7 +4617,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_at_speed_3
         if not v:
             return None
@@ -4571,7 +4629,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_3
         if not v:
             return None
@@ -4583,7 +4641,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_at_speed_3
         if not v:
             return None
@@ -4595,7 +4653,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_at_speed_4
         if not v:
             return None
@@ -4607,7 +4665,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_4
         if not v:
             return None
@@ -4619,7 +4677,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_at_speed_4
         if not v:
             return None
@@ -4631,7 +4689,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_at_speed_5
         if not v:
             return None
@@ -4643,7 +4701,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_5
         if not v:
             return None
@@ -4655,7 +4713,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_at_speed_5
         if not v:
             return None
@@ -4667,7 +4725,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_heating_capacity_function_of_temperature_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_heating_capacity_function_of_temperature_curve_name_in_booster_mode
         if not v:
             return None
@@ -4679,7 +4737,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_temperature_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode
         if not v:
             return None
@@ -4691,7 +4749,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def heating_energy_input_ratio_function_of_plr_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_function_of_plr_curve_name_in_booster_mode
         if not v:
             return None
@@ -4703,7 +4761,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_1
         if not v:
             return None
@@ -4715,7 +4773,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_1
         if not v:
             return None
@@ -4727,7 +4785,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_at_speed_1_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_1
         if not v:
             return None
@@ -4739,7 +4797,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_2
         if not v:
             return None
@@ -4751,7 +4809,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_2
         if not v:
             return None
@@ -4763,7 +4821,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_at_speed_2_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_2
         if not v:
             return None
@@ -4775,7 +4833,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_3
         if not v:
             return None
@@ -4787,7 +4845,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_3
         if not v:
             return None
@@ -4799,7 +4857,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_at_speed_3_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_3
         if not v:
             return None
@@ -4811,7 +4869,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_4
         if not v:
             return None
@@ -4823,7 +4881,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_4
         if not v:
             return None
@@ -4835,7 +4893,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_at_speed_4_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_4
         if not v:
             return None
@@ -4847,7 +4905,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_5
         if not v:
             return None
@@ -4859,7 +4917,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_5
         if not v:
             return None
@@ -4871,7 +4929,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_at_speed_5_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_5
         if not v:
             return None
@@ -4883,7 +4941,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def normalized_cooling_capacity_function_of_temperature_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_cooling_capacity_function_of_temperature_curve_name_in_booster_mode
         if not v:
             return None
@@ -4895,7 +4953,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_temperature_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode
         if not v:
             return None
@@ -4907,7 +4965,7 @@ class HeatPumpAirToWater(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_function_of_plr_curve_in_booster_mode_ref(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_function_of_plr_curve_name_in_booster_mode
         if not v:
             return None
@@ -5143,7 +5201,9 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpAirToWaterFuelFiredHeatingNames'])
 
     @property
-    def normalized_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def normalized_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5155,7 +5215,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     @property
     def fuel_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.fuel_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5165,7 +5225,9 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def fuel_energy_input_ratio_function_of_plr_curve(self) -> IDFBaseModel | None:
+    def fuel_energy_input_ratio_function_of_plr_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_energy_input_ratio_function_of_plr_curve_name
         if not v:
             return None
@@ -5175,7 +5237,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def cycling_ratio_factor_curve(self) -> IDFBaseModel | None:
+    def cycling_ratio_factor_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.cycling_ratio_factor_curve_name
         if not v:
             return None
@@ -5187,7 +5249,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     @property
     def auxiliary_electric_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.auxiliary_electric_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5199,7 +5261,7 @@ class HeatPumpAirToWaterFuelFiredCooling(IDFBaseModel):
     @property
     def auxiliary_electric_energy_input_ratio_function_of_plr_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.auxiliary_electric_energy_input_ratio_function_of_plr_curve_name
         if not v:
             return None
@@ -5473,7 +5535,9 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpAirToWaterFuelFiredCoolingNames'])
 
     @property
-    def normalized_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def normalized_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.normalized_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5485,7 +5549,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     @property
     def fuel_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.fuel_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5495,7 +5559,9 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def fuel_energy_input_ratio_function_of_plr_curve(self) -> IDFBaseModel | None:
+    def fuel_energy_input_ratio_function_of_plr_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_energy_input_ratio_function_of_plr_curve_name
         if not v:
             return None
@@ -5505,7 +5571,9 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def fuel_energy_input_ratio_defrost_adjustment_curve(self) -> IDFBaseModel | None:
+    def fuel_energy_input_ratio_defrost_adjustment_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fuel_energy_input_ratio_defrost_adjustment_curve_name
         if not v:
             return None
@@ -5515,7 +5583,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def cycling_ratio_factor_curve(self) -> IDFBaseModel | None:
+    def cycling_ratio_factor_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.cycling_ratio_factor_curve_name
         if not v:
             return None
@@ -5527,7 +5595,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     @property
     def auxiliary_electric_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.auxiliary_electric_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5539,7 +5607,7 @@ class HeatPumpAirToWaterFuelFiredHeating(IDFBaseModel):
     @property
     def auxiliary_electric_energy_input_ratio_function_of_plr_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.auxiliary_electric_energy_input_ratio_function_of_plr_curve_name
         if not v:
             return None
@@ -5726,7 +5794,9 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['PLHPHeatingNames'])
 
     @property
-    def capacity_modifier_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def capacity_modifier_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.capacity_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -5738,7 +5808,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     @property
     def electric_input_to_output_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_output_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -5750,7 +5820,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     @property
     def electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -5760,7 +5830,9 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def minimum_supply_water_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_supply_water_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.minimum_supply_water_temperature_curve_name
         if not v:
             return None
@@ -5770,7 +5842,9 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def maximum_supply_water_temperature_curve(self) -> IDFBaseModel | None:
+    def maximum_supply_water_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.maximum_supply_water_temperature_curve_name
         if not v:
             return None
@@ -5782,7 +5856,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     @property
     def heat_recovery_capacity_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_capacity_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -5794,7 +5868,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
     @property
     def heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -5804,7 +5878,7 @@ class HeatPumpPlantLoopEIRCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def thermosiphon_capacity_fraction_curve(self) -> IDFBaseModel | None:
+    def thermosiphon_capacity_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermosiphon_capacity_fraction_curve_name
         if not v:
             return None
@@ -6046,7 +6120,9 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['PLHPCoolingNames'])
 
     @property
-    def capacity_modifier_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def capacity_modifier_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.capacity_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -6058,7 +6134,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def electric_input_to_output_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electric_input_to_output_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -6070,7 +6146,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -6080,7 +6156,9 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def minimum_supply_water_temperature_curve(self) -> IDFBaseModel | None:
+    def minimum_supply_water_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.minimum_supply_water_temperature_curve_name
         if not v:
             return None
@@ -6090,7 +6168,9 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def maximum_supply_water_temperature_curve(self) -> IDFBaseModel | None:
+    def maximum_supply_water_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.maximum_supply_water_temperature_curve_name
         if not v:
             return None
@@ -6100,7 +6180,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def dry_outdoor_correction_factor_curve(self) -> IDFBaseModel | None:
+    def dry_outdoor_correction_factor_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.dry_outdoor_correction_factor_curve_name
         if not v:
             return None
@@ -6112,7 +6192,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -6122,7 +6202,9 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def timed_empirical_defrost_frequency_curve(self) -> IDFBaseModel | None:
+    def timed_empirical_defrost_frequency_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.timed_empirical_defrost_frequency_curve_name
         if not v:
             return None
@@ -6132,7 +6214,9 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def timed_empirical_defrost_heat_load_penalty_curve(self) -> IDFBaseModel | None:
+    def timed_empirical_defrost_heat_load_penalty_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.timed_empirical_defrost_heat_load_penalty_curve_name
         if not v:
             return None
@@ -6144,7 +6228,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def timed_empirical_defrost_heat_input_energy_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.timed_empirical_defrost_heat_input_energy_fraction_curve_name
         if not v:
             return None
@@ -6156,7 +6240,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def heat_recovery_capacity_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_capacity_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -6168,7 +6252,7 @@ class HeatPumpPlantLoopEIRHeating(IDFBaseModel):
     @property
     def heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -6503,7 +6587,7 @@ class PlantComponentTemperatureSource(IDFBaseModel):
     )
 
     @property
-    def source_temperature_schedule(self) -> IDFBaseModel | None:
+    def source_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.source_temperature_schedule_name
         if not v:
             return None

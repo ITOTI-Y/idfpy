@@ -22,6 +22,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllShadingAndHTSurfNamesTarget,
+        MaterialNameTarget,
+        ScheduleNamesTarget,
+    )
     from .thermal_zones import Zone
 
 
@@ -55,7 +60,7 @@ class WaterUseRainCollectorSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def collection_surface(self) -> IDFBaseModel | None:
+    def collection_surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.collection_surface_name
         if not v:
             return None
@@ -133,7 +138,7 @@ class WaterUseConnections(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def hot_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def hot_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.hot_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -143,7 +148,7 @@ class WaterUseConnections(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def cold_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cold_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -219,7 +224,7 @@ class WaterUseEquipment(IDFBaseModel):
     )
 
     @property
-    def flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+    def flow_rate_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.flow_rate_fraction_schedule_name
         if not v:
             return None
@@ -229,7 +234,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def target_temperature_schedule(self) -> IDFBaseModel | None:
+    def target_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.target_temperature_schedule_name
         if not v:
             return None
@@ -239,7 +244,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def hot_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def hot_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.hot_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -249,7 +254,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def cold_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cold_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -269,7 +274,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def sensible_fraction_schedule(self) -> IDFBaseModel | None:
+    def sensible_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.sensible_fraction_schedule_name
         if not v:
             return None
@@ -279,7 +284,7 @@ class WaterUseEquipment(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def latent_fraction_schedule(self) -> IDFBaseModel | None:
+    def latent_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.latent_fraction_schedule_name
         if not v:
             return None
@@ -331,7 +336,7 @@ class WaterUseRainCollector(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def collection_loss_factor_schedule(self) -> IDFBaseModel | None:
+    def collection_loss_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.collection_loss_factor_schedule_name
         if not v:
             return None
@@ -448,7 +453,7 @@ class WaterUseStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def water_temperature_schedule(self) -> IDFBaseModel | None:
+    def water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.water_temperature_schedule_name
         if not v:
             return None
@@ -458,7 +463,7 @@ class WaterUseStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -478,7 +483,7 @@ class WaterUseStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def tank_outside_surface_material(self) -> IDFBaseModel | None:
+    def tank_outside_surface_material(self) -> MaterialNameTarget | None:
         v = self.tank_outside_surface_material_name
         if not v:
             return None
@@ -538,7 +543,7 @@ class WaterUseWell(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def water_table_depth_schedule(self) -> IDFBaseModel | None:
+    def water_table_depth_schedule(self) -> ScheduleNamesTarget | None:
         v = self.water_table_depth_schedule_name
         if not v:
             return None

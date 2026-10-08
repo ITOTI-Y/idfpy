@@ -55,6 +55,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .air_distribution import OutdoorAirMixer
     from .availability_managers import AvailabilityManagerAssignmentList
     from .coils import (
@@ -500,7 +505,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -510,7 +515,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_removal_curve(self) -> IDFBaseModel | None:
+    def water_removal_curve(self) -> BivariateFunctionsTarget | None:
         v = self.water_removal_curve_name
         if not v:
             return None
@@ -520,7 +525,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def energy_factor_curve(self) -> IDFBaseModel | None:
+    def energy_factor_curve(self) -> BivariateFunctionsTarget | None:
         v = self.energy_factor_curve_name
         if not v:
             return None
@@ -530,7 +535,7 @@ class ZoneHVACDehumidifierDX(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -635,7 +640,7 @@ class ZoneHVACEnergyRecoveryVentilator(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -780,7 +785,7 @@ class ZoneHVACEnergyRecoveryVentilatorController(IDFBaseModel):
     )
 
     @property
-    def electronic_enthalpy_limit_curve(self) -> IDFBaseModel | None:
+    def electronic_enthalpy_limit_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.electronic_enthalpy_limit_curve_name
         if not v:
             return None
@@ -790,7 +795,9 @@ class ZoneHVACEnergyRecoveryVentilatorController(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def time_of_day_economizer_flow_control_schedule(self) -> IDFBaseModel | None:
+    def time_of_day_economizer_flow_control_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.time_of_day_economizer_flow_control_schedule_name
         if not v:
             return None
@@ -930,7 +937,7 @@ class ZoneHVACEvaporativeCoolerUnit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1164,7 +1171,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1174,7 +1181,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_air_schedule_name
         if not v:
             return None
@@ -1255,7 +1262,7 @@ class ZoneHVACFourPipeFanCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneHVACSizingName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -1599,7 +1606,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
     modes: list[ZoneHVACHybridUnitaryHVACModesItem] | None = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1619,7 +1626,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['SystemAvailabilityManagerLists'])
 
     @property
-    def minimum_supply_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_supply_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_supply_air_temperature_schedule_name
         if not v:
             return None
@@ -1629,7 +1636,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_supply_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_supply_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_supply_air_temperature_schedule_name
         if not v:
             return None
@@ -1639,7 +1646,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_supply_air_humidity_ratio_schedule(self) -> IDFBaseModel | None:
+    def minimum_supply_air_humidity_ratio_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_supply_air_humidity_ratio_schedule_name
         if not v:
             return None
@@ -1649,7 +1656,7 @@ class ZoneHVACHybridUnitaryHVAC(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_supply_air_humidity_ratio_schedule(self) -> IDFBaseModel | None:
+    def maximum_supply_air_humidity_ratio_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_supply_air_humidity_ratio_schedule_name
         if not v:
             return None
@@ -1995,7 +2002,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
     ) = Field(default='DistrictCooling')
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2005,7 +2012,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_availability_schedule_name
         if not v:
             return None
@@ -2015,7 +2022,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_availability_schedule_name
         if not v:
             return None
@@ -2051,7 +2058,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['DesignSpecificationZoneHVACSizingName'])
 
     @property
-    def heating_fuel_efficiency_schedule(self) -> IDFBaseModel | None:
+    def heating_fuel_efficiency_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_fuel_efficiency_schedule_name
         if not v:
             return None
@@ -2061,7 +2068,7 @@ class ZoneHVACIdealLoadsAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_fuel_efficiency_schedule(self) -> IDFBaseModel | None:
+    def cooling_fuel_efficiency_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_fuel_efficiency_schedule_name
         if not v:
             return None
@@ -2162,7 +2169,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2182,7 +2189,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_air_schedule_name
         if not v:
             return None
@@ -2216,7 +2223,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandVAV', 'FansSystemModel'])
 
     @property
-    def exhaust_air_schedule(self) -> IDFBaseModel | None:
+    def exhaust_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.exhaust_air_schedule_name
         if not v:
             return None
@@ -2226,7 +2233,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def high_air_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def high_air_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.high_air_control_temperature_schedule_name
         if not v:
             return None
@@ -2236,7 +2243,7 @@ class ZoneHVACOutdoorAirUnit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def low_air_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def low_air_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.low_air_control_temperature_schedule_name
         if not v:
             return None
@@ -2626,7 +2633,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2699,7 +2706,7 @@ class ZoneHVACPackagedTerminalAirConditioner(IDFBaseModel):
         )
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -2998,7 +3005,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3085,7 +3092,7 @@ class ZoneHVACPackagedTerminalHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -3360,7 +3367,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
     )
 
     @property
-    def terminal_unit_availability_schedule_ref(self) -> IDFBaseModel | None:
+    def terminal_unit_availability_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.terminal_unit_availability_schedule
         if not v:
             return None
@@ -3370,7 +3377,7 @@ class ZoneHVACTerminalUnitVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -3596,7 +3603,7 @@ class ZoneHVACUnitHeater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3636,7 +3643,7 @@ class ZoneHVACUnitHeater(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -3803,7 +3810,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3813,7 +3820,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -3825,7 +3832,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
     @property
     def maximum_outdoor_air_fraction_or_temperature_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_air_fraction_or_temperature_schedule_name
         if not v:
             return None
@@ -3847,7 +3854,7 @@ class ZoneHVACUnitVentilator(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -4125,7 +4132,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -4209,7 +4216,7 @@ class ZoneHVACWaterToAirHeatPump(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -4339,7 +4346,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -4389,7 +4396,7 @@ class ZoneHVACWindowAirConditioner(IDFBaseModel):
         )
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None

@@ -28,11 +28,27 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ControlSchemeListTarget,
+        ScheduleNamesTarget,
+        ValidCondenserEquipmentNamesTarget,
+        ValidPlantEquipmentNamesTarget,
+    )
     from .plant_equipment import (
+        ChillerAbsorption,
+        ChillerAbsorptionIndirect,
+        ChillerCombustionTurbine,
+        ChillerConstantCOP,
+        ChillerElectric,
+        ChillerElectricASHRAE205,
+        ChillerElectricEIR,
+        ChillerElectricReformulatedEIR,
+        ChillerEngineDriven,
         HeatPumpPlantLoopEIRCooling,
         HeatPumpPlantLoopEIRHeating,
     )
     from .thermal_zones import ZoneList
+    from .water_heaters import ThermalStorageIceDetailed, ThermalStorageIceSimple
 
 
 class CondenserEquipmentListEquipmentItem(IDFBaseModel):
@@ -48,7 +64,7 @@ class CondenserEquipmentListEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def equipment(self) -> IDFBaseModel | None:
+    def equipment(self) -> ValidCondenserEquipmentNamesTarget | None:
         v = self.equipment_name
         if not v:
             return None
@@ -69,7 +85,7 @@ class PlantEquipmentListEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def equipment(self) -> IDFBaseModel | None:
+    def equipment(self) -> ValidPlantEquipmentNamesTarget | None:
         v = self.equipment_name
         if not v:
             return None
@@ -279,7 +295,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
     )
 
     @property
-    def control_scheme_1(self) -> IDFBaseModel | None:
+    def control_scheme_1(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_1_name
         if not v:
             return None
@@ -289,7 +319,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_1_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_1_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_1_schedule_name
         if not v:
             return None
@@ -299,7 +329,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_2(self) -> IDFBaseModel | None:
+    def control_scheme_2(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_2_name
         if not v:
             return None
@@ -309,7 +353,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_2_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_2_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_2_schedule_name
         if not v:
             return None
@@ -319,7 +363,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_3(self) -> IDFBaseModel | None:
+    def control_scheme_3(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_3_name
         if not v:
             return None
@@ -329,7 +387,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_3_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_3_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_3_schedule_name
         if not v:
             return None
@@ -339,7 +397,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_4(self) -> IDFBaseModel | None:
+    def control_scheme_4(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_4_name
         if not v:
             return None
@@ -349,7 +421,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_4_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_4_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_4_schedule_name
         if not v:
             return None
@@ -359,7 +431,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_5(self) -> IDFBaseModel | None:
+    def control_scheme_5(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_5_name
         if not v:
             return None
@@ -369,7 +455,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_5_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_5_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_5_schedule_name
         if not v:
             return None
@@ -379,7 +465,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_6(self) -> IDFBaseModel | None:
+    def control_scheme_6(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_6_name
         if not v:
             return None
@@ -389,7 +489,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_6_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_6_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_6_schedule_name
         if not v:
             return None
@@ -399,7 +499,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_7(self) -> IDFBaseModel | None:
+    def control_scheme_7(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_7_name
         if not v:
             return None
@@ -409,7 +523,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_7_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_7_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_7_schedule_name
         if not v:
             return None
@@ -419,7 +533,21 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_8(self) -> IDFBaseModel | None:
+    def control_scheme_8(
+        self,
+    ) -> (
+        PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_8_name
         if not v:
             return None
@@ -429,7 +557,7 @@ class CondenserEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_8_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_8_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_8_schedule_name
         if not v:
             return None
@@ -545,7 +673,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     @property
     def cooling_only_load_plant_equipment_operation_cooling_load(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ControlSchemeListTarget | None:
         v = self.cooling_only_load_plant_equipment_operation_cooling_load_name
         if not v:
             return None
@@ -557,7 +685,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     @property
     def heating_only_load_plant_equipment_operation_heating_load(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ControlSchemeListTarget | None:
         v = self.heating_only_load_plant_equipment_operation_heating_load_name
         if not v:
             return None
@@ -569,7 +697,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     @property
     def simultaneous_cooling_and_heating_plant_equipment_operation_cooling_load(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ControlSchemeListTarget | None:
         v = self.simultaneous_cooling_and_heating_plant_equipment_operation_cooling_load_name
         if not v:
             return None
@@ -581,7 +709,7 @@ class PlantEquipmentOperationChillerHeaterChangeover(IDFBaseModel):
     @property
     def simultaneous_cooling_and_heating_plant_equipment_operation_heating_load(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ControlSchemeListTarget | None:
         v = self.simultaneous_cooling_and_heating_plant_equipment_operation_heating_load_name
         if not v:
             return None
@@ -2987,7 +3115,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
     )
 
     @property
-    def control_scheme_1(self) -> IDFBaseModel | None:
+    def control_scheme_1(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_1_name
         if not v:
             return None
@@ -2997,7 +3142,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_1_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_1_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_1_schedule_name
         if not v:
             return None
@@ -3007,7 +3152,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_2(self) -> IDFBaseModel | None:
+    def control_scheme_2(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_2_name
         if not v:
             return None
@@ -3017,7 +3179,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_2_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_2_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_2_schedule_name
         if not v:
             return None
@@ -3027,7 +3189,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_3(self) -> IDFBaseModel | None:
+    def control_scheme_3(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_3_name
         if not v:
             return None
@@ -3037,7 +3216,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_3_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_3_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_3_schedule_name
         if not v:
             return None
@@ -3047,7 +3226,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_4(self) -> IDFBaseModel | None:
+    def control_scheme_4(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_4_name
         if not v:
             return None
@@ -3057,7 +3253,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_4_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_4_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_4_schedule_name
         if not v:
             return None
@@ -3067,7 +3263,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_5(self) -> IDFBaseModel | None:
+    def control_scheme_5(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_5_name
         if not v:
             return None
@@ -3077,7 +3290,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_5_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_5_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_5_schedule_name
         if not v:
             return None
@@ -3087,7 +3300,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_6(self) -> IDFBaseModel | None:
+    def control_scheme_6(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_6_name
         if not v:
             return None
@@ -3097,7 +3327,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_6_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_6_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_6_schedule_name
         if not v:
             return None
@@ -3107,7 +3337,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_7(self) -> IDFBaseModel | None:
+    def control_scheme_7(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_7_name
         if not v:
             return None
@@ -3117,7 +3364,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_7_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_7_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_7_schedule_name
         if not v:
             return None
@@ -3127,7 +3374,24 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def control_scheme_8(self) -> IDFBaseModel | None:
+    def control_scheme_8(
+        self,
+    ) -> (
+        PlantEquipmentOperationChillerHeaterChangeover
+        | PlantEquipmentOperationComponentSetpoint
+        | PlantEquipmentOperationCoolingLoad
+        | PlantEquipmentOperationHeatingLoad
+        | PlantEquipmentOperationOutdoorDewpoint
+        | PlantEquipmentOperationOutdoorDewpointDifference
+        | PlantEquipmentOperationOutdoorDryBulb
+        | PlantEquipmentOperationOutdoorDryBulbDifference
+        | PlantEquipmentOperationOutdoorRelativeHumidity
+        | PlantEquipmentOperationOutdoorWetBulb
+        | PlantEquipmentOperationOutdoorWetBulbDifference
+        | PlantEquipmentOperationThermalEnergyStorage
+        | PlantEquipmentOperationUncontrolled
+        | None
+    ):
         v = self.control_scheme_8_name
         if not v:
             return None
@@ -3137,7 +3401,7 @@ class PlantEquipmentOperationSchemes(IDFBaseModel):
         return idf._resolve_forward(v, ['ControlSchemeList'])
 
     @property
-    def control_scheme_8_schedule(self) -> IDFBaseModel | None:
+    def control_scheme_8_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_scheme_8_schedule_name
         if not v:
             return None
@@ -3477,7 +3741,7 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
     )
 
     @property
-    def on_peak_schedule_ref(self) -> IDFBaseModel | None:
+    def on_peak_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.on_peak_schedule
         if not v:
             return None
@@ -3487,7 +3751,7 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def charging_availability_schedule_ref(self) -> IDFBaseModel | None:
+    def charging_availability_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.charging_availability_schedule
         if not v:
             return None
@@ -3497,7 +3761,21 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def component_1(self) -> IDFBaseModel | None:
+    def component_1(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_1_name
         if not v:
             return None
@@ -3507,7 +3785,21 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_2(self) -> IDFBaseModel | None:
+    def component_2(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_2_name
         if not v:
             return None
@@ -3517,7 +3809,21 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_3(self) -> IDFBaseModel | None:
+    def component_3(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_3_name
         if not v:
             return None
@@ -3527,7 +3833,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_4(self) -> IDFBaseModel | None:
+    def component_4(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_4_name
         if not v:
             return None
@@ -3537,7 +3858,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_5(self) -> IDFBaseModel | None:
+    def component_5(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_5_name
         if not v:
             return None
@@ -3547,7 +3883,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_6(self) -> IDFBaseModel | None:
+    def component_6(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_6_name
         if not v:
             return None
@@ -3557,7 +3908,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_7(self) -> IDFBaseModel | None:
+    def component_7(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_7_name
         if not v:
             return None
@@ -3567,7 +3933,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_8(self) -> IDFBaseModel | None:
+    def component_8(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_8_name
         if not v:
             return None
@@ -3577,7 +3958,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_9(self) -> IDFBaseModel | None:
+    def component_9(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_9_name
         if not v:
             return None
@@ -3587,7 +3983,22 @@ class PlantEquipmentOperationThermalEnergyStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['Chillers', 'IceThermalStorageEquipment'])
 
     @property
-    def component_10(self) -> IDFBaseModel | None:
+    def component_10(
+        self,
+    ) -> (
+        ChillerAbsorption
+        | ChillerAbsorptionIndirect
+        | ChillerCombustionTurbine
+        | ChillerConstantCOP
+        | ChillerElectric
+        | ChillerElectricASHRAE205
+        | ChillerElectricEIR
+        | ChillerElectricReformulatedEIR
+        | ChillerEngineDriven
+        | ThermalStorageIceDetailed
+        | ThermalStorageIceSimple
+        | None
+    ):
         v = self.component_10_name
         if not v:
             return None

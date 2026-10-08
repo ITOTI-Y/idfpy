@@ -1,0 +1,26 @@
+"""Auto-generated unions of the classes each reference group can name.
+
+DO NOT EDIT MANUALLY.
+Generated from Energy+.schema.epJSON version {{ schema_version }}.
+
+Navigation properties whose field can name many object types return these
+aliases. They are lazy ``type`` aliases, so the model imports below are only
+needed by type checkers.
+"""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+{% for module, classes in imports.items() %}
+    from .{{ module }} import (
+    {% for cls in classes %}
+        {{ cls }},
+    {% endfor %}
+    )
+{% endfor %}
+
+{% for alias, classes in targets %}
+
+type {{ alias }} = {{ classes | join(' | ') }}
+{% endfor %}

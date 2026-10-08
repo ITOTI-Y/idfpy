@@ -19,6 +19,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .thermal_zones import Zone, ZoneList
 
 
@@ -524,7 +525,7 @@ class ZoneAirContaminantBalance(IDFBaseModel):
     )
 
     @property
-    def outdoor_carbon_dioxide_schedule(self) -> IDFBaseModel | None:
+    def outdoor_carbon_dioxide_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_carbon_dioxide_schedule_name
         if not v:
             return None
@@ -534,7 +535,7 @@ class ZoneAirContaminantBalance(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_generic_contaminant_schedule(self) -> IDFBaseModel | None:
+    def outdoor_generic_contaminant_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_generic_contaminant_schedule_name
         if not v:
             return None

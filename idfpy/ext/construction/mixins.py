@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from idfpy.models._base import IDFBaseModel
+    from idfpy.models._ref_targets import MaterialNameTarget
     from idfpy.models.constructions import Construction
 
 # ``functions`` imports the window-material classes from
@@ -17,7 +17,7 @@ class ConstructionLayersMixin:
     """Ordered layer access and window/opaque classification."""
 
     @property
-    def layers(self: Construction) -> list[IDFBaseModel]:
+    def layers(self: Construction) -> list[MaterialNameTarget]:
         """Materials from outside to inside (see ``construction_layers``)."""
         from .functions import construction_layers
 

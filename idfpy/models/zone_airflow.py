@@ -23,6 +23,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .thermal_zones import Space, SpaceList, Zone, ZoneList
     from .water_systems import WaterUseStorage
 
@@ -68,7 +69,7 @@ class ZoneAirBalanceOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def induced_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def induced_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.induced_outdoor_air_schedule_name
         if not v:
             return None
@@ -147,7 +148,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
     rated_power_consumption: float = Field(..., json_schema_extra={'units': 'W'})
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -177,7 +178,7 @@ class ZoneCoolTowerShower(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -301,7 +302,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -321,7 +322,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+    def delta_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.delta_temperature_schedule_name
         if not v:
             return None
@@ -331,7 +332,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_receiving_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_receiving_temperature_schedule_name
         if not v:
             return None
@@ -341,7 +342,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_receiving_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_receiving_temperature_schedule_name
         if not v:
             return None
@@ -351,7 +352,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_source_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_source_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_source_temperature_schedule_name
         if not v:
             return None
@@ -361,7 +362,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_source_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_source_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_source_temperature_schedule_name
         if not v:
             return None
@@ -371,7 +372,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -381,7 +382,7 @@ class ZoneCrossMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -501,7 +502,7 @@ class ZoneEarthtube(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -657,7 +658,7 @@ class ZoneInfiltrationDesignFlowRate(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -719,7 +720,7 @@ class ZoneInfiltrationEffectiveLeakageArea(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -781,7 +782,7 @@ class ZoneInfiltrationFlowCoefficient(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -906,7 +907,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -926,7 +927,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+    def delta_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.delta_temperature_schedule_name
         if not v:
             return None
@@ -936,7 +937,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_receiving_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_receiving_temperature_schedule_name
         if not v:
             return None
@@ -946,7 +947,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_receiving_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_receiving_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_receiving_temperature_schedule_name
         if not v:
             return None
@@ -956,7 +957,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_source_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_source_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_source_temperature_schedule_name
         if not v:
             return None
@@ -966,7 +967,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_source_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_source_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_source_temperature_schedule_name
         if not v:
             return None
@@ -976,7 +977,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -986,7 +987,7 @@ class ZoneMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -1066,7 +1067,7 @@ class ZoneRefrigerationDoorMixing(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1357,7 +1358,7 @@ class ZoneThermalChimney(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1744,7 +1745,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1754,7 +1755,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_indoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_indoor_temperature_schedule_name
         if not v:
             return None
@@ -1764,7 +1765,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_indoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_indoor_temperature_schedule_name
         if not v:
             return None
@@ -1774,7 +1775,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+    def delta_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.delta_temperature_schedule_name
         if not v:
             return None
@@ -1784,7 +1785,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -1794,7 +1795,7 @@ class ZoneVentilationDesignFlowRate(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -1970,7 +1971,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def opening_area_fraction_schedule(self) -> IDFBaseModel | None:
+    def opening_area_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.opening_area_fraction_schedule_name
         if not v:
             return None
@@ -1980,7 +1981,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_indoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_indoor_temperature_schedule_name
         if not v:
             return None
@@ -1990,7 +1991,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_indoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_indoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_indoor_temperature_schedule_name
         if not v:
             return None
@@ -2000,7 +2001,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def delta_temperature_schedule(self) -> IDFBaseModel | None:
+    def delta_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.delta_temperature_schedule_name
         if not v:
             return None
@@ -2010,7 +2011,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_temperature_schedule_name
         if not v:
             return None
@@ -2020,7 +2021,7 @@ class ZoneVentilationWindandStackOpenArea(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_outdoor_temperature_schedule(self) -> IDFBaseModel | None:
+    def maximum_outdoor_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_temperature_schedule_name
         if not v:
             return None

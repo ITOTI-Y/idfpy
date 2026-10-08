@@ -24,6 +24,12 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ConstructionNamesTarget,
+        ScheduleNamesTarget,
+        SubSurfNamesTarget,
+        SurfaceNamesTarget,
+    )
     from .thermal_zones import (
         ShadingFin,
         ShadingFinProjection,
@@ -149,7 +155,7 @@ class DaylightingControls(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -206,7 +212,7 @@ class DaylightingDELightComplexFenestration(IDFBaseModel):
     )
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -216,7 +222,7 @@ class DaylightingDELightComplexFenestration(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def window(self) -> IDFBaseModel | None:
+    def window(self) -> SubSurfNamesTarget | None:
         v = self.window_name
         if not v:
             return None
@@ -254,7 +260,7 @@ class DaylightingDeviceLightWell(IDFBaseModel):
     )
 
     @property
-    def exterior_window(self) -> IDFBaseModel | None:
+    def exterior_window(self) -> SubSurfNamesTarget | None:
         v = self.exterior_window_name
         if not v:
             return None
@@ -299,7 +305,7 @@ class DaylightingDeviceShelf(IDFBaseModel):
     view_factor_to_outside_shelf: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def window(self) -> IDFBaseModel | None:
+    def window(self) -> SubSurfNamesTarget | None:
         v = self.window_name
         if not v:
             return None
@@ -309,7 +315,7 @@ class DaylightingDeviceShelf(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def inside_shelf(self) -> IDFBaseModel | None:
+    def inside_shelf(self) -> SurfaceNamesTarget | None:
         v = self.inside_shelf_name
         if not v:
             return None
@@ -338,7 +344,7 @@ class DaylightingDeviceShelf(IDFBaseModel):
         return idf._resolve_forward(v, ['AttachedShadingSurfNames'])
 
     @property
-    def outside_shelf_construction(self) -> IDFBaseModel | None:
+    def outside_shelf_construction(self) -> ConstructionNamesTarget | None:
         v = self.outside_shelf_construction_name
         if not v:
             return None
@@ -395,7 +401,7 @@ class DaylightingDeviceTubular(IDFBaseModel):
     )
 
     @property
-    def dome(self) -> IDFBaseModel | None:
+    def dome(self) -> SubSurfNamesTarget | None:
         v = self.dome_name
         if not v:
             return None
@@ -405,7 +411,7 @@ class DaylightingDeviceTubular(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def diffuser(self) -> IDFBaseModel | None:
+    def diffuser(self) -> SubSurfNamesTarget | None:
         v = self.diffuser_name
         if not v:
             return None
@@ -415,7 +421,7 @@ class DaylightingDeviceTubular(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None

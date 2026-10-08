@@ -31,6 +31,12 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        MaterialNameTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .coils import (
         CoilSystemIntegratedHeatPumpAirSource,
         CoilWaterHeatingAirToWaterHeatPumpPumped,
@@ -121,7 +127,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -131,7 +137,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -151,7 +157,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+    def use_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.use_side_availability_schedule_name
         if not v:
             return None
@@ -161,7 +167,7 @@ class ThermalStorageChilledWaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+    def source_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.source_side_availability_schedule_name
         if not v:
             return None
@@ -331,7 +337,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -341,7 +347,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -361,7 +367,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+    def use_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.use_side_availability_schedule_name
         if not v:
             return None
@@ -371,7 +377,7 @@ class ThermalStorageChilledWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+    def source_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.source_side_availability_schedule_name
         if not v:
             return None
@@ -556,7 +562,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
     )
 
     @property
-    def top_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def top_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.top_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -566,7 +572,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def bottom_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def bottom_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.bottom_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -576,7 +582,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -596,7 +602,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def use_side_availability_schedule(self) -> IDFBaseModel | None:
+    def use_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.use_side_availability_schedule_name
         if not v:
             return None
@@ -606,7 +612,7 @@ class ThermalStorageHotWaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def source_side_availability_schedule(self) -> IDFBaseModel | None:
+    def source_side_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.source_side_availability_schedule_name
         if not v:
             return None
@@ -697,7 +703,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -707,7 +713,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def discharging_curve(self) -> IDFBaseModel | None:
+    def discharging_curve(self) -> BivariateFunctionsTarget | None:
         v = self.discharging_curve_name
         if not v:
             return None
@@ -717,7 +723,7 @@ class ThermalStorageIceDetailed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def charging_curve(self) -> IDFBaseModel | None:
+    def charging_curve(self) -> BivariateFunctionsTarget | None:
         v = self.charging_curve_name
         if not v:
             return None
@@ -807,7 +813,7 @@ class ThermalStoragePCM(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -817,7 +823,7 @@ class ThermalStoragePCM(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pcm_material(self) -> IDFBaseModel | None:
+    def pcm_material(self) -> MaterialNameTarget | None:
         v = self.pcm_material_name
         if not v:
             return None
@@ -1148,7 +1154,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1158,7 +1164,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def compressor_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def compressor_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.compressor_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -1168,7 +1174,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_temperature_schedule_name
         if not v:
             return None
@@ -1178,7 +1184,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_humidity_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_humidity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_humidity_schedule_name
         if not v:
             return None
@@ -1232,7 +1238,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         )
 
     @property
-    def compressor_ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def compressor_ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.compressor_ambient_temperature_schedule_name
         if not v:
             return None
@@ -1252,7 +1258,7 @@ class WaterHeaterHeatPumpPumpedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
 
     @property
-    def inlet_air_mixer_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_mixer_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_mixer_schedule_name
         if not v:
             return None
@@ -1541,7 +1547,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1551,7 +1557,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def compressor_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def compressor_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.compressor_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -1561,7 +1567,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_temperature_schedule_name
         if not v:
             return None
@@ -1571,7 +1577,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def inlet_air_humidity_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_humidity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_humidity_schedule_name
         if not v:
             return None
@@ -1611,7 +1617,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatPumpWaterHeaterDXCoilsWrapped'])
 
     @property
-    def compressor_ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def compressor_ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.compressor_ambient_temperature_schedule_name
         if not v:
             return None
@@ -1631,7 +1637,7 @@ class WaterHeaterHeatPumpWrappedCondenser(IDFBaseModel):
         return idf._resolve_forward(v, ['FansOnOff', 'FansSystemModel'])
 
     @property
-    def inlet_air_mixer_schedule(self) -> IDFBaseModel | None:
+    def inlet_air_mixer_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inlet_air_mixer_schedule_name
         if not v:
             return None
@@ -1844,7 +1850,7 @@ class WaterHeaterMixed(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -1854,7 +1860,7 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def part_load_factor_curve(self) -> IDFBaseModel | None:
+    def part_load_factor_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_factor_curve_name
         if not v:
             return None
@@ -1864,7 +1870,7 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -1884,7 +1890,7 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def use_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+    def use_flow_rate_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.use_flow_rate_fraction_schedule_name
         if not v:
             return None
@@ -1894,7 +1900,7 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def cold_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cold_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -1904,7 +1910,9 @@ class WaterHeaterMixed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def indirect_alternate_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def indirect_alternate_setpoint_temperature_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.indirect_alternate_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -2351,7 +2359,7 @@ class WaterHeaterStratified(IDFBaseModel):
     )
 
     @property
-    def heater_1_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def heater_1_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heater_1_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -2361,7 +2369,7 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heater_2_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def heater_2_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heater_2_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -2371,7 +2379,7 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -2391,7 +2399,7 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def use_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+    def use_flow_rate_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.use_flow_rate_fraction_schedule_name
         if not v:
             return None
@@ -2401,7 +2409,7 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cold_water_supply_temperature_schedule(self) -> IDFBaseModel | None:
+    def cold_water_supply_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cold_water_supply_temperature_schedule_name
         if not v:
             return None
@@ -2411,7 +2419,9 @@ class WaterHeaterStratified(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def indirect_alternate_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def indirect_alternate_setpoint_temperature_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.indirect_alternate_setpoint_temperature_schedule_name
         if not v:
             return None

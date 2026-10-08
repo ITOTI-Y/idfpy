@@ -19,6 +19,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget, UnivariateFunctionsTarget
     from .water_systems import WaterUseStorage
 
 
@@ -58,7 +59,7 @@ class EvaporativeCoolerDirectCelDekPad(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -174,7 +175,7 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -184,7 +185,9 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+    def effectiveness_flow_ratio_modifier_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.effectiveness_flow_ratio_modifier_curve_name
         if not v:
             return None
@@ -194,7 +197,7 @@ class EvaporativeCoolerDirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_pump_power_modifier_curve(self) -> IDFBaseModel | None:
+    def water_pump_power_modifier_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.water_pump_power_modifier_curve_name
         if not v:
             return None
@@ -265,7 +268,7 @@ class EvaporativeCoolerIndirectCelDekPad(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -439,7 +442,7 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -449,7 +452,9 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def wetbulb_effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+    def wetbulb_effectiveness_flow_ratio_modifier_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.wetbulb_effectiveness_flow_ratio_modifier_curve_name
         if not v:
             return None
@@ -459,7 +464,9 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def drybulb_effectiveness_flow_ratio_modifier_curve(self) -> IDFBaseModel | None:
+    def drybulb_effectiveness_flow_ratio_modifier_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.drybulb_effectiveness_flow_ratio_modifier_curve_name
         if not v:
             return None
@@ -469,7 +476,7 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_pump_power_modifier_curve(self) -> IDFBaseModel | None:
+    def water_pump_power_modifier_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.water_pump_power_modifier_curve_name
         if not v:
             return None
@@ -479,7 +486,9 @@ class EvaporativeCoolerIndirectResearchSpecial(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def secondary_air_fan_power_modifier_curve(self) -> IDFBaseModel | None:
+    def secondary_air_fan_power_modifier_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.secondary_air_fan_power_modifier_curve_name
         if not v:
             return None
@@ -542,7 +551,7 @@ class EvaporativeCoolerIndirectWetCoil(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None

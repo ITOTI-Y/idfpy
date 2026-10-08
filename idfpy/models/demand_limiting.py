@@ -23,6 +23,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .internal_gains import ElectricEquipment, Lights
     from .misc import ControllerOutdoorAir, ExteriorLights
     from .zone_controls import (
@@ -213,7 +214,7 @@ class DemandManagerAssignmentList(IDFBaseModel):
     )
 
     @property
-    def demand_limit_schedule(self) -> IDFBaseModel | None:
+    def demand_limit_schedule(self) -> ScheduleNamesTarget | None:
         v = self.demand_limit_schedule_name
         if not v:
             return None
@@ -223,7 +224,7 @@ class DemandManagerAssignmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def billing_period_schedule(self) -> IDFBaseModel | None:
+    def billing_period_schedule(self) -> ScheduleNamesTarget | None:
         v = self.billing_period_schedule_name
         if not v:
             return None
@@ -233,7 +234,7 @@ class DemandManagerAssignmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def peak_period_schedule(self) -> IDFBaseModel | None:
+    def peak_period_schedule(self) -> ScheduleNamesTarget | None:
         v = self.peak_period_schedule_name
         if not v:
             return None
@@ -283,7 +284,7 @@ class DemandManagerElectricEquipment(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -331,7 +332,7 @@ class DemandManagerExteriorLights(IDFBaseModel):
     lights: list[DemandManagerExteriorLightsLightsItem] | None = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -379,7 +380,7 @@ class DemandManagerLights(IDFBaseModel):
     lights: list[DemandManagerLightsLightsItem] | None = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -430,7 +431,7 @@ class DemandManagerThermostats(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -497,7 +498,7 @@ class DemandManagerVentilation(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None

@@ -44,6 +44,12 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ScheduleNamesTarget,
+        TrivariateFunctionsTarget,
+        UnivariateFunctionsTarget,
+    )
     from .curves import (
         CurveChillerPartLoadWithLift,
         CurveQuadLinear,
@@ -56,6 +62,12 @@ if TYPE_CHECKING:
         HeatExchangerAirToAirSensibleAndLatent,
         HeatExchangerDesiccantBalancedFlow,
         TableLookup,
+    )
+    from .refrigeration import (
+        RefrigerationCompressorRack,
+        RefrigerationCondenserAirCooled,
+        RefrigerationCondenserEvaporativeCooled,
+        RefrigerationCondenserWaterCooled,
     )
     from .thermal_zones import Zone
     from .water_heaters import WaterHeaterMixed, WaterHeaterStratified
@@ -115,7 +127,7 @@ class CoilCoolingDX(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -488,7 +500,7 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -500,7 +512,7 @@ class CoilCoolingDXCurveFitPerformance(IDFBaseModel):
     @property
     def evaporative_condenser_basin_heater_operating_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.evaporative_condenser_basin_heater_operating_schedule_name
         if not v:
             return None
@@ -707,7 +719,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -719,7 +731,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_modifier_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_modifier_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -731,7 +743,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def energy_input_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -743,7 +755,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def energy_input_ratio_modifier_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_modifier_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -753,7 +765,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -763,7 +775,9 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def waste_heat_modifier_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def waste_heat_modifier_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.waste_heat_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -775,7 +789,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -787,7 +801,7 @@ class CoilCoolingDXCurveFitSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1574,7 +1588,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1606,7 +1620,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -1616,7 +1630,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1628,7 +1642,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -1640,7 +1654,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1652,7 +1666,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -1664,7 +1678,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1674,7 +1688,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_1_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1684,7 +1700,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_1_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -1696,7 +1714,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -1708,7 +1726,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1720,7 +1738,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -1732,7 +1750,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1742,7 +1760,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_2_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1752,7 +1772,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_2_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -1764,7 +1786,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -1776,7 +1798,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1788,7 +1810,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -1800,7 +1822,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1810,7 +1832,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_3_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1820,7 +1844,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_3_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -1832,7 +1858,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -1844,7 +1870,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1856,7 +1882,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -1868,7 +1894,7 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -1878,7 +1904,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_4_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1888,7 +1916,9 @@ class CoilCoolingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_4_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -2159,7 +2189,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2171,7 +2201,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -2183,7 +2213,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -2193,7 +2223,9 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -2203,7 +2235,9 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -2213,7 +2247,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -2225,7 +2259,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -2255,7 +2289,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -2265,7 +2299,9 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -2277,7 +2313,7 @@ class CoilCoolingDXSingleSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3044,7 +3080,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3054,7 +3090,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def operation_mode_control_schedule(self) -> IDFBaseModel | None:
+    def operation_mode_control_schedule(self) -> ScheduleNamesTarget | None:
         v = self.operation_mode_control_schedule_name
         if not v:
             return None
@@ -3078,7 +3114,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_total_evaporator_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_only_mode_total_evaporator_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3090,7 +3126,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_only_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3102,7 +3138,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_only_mode_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3114,7 +3150,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_only_mode_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3126,7 +3162,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_only_mode_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3138,7 +3174,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_sensible_heat_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_only_mode_sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3150,7 +3186,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3174,7 +3210,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3198,7 +3234,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3210,7 +3246,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_evaporator_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_evaporator_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3234,7 +3270,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_storage_charge_capacity_function_of_total_evaporator_plr_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_storage_charge_capacity_function_of_total_evaporator_plr_curve_name
         if not v:
             return None
@@ -3258,7 +3294,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3270,7 +3306,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_storage_energy_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_storage_energy_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3282,7 +3318,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_sensible_heat_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | TrivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3294,7 +3330,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_charge_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_charge_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3318,7 +3354,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_total_evaporator_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3342,7 +3378,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_evaporator_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3354,7 +3390,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_evaporator_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_evaporator_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3378,7 +3414,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_discharge_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3390,7 +3426,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_discharge_capacity_function_of_total_evaporator_plr_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_storage_discharge_capacity_function_of_total_evaporator_plr_curve_name
         if not v:
             return None
@@ -3414,7 +3450,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_storage_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3426,7 +3462,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_storage_energy_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_storage_energy_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3438,7 +3474,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_sensible_heat_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | TrivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3450,7 +3486,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def cooling_and_discharge_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_and_discharge_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3462,7 +3498,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def charge_only_mode_storage_charge_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.charge_only_mode_storage_charge_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3474,7 +3510,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def charge_only_mode_storage_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.charge_only_mode_storage_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3486,7 +3522,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_storage_discharge_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.discharge_only_mode_storage_discharge_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3498,7 +3534,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_storage_discharge_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.discharge_only_mode_storage_discharge_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3510,7 +3546,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.discharge_only_mode_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3522,7 +3558,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.discharge_only_mode_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3534,7 +3570,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_part_load_fraction_correlation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.discharge_only_mode_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3546,7 +3582,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_sensible_heat_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | TrivariateFunctionsTarget | None:
         v = self.discharge_only_mode_sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3558,7 +3594,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
     @property
     def discharge_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.discharge_only_mode_sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3568,7 +3604,7 @@ class CoilCoolingDXSingleSpeedThermalStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_availability_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_availability_schedule_name
         if not v:
             return None
@@ -3904,7 +3940,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3916,7 +3952,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3928,7 +3964,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3938,7 +3974,9 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -3948,7 +3986,9 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -3958,7 +3998,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -3970,7 +4010,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def low_speed_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.low_speed_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -3982,7 +4022,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def low_speed_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.low_speed_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -4012,7 +4052,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -4022,7 +4062,9 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -4034,7 +4076,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -4046,7 +4088,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def low_speed_sensible_heat_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.low_speed_sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -4058,7 +4100,7 @@ class CoilCoolingDXTwoSpeed(IDFBaseModel):
     @property
     def low_speed_sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.low_speed_sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -4175,7 +4217,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -4187,7 +4229,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -4261,7 +4303,7 @@ class CoilCoolingDXTwoStageWithHumidityControlMode(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -4328,7 +4370,7 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -4340,7 +4382,7 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_capacity_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.cooling_capacity_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -4352,7 +4394,7 @@ class CoilCoolingDXVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_capacity_modifier_curve_function_of_flow_fraction(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_capacity_modifier_curve_function_of_flow_fraction_name
         if not v:
             return None
@@ -4420,7 +4462,7 @@ class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -4432,7 +4474,7 @@ class CoilCoolingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     @property
     def indoor_unit_evaporating_temperature_function_of_superheating_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.indoor_unit_evaporating_temperature_function_of_superheating_curve_name
         if not v:
             return None
@@ -5426,7 +5468,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -5436,7 +5478,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_part_load_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.energy_part_load_fraction_curve_name
         if not v:
             return None
@@ -5448,7 +5490,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5478,7 +5520,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -5490,7 +5532,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5502,7 +5544,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5514,7 +5556,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5526,7 +5568,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5538,7 +5580,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5550,7 +5592,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5562,7 +5604,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5574,7 +5616,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5586,7 +5628,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5598,7 +5640,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5610,7 +5652,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5622,7 +5664,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5634,7 +5676,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5646,7 +5688,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5658,7 +5700,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5670,7 +5712,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5682,7 +5724,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5694,7 +5736,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5706,7 +5748,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5718,7 +5760,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5730,7 +5772,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5742,7 +5784,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5754,7 +5796,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5766,7 +5808,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5778,7 +5820,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5790,7 +5832,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5802,7 +5844,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5814,7 +5856,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5826,7 +5868,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5838,7 +5880,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5850,7 +5892,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5862,7 +5904,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5874,7 +5916,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5886,7 +5928,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5898,7 +5940,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5910,7 +5952,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5922,7 +5964,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -5934,7 +5976,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -5946,7 +5988,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -5958,7 +6000,7 @@ class CoilCoolingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -6028,7 +6070,7 @@ class CoilCoolingWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -6143,7 +6185,7 @@ class CoilCoolingWaterDetailedGeometry(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -6296,7 +6338,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -6336,7 +6378,7 @@ class CoilCoolingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -6539,7 +6581,7 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -6559,7 +6601,7 @@ class CoilCoolingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -7514,7 +7556,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7524,7 +7566,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_part_load_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.energy_part_load_fraction_curve_name
         if not v:
             return None
@@ -7536,7 +7578,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7548,7 +7590,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7560,7 +7602,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7572,7 +7614,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7584,7 +7626,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7596,7 +7638,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7606,7 +7648,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_1_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -7618,7 +7662,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7630,7 +7674,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7642,7 +7686,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7654,7 +7698,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7666,7 +7710,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7678,7 +7722,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7688,7 +7732,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_2_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -7700,7 +7746,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7712,7 +7758,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7724,7 +7770,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7736,7 +7782,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7748,7 +7794,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7760,7 +7806,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7770,7 +7816,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_3_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -7782,7 +7830,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7794,7 +7842,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7806,7 +7854,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7818,7 +7866,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7830,7 +7878,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7842,7 +7890,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7852,7 +7900,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_4_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -7864,7 +7914,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7876,7 +7926,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7888,7 +7938,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7900,7 +7950,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7912,7 +7962,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7924,7 +7974,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7934,7 +7984,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_5_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_5_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -7946,7 +7998,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -7958,7 +8010,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -7970,7 +8022,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -7982,7 +8034,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -7994,7 +8046,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8006,7 +8058,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8016,7 +8068,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_6_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_6_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -8028,7 +8082,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -8040,7 +8094,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8052,7 +8106,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8064,7 +8118,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -8076,7 +8130,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8088,7 +8142,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8098,7 +8152,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_7_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_7_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -8110,7 +8166,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -8122,7 +8178,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8134,7 +8190,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8146,7 +8202,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -8158,7 +8214,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8170,7 +8226,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8180,7 +8236,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_8_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_8_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -8192,7 +8250,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -8204,7 +8262,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8216,7 +8274,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8228,7 +8286,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -8240,7 +8298,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8252,7 +8310,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8262,7 +8320,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_9_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_9_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -8274,7 +8334,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -8286,7 +8346,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_cooling_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8298,7 +8358,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_total_cooling_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_cooling_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8310,7 +8370,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -8322,7 +8382,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -8334,7 +8394,7 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -8344,7 +8404,9 @@ class CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_10_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_10_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -9077,7 +9139,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -9089,7 +9151,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9101,7 +9163,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9113,7 +9175,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_1_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9125,7 +9187,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_heating_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_heating_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9137,7 +9199,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9149,7 +9211,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9159,7 +9221,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_1_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -9169,7 +9233,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_1_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -9181,7 +9247,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_2_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9193,7 +9259,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_heating_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_heating_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9205,7 +9271,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9217,7 +9283,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9227,7 +9293,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_2_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -9237,7 +9305,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_2_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -9249,7 +9319,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_3_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9261,7 +9331,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_heating_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_heating_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9273,7 +9343,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9285,7 +9355,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9295,7 +9365,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_3_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -9305,7 +9377,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_3_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -9317,7 +9391,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_4_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9329,7 +9403,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_heating_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_heating_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9341,7 +9415,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9353,7 +9427,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9363,7 +9437,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def speed_4_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -9373,7 +9449,9 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_4_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -9385,7 +9463,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9397,7 +9475,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_1_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9409,7 +9487,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9421,7 +9499,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_2_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9433,7 +9511,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9445,7 +9523,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_3_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9457,7 +9535,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9469,7 +9547,7 @@ class CoilHeatingDXMultiSpeed(IDFBaseModel):
     @property
     def speed_4_sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9696,7 +9774,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -9706,7 +9784,9 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9716,7 +9796,9 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
 
     @property
-    def heating_capacity_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9726,7 +9808,9 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9736,7 +9820,9 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9746,7 +9832,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -9758,7 +9844,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -9770,7 +9856,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -9782,7 +9868,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9794,7 +9880,7 @@ class CoilHeatingDXSingleSpeed(IDFBaseModel):
     @property
     def sensible_heat_ratio_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9853,7 +9939,7 @@ class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
     )
 
     @property
-    def availability_schedule_ref(self) -> IDFBaseModel | None:
+    def availability_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule
         if not v:
             return None
@@ -9865,7 +9951,7 @@ class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_capacity_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_capacity_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -9877,7 +9963,7 @@ class CoilHeatingDXVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_capacity_modifier_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_modifier_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -9925,7 +10011,7 @@ class CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     )
 
     @property
-    def availability_schedule_ref(self) -> IDFBaseModel | None:
+    def availability_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule
         if not v:
             return None
@@ -9937,7 +10023,7 @@ class CoilHeatingDXVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel):
     @property
     def indoor_unit_condensing_temperature_function_of_subcooling_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.indoor_unit_condensing_temperature_function_of_subcooling_curve_name
         if not v:
             return None
@@ -10741,7 +10827,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -10751,7 +10837,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_part_load_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.energy_part_load_fraction_curve_name
         if not v:
             return None
@@ -10763,7 +10849,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -10775,7 +10861,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10787,7 +10873,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10799,7 +10885,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10811,7 +10897,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -10823,7 +10909,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10835,7 +10921,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10847,7 +10933,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10859,7 +10945,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -10871,7 +10957,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10883,7 +10969,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.speed_3_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10895,7 +10981,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10907,7 +10993,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -10919,7 +11005,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10931,7 +11017,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10943,7 +11029,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10955,7 +11041,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -10967,7 +11053,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -10979,7 +11065,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -10991,7 +11077,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11003,7 +11089,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11015,7 +11101,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11027,7 +11113,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -11039,7 +11125,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11051,7 +11137,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11063,7 +11149,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11075,7 +11161,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -11087,7 +11173,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11099,7 +11185,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11111,7 +11197,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11123,7 +11209,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -11135,7 +11221,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11147,7 +11233,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11159,7 +11245,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11171,7 +11257,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -11183,7 +11269,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11195,7 +11281,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11207,7 +11293,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11219,7 +11305,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -11231,7 +11317,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11243,7 +11329,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -11255,7 +11341,7 @@ class CoilHeatingDXVariableSpeed(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -11318,7 +11404,7 @@ class CoilHeatingDesuperheater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11328,7 +11414,20 @@ class CoilHeatingDesuperheater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_source(self) -> IDFBaseModel | None:
+    def heating_source(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXTwoSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | RefrigerationCompressorRack
+        | RefrigerationCondenserAirCooled
+        | RefrigerationCondenserEvaporativeCooled
+        | RefrigerationCondenserWaterCooled
+        | None
+    ):
         v = self.heating_source_name
         if not v:
             return None
@@ -11368,7 +11467,7 @@ class CoilHeatingElectric(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11437,7 +11536,7 @@ class CoilHeatingElectricMultiStage(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11515,7 +11614,7 @@ class CoilHeatingFuel(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11525,7 +11624,7 @@ class CoilHeatingFuel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -11637,7 +11736,7 @@ class CoilHeatingGasMultiStage(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11647,7 +11746,7 @@ class CoilHeatingGasMultiStage(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -11700,7 +11799,7 @@ class CoilHeatingSteam(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11765,7 +11864,7 @@ class CoilHeatingWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11852,7 +11951,7 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -11882,7 +11981,7 @@ class CoilHeatingWaterToAirHeatPumpEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['QuadvariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -12038,7 +12137,7 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -12058,7 +12157,7 @@ class CoilHeatingWaterToAirHeatPumpParameterEstimation(IDFBaseModel):
         return idf._resolve_forward(v, ['FluidNames'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -12934,7 +13033,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -12944,7 +13043,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def energy_part_load_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_part_load_fraction_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.energy_part_load_fraction_curve_name
         if not v:
             return None
@@ -12956,7 +13055,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -12968,7 +13067,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -12980,7 +13079,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -12992,7 +13091,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13004,7 +13103,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13016,7 +13115,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_1_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13026,7 +13125,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_1_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13038,7 +13139,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13050,7 +13151,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13062,7 +13163,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13074,7 +13175,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13086,7 +13187,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13098,7 +13199,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_2_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13108,7 +13209,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_2_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13120,7 +13223,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13132,7 +13235,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13144,7 +13247,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13156,7 +13259,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13168,7 +13271,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13180,7 +13283,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_3_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13190,7 +13293,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_3_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13202,7 +13307,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13214,7 +13319,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13226,7 +13331,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13238,7 +13343,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13250,7 +13355,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13262,7 +13367,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_4_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13272,7 +13377,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_4_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13284,7 +13391,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13296,7 +13403,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13308,7 +13415,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13320,7 +13427,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13332,7 +13439,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13344,7 +13451,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_5_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13354,7 +13461,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_5_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_5_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13366,7 +13475,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13378,7 +13487,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13390,7 +13499,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13402,7 +13511,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13414,7 +13523,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13426,7 +13535,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_6_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13436,7 +13545,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_6_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_6_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13448,7 +13559,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13460,7 +13571,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13472,7 +13583,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13484,7 +13595,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13496,7 +13607,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13508,7 +13619,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_7_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13518,7 +13629,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_7_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_7_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13530,7 +13643,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13542,7 +13655,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13554,7 +13667,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13566,7 +13679,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13578,7 +13691,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13590,7 +13703,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_8_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13600,7 +13713,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_8_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_8_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13612,7 +13727,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13624,7 +13739,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13636,7 +13751,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13648,7 +13763,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13660,7 +13775,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13672,7 +13787,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_9_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13682,7 +13797,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_9_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_9_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13694,7 +13811,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_heating_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13706,7 +13823,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_total_heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13718,7 +13835,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13730,7 +13847,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13742,7 +13859,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -13754,7 +13871,7 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
     @property
     def speed_10_energy_input_ratio_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_energy_input_ratio_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -13764,7 +13881,9 @@ class CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_10_waste_heat_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_10_waste_heat_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_waste_heat_function_of_temperature_curve_name
         if not v:
             return None
@@ -13945,7 +14064,7 @@ class CoilPerformanceDXCooling(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -13957,7 +14076,7 @@ class CoilPerformanceDXCooling(IDFBaseModel):
     @property
     def total_cooling_capacity_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.total_cooling_capacity_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -13967,7 +14086,9 @@ class CoilPerformanceDXCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -13977,7 +14098,9 @@ class CoilPerformanceDXCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def energy_input_ratio_function_of_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def energy_input_ratio_function_of_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.energy_input_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -13987,7 +14110,7 @@ class CoilPerformanceDXCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -13997,7 +14120,9 @@ class CoilPerformanceDXCooling(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def sensible_heat_ratio_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def sensible_heat_ratio_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_temperature_curve_name
         if not v:
             return None
@@ -14009,7 +14134,7 @@ class CoilPerformanceDXCooling(IDFBaseModel):
     @property
     def sensible_heat_ratio_function_of_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_heat_ratio_function_of_flow_fraction_curve_name
         if not v:
             return None
@@ -14096,7 +14221,7 @@ class CoilSystemCoolingDX(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -14106,7 +14231,18 @@ class CoilSystemCoolingDX(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXTwoSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -14267,7 +14403,7 @@ class CoilSystemCoolingWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -14377,7 +14513,7 @@ class CoilSystemHeatingDX(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -14857,7 +14993,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -14869,7 +15005,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -14879,7 +15015,9 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -14891,7 +15029,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
     @property
     def heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -14903,7 +15041,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
     @property
     def heating_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -14913,7 +15051,9 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def heating_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -14923,7 +15063,9 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
 
     @property
-    def heating_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def heating_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -14933,7 +15075,9 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def heating_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -14943,7 +15087,7 @@ class CoilWaterHeatingAirToWaterHeatPumpPumped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -15984,7 +16128,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -15996,7 +16140,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16006,7 +16150,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -16018,7 +16162,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16030,7 +16174,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16042,7 +16186,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_1_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16052,7 +16196,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_1_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_1_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16062,7 +16208,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_1_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_1_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16072,7 +16220,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_1_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_1_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_1_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16084,7 +16234,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16096,7 +16246,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16108,7 +16258,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_2_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16118,7 +16268,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_2_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_2_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16128,7 +16280,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_2_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_2_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16138,7 +16292,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_2_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_2_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_2_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16150,7 +16306,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16162,7 +16318,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16174,7 +16330,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_3_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16184,7 +16340,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_3_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_3_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16194,7 +16352,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_3_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_3_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16204,7 +16364,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_3_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_3_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_3_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16216,7 +16378,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16228,7 +16390,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16240,7 +16402,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_4_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16250,7 +16412,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_4_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_4_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16260,7 +16424,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_4_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_4_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16270,7 +16436,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_4_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_4_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_4_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16282,7 +16450,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16294,7 +16462,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16306,7 +16474,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_5_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16316,7 +16484,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_5_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_5_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_5_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16326,7 +16496,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_5_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_5_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16336,7 +16508,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_5_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_5_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_5_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16348,7 +16522,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16360,7 +16534,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16372,7 +16546,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_6_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16382,7 +16556,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_6_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_6_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_6_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16392,7 +16568,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_6_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_6_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16402,7 +16580,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_6_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_6_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_6_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16414,7 +16594,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16426,7 +16606,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16438,7 +16618,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_7_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16448,7 +16628,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_7_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_7_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_7_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16458,7 +16640,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_7_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_7_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16468,7 +16652,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_7_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_7_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_7_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16480,7 +16666,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16492,7 +16678,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16504,7 +16690,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_8_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16514,7 +16700,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_8_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_8_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_8_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16524,7 +16712,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_8_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_8_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16534,7 +16724,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_8_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_8_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_8_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16546,7 +16738,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16558,7 +16750,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16570,7 +16762,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_9_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16580,7 +16772,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_9_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_9_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_9_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16590,7 +16784,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_9_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_9_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16600,7 +16796,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_9_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_9_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_9_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16612,7 +16810,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_wh_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_total_wh_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16624,7 +16822,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_wh_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_wh_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16636,7 +16834,7 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
     @property
     def speed_10_total_wh_capacity_function_of_water_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_total_wh_capacity_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16646,7 +16844,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_10_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def speed_10_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.speed_10_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16656,7 +16856,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def speed_10_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_10_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16666,7 +16868,9 @@ class CoilWaterHeatingAirToWaterHeatPumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def speed_10_cop_function_of_water_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def speed_10_cop_function_of_water_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.speed_10_cop_function_of_water_flow_fraction_curve_name
         if not v:
             return None
@@ -16848,7 +17052,7 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -16860,7 +17064,7 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
     @property
     def crankcase_heater_capacity_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.crankcase_heater_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16870,7 +17074,9 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_capacity_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_temperature_curve_name
         if not v:
             return None
@@ -16882,7 +17088,7 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
     @property
     def heating_capacity_function_of_air_flow_fraction_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16892,7 +17098,9 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_cop_function_of_temperature_curve(self) -> IDFBaseModel | None:
+    def heating_cop_function_of_temperature_curve(
+        self,
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.heating_cop_function_of_temperature_curve_name
         if not v:
             return None
@@ -16902,7 +17110,9 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions', 'UnivariateFunctions'])
 
     @property
-    def heating_cop_function_of_air_flow_fraction_curve(self) -> IDFBaseModel | None:
+    def heating_cop_function_of_air_flow_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_cop_function_of_air_flow_fraction_curve_name
         if not v:
             return None
@@ -16912,7 +17122,7 @@ class CoilWaterHeatingAirToWaterHeatPumpWrapped(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def part_load_fraction_correlation_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -17096,7 +17306,7 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -17106,7 +17316,7 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -17118,7 +17328,7 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
     @property
     def heat_reclaim_efficiency_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_reclaim_efficiency_function_of_temperature_curve_name
         if not v:
             return None
@@ -17140,7 +17350,23 @@ class CoilWaterHeatingDesuperheater(IDFBaseModel):
         )
 
     @property
-    def heating_source(self) -> IDFBaseModel | None:
+    def heating_source(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXMultiSpeed
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXTwoSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | CoilCoolingWaterToAirHeatPumpEquationFit
+        | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
+        | RefrigerationCompressorRack
+        | RefrigerationCondenserAirCooled
+        | RefrigerationCondenserEvaporativeCooled
+        | RefrigerationCondenserWaterCooled
+        | None
+    ):
         v = self.heating_source_name
         if not v:
             return None

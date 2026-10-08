@@ -69,16 +69,43 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AFNCoilNamesTarget,
+        AFNHeatExchangerNamesTarget,
+        AFNTerminalUnitNamesTarget,
+        AirflowNetworkComponentNamesTarget,
+        AllHeatTranSurfNamesTarget,
+        BivariateFunctionsTarget,
+        FansCVandOnOffandVAVTarget,
+        ScheduleNamesTarget,
+        SurfaceAirflowLeakageNamesTarget,
+        SurfAndSubSurfNamesTarget,
+        UnivariateFunctionsTarget,
+        WPCValueNamesTarget,
+    )
     from .air_distribution import AirLoopHVAC, OutdoorAirMixer
     from .availability_managers import AvailabilityManagerAssignmentList
     from .coils import (
+        CoilCoolingDX,
+        CoilCoolingDXMultiSpeed,
         CoilCoolingDXSingleSpeed,
+        CoilCoolingDXTwoSpeed,
         CoilCoolingDXTwoStageWithHumidityControlMode,
         CoilCoolingDXVariableSpeed,
+        CoilCoolingWater,
+        CoilCoolingWaterDetailedGeometry,
+        CoilCoolingWaterToAirHeatPumpEquationFit,
+        CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
+        CoilHeatingDesuperheater,
+        CoilHeatingDXMultiSpeed,
+        CoilHeatingDXSingleSpeed,
+        CoilHeatingDXVariableSpeed,
         CoilHeatingElectric,
         CoilHeatingFuel,
         CoilHeatingSteam,
         CoilHeatingWater,
+        CoilHeatingWaterToAirHeatPumpEquationFit,
+        CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit,
     )
     from .fans import (
         FanConstantVolume,
@@ -128,7 +155,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlLoadingIndices
     @property
     def loading_index_evaporative_capacity_multiplier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.loading_index_evaporative_capacity_multiplier_function_of_temperature_curve_name
         if not v:
             return None
@@ -140,7 +167,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlLoadingIndices
     @property
     def loading_index_compressor_power_multiplier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.loading_index_compressor_power_multiplier_function_of_temperature_curve_name
         if not v:
             return None
@@ -159,7 +186,7 @@ class AirflowNetworkDistributionDuctViewFactorsSurfacesItem(IDFBaseModel):
     surface_view_factor: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -969,7 +996,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -981,7 +1008,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_capacity_ratio_modifier_function_of_low_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_ratio_modifier_function_of_low_temperature_curve_name
         if not v:
             return None
@@ -991,7 +1018,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def cooling_capacity_ratio_boundary_curve(self) -> IDFBaseModel | None:
+    def cooling_capacity_ratio_boundary_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.cooling_capacity_ratio_boundary_curve_name
         if not v:
             return None
@@ -1003,7 +1030,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_capacity_ratio_modifier_function_of_high_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_capacity_ratio_modifier_function_of_high_temperature_curve_name
         if not v:
             return None
@@ -1015,7 +1042,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_modifier_function_of_low_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_modifier_function_of_low_temperature_curve_name
         if not v:
             return None
@@ -1025,7 +1052,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def cooling_energy_input_ratio_boundary_curve(self) -> IDFBaseModel | None:
+    def cooling_energy_input_ratio_boundary_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_boundary_curve_name
         if not v:
             return None
@@ -1037,7 +1066,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_modifier_function_of_high_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_modifier_function_of_high_temperature_curve_name
         if not v:
             return None
@@ -1049,7 +1078,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_modifier_function_of_low_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_modifier_function_of_low_part_load_ratio_curve_name
         if not v:
             return None
@@ -1061,7 +1090,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def cooling_energy_input_ratio_modifier_function_of_high_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_energy_input_ratio_modifier_function_of_high_part_load_ratio_curve_name
         if not v:
             return None
@@ -1071,7 +1100,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def cooling_combination_ratio_correction_factor_curve(self) -> IDFBaseModel | None:
+    def cooling_combination_ratio_correction_factor_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_combination_ratio_correction_factor_curve_name
         if not v:
             return None
@@ -1081,7 +1112,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def cooling_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def cooling_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.cooling_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1093,7 +1126,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_capacity_ratio_modifier_function_of_low_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_capacity_ratio_modifier_function_of_low_temperature_curve_name
         if not v:
             return None
@@ -1103,7 +1136,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def heating_capacity_ratio_boundary_curve(self) -> IDFBaseModel | None:
+    def heating_capacity_ratio_boundary_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.heating_capacity_ratio_boundary_curve_name
         if not v:
             return None
@@ -1115,7 +1148,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_capacity_ratio_modifier_function_of_high_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_capacity_ratio_modifier_function_of_high_temperature_curve_name
         if not v:
             return None
@@ -1127,7 +1160,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_energy_input_ratio_modifier_function_of_low_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_modifier_function_of_low_temperature_curve_name
         if not v:
             return None
@@ -1137,7 +1170,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def heating_energy_input_ratio_boundary_curve(self) -> IDFBaseModel | None:
+    def heating_energy_input_ratio_boundary_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_boundary_curve_name
         if not v:
             return None
@@ -1149,7 +1184,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_energy_input_ratio_modifier_function_of_high_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_modifier_function_of_high_temperature_curve_name
         if not v:
             return None
@@ -1161,7 +1196,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_energy_input_ratio_modifier_function_of_low_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_modifier_function_of_low_part_load_ratio_curve_name
         if not v:
             return None
@@ -1173,7 +1208,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def heating_energy_input_ratio_modifier_function_of_high_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_energy_input_ratio_modifier_function_of_high_part_load_ratio_curve_name
         if not v:
             return None
@@ -1183,7 +1218,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_combination_ratio_correction_factor_curve(self) -> IDFBaseModel | None:
+    def heating_combination_ratio_correction_factor_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_combination_ratio_correction_factor_curve_name
         if not v:
             return None
@@ -1193,7 +1230,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heating_part_load_fraction_correlation_curve(self) -> IDFBaseModel | None:
+    def heating_part_load_fraction_correlation_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heating_part_load_fraction_correlation_curve_name
         if not v:
             return None
@@ -1213,7 +1252,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def thermostat_priority_schedule(self) -> IDFBaseModel | None:
+    def thermostat_priority_schedule(self) -> ScheduleNamesTarget | None:
         v = self.thermostat_priority_schedule_name
         if not v:
             return None
@@ -1235,7 +1274,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def piping_correction_factor_for_length_in_cooling_mode_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.piping_correction_factor_for_length_in_cooling_mode_curve_name
         if not v:
             return None
@@ -1247,7 +1286,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def piping_correction_factor_for_length_in_heating_mode_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | UnivariateFunctionsTarget | None:
         v = self.piping_correction_factor_for_length_in_heating_mode_curve_name
         if not v:
             return None
@@ -1259,7 +1298,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
     @property
     def defrost_energy_input_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -1279,7 +1318,7 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['WaterStorageTankNames'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1289,7 +1328,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heat_recovery_cooling_capacity_modifier_curve(self) -> IDFBaseModel | None:
+    def heat_recovery_cooling_capacity_modifier_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_cooling_capacity_modifier_curve_name
         if not v:
             return None
@@ -1299,7 +1340,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def heat_recovery_cooling_energy_modifier_curve(self) -> IDFBaseModel | None:
+    def heat_recovery_cooling_energy_modifier_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_cooling_energy_modifier_curve_name
         if not v:
             return None
@@ -1309,7 +1352,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def heat_recovery_heating_capacity_modifier_curve(self) -> IDFBaseModel | None:
+    def heat_recovery_heating_capacity_modifier_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_heating_capacity_modifier_curve_name
         if not v:
             return None
@@ -1319,7 +1364,9 @@ class AirConditionerVariableRefrigerantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def heat_recovery_heating_energy_modifier_curve(self) -> IDFBaseModel | None:
+    def heat_recovery_heating_energy_modifier_curve(
+        self,
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_heating_energy_modifier_curve_name
         if not v:
             return None
@@ -1608,7 +1655,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1640,7 +1687,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
     @property
     def outdoor_unit_evaporating_temperature_function_of_superheating_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.outdoor_unit_evaporating_temperature_function_of_superheating_curve_name
         if not v:
             return None
@@ -1652,7 +1699,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
     @property
     def outdoor_unit_condensing_temperature_function_of_subcooling_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.outdoor_unit_condensing_temperature_function_of_subcooling_curve_name
         if not v:
             return None
@@ -1664,7 +1711,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControl(IDFBaseModel)
     @property
     def defrost_energy_input_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -2060,7 +2107,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2092,7 +2139,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     @property
     def outdoor_unit_evaporating_temperature_function_of_superheating_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.outdoor_unit_evaporating_temperature_function_of_superheating_curve_name
         if not v:
             return None
@@ -2104,7 +2151,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     @property
     def outdoor_unit_condensing_temperature_function_of_subcooling_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.outdoor_unit_condensing_temperature_function_of_subcooling_curve_name
         if not v:
             return None
@@ -2116,7 +2163,7 @@ class AirConditionerVariableRefrigerantFlowFluidTemperatureControlHR(IDFBaseMode
     @property
     def defrost_energy_input_ratio_modifier_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.defrost_energy_input_ratio_modifier_function_of_temperature_curve_name
         if not v:
             return None
@@ -2320,7 +2367,30 @@ class AirflowNetworkDistributionComponentCoil(IDFBaseModel):
     )
 
     @property
-    def coil(self) -> IDFBaseModel | None:
+    def coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXMultiSpeed
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXTwoSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilCoolingWaterToAirHeatPumpEquationFit
+        | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
+        | CoilHeatingDXMultiSpeed
+        | CoilHeatingDXSingleSpeed
+        | CoilHeatingDXVariableSpeed
+        | CoilHeatingDesuperheater
+        | CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingWater
+        | CoilHeatingWaterToAirHeatPumpEquationFit
+        | CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
+        | None
+    ):
         v = self.coil_name
         if not v:
             return None
@@ -2854,7 +2924,7 @@ class AirflowNetworkDistributionDuctViewFactors(IDFBaseModel):
     )
 
     @property
-    def linkage(self) -> IDFBaseModel | None:
+    def linkage(self) -> AirflowNetworkComponentNamesTarget | None:
         v = self.linkage_name
         if not v:
             return None
@@ -2934,7 +3004,16 @@ class AirflowNetworkDistributionLinkage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkNodeAndZoneNames'])
 
     @property
-    def component(self) -> IDFBaseModel | None:
+    def component(
+        self,
+    ) -> (
+        AFNCoilNamesTarget
+        | AFNHeatExchangerNamesTarget
+        | AFNTerminalUnitNamesTarget
+        | AirflowNetworkComponentNamesTarget
+        | FansCVandOnOffandVAVTarget
+        | None
+    ):
         v = self.component_name
         if not v:
             return None
@@ -3064,7 +3143,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkNodeNames', 'ZoneNames'])
 
     @property
-    def component(self) -> IDFBaseModel | None:
+    def component(self) -> AirflowNetworkComponentNamesTarget | None:
         v = self.component_name
         if not v:
             return None
@@ -3074,7 +3153,7 @@ class AirflowNetworkIntraZoneLinkage(IDFBaseModel):
         return idf._resolve_forward(v, ['AirflowNetworkComponentNames'])
 
     @property
-    def airflownetwork_multizone_surface(self) -> IDFBaseModel | None:
+    def airflownetwork_multizone_surface(self) -> SurfAndSubSurfNamesTarget | None:
         v = self.airflownetwork_multizone_surface_name
         if not v:
             return None
@@ -3569,7 +3648,9 @@ class AirflowNetworkMultiZoneExternalNode(IDFBaseModel):
     )
 
     @property
-    def wind_pressure_coefficient_curve(self) -> IDFBaseModel | None:
+    def wind_pressure_coefficient_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | WPCValueNamesTarget | None:
         v = self.wind_pressure_coefficient_curve_name
         if not v:
             return None
@@ -3785,7 +3866,7 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfAndSubSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3795,7 +3876,7 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfAndSubSurfNames'])
 
     @property
-    def leakage_component(self) -> IDFBaseModel | None:
+    def leakage_component(self) -> SurfaceAirflowLeakageNamesTarget | None:
         v = self.leakage_component_name
         if not v:
             return None
@@ -3819,7 +3900,7 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
     @property
     def ventilation_control_zone_temperature_setpoint_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.ventilation_control_zone_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -3829,7 +3910,7 @@ class AirflowNetworkMultiZoneSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def venting_availability_schedule(self) -> IDFBaseModel | None:
+    def venting_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.venting_availability_schedule_name
         if not v:
             return None
@@ -4703,7 +4784,7 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
     @property
     def ventilation_control_zone_temperature_setpoint_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.ventilation_control_zone_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -4713,7 +4794,7 @@ class AirflowNetworkMultiZoneZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def venting_availability_schedule(self) -> IDFBaseModel | None:
+    def venting_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.venting_availability_schedule_name
         if not v:
             return None
@@ -4802,7 +4883,7 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
     )
 
     @property
-    def thermal_comfort_low_temperature_curve(self) -> IDFBaseModel | None:
+    def thermal_comfort_low_temperature_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermal_comfort_low_temperature_curve_name
         if not v:
             return None
@@ -4812,7 +4893,9 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def thermal_comfort_high_temperature_curve(self) -> IDFBaseModel | None:
+    def thermal_comfort_high_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.thermal_comfort_high_temperature_curve_name
         if not v:
             return None
@@ -4822,7 +4905,7 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def opening_probability_schedule(self) -> IDFBaseModel | None:
+    def opening_probability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.opening_probability_schedule_name
         if not v:
             return None
@@ -4832,7 +4915,7 @@ class AirflowNetworkOccupantVentilationControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def closing_probability_schedule(self) -> IDFBaseModel | None:
+    def closing_probability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.closing_probability_schedule_name
         if not v:
             return None
@@ -5034,7 +5117,7 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
         return idf._resolve_forward(v, ['AFNReliefAirFlowNames', 'FansZoneExhaust'])
 
     @property
-    def pressure_control_availability_schedule(self) -> IDFBaseModel | None:
+    def pressure_control_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pressure_control_availability_schedule_name
         if not v:
             return None
@@ -5044,7 +5127,7 @@ class AirflowNetworkZoneControlPressureController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pressure_setpoint_schedule(self) -> IDFBaseModel | None:
+    def pressure_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pressure_setpoint_schedule_name
         if not v:
             return None
@@ -5249,7 +5332,7 @@ class ControllerMechanicalVentilation(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -5430,7 +5513,7 @@ class ControllerOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def electronic_enthalpy_limit_curve(self) -> IDFBaseModel | None:
+    def electronic_enthalpy_limit_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.electronic_enthalpy_limit_curve_name
         if not v:
             return None
@@ -5440,7 +5523,7 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -5450,7 +5533,7 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_fraction_of_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_fraction_of_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_fraction_of_outdoor_air_schedule_name
         if not v:
             return None
@@ -5460,7 +5543,7 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_fraction_of_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def maximum_fraction_of_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.maximum_fraction_of_outdoor_air_schedule_name
         if not v:
             return None
@@ -5482,7 +5565,7 @@ class ControllerOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ControllerMechanicalVentNames'])
 
     @property
-    def time_of_day_economizer_control_schedule(self) -> IDFBaseModel | None:
+    def time_of_day_economizer_control_schedule(self) -> ScheduleNamesTarget | None:
         v = self.time_of_day_economizer_control_schedule_name
         if not v:
             return None
@@ -5751,7 +5834,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -5793,7 +5876,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def leaving_dry_bulb_function_of_entering_dry_bulb_and_humidity_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.leaving_dry_bulb_function_of_entering_dry_bulb_and_humidity_ratio_curve_name
         if not v:
             return None
@@ -5803,7 +5886,9 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def leaving_dry_bulb_function_of_air_velocity_curve(self) -> IDFBaseModel | None:
+    def leaving_dry_bulb_function_of_air_velocity_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.leaving_dry_bulb_function_of_air_velocity_curve_name
         if not v:
             return None
@@ -5815,7 +5900,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def leaving_humidity_ratio_function_of_entering_dry_bulb_and_humidity_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.leaving_humidity_ratio_function_of_entering_dry_bulb_and_humidity_ratio_curve_name
         if not v:
             return None
@@ -5827,7 +5912,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def leaving_humidity_ratio_function_of_air_velocity_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.leaving_humidity_ratio_function_of_air_velocity_curve_name
         if not v:
             return None
@@ -5839,7 +5924,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def regeneration_energy_function_of_entering_dry_bulb_and_humidity_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.regeneration_energy_function_of_entering_dry_bulb_and_humidity_ratio_curve_name
         if not v:
             return None
@@ -5849,7 +5934,9 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def regeneration_energy_function_of_air_velocity_curve(self) -> IDFBaseModel | None:
+    def regeneration_energy_function_of_air_velocity_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.regeneration_energy_function_of_air_velocity_curve_name
         if not v:
             return None
@@ -5861,7 +5948,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def regeneration_velocity_function_of_entering_dry_bulb_and_humidity_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.regeneration_velocity_function_of_entering_dry_bulb_and_humidity_ratio_curve_name
         if not v:
             return None
@@ -5873,7 +5960,7 @@ class DehumidifierDesiccantNoFans(IDFBaseModel):
     @property
     def regeneration_velocity_function_of_air_velocity_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.regeneration_velocity_function_of_air_velocity_curve_name
         if not v:
             return None
@@ -5987,7 +6074,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -6054,7 +6141,7 @@ class DehumidifierDesiccantSystem(IDFBaseModel):
         )
 
     @property
-    def exhaust_fan_power_curve(self) -> IDFBaseModel | None:
+    def exhaust_fan_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_fan_power_curve_name
         if not v:
             return None
@@ -6121,7 +6208,7 @@ class DuctLossConduction(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -6131,7 +6218,7 @@ class DuctLossConduction(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_humidity_ratio_schedule(self) -> IDFBaseModel | None:
+    def ambient_humidity_ratio_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_humidity_ratio_schedule_name
         if not v:
             return None
@@ -6253,7 +6340,7 @@ class ExteriorFuelEquipment(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -6291,7 +6378,7 @@ class ExteriorLights(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -6324,7 +6411,7 @@ class ExteriorWaterEquipment(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -7182,7 +7269,7 @@ class HeatExchangerAirToAirFlatPlate(IDFBaseModel):
     secondary_air_outlet_node_name: str = Field(...)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7312,7 +7399,7 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7322,7 +7409,9 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def sensible_effectiveness_of_heating_air_flow_curve(self) -> IDFBaseModel | None:
+    def sensible_effectiveness_of_heating_air_flow_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_effectiveness_of_heating_air_flow_curve_name
         if not v:
             return None
@@ -7332,7 +7421,9 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def latent_effectiveness_of_heating_air_flow_curve(self) -> IDFBaseModel | None:
+    def latent_effectiveness_of_heating_air_flow_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.latent_effectiveness_of_heating_air_flow_curve_name
         if not v:
             return None
@@ -7342,7 +7433,9 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def sensible_effectiveness_of_cooling_air_flow_curve(self) -> IDFBaseModel | None:
+    def sensible_effectiveness_of_cooling_air_flow_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.sensible_effectiveness_of_cooling_air_flow_curve_name
         if not v:
             return None
@@ -7352,7 +7445,9 @@ class HeatExchangerAirToAirSensibleAndLatent(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def latent_effectiveness_of_cooling_air_flow_curve(self) -> IDFBaseModel | None:
+    def latent_effectiveness_of_cooling_air_flow_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.latent_effectiveness_of_cooling_air_flow_curve_name
         if not v:
             return None
@@ -7397,7 +7492,7 @@ class HeatExchangerDesiccantBalancedFlow(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7607,7 +7702,7 @@ class HumidifierSteamElectric(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7702,7 +7797,7 @@ class HumidifierSteamGas(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -7712,7 +7807,7 @@ class HumidifierSteamGas(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def thermal_efficiency_modifier_curve(self) -> IDFBaseModel | None:
+    def thermal_efficiency_modifier_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.thermal_efficiency_modifier_curve_name
         if not v:
             return None
@@ -7862,7 +7957,7 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def zone_measured_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def zone_measured_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.zone_measured_air_temperature_schedule_name
         if not v:
             return None
@@ -7872,7 +7967,7 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_measured_air_humidity_ratio_schedule(self) -> IDFBaseModel | None:
+    def zone_measured_air_humidity_ratio_schedule(self) -> ScheduleNamesTarget | None:
         v = self.zone_measured_air_humidity_ratio_schedule_name
         if not v:
             return None
@@ -7882,7 +7977,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_measured_air_co2_concentration_schedule(self) -> IDFBaseModel | None:
+    def zone_measured_air_co2_concentration_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_measured_air_co2_concentration_schedule_name
         if not v:
             return None
@@ -7892,7 +7989,7 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_people_activity_schedule(self) -> IDFBaseModel | None:
+    def zone_input_people_activity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.zone_input_people_activity_schedule_name
         if not v:
             return None
@@ -7902,7 +7999,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_people_sensible_heat_fraction_schedule(self) -> IDFBaseModel | None:
+    def zone_input_people_sensible_heat_fraction_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_people_sensible_heat_fraction_schedule_name
         if not v:
             return None
@@ -7912,7 +8011,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_people_radiant_heat_fraction_schedule(self) -> IDFBaseModel | None:
+    def zone_input_people_radiant_heat_fraction_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_people_radiant_heat_fraction_schedule_name
         if not v:
             return None
@@ -7922,7 +8023,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_people_co2_generation_rate_schedule(self) -> IDFBaseModel | None:
+    def zone_input_people_co2_generation_rate_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_people_co2_generation_rate_schedule_name
         if not v:
             return None
@@ -7932,7 +8035,7 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_supply_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def zone_input_supply_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.zone_input_supply_air_temperature_schedule_name
         if not v:
             return None
@@ -7942,7 +8045,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_supply_air_mass_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def zone_input_supply_air_mass_flow_rate_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_supply_air_mass_flow_rate_schedule_name
         if not v:
             return None
@@ -7952,7 +8057,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_supply_air_humidity_ratio_schedule(self) -> IDFBaseModel | None:
+    def zone_input_supply_air_humidity_ratio_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_supply_air_humidity_ratio_schedule_name
         if not v:
             return None
@@ -7962,7 +8069,9 @@ class HybridModelZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_input_supply_air_co2_concentration_schedule(self) -> IDFBaseModel | None:
+    def zone_input_supply_air_co2_concentration_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_input_supply_air_co2_concentration_schedule_name
         if not v:
             return None
@@ -8013,7 +8122,7 @@ class LoadProfilePlant(IDFBaseModel):
     )
 
     @property
-    def load_schedule(self) -> IDFBaseModel | None:
+    def load_schedule(self) -> ScheduleNamesTarget | None:
         v = self.load_schedule_name
         if not v:
             return None
@@ -8023,7 +8132,7 @@ class LoadProfilePlant(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+    def flow_rate_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.flow_rate_fraction_schedule_name
         if not v:
             return None

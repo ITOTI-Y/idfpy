@@ -23,6 +23,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        DayScheduleNamesTarget,
+        MaterialNameTarget,
+        ScheduleNamesTarget,
+    )
     from .advanced_construction import SurfacePropertyOtherSideConditionsModel
     from .schedules import ScheduleDayHourly, ScheduleDayInterval, ScheduleDayList
 
@@ -65,7 +70,7 @@ class RoofIrrigation(IDFBaseModel):
     )
 
     @property
-    def irrigation_rate_schedule(self) -> IDFBaseModel | None:
+    def irrigation_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.irrigation_rate_schedule_name
         if not v:
             return None
@@ -343,7 +348,7 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['OSCMNames'])
 
     @property
-    def horizontal_insulation_material(self) -> IDFBaseModel | None:
+    def horizontal_insulation_material(self) -> MaterialNameTarget | None:
         v = self.horizontal_insulation_material_name
         if not v:
             return None
@@ -365,7 +370,7 @@ class SiteGroundDomainBasement(IDFBaseModel):
         return idf._resolve_forward(v, ['OSCMNames'])
 
     @property
-    def basement_wall_vertical_insulation_material(self) -> IDFBaseModel | None:
+    def basement_wall_vertical_insulation_material(self) -> MaterialNameTarget | None:
         v = self.basement_wall_vertical_insulation_material_name
         if not v:
             return None
@@ -523,7 +528,7 @@ class SiteGroundDomainSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['OSCMNames'])
 
     @property
-    def slab_material(self) -> IDFBaseModel | None:
+    def slab_material(self) -> MaterialNameTarget | None:
         v = self.slab_material_name
         if not v:
             return None
@@ -533,7 +538,7 @@ class SiteGroundDomainSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def horizontal_insulation_material(self) -> IDFBaseModel | None:
+    def horizontal_insulation_material(self) -> MaterialNameTarget | None:
         v = self.horizontal_insulation_material_name
         if not v:
             return None
@@ -543,7 +548,7 @@ class SiteGroundDomainSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def vertical_insulation_material(self) -> IDFBaseModel | None:
+    def vertical_insulation_material(self) -> MaterialNameTarget | None:
         v = self.vertical_insulation_material_name
         if not v:
             return None
@@ -1011,7 +1016,7 @@ class SitePrecipitation(IDFBaseModel):
     )
 
     @property
-    def precipitation_rates_schedule(self) -> IDFBaseModel | None:
+    def precipitation_rates_schedule(self) -> ScheduleNamesTarget | None:
         v = self.precipitation_rates_schedule_name
         if not v:
             return None
@@ -1112,7 +1117,7 @@ class SiteVariableLocation(IDFBaseModel):
     )
 
     @property
-    def building_location_latitude_schedule_ref(self) -> IDFBaseModel | None:
+    def building_location_latitude_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.building_location_latitude_schedule
         if not v:
             return None
@@ -1122,7 +1127,7 @@ class SiteVariableLocation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def building_location_longitude_schedule_ref(self) -> IDFBaseModel | None:
+    def building_location_longitude_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.building_location_longitude_schedule
         if not v:
             return None
@@ -1132,7 +1137,7 @@ class SiteVariableLocation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def building_location_orientation_schedule_ref(self) -> IDFBaseModel | None:
+    def building_location_orientation_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.building_location_orientation_schedule
         if not v:
             return None
@@ -1193,7 +1198,7 @@ class SiteWaterMainsTemperature(IDFBaseModel):
     )
 
     @property
-    def temperature_schedule(self) -> IDFBaseModel | None:
+    def temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.temperature_schedule_name
         if not v:
             return None
@@ -1671,7 +1676,7 @@ class WeatherPropertySkyTemperature(IDFBaseModel):
         return idf._resolve_forward(v, ['RunPeriodsAndDesignDays'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> DayScheduleNamesTarget | ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None

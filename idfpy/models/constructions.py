@@ -33,6 +33,13 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        BivariateFunctionsTarget,
+        ConstructionNamesTarget,
+        MaterialNameTarget,
+        ScheduleNamesTarget,
+        WindowEquivalentLayerMaterialNamesTarget,
+    )
     from .misc import MatrixTwoDimension
 
 
@@ -148,7 +155,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
     )
 
     @property
-    def outside_layer_ref(self) -> IDFBaseModel | None:
+    def outside_layer_ref(self) -> MaterialNameTarget | None:
         v = self.outside_layer
         if not v:
             return None
@@ -158,7 +165,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_2_ref(self) -> IDFBaseModel | None:
+    def layer_2_ref(self) -> MaterialNameTarget | None:
         v = self.layer_2
         if not v:
             return None
@@ -168,7 +175,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_3_ref(self) -> IDFBaseModel | None:
+    def layer_3_ref(self) -> MaterialNameTarget | None:
         v = self.layer_3
         if not v:
             return None
@@ -178,7 +185,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_4_ref(self) -> IDFBaseModel | None:
+    def layer_4_ref(self) -> MaterialNameTarget | None:
         v = self.layer_4
         if not v:
             return None
@@ -188,7 +195,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_5_ref(self) -> IDFBaseModel | None:
+    def layer_5_ref(self) -> MaterialNameTarget | None:
         v = self.layer_5
         if not v:
             return None
@@ -198,7 +205,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_6_ref(self) -> IDFBaseModel | None:
+    def layer_6_ref(self) -> MaterialNameTarget | None:
         v = self.layer_6
         if not v:
             return None
@@ -208,7 +215,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_7_ref(self) -> IDFBaseModel | None:
+    def layer_7_ref(self) -> MaterialNameTarget | None:
         v = self.layer_7
         if not v:
             return None
@@ -218,7 +225,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_8_ref(self) -> IDFBaseModel | None:
+    def layer_8_ref(self) -> MaterialNameTarget | None:
         v = self.layer_8
         if not v:
             return None
@@ -228,7 +235,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_9_ref(self) -> IDFBaseModel | None:
+    def layer_9_ref(self) -> MaterialNameTarget | None:
         v = self.layer_9
         if not v:
             return None
@@ -238,7 +245,7 @@ class Construction(ConstructionLayersMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def layer_10_ref(self) -> IDFBaseModel | None:
+    def layer_10_ref(self) -> MaterialNameTarget | None:
         v = self.layer_10
         if not v:
             return None
@@ -282,7 +289,7 @@ class ConstructionAirBoundary(IDFBaseModel):
     )
 
     @property
-    def simple_mixing_schedule(self) -> IDFBaseModel | None:
+    def simple_mixing_schedule(self) -> ScheduleNamesTarget | None:
         v = self.simple_mixing_schedule_name
         if not v:
             return None
@@ -871,7 +878,7 @@ class ConstructionPropertyInternalHeatSource(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -948,7 +955,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
     )
 
     @property
-    def outside_layer_ref(self) -> IDFBaseModel | None:
+    def outside_layer_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.outside_layer
         if not v:
             return None
@@ -958,7 +965,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_2_ref(self) -> IDFBaseModel | None:
+    def layer_2_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_2
         if not v:
             return None
@@ -968,7 +975,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_3_ref(self) -> IDFBaseModel | None:
+    def layer_3_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_3
         if not v:
             return None
@@ -978,7 +985,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_4_ref(self) -> IDFBaseModel | None:
+    def layer_4_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_4
         if not v:
             return None
@@ -988,7 +995,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_5_ref(self) -> IDFBaseModel | None:
+    def layer_5_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_5
         if not v:
             return None
@@ -998,7 +1005,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_6_ref(self) -> IDFBaseModel | None:
+    def layer_6_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_6
         if not v:
             return None
@@ -1008,7 +1015,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_7_ref(self) -> IDFBaseModel | None:
+    def layer_7_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_7
         if not v:
             return None
@@ -1018,7 +1025,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_8_ref(self) -> IDFBaseModel | None:
+    def layer_8_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_8
         if not v:
             return None
@@ -1028,7 +1035,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_9_ref(self) -> IDFBaseModel | None:
+    def layer_9_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_9
         if not v:
             return None
@@ -1038,7 +1045,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_10_ref(self) -> IDFBaseModel | None:
+    def layer_10_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_10
         if not v:
             return None
@@ -1048,7 +1055,7 @@ class ConstructionWindowEquivalentLayer(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowEquivalentLayerMaterialNames'])
 
     @property
-    def layer_11_ref(self) -> IDFBaseModel | None:
+    def layer_11_ref(self) -> WindowEquivalentLayerMaterialNamesTarget | None:
         v = self.layer_11
         if not v:
             return None
@@ -1479,7 +1486,7 @@ class MaterialPropertyHeatAndMoistureTransferDiffusion(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -1658,7 +1665,7 @@ class MaterialPropertyHeatAndMoistureTransferRedistribution(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -1694,7 +1701,7 @@ class MaterialPropertyHeatAndMoistureTransferSettings(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -2022,7 +2029,7 @@ class MaterialPropertyHeatAndMoistureTransferSorptionIsotherm(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -2204,7 +2211,7 @@ class MaterialPropertyHeatAndMoistureTransferSuction(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -2382,7 +2389,7 @@ class MaterialPropertyHeatAndMoistureTransferThermalConductivity(IDFBaseModel):
     )
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -2447,7 +2454,7 @@ class MaterialPropertyMoisturePenetrationDepthSettings(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> MaterialNameTarget | None:
         v = self.name
         if not v:
             return None
@@ -2484,7 +2491,7 @@ class MaterialPropertyPhaseChange(IDFBaseModel):
     values: list[MaterialPropertyPhaseChangeValuesItem] | None = Field(default=None)
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> MaterialNameTarget | None:
         v = self.name
         if not v:
             return None
@@ -2616,7 +2623,7 @@ class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> MaterialNameTarget | None:
         v = self.name
         if not v:
             return None
@@ -2681,7 +2688,7 @@ class MaterialPropertyVariableAbsorptance(IDFBaseModel):
     )
 
     @property
-    def reference_material(self) -> IDFBaseModel | None:
+    def reference_material(self) -> MaterialNameTarget | None:
         v = self.reference_material_name
         if not v:
             return None
@@ -2712,7 +2719,7 @@ class MaterialPropertyVariableThermalConductivity(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> MaterialNameTarget | None:
         v = self.name
         if not v:
             return None
@@ -3808,7 +3815,7 @@ class WindowMaterialGlazing(IDFBaseModel):
     @property
     def window_glass_spectral_and_incident_angle_transmittance_data_set_table(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.window_glass_spectral_and_incident_angle_transmittance_data_set_table_name
         if not v:
             return None
@@ -3820,7 +3827,7 @@ class WindowMaterialGlazing(IDFBaseModel):
     @property
     def window_glass_spectral_and_incident_angle_front_reflectance_data_set_table(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.window_glass_spectral_and_incident_angle_front_reflectance_data_set_table_name
         if not v:
             return None
@@ -3832,7 +3839,7 @@ class WindowMaterialGlazing(IDFBaseModel):
     @property
     def window_glass_spectral_and_incident_angle_back_reflectance_data_set_table(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.window_glass_spectral_and_incident_angle_back_reflectance_data_set_table_name
         if not v:
             return None

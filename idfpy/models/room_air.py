@@ -23,6 +23,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import AllHeatTranSurfNamesTarget, ScheduleNamesTarget
     from .thermal_zones import Zone
 
 
@@ -34,7 +35,7 @@ class RoomAirNodeAirflowNetworkAdjacentSurfaceListSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -207,7 +208,7 @@ class RoomAirTemperaturePatternSurfaceMappingSurfaceDeltasItem(IDFBaseModel):
     )
 
     @property
-    def surface_pair_ref(self) -> IDFBaseModel | None:
+    def surface_pair_ref(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name_pair
         if not v:
             return None
@@ -352,7 +353,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_1(self) -> IDFBaseModel | None:
+    def surface_1(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_1_name
         if not v:
             return None
@@ -362,7 +363,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_2(self) -> IDFBaseModel | None:
+    def surface_2(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_2_name
         if not v:
             return None
@@ -372,7 +373,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_3(self) -> IDFBaseModel | None:
+    def surface_3(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_3_name
         if not v:
             return None
@@ -382,7 +383,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_4(self) -> IDFBaseModel | None:
+    def surface_4(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_4_name
         if not v:
             return None
@@ -392,7 +393,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_5(self) -> IDFBaseModel | None:
+    def surface_5(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_5_name
         if not v:
             return None
@@ -402,7 +403,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_6(self) -> IDFBaseModel | None:
+    def surface_6(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_6_name
         if not v:
             return None
@@ -412,7 +413,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_7(self) -> IDFBaseModel | None:
+    def surface_7(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_7_name
         if not v:
             return None
@@ -422,7 +423,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_8(self) -> IDFBaseModel | None:
+    def surface_8(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_8_name
         if not v:
             return None
@@ -432,7 +433,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_9(self) -> IDFBaseModel | None:
+    def surface_9(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_9_name
         if not v:
             return None
@@ -442,7 +443,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_10(self) -> IDFBaseModel | None:
+    def surface_10(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_10_name
         if not v:
             return None
@@ -452,7 +453,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_11(self) -> IDFBaseModel | None:
+    def surface_11(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_11_name
         if not v:
             return None
@@ -462,7 +463,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_12(self) -> IDFBaseModel | None:
+    def surface_12(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_12_name
         if not v:
             return None
@@ -472,7 +473,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_13(self) -> IDFBaseModel | None:
+    def surface_13(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_13_name
         if not v:
             return None
@@ -482,7 +483,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_14(self) -> IDFBaseModel | None:
+    def surface_14(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_14_name
         if not v:
             return None
@@ -492,7 +493,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_15(self) -> IDFBaseModel | None:
+    def surface_15(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_15_name
         if not v:
             return None
@@ -502,7 +503,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_16(self) -> IDFBaseModel | None:
+    def surface_16(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_16_name
         if not v:
             return None
@@ -512,7 +513,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_17(self) -> IDFBaseModel | None:
+    def surface_17(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_17_name
         if not v:
             return None
@@ -522,7 +523,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_18(self) -> IDFBaseModel | None:
+    def surface_18(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_18_name
         if not v:
             return None
@@ -532,7 +533,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_19(self) -> IDFBaseModel | None:
+    def surface_19(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_19_name
         if not v:
             return None
@@ -542,7 +543,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_20(self) -> IDFBaseModel | None:
+    def surface_20(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_20_name
         if not v:
             return None
@@ -552,7 +553,7 @@ class RoomAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def surface_21(self) -> IDFBaseModel | None:
+    def surface_21(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_21_name
         if not v:
             return None
@@ -750,7 +751,7 @@ class RoomAirSettingsCrossVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def gain_distribution_schedule(self) -> IDFBaseModel | None:
+    def gain_distribution_schedule(self) -> ScheduleNamesTarget | None:
         v = self.gain_distribution_schedule_name
         if not v:
             return None
@@ -846,7 +847,7 @@ class RoomAirSettingsThreeNodeDisplacementVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def gain_distribution_schedule(self) -> IDFBaseModel | None:
+    def gain_distribution_schedule(self) -> ScheduleNamesTarget | None:
         v = self.gain_distribution_schedule_name
         if not v:
             return None
@@ -1295,7 +1296,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1305,7 +1306,7 @@ class RoomAirTemperaturePatternUserDefined(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pattern_control_schedule(self) -> IDFBaseModel | None:
+    def pattern_control_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pattern_control_schedule_name
         if not v:
             return None

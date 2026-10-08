@@ -38,6 +38,19 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ChillersTarget,
+        CoolingCoilNameTarget,
+        CoolingCoilSystemNameTarget,
+        DOAToZonalUnitTarget,
+        HeatingCoilNameTarget,
+        HeatingCoilsDesuperheaterTarget,
+        HeatingCoilsElectricMultiStageTarget,
+        HeatingCoilsGasMultiStageTarget,
+        HeatingCoilSystemNameTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .coils import CoilCoolingWater, CoilHeatingWater
     from .condensers import (
         CoolingTowerSingleSpeed,
@@ -76,7 +89,7 @@ class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -86,7 +99,7 @@ class FaultModelEnthalpySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -127,7 +140,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -137,7 +150,7 @@ class FaultModelEnthalpySensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -207,7 +220,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOffandVAV', 'FansSystemModel'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -217,7 +230,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pressure_fraction_schedule(self) -> IDFBaseModel | None:
+    def pressure_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pressure_fraction_schedule_name
         if not v:
             return None
@@ -227,7 +240,7 @@ class FaultModelFoulingAirFilter(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_curve(self) -> IDFBaseModel | None:
+    def fan_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.fan_curve_name
         if not v:
             return None
@@ -274,7 +287,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -284,7 +297,7 @@ class FaultModelFoulingBoiler(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -348,7 +361,7 @@ class FaultModelFoulingChiller(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -358,7 +371,7 @@ class FaultModelFoulingChiller(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -368,7 +381,7 @@ class FaultModelFoulingChiller(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_object(self) -> IDFBaseModel | None:
+    def chiller_object(self) -> ChillersTarget | None:
         v = self.chiller_object_name
         if not v:
             return None
@@ -448,7 +461,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['SimpleCoils'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -458,7 +471,7 @@ class FaultModelFoulingCoil(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -504,7 +517,7 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -514,7 +527,7 @@ class FaultModelFoulingCoolingTower(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -580,7 +593,7 @@ class FaultModelFoulingEvaporativeCooler(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -590,7 +603,7 @@ class FaultModelFoulingEvaporativeCooler(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -600,7 +613,7 @@ class FaultModelFoulingEvaporativeCooler(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def evaporative_cooler_object(self) -> IDFBaseModel | None:
+    def evaporative_cooler_object(self) -> ChillersTarget | None:
         v = self.evaporative_cooler_object_name
         if not v:
             return None
@@ -673,7 +686,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneControlHumidistatNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -683,7 +696,7 @@ class FaultModelHumidistatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -724,7 +737,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -734,7 +747,7 @@ class FaultModelHumiditySensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -791,7 +804,7 @@ class FaultModelTemperatureSensorOffsetChillerSupplyWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -801,7 +814,7 @@ class FaultModelTemperatureSensorOffsetChillerSupplyWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -811,7 +824,7 @@ class FaultModelTemperatureSensorOffsetChillerSupplyWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def chiller_object(self) -> IDFBaseModel | None:
+    def chiller_object(self) -> ChillersTarget | None:
         v = self.chiller_object_name
         if not v:
             return None
@@ -882,7 +895,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -892,7 +905,7 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -902,7 +915,19 @@ class FaultModelTemperatureSensorOffsetCoilSupplyAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def coil_object(self) -> IDFBaseModel | None:
+    def coil_object(
+        self,
+    ) -> (
+        CoolingCoilNameTarget
+        | CoolingCoilSystemNameTarget
+        | DOAToZonalUnitTarget
+        | HeatingCoilNameTarget
+        | HeatingCoilSystemNameTarget
+        | HeatingCoilsDesuperheaterTarget
+        | HeatingCoilsElectricMultiStageTarget
+        | HeatingCoilsGasMultiStageTarget
+        | None
+    ):
         v = self.coil_object_name
         if not v:
             return None
@@ -969,7 +994,7 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -979,7 +1004,7 @@ class FaultModelTemperatureSensorOffsetCondenserSupplyWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -1028,7 +1053,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1038,7 +1063,7 @@ class FaultModelTemperatureSensorOffsetOutdoorAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -1079,7 +1104,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1089,7 +1114,7 @@ class FaultModelTemperatureSensorOffsetReturnAir(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None
@@ -1145,7 +1170,7 @@ class FaultModelThermostatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1155,7 +1180,7 @@ class FaultModelThermostatOffset(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def severity_schedule(self) -> IDFBaseModel | None:
+    def severity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.severity_schedule_name
         if not v:
             return None

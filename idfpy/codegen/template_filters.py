@@ -25,9 +25,23 @@ _REFERENCE_CLASS_NAME_GROUPS: set[str] = set()
 _GROUP_TO_CLASSES: dict[str, set[str]] = {}
 _OBJECT_TYPE_TO_CLASS: dict[str, str] = {}
 
-# Navigation properties with more than this many provider types
-# fall back to IDFBaseModel | None
+# Navigation properties with more provider types than this return the
+# per-group aliases from _ref_targets.py instead of spelling out the union
 MAX_NAV_UNION_SIZE = 5
+REF_TARGETS_MODULE = '_ref_targets'
+
+
+def type_alias_name(group: str, suffix: str) -> str:
+    """Turn a reference group name into an identifier, e.g. ``ZoneNames`` + ``Ref``."""
+    name = re.sub(r'[^a-zA-Z0-9]', '', group)
+    if name and name[0].islower():
+        name = name[0].upper() + name[1:]
+    return f'{name}{suffix}'
+
+
+def ref_target_alias(group: str) -> str:
+    """Alias for the union of classes a reference group can name."""
+    return type_alias_name(group, 'Target')
 
 
 def set_object_list_ref_types(mapping: dict[str, str]) -> None:
@@ -621,38 +635,38 @@ def _find_discriminant_classes(
     return None
 
 
-def _resolve_nav_classes(
+def _nav_type_names(
     spec: FieldSpec,
     sibling_fields: list[FieldSpec] | None = None,
-) -> set[str] | None:
-    """Resolve provider classes for a nav property field.
+) -> list[str]:
+    """Class or alias names whose union is a nav property's target type.
 
-    Returns set of class names if narrowable (≤ MAX_NAV_UNION_SIZE),
-    or None to fall back to IDFBaseModel.
+    A field narrowed by its sibling ``*_object_type`` discriminant, or one
+    naming at most MAX_NAV_UNION_SIZE classes, lists the classes. Wider
+    fields use one ``_ref_targets`` alias per group. Empty when no class
+    can be named, so the property falls back to IDFBaseModel.
     """
     if not spec.object_list:
-        return None
+        return []
     all_classes: set[str] = set()
     for group in spec.object_list:
-        classes = _GROUP_TO_CLASSES.get(group, set())
-        all_classes |= classes
-    # Intersect with discriminant whitelist if available
+        all_classes |= _GROUP_TO_CLASSES.get(group, set())
     if sibling_fields is not None:
         disc_classes = _find_discriminant_classes(spec, sibling_fields)
         if disc_classes:
-            all_classes &= disc_classes
-    if not all_classes or len(all_classes) > MAX_NAV_UNION_SIZE:
-        return None
-    return all_classes
+            return sorted(all_classes & disc_classes)
+    if len(all_classes) <= MAX_NAV_UNION_SIZE:
+        return sorted(all_classes)
+    return [ref_target_alias(g) for g in spec.object_list if _GROUP_TO_CLASSES.get(g)]
 
 
 def nav_return_type_filter(spec: FieldSpec, obj: ObjectSpec | None = None) -> str:
     """Compute narrowed return type for navigation property."""
     sibling_fields = obj.fields if obj is not None else None
-    classes = _resolve_nav_classes(spec, sibling_fields)
-    if classes is None:
+    names = _nav_type_names(spec, sibling_fields)
+    if not names:
         return 'IDFBaseModel | None'
-    return ' | '.join(sorted(classes)) + ' | None'
+    return ' | '.join(names) + ' | None'
 
 
 def collect_nav_imports(
@@ -678,9 +692,7 @@ def collect_nav_imports(
         for spec in fields:
             if not spec.object_list or is_class_name_ref_filter(spec):
                 continue
-            classes = _resolve_nav_classes(spec, sibling_fields)
-            if classes is not None:
-                needed.update(classes)
+            needed.update(_nav_type_names(spec, sibling_fields))
 
     for obj in objects:
         _collect_from_fields(obj.fields, obj.fields)
@@ -692,7 +704,7 @@ def collect_nav_imports(
 
     imports: dict[str, list[str]] = {}
     for cls_name in sorted(needed - local_classes):
-        module = class_to_module.get(cls_name, '')
+        module = class_to_module.get(cls_name, REF_TARGETS_MODULE)
         if module == current_module:
             continue
         imports.setdefault(module, []).append(cls_name)

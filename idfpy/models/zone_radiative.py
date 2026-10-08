@@ -29,6 +29,13 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllHeatTranSurfNamesTarget,
+        RadiantGroupNamesTarget,
+        RadiantSurfaceNamesTarget,
+        ScheduleNamesTarget,
+        VentSlabGroupNamesTarget,
+    )
     from .availability_managers import AvailabilityManagerAssignmentList
     from .coils import (
         CoilCoolingWater,
@@ -59,7 +66,7 @@ class ZoneHVACBaseboardRadiantConvectiveElectricSurfaceFractionsItem(IDFBaseMode
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -78,7 +85,7 @@ class ZoneHVACLowTemperatureRadiantSurfaceGroupSurfaceFractionsItem(IDFBaseModel
     flow_fraction_for_surface: float = Field(..., ge=0.0)
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> RadiantSurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -118,7 +125,7 @@ class ZoneHVACVentilatedSlabSlabGroupDataItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> RadiantSurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -181,7 +188,7 @@ class ZoneHVACBaseboardConvectiveElectric(IDFBaseModel):
     efficiency: float | None = Field(default=1.0, ge=0.0, le=1.0)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -252,7 +259,7 @@ class ZoneHVACBaseboardConvectiveWater(IDFBaseModel):
     convergence_tolerance: float | None = Field(default=0.001, gt=0.0)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -322,7 +329,7 @@ class ZoneHVACBaseboardRadiantConvectiveElectric(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -386,7 +393,7 @@ class ZoneHVACBaseboardRadiantConvectiveSteam(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantDesignObject'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -509,7 +516,7 @@ class ZoneHVACBaseboardRadiantConvectiveWater(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantDesignObject'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -661,7 +668,7 @@ class ZoneHVACCoolingPanelRadiantConvectiveWater(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -671,7 +678,7 @@ class ZoneHVACCoolingPanelRadiantConvectiveWater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_control_temperature_schedule_name
         if not v:
             return None
@@ -802,7 +809,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -822,7 +829,7 @@ class ZoneHVACHighTemperatureRadiant(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def heating_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -951,7 +958,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantDesignObject'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -971,7 +978,9 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(
+        self,
+    ) -> RadiantGroupNamesTarget | RadiantSurfaceNamesTarget | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -981,7 +990,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantGroupNames', 'RadiantSurfaceNames'])
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -991,7 +1000,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_high_water_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_high_water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_high_water_temperature_schedule_name
         if not v:
             return None
@@ -1001,7 +1010,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_low_water_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_low_water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_low_water_temperature_schedule_name
         if not v:
             return None
@@ -1011,7 +1020,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_high_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_high_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_high_control_temperature_schedule_name
         if not v:
             return None
@@ -1021,7 +1030,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_low_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_low_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_low_control_temperature_schedule_name
         if not v:
             return None
@@ -1031,7 +1040,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_high_water_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_high_water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_high_water_temperature_schedule_name
         if not v:
             return None
@@ -1041,7 +1050,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_low_water_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_low_water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_low_water_temperature_schedule_name
         if not v:
             return None
@@ -1051,7 +1060,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_high_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_high_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_high_control_temperature_schedule_name
         if not v:
             return None
@@ -1061,7 +1070,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_low_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_low_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_low_control_temperature_schedule_name
         if not v:
             return None
@@ -1145,7 +1154,7 @@ class ZoneHVACLowTemperatureRadiantConstantFlowDesign(IDFBaseModel):
     )
 
     @property
-    def changeover_delay_time_period_schedule_ref(self) -> IDFBaseModel | None:
+    def changeover_delay_time_period_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.changeover_delay_time_period_schedule
         if not v:
             return None
@@ -1248,7 +1257,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1268,7 +1277,9 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(
+        self,
+    ) -> RadiantGroupNamesTarget | RadiantSurfaceNamesTarget | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1278,7 +1289,7 @@ class ZoneHVACLowTemperatureRadiantElectric(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantGroupNames', 'RadiantSurfaceNames'])
 
     @property
-    def heating_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -1392,7 +1403,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantDesignObject'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1412,7 +1423,9 @@ class ZoneHVACLowTemperatureRadiantVariableFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(
+        self,
+    ) -> RadiantGroupNamesTarget | RadiantSurfaceNamesTarget | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1558,7 +1571,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlowDesign(IDFBaseModel):
     )
 
     @property
-    def heating_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_control_temperature_schedule_name
         if not v:
             return None
@@ -1568,7 +1581,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlowDesign(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_control_temperature_schedule_name
         if not v:
             return None
@@ -1578,7 +1591,7 @@ class ZoneHVACLowTemperatureRadiantVariableFlowDesign(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def changeover_delay_time_period_schedule_ref(self) -> IDFBaseModel | None:
+    def changeover_delay_time_period_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.changeover_delay_time_period_schedule
         if not v:
             return None
@@ -1803,7 +1816,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1823,7 +1836,9 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def surface_or_radiant_surface_group(self) -> IDFBaseModel | None:
+    def surface_or_radiant_surface_group(
+        self,
+    ) -> RadiantSurfaceNamesTarget | VentSlabGroupNamesTarget | None:
         v = self.surface_name_or_radiant_surface_group_name
         if not v:
             return None
@@ -1833,7 +1848,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['RadiantSurfaceNames', 'VentSlabGroupNames'])
 
     @property
-    def minimum_outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_air_schedule_name
         if not v:
             return None
@@ -1845,7 +1860,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
     @property
     def maximum_outdoor_air_fraction_or_temperature_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.maximum_outdoor_air_fraction_or_temperature_schedule_name
         if not v:
             return None
@@ -1855,7 +1870,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_high_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_high_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_high_air_temperature_schedule_name
         if not v:
             return None
@@ -1865,7 +1880,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_low_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_low_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_low_air_temperature_schedule_name
         if not v:
             return None
@@ -1875,7 +1890,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_high_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_high_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_high_control_temperature_schedule_name
         if not v:
             return None
@@ -1885,7 +1900,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_low_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_low_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_low_control_temperature_schedule_name
         if not v:
             return None
@@ -1895,7 +1910,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_high_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_high_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_high_air_temperature_schedule_name
         if not v:
             return None
@@ -1905,7 +1920,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_low_air_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_low_air_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_low_air_temperature_schedule_name
         if not v:
             return None
@@ -1915,7 +1930,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_high_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_high_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_high_control_temperature_schedule_name
         if not v:
             return None
@@ -1925,7 +1940,7 @@ class ZoneHVACVentilatedSlab(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_low_control_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_low_control_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_low_control_temperature_schedule_name
         if not v:
             return None

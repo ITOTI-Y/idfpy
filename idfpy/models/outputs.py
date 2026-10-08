@@ -7,7 +7,7 @@ Group: Output Reporting
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -16,6 +16,9 @@ from ._refs import (
     ColorSchemesRef,
     ScheduleNamesRef,
 )
+
+if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
 
 
 class MeterCustomVariableDetailsItem(IDFBaseModel):
@@ -395,7 +398,7 @@ class FuelFactors(IDFBaseModel):
     )
 
     @property
-    def source_energy_schedule(self) -> IDFBaseModel | None:
+    def source_energy_schedule(self) -> ScheduleNamesTarget | None:
         v = self.source_energy_schedule_name
         if not v:
             return None
@@ -405,7 +408,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def co2_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def co2_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.co2_emission_factor_schedule_name
         if not v:
             return None
@@ -415,7 +418,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def co_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def co_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.co_emission_factor_schedule_name
         if not v:
             return None
@@ -425,7 +428,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ch4_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def ch4_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ch4_emission_factor_schedule_name
         if not v:
             return None
@@ -435,7 +438,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def nox_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def nox_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.nox_emission_factor_schedule_name
         if not v:
             return None
@@ -445,7 +448,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def n2o_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def n2o_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.n2o_emission_factor_schedule_name
         if not v:
             return None
@@ -455,7 +458,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def so2_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def so2_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.so2_emission_factor_schedule_name
         if not v:
             return None
@@ -465,7 +468,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pm_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def pm_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pm_emission_factor_schedule_name
         if not v:
             return None
@@ -475,7 +478,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pm10_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def pm10_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pm10_emission_factor_schedule_name
         if not v:
             return None
@@ -485,7 +488,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pm2_5_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def pm2_5_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pm2_5_emission_factor_schedule_name
         if not v:
             return None
@@ -495,7 +498,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def nh3_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def nh3_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.nh3_emission_factor_schedule_name
         if not v:
             return None
@@ -505,7 +508,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def nmvoc_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def nmvoc_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.nmvoc_emission_factor_schedule_name
         if not v:
             return None
@@ -515,7 +518,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def hg_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def hg_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.hg_emission_factor_schedule_name
         if not v:
             return None
@@ -525,7 +528,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pb_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def pb_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pb_emission_factor_schedule_name
         if not v:
             return None
@@ -535,7 +538,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def water_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def water_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.water_emission_factor_schedule_name
         if not v:
             return None
@@ -545,7 +548,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def nuclear_high_level_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def nuclear_high_level_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.nuclear_high_level_emission_factor_schedule_name
         if not v:
             return None
@@ -555,7 +558,7 @@ class FuelFactors(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def nuclear_low_level_emission_factor_schedule(self) -> IDFBaseModel | None:
+    def nuclear_low_level_emission_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.nuclear_low_level_emission_factor_schedule_name
         if not v:
             return None
@@ -1566,7 +1569,7 @@ class OutputTableAnnual(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1699,7 +1702,7 @@ class OutputTableTimeBins(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1748,7 +1751,7 @@ class OutputVariable(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None

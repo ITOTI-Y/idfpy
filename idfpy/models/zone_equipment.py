@@ -21,7 +21,46 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget, ZoneEquipmentNamesTarget
+    from .misc import HeatExchangerAirToAirFlatPlate
+    from .refrigeration import ZoneHVACRefrigerationChillerSet
     from .thermal_zones import Space, Zone
+    from .unitary import AirLoopHVACUnitarySystem
+    from .user_defined import ZoneHVACForcedAirUserDefined
+    from .water_heaters import (
+        WaterHeaterHeatPumpPumpedCondenser,
+        WaterHeaterHeatPumpWrappedCondenser,
+    )
+    from .zone_forced_air import (
+        ZoneHVACDehumidifierDX,
+        ZoneHVACEnergyRecoveryVentilator,
+        ZoneHVACEvaporativeCoolerUnit,
+        ZoneHVACFourPipeFanCoil,
+        ZoneHVACHybridUnitaryHVAC,
+        ZoneHVACIdealLoadsAirSystem,
+        ZoneHVACOutdoorAirUnit,
+        ZoneHVACPackagedTerminalAirConditioner,
+        ZoneHVACPackagedTerminalHeatPump,
+        ZoneHVACTerminalUnitVariableRefrigerantFlow,
+        ZoneHVACUnitHeater,
+        ZoneHVACUnitVentilator,
+        ZoneHVACWaterToAirHeatPump,
+        ZoneHVACWindowAirConditioner,
+    )
+    from .zone_radiative import (
+        ZoneHVACBaseboardConvectiveElectric,
+        ZoneHVACBaseboardConvectiveWater,
+        ZoneHVACBaseboardRadiantConvectiveElectric,
+        ZoneHVACBaseboardRadiantConvectiveSteam,
+        ZoneHVACBaseboardRadiantConvectiveWater,
+        ZoneHVACCoolingPanelRadiantConvectiveWater,
+        ZoneHVACHighTemperatureRadiant,
+        ZoneHVACLowTemperatureRadiantConstantFlow,
+        ZoneHVACLowTemperatureRadiantElectric,
+        ZoneHVACLowTemperatureRadiantVariableFlow,
+        ZoneHVACVentilatedSlab,
+    )
+    from .zone_terminals import ZoneHVACAirDistributionUnit
 
 
 class SpaceHVACZoneEquipmentMixerSpacesItem(IDFBaseModel):
@@ -185,7 +224,7 @@ class ZoneHVACEquipmentListEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def zone_equipment(self) -> IDFBaseModel | None:
+    def zone_equipment(self) -> ZoneEquipmentNamesTarget | None:
         v = self.zone_equipment_name
         if not v:
             return None
@@ -197,7 +236,7 @@ class ZoneHVACEquipmentListEquipmentItem(IDFBaseModel):
     @property
     def zone_equipment_sequential_cooling_fraction_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_equipment_sequential_cooling_fraction_schedule_name
         if not v:
             return None
@@ -209,7 +248,7 @@ class ZoneHVACEquipmentListEquipmentItem(IDFBaseModel):
     @property
     def zone_equipment_sequential_heating_fraction_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_equipment_sequential_heating_fraction_schedule_name
         if not v:
             return None
@@ -264,7 +303,7 @@ class SpaceHVACEquipmentConnections(IDFBaseModel):
     @property
     def space_return_air_node_1_flow_rate_fraction_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.space_return_air_node_1_flow_rate_fraction_schedule_name
         if not v:
             return None
@@ -430,7 +469,43 @@ class SpaceHVACZoneEquipmentSplitter(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def zone_equipment(self) -> IDFBaseModel | None:
+    def zone_equipment(
+        self,
+    ) -> (
+        AirLoopHVACUnitarySystem
+        | HeatExchangerAirToAirFlatPlate
+        | WaterHeaterHeatPumpPumpedCondenser
+        | WaterHeaterHeatPumpWrappedCondenser
+        | ZoneHVACAirDistributionUnit
+        | ZoneHVACBaseboardConvectiveElectric
+        | ZoneHVACBaseboardConvectiveWater
+        | ZoneHVACBaseboardRadiantConvectiveElectric
+        | ZoneHVACBaseboardRadiantConvectiveSteam
+        | ZoneHVACBaseboardRadiantConvectiveWater
+        | ZoneHVACCoolingPanelRadiantConvectiveWater
+        | ZoneHVACDehumidifierDX
+        | ZoneHVACEnergyRecoveryVentilator
+        | ZoneHVACEvaporativeCoolerUnit
+        | ZoneHVACForcedAirUserDefined
+        | ZoneHVACFourPipeFanCoil
+        | ZoneHVACHighTemperatureRadiant
+        | ZoneHVACHybridUnitaryHVAC
+        | ZoneHVACIdealLoadsAirSystem
+        | ZoneHVACLowTemperatureRadiantConstantFlow
+        | ZoneHVACLowTemperatureRadiantElectric
+        | ZoneHVACLowTemperatureRadiantVariableFlow
+        | ZoneHVACOutdoorAirUnit
+        | ZoneHVACPackagedTerminalAirConditioner
+        | ZoneHVACPackagedTerminalHeatPump
+        | ZoneHVACRefrigerationChillerSet
+        | ZoneHVACTerminalUnitVariableRefrigerantFlow
+        | ZoneHVACUnitHeater
+        | ZoneHVACUnitVentilator
+        | ZoneHVACVentilatedSlab
+        | ZoneHVACWaterToAirHeatPump
+        | ZoneHVACWindowAirConditioner
+        | None
+    ):
         v = self.zone_equipment_name
         if not v:
             return None
@@ -543,7 +618,9 @@ class ZoneHVACEquipmentConnections(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneEquipmentLists'])
 
     @property
-    def zone_return_air_node_1_flow_rate_fraction_schedule(self) -> IDFBaseModel | None:
+    def zone_return_air_node_1_flow_rate_fraction_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_return_air_node_1_flow_rate_fraction_schedule_name
         if not v:
             return None
