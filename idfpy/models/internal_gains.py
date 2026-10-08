@@ -29,6 +29,15 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllHeatTranAngFacNamesTarget,
+        AllHeatTranSurfNamesTarget,
+        BivariateFunctionsTarget,
+        ScheduleNamesTarget,
+        SurfaceNamesTarget,
+        SurfAndSubSurfNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .room_air import RoomAirNode
     from .thermal_zones import (
         BuildingSurfaceDetailed,
@@ -52,7 +61,7 @@ class ComfortViewFactorAnglesAnglesItem(IDFBaseModel):
     angle_factor: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -139,7 +148,7 @@ class ElectricEquipment(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -383,7 +392,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames', 'ZoneNames'])
 
     @property
-    def design_power_input_schedule(self) -> IDFBaseModel | None:
+    def design_power_input_schedule(self) -> ScheduleNamesTarget | None:
         v = self.design_power_input_schedule_name
         if not v:
             return None
@@ -393,7 +402,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cpu_loading_schedule(self) -> IDFBaseModel | None:
+    def cpu_loading_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cpu_loading_schedule_name
         if not v:
             return None
@@ -405,7 +414,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     @property
     def cpu_power_input_function_of_loading_and_air_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.cpu_power_input_function_of_loading_and_air_temperature_curve_name
         if not v:
             return None
@@ -417,7 +426,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     @property
     def air_flow_function_of_loading_and_air_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.air_flow_function_of_loading_and_air_temperature_curve_name
         if not v:
             return None
@@ -427,7 +436,9 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def fan_power_input_function_of_flow_curve(self) -> IDFBaseModel | None:
+    def fan_power_input_function_of_flow_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fan_power_input_function_of_flow_curve_name
         if not v:
             return None
@@ -459,7 +470,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     @property
     def recirculation_function_of_loading_and_supply_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.recirculation_function_of_loading_and_supply_temperature_curve_name
         if not v:
             return None
@@ -471,7 +482,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
     @property
     def electric_power_supply_efficiency_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electric_power_supply_efficiency_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -481,7 +492,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def supply_temperature_difference_schedule_ref(self) -> IDFBaseModel | None:
+    def supply_temperature_difference_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.supply_temperature_difference_schedule
         if not v:
             return None
@@ -491,7 +502,7 @@ class ElectricEquipmentITEAirCooled(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def return_temperature_difference_schedule_ref(self) -> IDFBaseModel | None:
+    def return_temperature_difference_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.return_temperature_difference_schedule
         if not v:
             return None
@@ -584,7 +595,7 @@ class GasEquipment(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -668,7 +679,7 @@ class HotWaterEquipment(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -738,7 +749,7 @@ class IndoorLivingWall(IDFBaseModel):
         default=None,
         json_schema_extra={
             'units': 'm2',
-            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the usersâ€™ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 f...',
+            'note': 'The value is the one-sided leaf area of an indoor living wall. Based on the users’ input, LAI is calculated as the ratio of the total leaf area and the partition wall area. Typical LAIs are 1.0 for...',
         },
     )
     led_nominal_intensity: float | None = Field(
@@ -765,7 +776,7 @@ class IndoorLivingWall(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -775,7 +786,7 @@ class IndoorLivingWall(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -785,7 +796,7 @@ class IndoorLivingWall(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def led_intensity_schedule(self) -> IDFBaseModel | None:
+    def led_intensity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.led_intensity_schedule_name
         if not v:
             return None
@@ -795,7 +806,9 @@ class IndoorLivingWall(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def led_daylight_targeted_lighting_intensity_schedule(self) -> IDFBaseModel | None:
+    def led_daylight_targeted_lighting_intensity_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.led_daylight_targeted_lighting_intensity_schedule_name
         if not v:
             return None
@@ -920,7 +933,7 @@ class Lights(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1031,7 +1044,7 @@ class OtherEquipment(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1321,7 +1334,7 @@ class People(IDFBaseModel):
         )
 
     @property
-    def number_of_people_schedule(self) -> IDFBaseModel | None:
+    def number_of_people_schedule(self) -> ScheduleNamesTarget | None:
         v = self.number_of_people_schedule_name
         if not v:
             return None
@@ -1331,7 +1344,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def activity_level_schedule(self) -> IDFBaseModel | None:
+    def activity_level_schedule(self) -> ScheduleNamesTarget | None:
         v = self.activity_level_schedule_name
         if not v:
             return None
@@ -1341,7 +1354,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def surface_angle_factor_list(self) -> IDFBaseModel | None:
+    def surface_angle_factor_list(self) -> AllHeatTranAngFacNamesTarget | None:
         v = self.surface_name_angle_factor_list_name
         if not v:
             return None
@@ -1351,7 +1364,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranAngFacNames'])
 
     @property
-    def work_efficiency_schedule(self) -> IDFBaseModel | None:
+    def work_efficiency_schedule(self) -> ScheduleNamesTarget | None:
         v = self.work_efficiency_schedule_name
         if not v:
             return None
@@ -1361,7 +1374,9 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def clothing_insulation_calculation_method_schedule(self) -> IDFBaseModel | None:
+    def clothing_insulation_calculation_method_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.clothing_insulation_calculation_method_schedule_name
         if not v:
             return None
@@ -1371,7 +1386,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def clothing_insulation_schedule(self) -> IDFBaseModel | None:
+    def clothing_insulation_schedule(self) -> ScheduleNamesTarget | None:
         v = self.clothing_insulation_schedule_name
         if not v:
             return None
@@ -1381,7 +1396,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def air_velocity_schedule(self) -> IDFBaseModel | None:
+    def air_velocity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.air_velocity_schedule_name
         if not v:
             return None
@@ -1391,7 +1406,7 @@ class People(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ankle_level_air_velocity_schedule(self) -> IDFBaseModel | None:
+    def ankle_level_air_velocity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ankle_level_air_velocity_schedule_name
         if not v:
             return None
@@ -1475,7 +1490,7 @@ class SteamEquipment(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1512,7 +1527,7 @@ class SurfaceContaminantSourceAndSinkGenericBoundaryLayerDiffusion(IDFBaseModel)
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -1522,7 +1537,7 @@ class SurfaceContaminantSourceAndSinkGenericBoundaryLayerDiffusion(IDFBaseModel)
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1556,7 +1571,7 @@ class SurfaceContaminantSourceAndSinkGenericDepositionVelocitySink(IDFBaseModel)
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -1566,7 +1581,7 @@ class SurfaceContaminantSourceAndSinkGenericDepositionVelocitySink(IDFBaseModel)
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1603,7 +1618,7 @@ class SurfaceContaminantSourceAndSinkGenericPressureDriven(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfAndSubSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -1613,7 +1628,7 @@ class SurfaceContaminantSourceAndSinkGenericPressureDriven(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfAndSubSurfNames'])
 
     @property
-    def generation_schedule(self) -> IDFBaseModel | None:
+    def generation_schedule(self) -> ScheduleNamesTarget | None:
         v = self.generation_schedule_name
         if not v:
             return None
@@ -1699,7 +1714,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['FloorSurfaceNames'])
 
     @property
-    def activity_factor_schedule(self) -> IDFBaseModel | None:
+    def activity_factor_schedule(self) -> ScheduleNamesTarget | None:
         v = self.activity_factor_schedule_name
         if not v:
             return None
@@ -1709,7 +1724,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def make_up_water_supply_schedule(self) -> IDFBaseModel | None:
+    def make_up_water_supply_schedule(self) -> ScheduleNamesTarget | None:
         v = self.make_up_water_supply_schedule_name
         if not v:
             return None
@@ -1719,7 +1734,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cover_schedule(self) -> IDFBaseModel | None:
+    def cover_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cover_schedule_name
         if not v:
             return None
@@ -1729,7 +1744,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def setpoint_temperature_schedule_ref(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule
         if not v:
             return None
@@ -1739,7 +1754,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def people_schedule_ref(self) -> IDFBaseModel | None:
+    def people_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.people_schedule
         if not v:
             return None
@@ -1749,7 +1764,7 @@ class SwimmingPoolIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def people_heat_gain_schedule_ref(self) -> IDFBaseModel | None:
+    def people_heat_gain_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.people_heat_gain_schedule
         if not v:
             return None
@@ -1814,7 +1829,7 @@ class ZoneBaseboardOutdoorTemperatureControlled(IDFBaseModel):
         )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1859,7 +1874,7 @@ class ZoneContaminantSourceAndSinkCarbonDioxide(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -1915,7 +1930,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def generation_schedule(self) -> IDFBaseModel | None:
+    def generation_schedule(self) -> ScheduleNamesTarget | None:
         v = self.generation_schedule_name
         if not v:
             return None
@@ -1925,7 +1940,7 @@ class ZoneContaminantSourceAndSinkGenericConstant(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def removal_schedule(self) -> IDFBaseModel | None:
+    def removal_schedule(self) -> ScheduleNamesTarget | None:
         v = self.removal_schedule_name
         if not v:
             return None
@@ -1975,7 +1990,7 @@ class ZoneContaminantSourceAndSinkGenericCutoffModel(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -2020,7 +2035,7 @@ class ZoneContaminantSourceAndSinkGenericDecaySource(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -2064,7 +2079,7 @@ class ZoneContaminantSourceAndSinkGenericDepositionRateSink(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None

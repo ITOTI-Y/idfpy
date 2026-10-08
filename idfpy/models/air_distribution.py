@@ -34,6 +34,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ScheduleNamesTarget,
+        ValidBranchEquipmentNamesTarget,
+        ValidOASysEquipmentNamesTarget,
+    )
     from .availability_managers import AvailabilityManagerAssignmentList
     from .fans import FanComponentModel, FanSystemModel
     from .misc import AirLoopHVACControllerList
@@ -286,7 +291,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
     )
 
     @property
-    def airloophvac_outdoorairsystem(self) -> IDFBaseModel | None:
+    def airloophvac_outdoorairsystem(self) -> ValidBranchEquipmentNamesTarget | None:
         v = self.airloophvac_outdoorairsystem_name
         if not v:
             return None
@@ -296,7 +301,7 @@ class AirLoopHVACDedicatedOutdoorAirSystem(IDFBaseModel):
         return idf._resolve_forward(v, ['validBranchEquipmentNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -489,7 +494,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
     )
 
     @property
-    def component_1(self) -> IDFBaseModel | None:
+    def component_1(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_1_name
         if not v:
             return None
@@ -499,7 +504,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_2(self) -> IDFBaseModel | None:
+    def component_2(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_2_name
         if not v:
             return None
@@ -509,7 +514,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_3(self) -> IDFBaseModel | None:
+    def component_3(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_3_name
         if not v:
             return None
@@ -519,7 +524,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_4(self) -> IDFBaseModel | None:
+    def component_4(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_4_name
         if not v:
             return None
@@ -529,7 +534,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_5(self) -> IDFBaseModel | None:
+    def component_5(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_5_name
         if not v:
             return None
@@ -539,7 +544,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_6(self) -> IDFBaseModel | None:
+    def component_6(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_6_name
         if not v:
             return None
@@ -549,7 +554,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_7(self) -> IDFBaseModel | None:
+    def component_7(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_7_name
         if not v:
             return None
@@ -559,7 +564,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_8(self) -> IDFBaseModel | None:
+    def component_8(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_8_name
         if not v:
             return None
@@ -569,7 +574,7 @@ class AirLoopHVACOutdoorAirSystemEquipmentList(IDFBaseModel):
         return idf._resolve_forward(v, ['validOASysEquipmentNames'])
 
     @property
-    def component_9(self) -> IDFBaseModel | None:
+    def component_9(self) -> ValidOASysEquipmentNamesTarget | None:
         v = self.component_9_name
         if not v:
             return None

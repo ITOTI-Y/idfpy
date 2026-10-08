@@ -24,6 +24,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import AllShadingAndHTSurfNamesTarget, ScheduleNamesTarget
     from .advanced_construction import SurfacePropertyOtherSideConditionsModel
     from .electric_load import GeneratorPhotovoltaic
 
@@ -36,7 +37,7 @@ class SolarCollectorUnglazedTranspiredSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -88,7 +89,7 @@ class SolarCollectorFlatPlatePhotovoltaicThermal(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -158,7 +159,7 @@ class SolarCollectorFlatPlateWater(IDFBaseModel):
         return idf._resolve_forward(v, ['FlatPlateSolarCollectorParameters'])
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -213,7 +214,7 @@ class SolarCollectorIntegralCollectorStorage(IDFBaseModel):
         return idf._resolve_forward(v, ['CollectorStoragePerformance'])
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -480,7 +481,7 @@ class SolarCollectorPerformancePhotovoltaicThermalBIPVT(IDFBaseModel):
         return idf._resolve_forward(v, ['OSCMNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -519,7 +520,7 @@ class SolarCollectorPerformancePhotovoltaicThermalSimple(IDFBaseModel):
     front_surface_emittance: float | None = Field(default=0.84, gt=0.0, lt=1.0)
 
     @property
-    def thermal_conversion_efficiency_schedule(self) -> IDFBaseModel | None:
+    def thermal_conversion_efficiency_schedule(self) -> ScheduleNamesTarget | None:
         v = self.thermal_conversion_efficiency_schedule_name
         if not v:
             return None
@@ -664,7 +665,7 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
         return idf._resolve_forward(v, ['OSCMNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -674,7 +675,7 @@ class SolarCollectorUnglazedTranspired(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def free_heating_setpoint_schedule(self) -> IDFBaseModel | None:
+    def free_heating_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.free_heating_setpoint_schedule_name
         if not v:
             return None

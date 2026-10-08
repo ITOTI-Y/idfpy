@@ -39,6 +39,13 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllShadingAndHTSurfNamesTarget,
+        BivariateFunctionsTarget,
+        GeneratorNamesTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .curves import CurveChillerPartLoadWithLift, CurveTriquadratic
     from .misc import TableLookup
     from .thermal_zones import Zone
@@ -78,7 +85,7 @@ class ElectricLoadCenterGeneratorsGeneratorOutputsItem(IDFBaseModel):
     )
 
     @property
-    def generator(self) -> IDFBaseModel | None:
+    def generator(self) -> GeneratorNamesTarget | None:
         v = self.generator_name
         if not v:
             return None
@@ -88,7 +95,7 @@ class ElectricLoadCenterGeneratorsGeneratorOutputsItem(IDFBaseModel):
         return idf._resolve_forward(v, ['GeneratorNames'])
 
     @property
-    def generator_availability_schedule(self) -> IDFBaseModel | None:
+    def generator_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.generator_availability_schedule_name
         if not v:
             return None
@@ -293,7 +300,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['GeneratorLists'])
 
     @property
-    def generator_track_schedule_scheme_schedule(self) -> IDFBaseModel | None:
+    def generator_track_schedule_scheme_schedule(self) -> ScheduleNamesTarget | None:
         v = self.generator_track_schedule_name_scheme_schedule_name
         if not v:
             return None
@@ -358,7 +365,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ConverterList'])
 
     @property
-    def storage_charge_power_fraction_schedule(self) -> IDFBaseModel | None:
+    def storage_charge_power_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.storage_charge_power_fraction_schedule_name
         if not v:
             return None
@@ -368,7 +375,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def storage_discharge_power_fraction_schedule(self) -> IDFBaseModel | None:
+    def storage_discharge_power_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.storage_discharge_power_fraction_schedule_name
         if not v:
             return None
@@ -380,7 +387,7 @@ class ElectricLoadCenterDistribution(IDFBaseModel):
     @property
     def storage_control_utility_demand_target_fraction_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.storage_control_utility_demand_target_fraction_schedule_name
         if not v:
             return None
@@ -450,7 +457,7 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -470,7 +477,7 @@ class ElectricLoadCenterInverterFunctionOfPower(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def efficiency_function_of_power_curve(self) -> IDFBaseModel | None:
+    def efficiency_function_of_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.efficiency_function_of_power_curve_name
         if not v:
             return None
@@ -532,7 +539,7 @@ class ElectricLoadCenterInverterLookUpTable(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -591,7 +598,7 @@ class ElectricLoadCenterInverterSimple(IDFBaseModel):
     inverter_efficiency: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -762,7 +769,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -782,7 +789,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def voltage_change_curve_for_charging_ref(self) -> IDFBaseModel | None:
+    def voltage_change_curve_for_charging_ref(self) -> UnivariateFunctionsTarget | None:
         v = self.voltage_change_curve_name_for_charging
         if not v:
             return None
@@ -792,7 +799,9 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def voltage_change_curve_for_discharging_ref(self) -> IDFBaseModel | None:
+    def voltage_change_curve_for_discharging_ref(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.voltage_change_curve_name_for_discharging
         if not v:
             return None
@@ -802,7 +811,7 @@ class ElectricLoadCenterStorageBattery(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def battery_life_curve(self) -> IDFBaseModel | None:
+    def battery_life_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.battery_life_curve_name
         if not v:
             return None
@@ -880,7 +889,7 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -890,7 +899,7 @@ class ElectricLoadCenterStorageConverter(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def efficiency_function_of_power_curve(self) -> IDFBaseModel | None:
+    def efficiency_function_of_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.efficiency_function_of_power_curve_name
         if not v:
             return None
@@ -1042,7 +1051,7 @@ class ElectricLoadCenterStorageLiIonNMCBattery(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1109,7 +1118,7 @@ class ElectricLoadCenterStorageSimple(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1249,7 +1258,7 @@ class ElectricLoadCenterTransformer(IDFBaseModel):
     meters: list[ElectricLoadCenterTransformerMetersItem] | None = Field(default=None)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1387,7 +1396,7 @@ class GeneratorCombustionTurbine(IDFBaseModel):
     )
 
     @property
-    def part_load_based_fuel_input_curve(self) -> IDFBaseModel | None:
+    def part_load_based_fuel_input_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.part_load_based_fuel_input_curve_name
         if not v:
             return None
@@ -1397,7 +1406,7 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def temperature_based_fuel_input_curve(self) -> IDFBaseModel | None:
+    def temperature_based_fuel_input_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.temperature_based_fuel_input_curve_name
         if not v:
             return None
@@ -1407,7 +1416,7 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def exhaust_flow_curve(self) -> IDFBaseModel | None:
+    def exhaust_flow_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_flow_curve_name
         if not v:
             return None
@@ -1417,7 +1426,9 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def part_load_based_exhaust_temperature_curve(self) -> IDFBaseModel | None:
+    def part_load_based_exhaust_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.part_load_based_exhaust_temperature_curve_name
         if not v:
             return None
@@ -1427,7 +1438,9 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def temperature_based_exhaust_temperature_curve(self) -> IDFBaseModel | None:
+    def temperature_based_exhaust_temperature_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.temperature_based_exhaust_temperature_curve_name
         if not v:
             return None
@@ -1437,7 +1450,7 @@ class GeneratorCombustionTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def heat_recovery_lube_energy_curve(self) -> IDFBaseModel | None:
+    def heat_recovery_lube_energy_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.heat_recovery_lube_energy_curve_name
         if not v:
             return None
@@ -1655,7 +1668,7 @@ class GeneratorFuelCellAirSupply(IDFBaseModel):
     ) = Field(default=None)
 
     @property
-    def blower_power_curve(self) -> IDFBaseModel | None:
+    def blower_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.blower_power_curve_name
         if not v:
             return None
@@ -1665,7 +1678,9 @@ class GeneratorFuelCellAirSupply(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def air_rate_function_of_electric_power_curve(self) -> IDFBaseModel | None:
+    def air_rate_function_of_electric_power_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.air_rate_function_of_electric_power_curve_name
         if not v:
             return None
@@ -1675,7 +1690,7 @@ class GeneratorFuelCellAirSupply(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def air_rate_function_of_fuel_rate_curve(self) -> IDFBaseModel | None:
+    def air_rate_function_of_fuel_rate_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.air_rate_function_of_fuel_rate_curve_name
         if not v:
             return None
@@ -1828,7 +1843,7 @@ class GeneratorFuelCellInverter(IDFBaseModel):
     )
 
     @property
-    def efficiency_function_of_dc_power_curve(self) -> IDFBaseModel | None:
+    def efficiency_function_of_dc_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.efficiency_function_of_dc_power_curve_name
         if not v:
             return None
@@ -1954,7 +1969,7 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
     )
 
     @property
-    def efficiency_curve(self) -> IDFBaseModel | None:
+    def efficiency_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.efficiency_curve_name
         if not v:
             return None
@@ -1974,7 +1989,7 @@ class GeneratorFuelCellPowerModule(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def skin_loss_quadratic_curve(self) -> IDFBaseModel | None:
+    def skin_loss_quadratic_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.skin_loss_quadratic_curve_name
         if not v:
             return None
@@ -2065,7 +2080,7 @@ class GeneratorFuelCellWaterSupply(IDFBaseModel):
     @property
     def reformer_water_flow_rate_function_of_fuel_rate_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.reformer_water_flow_rate_function_of_fuel_rate_curve_name
         if not v:
             return None
@@ -2077,7 +2092,7 @@ class GeneratorFuelCellWaterSupply(IDFBaseModel):
     @property
     def reformer_water_pump_power_function_of_fuel_rate_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.reformer_water_pump_power_function_of_fuel_rate_curve_name
         if not v:
             return None
@@ -2087,7 +2102,7 @@ class GeneratorFuelCellWaterSupply(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def water_temperature_schedule(self) -> IDFBaseModel | None:
+    def water_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.water_temperature_schedule_name
         if not v:
             return None
@@ -2367,7 +2382,7 @@ class GeneratorFuelSupply(IDFBaseModel):
     constituent_12_molar_fraction: float | None = Field(default=None, ge=0.0, le=1.0)
 
     @property
-    def fuel_temperature_schedule(self) -> IDFBaseModel | None:
+    def fuel_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fuel_temperature_schedule_name
         if not v:
             return None
@@ -2379,7 +2394,7 @@ class GeneratorFuelSupply(IDFBaseModel):
     @property
     def compressor_power_multiplier_function_of_fuel_rate_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.compressor_power_multiplier_function_of_fuel_rate_curve_name
         if not v:
             return None
@@ -2489,7 +2504,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
     )
 
     @property
-    def shaft_power_curve(self) -> IDFBaseModel | None:
+    def shaft_power_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.shaft_power_curve_name
         if not v:
             return None
@@ -2499,7 +2514,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def jacket_heat_recovery_curve(self) -> IDFBaseModel | None:
+    def jacket_heat_recovery_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.jacket_heat_recovery_curve_name
         if not v:
             return None
@@ -2509,7 +2524,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def lube_heat_recovery_curve(self) -> IDFBaseModel | None:
+    def lube_heat_recovery_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.lube_heat_recovery_curve_name
         if not v:
             return None
@@ -2519,7 +2534,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def total_exhaust_energy_curve(self) -> IDFBaseModel | None:
+    def total_exhaust_energy_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.total_exhaust_energy_curve_name
         if not v:
             return None
@@ -2529,7 +2544,7 @@ class GeneratorInternalCombustionEngine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def exhaust_temperature_curve(self) -> IDFBaseModel | None:
+    def exhaust_temperature_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_temperature_curve_name
         if not v:
             return None
@@ -2608,7 +2623,7 @@ class GeneratorMicroCHP(IDFBaseModel):
         return idf._resolve_forward(v, ['GenFuelSupNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2730,7 +2745,7 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
         return idf._resolve_forward(v, ['TrivariateFunctions'])
 
     @property
-    def cooling_water_flow_rate_curve(self) -> IDFBaseModel | None:
+    def cooling_water_flow_rate_curve(self) -> BivariateFunctionsTarget | None:
         v = self.cooling_water_flow_rate_curve_name
         if not v:
             return None
@@ -2740,7 +2755,7 @@ class GeneratorMicroCHPNonNormalizedParameters(IDFBaseModel):
         return idf._resolve_forward(v, ['BivariateFunctions'])
 
     @property
-    def air_flow_rate_curve(self) -> IDFBaseModel | None:
+    def air_flow_rate_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.air_flow_rate_curve_name
         if not v:
             return None
@@ -2987,7 +3002,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def electrical_power_function_of_temperature_and_elevation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.electrical_power_function_of_temperature_and_elevation_curve_name
         if not v:
             return None
@@ -2999,7 +3014,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def electrical_efficiency_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electrical_efficiency_function_of_temperature_curve_name
         if not v:
             return None
@@ -3011,7 +3026,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def electrical_efficiency_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.electrical_efficiency_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3021,7 +3036,9 @@ class GeneratorMicroTurbine(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def ancillary_power_function_of_fuel_input_curve(self) -> IDFBaseModel | None:
+    def ancillary_power_function_of_fuel_input_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.ancillary_power_function_of_fuel_input_curve_name
         if not v:
             return None
@@ -3033,7 +3050,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def heat_recovery_water_flow_rate_function_of_temperature_and_power_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.heat_recovery_water_flow_rate_function_of_temperature_and_power_curve_name
         if not v:
             return None
@@ -3045,7 +3062,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def thermal_efficiency_function_of_temperature_and_elevation_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> BivariateFunctionsTarget | None:
         v = self.thermal_efficiency_function_of_temperature_and_elevation_curve_name
         if not v:
             return None
@@ -3057,7 +3074,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def heat_recovery_rate_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heat_recovery_rate_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3069,7 +3086,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def heat_recovery_rate_function_of_inlet_water_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heat_recovery_rate_function_of_inlet_water_temperature_curve_name
         if not v:
             return None
@@ -3081,7 +3098,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def heat_recovery_rate_function_of_water_flow_rate_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.heat_recovery_rate_function_of_water_flow_rate_curve_name
         if not v:
             return None
@@ -3093,7 +3110,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def exhaust_air_flow_rate_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_air_flow_rate_function_of_temperature_curve_name
         if not v:
             return None
@@ -3105,7 +3122,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def exhaust_air_flow_rate_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_air_flow_rate_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3117,7 +3134,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def exhaust_air_temperature_function_of_temperature_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_air_temperature_function_of_temperature_curve_name
         if not v:
             return None
@@ -3129,7 +3146,7 @@ class GeneratorMicroTurbine(IDFBaseModel):
     @property
     def exhaust_air_temperature_function_of_part_load_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.exhaust_air_temperature_function_of_part_load_ratio_curve_name
         if not v:
             return None
@@ -3202,7 +3219,7 @@ class GeneratorPVWatts(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3272,7 +3289,7 @@ class GeneratorPhotovoltaic(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3411,7 +3428,7 @@ class GeneratorWindTurbine(IDFBaseModel):
     power_coefficient_c6: float | None = Field(default=21.0, gt=0.0)
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -3663,7 +3680,7 @@ class PhotovoltaicPerformanceSimple(IDFBaseModel):
     )
 
     @property
-    def efficiency_schedule(self) -> IDFBaseModel | None:
+    def efficiency_schedule(self) -> ScheduleNamesTarget | None:
         v = self.efficiency_schedule_name
         if not v:
             return None

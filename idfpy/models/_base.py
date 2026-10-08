@@ -9,10 +9,12 @@ from typing import (
     Any,
     ClassVar,
     Literal,
+    Self,
     Union,
     get_args,
     get_origin,
     overload,
+    override,
 )
 
 from pydantic import BaseModel, ConfigDict, PrivateAttr, model_validator
@@ -280,6 +282,20 @@ class IDFBaseModel(BaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF container')
         return idf._find_referenced(self, provider_type, strict=strict)
+
+    # A copy is not stored in the original's IDF, so it starts unbound. Keeping
+    # the weakref would let the copy read and rewrite that IDF's indexes.
+    @override
+    def __copy__(self) -> Self:
+        new = super().__copy__()
+        new._idf_ref = None
+        return new
+
+    @override
+    def __deepcopy__(self, memo: dict[int, Any] | None = None) -> Self:
+        new = super().__deepcopy__(memo)
+        new._idf_ref = None
+        return new
 
     def __getstate__(self) -> dict[str, Any]:
         state = super().__getstate__()

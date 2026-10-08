@@ -30,6 +30,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        DOAToZonalUnitTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .air_distribution import AirLoopHVACZoneMixer
     from .coils import (
         CoilCoolingWater,
@@ -46,6 +51,7 @@ if TYPE_CHECKING:
         DesignSpecificationOutdoorAirSpaceList,
     )
     from .thermal_zones import Zone
+    from .user_defined import AirTerminalSingleDuctUserDefined
 
 
 class AirTerminalDualDuctConstantVolume(IDFBaseModel):
@@ -74,7 +80,7 @@ class AirTerminalDualDuctConstantVolume(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -132,7 +138,7 @@ class AirTerminalDualDuctVAV(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -156,7 +162,7 @@ class AirTerminalDualDuctVAV(IDFBaseModel):
         )
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -215,7 +221,7 @@ class AirTerminalDualDuctVAVOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -303,7 +309,7 @@ class AirTerminalSingleDuctConstantVolumeCooledBeam(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -511,7 +517,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     )
 
     @property
-    def primary_air_availability_schedule(self) -> IDFBaseModel | None:
+    def primary_air_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.primary_air_availability_schedule_name
         if not v:
             return None
@@ -521,7 +527,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_availability_schedule(self) -> IDFBaseModel | None:
+    def cooling_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_availability_schedule_name
         if not v:
             return None
@@ -531,7 +537,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_availability_schedule(self) -> IDFBaseModel | None:
+    def heating_availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_availability_schedule_name
         if not v:
             return None
@@ -543,7 +549,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_cooling_capacity_temperature_difference_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_cooling_capacity_temperature_difference_modification_factor_curve_name
         if not v:
             return None
@@ -555,7 +561,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_cooling_capacity_air_flow_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_cooling_capacity_air_flow_modification_factor_curve_name
         if not v:
             return None
@@ -567,7 +573,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_cooling_capacity_chilled_water_flow_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_cooling_capacity_chilled_water_flow_modification_factor_curve_name
         if not v:
             return None
@@ -579,7 +585,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_heating_capacity_temperature_difference_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_heating_capacity_temperature_difference_modification_factor_curve_name
         if not v:
             return None
@@ -591,7 +597,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_heating_capacity_air_flow_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_heating_capacity_air_flow_modification_factor_curve_name
         if not v:
             return None
@@ -603,7 +609,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeBeam(IDFBaseModel):
     @property
     def beam_heating_capacity_hot_water_flow_modification_factor_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.beam_heating_capacity_hot_water_flow_modification_factor_curve_name
         if not v:
             return None
@@ -687,7 +693,7 @@ class AirTerminalSingleDuctConstantVolumeFourPipeInduction(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -777,7 +783,7 @@ class AirTerminalSingleDuctConstantVolumeNoReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -855,7 +861,7 @@ class AirTerminalSingleDuctConstantVolumeReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -956,7 +962,7 @@ class AirTerminalSingleDuctMixer(IDFBaseModel):
     )
 
     @property
-    def zonehvac_unit_object(self) -> IDFBaseModel | None:
+    def zonehvac_unit_object(self) -> DOAToZonalUnitTarget | None:
         v = self.zonehvac_unit_object_name
         if not v:
             return None
@@ -1097,7 +1103,7 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1145,7 +1151,9 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def backdraft_damper_leakage_fraction_curve(self) -> IDFBaseModel | None:
+    def backdraft_damper_leakage_fraction_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.backdraft_damper_leakage_fraction_curve_name
         if not v:
             return None
@@ -1262,7 +1270,7 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1346,7 +1354,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolNoReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1356,7 +1364,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolNoReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -1446,7 +1454,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1474,7 +1482,7 @@ class AirTerminalSingleDuctVAVHeatAndCoolReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -1549,7 +1557,7 @@ class AirTerminalSingleDuctVAVNoReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1559,7 +1567,7 @@ class AirTerminalSingleDuctVAVNoReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_air_flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_fraction_schedule_name
         if not v:
             return None
@@ -1583,7 +1591,7 @@ class AirTerminalSingleDuctVAVNoReheat(IDFBaseModel):
         )
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -1730,7 +1738,7 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1740,7 +1748,7 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_air_flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_fraction_schedule_name
         if not v:
             return None
@@ -1782,7 +1790,7 @@ class AirTerminalSingleDuctVAVReheat(IDFBaseModel):
         )
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -1874,7 +1882,7 @@ class AirTerminalSingleDuctVAVReheatVariableSpeedFan(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1912,7 +1920,7 @@ class AirTerminalSingleDuctVAVReheatVariableSpeedFan(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def minimum_air_flow_turndown_schedule(self) -> IDFBaseModel | None:
+    def minimum_air_flow_turndown_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_air_flow_turndown_schedule_name
         if not v:
             return None
@@ -1975,7 +1983,28 @@ class ZoneHVACAirDistributionUnit(IDFBaseModel):
     )
 
     @property
-    def air_terminal(self) -> IDFBaseModel | None:
+    def air_terminal(
+        self,
+    ) -> (
+        AirTerminalDualDuctConstantVolume
+        | AirTerminalDualDuctVAV
+        | AirTerminalDualDuctVAVOutdoorAir
+        | AirTerminalSingleDuctConstantVolumeCooledBeam
+        | AirTerminalSingleDuctConstantVolumeFourPipeBeam
+        | AirTerminalSingleDuctConstantVolumeFourPipeInduction
+        | AirTerminalSingleDuctConstantVolumeNoReheat
+        | AirTerminalSingleDuctConstantVolumeReheat
+        | AirTerminalSingleDuctMixer
+        | AirTerminalSingleDuctParallelPIUReheat
+        | AirTerminalSingleDuctSeriesPIUReheat
+        | AirTerminalSingleDuctUserDefined
+        | AirTerminalSingleDuctVAVHeatAndCoolNoReheat
+        | AirTerminalSingleDuctVAVHeatAndCoolReheat
+        | AirTerminalSingleDuctVAVNoReheat
+        | AirTerminalSingleDuctVAVReheat
+        | AirTerminalSingleDuctVAVReheatVariableSpeedFan
+        | None
+    ):
         v = self.air_terminal_name
         if not v:
             return None
@@ -2069,7 +2098,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2089,7 +2118,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def exhaust_flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def exhaust_flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.exhaust_flow_fraction_schedule_name
         if not v:
             return None
@@ -2099,7 +2128,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_zone_temperature_limit_schedule(self) -> IDFBaseModel | None:
+    def minimum_zone_temperature_limit_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_zone_temperature_limit_schedule_name
         if not v:
             return None
@@ -2109,7 +2138,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_exhaust_flow_fraction_schedule(self) -> IDFBaseModel | None:
+    def minimum_exhaust_flow_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_exhaust_flow_fraction_schedule_name
         if not v:
             return None
@@ -2119,7 +2148,7 @@ class ZoneHVACExhaustControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def balanced_exhaust_fraction_schedule(self) -> IDFBaseModel | None:
+    def balanced_exhaust_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.balanced_exhaust_fraction_schedule_name
         if not v:
             return None

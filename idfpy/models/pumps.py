@@ -19,6 +19,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget, UnivariateFunctionsTarget
     from .thermal_zones import Zone
 
 
@@ -121,7 +122,7 @@ class HeaderedPumpsConstantSpeed(IDFBaseModel):
     )
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -252,7 +253,7 @@ class HeaderedPumpsVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -380,7 +381,7 @@ class PumpConstantSpeed(IDFBaseModel):
     )
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -390,7 +391,7 @@ class PumpConstantSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pump_curve(self) -> IDFBaseModel | None:
+    def pump_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.pump_curve_name
         if not v:
             return None
@@ -554,7 +555,7 @@ class PumpVariableSpeed(IDFBaseModel):
     )
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None
@@ -564,7 +565,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def pump_curve(self) -> IDFBaseModel | None:
+    def pump_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.pump_curve_name
         if not v:
             return None
@@ -574,7 +575,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def pump_rpm_schedule(self) -> IDFBaseModel | None:
+    def pump_rpm_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_rpm_schedule_name
         if not v:
             return None
@@ -584,7 +585,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_pressure_schedule_ref(self) -> IDFBaseModel | None:
+    def minimum_pressure_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.minimum_pressure_schedule
         if not v:
             return None
@@ -594,7 +595,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_pressure_schedule_ref(self) -> IDFBaseModel | None:
+    def maximum_pressure_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.maximum_pressure_schedule
         if not v:
             return None
@@ -604,7 +605,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_rpm_schedule_ref(self) -> IDFBaseModel | None:
+    def minimum_rpm_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.minimum_rpm_schedule
         if not v:
             return None
@@ -614,7 +615,7 @@ class PumpVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_rpm_schedule_ref(self) -> IDFBaseModel | None:
+    def maximum_rpm_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.maximum_rpm_schedule
         if not v:
             return None
@@ -730,7 +731,7 @@ class PumpVariableSpeedCondensate(IDFBaseModel):
     )
 
     @property
-    def pump_flow_rate_schedule(self) -> IDFBaseModel | None:
+    def pump_flow_rate_schedule(self) -> ScheduleNamesTarget | None:
         v = self.pump_flow_rate_schedule_name
         if not v:
             return None

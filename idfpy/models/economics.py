@@ -7,7 +7,7 @@ Group: Economics
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Literal  # noqa: F401
+from typing import TYPE_CHECKING, Any, ClassVar, Literal  # noqa: F401
 
 from pydantic import Field
 
@@ -16,6 +16,9 @@ from ._refs import (
     ScheduleNamesRef,
     UtilityCostTariffsRef,
 )
+
+if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
 
 
 class LifeCycleCostUseAdjustmentMultipliersItem(IDFBaseModel):
@@ -1326,7 +1329,7 @@ class UtilityCostTariff(IDFBaseModel):
     )
 
     @property
-    def time_of_use_period_schedule(self) -> IDFBaseModel | None:
+    def time_of_use_period_schedule(self) -> ScheduleNamesTarget | None:
         v = self.time_of_use_period_schedule_name
         if not v:
             return None
@@ -1336,7 +1339,7 @@ class UtilityCostTariff(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def season_schedule(self) -> IDFBaseModel | None:
+    def season_schedule(self) -> ScheduleNamesTarget | None:
         v = self.season_schedule_name
         if not v:
             return None
@@ -1346,7 +1349,7 @@ class UtilityCostTariff(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def month_schedule(self) -> IDFBaseModel | None:
+    def month_schedule(self) -> ScheduleNamesTarget | None:
         v = self.month_schedule_name
         if not v:
             return None
@@ -1356,7 +1359,7 @@ class UtilityCostTariff(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def real_time_pricing_charge_schedule(self) -> IDFBaseModel | None:
+    def real_time_pricing_charge_schedule(self) -> ScheduleNamesTarget | None:
         v = self.real_time_pricing_charge_schedule_name
         if not v:
             return None
@@ -1366,7 +1369,7 @@ class UtilityCostTariff(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def customer_baseline_load_schedule(self) -> IDFBaseModel | None:
+    def customer_baseline_load_schedule(self) -> ScheduleNamesTarget | None:
         v = self.customer_baseline_load_schedule_name
         if not v:
             return None

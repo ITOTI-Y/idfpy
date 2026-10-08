@@ -45,15 +45,22 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .air_distribution import OutdoorAirMixer
     from .coils import (
+        CoilCoolingDX,
         CoilCoolingDXMultiSpeed,
         CoilCoolingDXSingleSpeed,
+        CoilCoolingDXSingleSpeedThermalStorage,
+        CoilCoolingDXTwoSpeed,
         CoilCoolingDXTwoStageWithHumidityControlMode,
         CoilCoolingDXVariableSpeed,
+        CoilCoolingWater,
+        CoilCoolingWaterDetailedGeometry,
         CoilCoolingWaterToAirHeatPumpEquationFit,
         CoilCoolingWaterToAirHeatPumpParameterEstimation,
         CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
+        CoilHeatingDesuperheater,
         CoilHeatingDXMultiSpeed,
         CoilHeatingDXSingleSpeed,
         CoilHeatingDXVariableSpeed,
@@ -67,6 +74,7 @@ if TYPE_CHECKING:
         CoilHeatingWaterToAirHeatPumpParameterEstimation,
         CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit,
         CoilSystemCoolingDXHeatExchangerAssisted,
+        CoilSystemCoolingWaterHeatExchangerAssisted,
         CoilSystemIntegratedHeatPumpAirSource,
     )
     from .fans import (
@@ -77,6 +85,7 @@ if TYPE_CHECKING:
         FanVariableVolume,
     )
     from .thermal_zones import Zone
+    from .user_defined import CoilUserDefined
 
 
 class UnitarySystemPerformanceMultispeedFlowRatiosItem(IDFBaseModel):
@@ -222,7 +231,7 @@ class AirLoopHVACUnitaryFurnaceHeatCool(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -232,7 +241,7 @@ class AirLoopHVACUnitaryFurnaceHeatCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -382,7 +391,7 @@ class AirLoopHVACUnitaryFurnaceHeatOnly(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -392,7 +401,7 @@ class AirLoopHVACUnitaryFurnaceHeatOnly(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -571,7 +580,7 @@ class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -581,7 +590,7 @@ class AirLoopHVACUnitaryHeatCool(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -894,7 +903,7 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -904,7 +913,7 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outdoor_air_flow_rate_multiplier_schedule(self) -> IDFBaseModel | None:
+    def outdoor_air_flow_rate_multiplier_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_air_flow_rate_multiplier_schedule_name
         if not v:
             return None
@@ -934,7 +943,7 @@ class AirLoopHVACUnitaryHeatCoolVAVChangeoverBypass(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOff', 'FansSystemModel'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -1050,7 +1059,7 @@ class AirLoopHVACUnitaryHeatOnly(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1060,7 +1069,7 @@ class AirLoopHVACUnitaryHeatOnly(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -1264,7 +1273,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1361,7 +1370,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -1588,7 +1597,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1618,7 +1627,7 @@ class AirLoopHVACUnitaryHeatPumpAirToAirMultiSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['FansCVandOnOff'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -1812,7 +1821,7 @@ class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -1898,7 +1907,7 @@ class AirLoopHVACUnitaryHeatPumpWaterToAir(IDFBaseModel):
         return idf._resolve_forward(v, ['HeatingCoilName'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -2426,7 +2435,7 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None
@@ -2455,7 +2464,7 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['Fans'])
 
     @property
-    def supply_air_fan_operating_mode_schedule(self) -> IDFBaseModel | None:
+    def supply_air_fan_operating_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.supply_air_fan_operating_mode_schedule_name
         if not v:
             return None
@@ -2465,7 +2474,25 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def heating_coil(self) -> IDFBaseModel | None:
+    def heating_coil(
+        self,
+    ) -> (
+        CoilHeatingDXMultiSpeed
+        | CoilHeatingDXSingleSpeed
+        | CoilHeatingDXVariableSpeed
+        | CoilHeatingDesuperheater
+        | CoilHeatingElectric
+        | CoilHeatingElectricMultiStage
+        | CoilHeatingFuel
+        | CoilHeatingGasMultiStage
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | CoilHeatingWaterToAirHeatPumpEquationFit
+        | CoilHeatingWaterToAirHeatPumpParameterEstimation
+        | CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
+        | CoilUserDefined
+        | None
+    ):
         v = self.heating_coil_name
         if not v:
             return None
@@ -2489,7 +2516,26 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
         )
 
     @property
-    def cooling_coil(self) -> IDFBaseModel | None:
+    def cooling_coil(
+        self,
+    ) -> (
+        CoilCoolingDX
+        | CoilCoolingDXMultiSpeed
+        | CoilCoolingDXSingleSpeed
+        | CoilCoolingDXSingleSpeedThermalStorage
+        | CoilCoolingDXTwoSpeed
+        | CoilCoolingDXTwoStageWithHumidityControlMode
+        | CoilCoolingDXVariableSpeed
+        | CoilCoolingWater
+        | CoilCoolingWaterDetailedGeometry
+        | CoilCoolingWaterToAirHeatPumpEquationFit
+        | CoilCoolingWaterToAirHeatPumpParameterEstimation
+        | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
+        | CoilSystemCoolingDXHeatExchangerAssisted
+        | CoilSystemCoolingWaterHeatExchangerAssisted
+        | CoilUserDefined
+        | None
+    ):
         v = self.cooling_coil_name
         if not v:
             return None
@@ -2511,7 +2557,17 @@ class AirLoopHVACUnitarySystem(IDFBaseModel):
         )
 
     @property
-    def supplemental_heating_coil(self) -> IDFBaseModel | None:
+    def supplemental_heating_coil(
+        self,
+    ) -> (
+        CoilHeatingDesuperheater
+        | CoilHeatingElectric
+        | CoilHeatingFuel
+        | CoilHeatingSteam
+        | CoilHeatingWater
+        | CoilUserDefined
+        | None
+    ):
         v = self.supplemental_heating_coil_name
         if not v:
             return None

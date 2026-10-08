@@ -25,6 +25,13 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AirPrimaryLoopsTarget,
+        HVACTemplateSystemsTarget,
+        ScheduleNamesTarget,
+        SystemAvailabilityManagersTarget,
+        UnivariateFunctionsTarget,
+    )
     from .thermal_zones import Zone, ZoneList
     from .zone_airflow import (
         ZoneVentilationDesignFlowRate,
@@ -53,7 +60,7 @@ class AvailabilityManagerAssignmentListManagersItem(IDFBaseModel):
     )
 
     @property
-    def availability_manager(self) -> IDFBaseModel | None:
+    def availability_manager(self) -> SystemAvailabilityManagersTarget | None:
         v = self.availability_manager_name
         if not v:
             return None
@@ -281,7 +288,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
     )
 
     @property
-    def hvac_air_loop(self) -> IDFBaseModel | None:
+    def hvac_air_loop(self) -> AirPrimaryLoopsTarget | HVACTemplateSystemsTarget | None:
         v = self.hvac_air_loop_name
         if not v:
             return None
@@ -301,7 +308,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def ventilation_control_mode_schedule(self) -> IDFBaseModel | None:
+    def ventilation_control_mode_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ventilation_control_mode_schedule_name
         if not v:
             return None
@@ -311,7 +318,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_outdoor_ventilation_air_schedule(self) -> IDFBaseModel | None:
+    def minimum_outdoor_ventilation_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.minimum_outdoor_ventilation_air_schedule_name
         if not v:
             return None
@@ -321,7 +328,9 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def opening_factor_function_of_wind_speed_curve(self) -> IDFBaseModel | None:
+    def opening_factor_function_of_wind_speed_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.opening_factor_function_of_wind_speed_curve_name
         if not v:
             return None
@@ -331,7 +340,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def airflownetwork_control_type_schedule(self) -> IDFBaseModel | None:
+    def airflownetwork_control_type_schedule(self) -> ScheduleNamesTarget | None:
         v = self.airflownetwork_control_type_schedule_name
         if not v:
             return None
@@ -341,7 +350,7 @@ class AvailabilityManagerHybridVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def simple_airflow_control_type_schedule(self) -> IDFBaseModel | None:
+    def simple_airflow_control_type_schedule(self) -> ScheduleNamesTarget | None:
         v = self.simple_airflow_control_type_schedule_name
         if not v:
             return None
@@ -380,7 +389,7 @@ class AvailabilityManagerLowTemperatureTurnOff(IDFBaseModel):
     )
 
     @property
-    def applicability_schedule(self) -> IDFBaseModel | None:
+    def applicability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.applicability_schedule_name
         if not v:
             return None
@@ -460,7 +469,7 @@ class AvailabilityManagerNightCycle(IDFBaseModel):
     )
 
     @property
-    def applicability_schedule(self) -> IDFBaseModel | None:
+    def applicability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.applicability_schedule_name
         if not v:
             return None
@@ -470,7 +479,7 @@ class AvailabilityManagerNightCycle(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_schedule(self) -> IDFBaseModel | None:
+    def fan_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fan_schedule_name
         if not v:
             return None
@@ -570,7 +579,7 @@ class AvailabilityManagerNightVentilation(IDFBaseModel):
     )
 
     @property
-    def applicability_schedule(self) -> IDFBaseModel | None:
+    def applicability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.applicability_schedule_name
         if not v:
             return None
@@ -580,7 +589,7 @@ class AvailabilityManagerNightVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_schedule(self) -> IDFBaseModel | None:
+    def fan_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fan_schedule_name
         if not v:
             return None
@@ -590,7 +599,7 @@ class AvailabilityManagerNightVentilation(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ventilation_temperature_schedule(self) -> IDFBaseModel | None:
+    def ventilation_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ventilation_temperature_schedule_name
         if not v:
             return None
@@ -678,7 +687,7 @@ class AvailabilityManagerOptimumStart(IDFBaseModel):
     )
 
     @property
-    def applicability_schedule(self) -> IDFBaseModel | None:
+    def applicability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.applicability_schedule_name
         if not v:
             return None
@@ -688,7 +697,7 @@ class AvailabilityManagerOptimumStart(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fan_schedule(self) -> IDFBaseModel | None:
+    def fan_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fan_schedule_name
         if not v:
             return None
@@ -730,7 +739,7 @@ class AvailabilityManagerScheduled(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -752,7 +761,7 @@ class AvailabilityManagerScheduledOff(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -774,7 +783,7 @@ class AvailabilityManagerScheduledOn(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None

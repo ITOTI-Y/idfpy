@@ -23,6 +23,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .internal_gains import People
     from .thermal_zones import Zone, ZoneList
 
@@ -43,7 +44,7 @@ class ThermostatSetpointDualSetpoint(IDFBaseModel):
     )
 
     @property
-    def heating_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def heating_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -53,7 +54,7 @@ class ThermostatSetpointDualSetpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def cooling_setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_setpoint_temperature_schedule_name
         if not v:
             return None
@@ -75,7 +76,7 @@ class ThermostatSetpointSingleCooling(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -98,7 +99,7 @@ class ThermostatSetpointSingleHeating(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -121,7 +122,7 @@ class ThermostatSetpointSingleHeatingOrCooling(IDFBaseModel):
     )
 
     @property
-    def setpoint_temperature_schedule(self) -> IDFBaseModel | None:
+    def setpoint_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.setpoint_temperature_schedule_name
         if not v:
             return None
@@ -157,7 +158,7 @@ class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
     )
 
     @property
-    def fanger_thermal_comfort_heating_schedule(self) -> IDFBaseModel | None:
+    def fanger_thermal_comfort_heating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fanger_thermal_comfort_heating_schedule_name
         if not v:
             return None
@@ -167,7 +168,7 @@ class ThermostatSetpointThermalComfortFangerDualSetpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def fanger_thermal_comfort_cooling_schedule(self) -> IDFBaseModel | None:
+    def fanger_thermal_comfort_cooling_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fanger_thermal_comfort_cooling_schedule_name
         if not v:
             return None
@@ -196,7 +197,7 @@ class ThermostatSetpointThermalComfortFangerSingleCooling(IDFBaseModel):
     )
 
     @property
-    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+    def fanger_thermal_comfort_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fanger_thermal_comfort_schedule_name
         if not v:
             return None
@@ -225,7 +226,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeating(IDFBaseModel):
     )
 
     @property
-    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+    def fanger_thermal_comfort_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fanger_thermal_comfort_schedule_name
         if not v:
             return None
@@ -254,7 +255,7 @@ class ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling(IDFBaseModel)
     )
 
     @property
-    def fanger_thermal_comfort_schedule(self) -> IDFBaseModel | None:
+    def fanger_thermal_comfort_schedule(self) -> ScheduleNamesTarget | None:
         v = self.fanger_thermal_comfort_schedule_name
         if not v:
             return None
@@ -331,7 +332,9 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def carbon_dioxide_control_availability_schedule(self) -> IDFBaseModel | None:
+    def carbon_dioxide_control_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.carbon_dioxide_control_availability_schedule_name
         if not v:
             return None
@@ -341,7 +344,7 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def carbon_dioxide_setpoint_schedule(self) -> IDFBaseModel | None:
+    def carbon_dioxide_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.carbon_dioxide_setpoint_schedule_name
         if not v:
             return None
@@ -351,7 +354,9 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def minimum_carbon_dioxide_concentration_schedule(self) -> IDFBaseModel | None:
+    def minimum_carbon_dioxide_concentration_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.minimum_carbon_dioxide_concentration_schedule_name
         if not v:
             return None
@@ -361,7 +366,9 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def maximum_carbon_dioxide_concentration_schedule(self) -> IDFBaseModel | None:
+    def maximum_carbon_dioxide_concentration_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.maximum_carbon_dioxide_concentration_schedule_name
         if not v:
             return None
@@ -371,7 +378,9 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def generic_contaminant_control_availability_schedule(self) -> IDFBaseModel | None:
+    def generic_contaminant_control_availability_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.generic_contaminant_control_availability_schedule_name
         if not v:
             return None
@@ -381,7 +390,7 @@ class ZoneControlContaminantController(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def generic_contaminant_setpoint_schedule(self) -> IDFBaseModel | None:
+    def generic_contaminant_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.generic_contaminant_setpoint_schedule_name
         if not v:
             return None
@@ -429,7 +438,9 @@ class ZoneControlHumidistat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def humidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def humidifying_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.humidifying_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -439,7 +450,9 @@ class ZoneControlHumidistat(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def dehumidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def dehumidifying_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.dehumidifying_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -548,7 +561,7 @@ class ZoneControlThermostat(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def control_type_schedule(self) -> IDFBaseModel | None:
+    def control_type_schedule(self) -> ScheduleNamesTarget | None:
         v = self.control_type_schedule_name
         if not v:
             return None
@@ -686,7 +699,7 @@ class ZoneControlThermostatOperativeTemperature(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
 
     @property
-    def radiative_fraction_schedule(self) -> IDFBaseModel | None:
+    def radiative_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.radiative_fraction_schedule_name
         if not v:
             return None
@@ -811,7 +824,7 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneAndZoneListNames'])
 
     @property
-    def heating_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def heating_temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.heating_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -821,7 +834,7 @@ class ZoneControlThermostatStagedDualSetpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def cooling_temperature_setpoint_base_schedule(self) -> IDFBaseModel | None:
+    def cooling_temperature_setpoint_base_schedule(self) -> ScheduleNamesTarget | None:
         v = self.cooling_temperature_setpoint_base_schedule_name
         if not v:
             return None
@@ -894,7 +907,9 @@ class ZoneControlThermostatTemperatureAndHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneControlThermostaticNames'])
 
     @property
-    def dehumidifying_relative_humidity_setpoint_schedule(self) -> IDFBaseModel | None:
+    def dehumidifying_relative_humidity_setpoint_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.dehumidifying_relative_humidity_setpoint_schedule_name
         if not v:
             return None
@@ -904,7 +919,7 @@ class ZoneControlThermostatTemperatureAndHumidity(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def overcool_range_schedule(self) -> IDFBaseModel | None:
+    def overcool_range_schedule(self) -> ScheduleNamesTarget | None:
         v = self.overcool_range_schedule_name
         if not v:
             return None
@@ -1035,7 +1050,7 @@ class ZoneControlThermostatThermalComfort(IDFBaseModel):
         return idf._resolve_forward(v, ['PeopleNames'])
 
     @property
-    def thermal_comfort_control_type_schedule(self) -> IDFBaseModel | None:
+    def thermal_comfort_control_type_schedule(self) -> ScheduleNamesTarget | None:
         v = self.thermal_comfort_control_type_schedule_name
         if not v:
             return None

@@ -37,6 +37,16 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllHeatTranSurfNamesTarget,
+        AllShadingAndHTSurfNamesTarget,
+        ConstructionNamesTarget,
+        MaterialNameTarget,
+        ScheduleNamesTarget,
+        SubSurfNamesTarget,
+        SurfaceNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .constructions import ConstructionComplexFenestrationState
     from .node_branch import OutdoorAirNode
     from .thermal_zones import (
@@ -82,7 +92,7 @@ class FoundationKivaBlocksItem(IDFBaseModel):
     )
 
     @property
-    def custom_block_material(self) -> IDFBaseModel | None:
+    def custom_block_material(self) -> MaterialNameTarget | None:
         v = self.custom_block_material_name
         if not v:
             return None
@@ -111,7 +121,7 @@ class SurfacePropertyExteriorNaturalVentedCAVitySurfaceItem(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllShadingAndHTSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -144,7 +154,7 @@ class SurfacePropertyGroundSurfacesGroundSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def ground_surface_temperature_schedule(self) -> IDFBaseModel | None:
+    def ground_surface_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ground_surface_temperature_schedule_name
         if not v:
             return None
@@ -154,7 +164,7 @@ class SurfacePropertyGroundSurfacesGroundSurfacesItem(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ground_surface_reflectance_schedule(self) -> IDFBaseModel | None:
+    def ground_surface_reflectance_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ground_surface_reflectance_schedule_name
         if not v:
             return None
@@ -172,7 +182,7 @@ class SurfacePropertyHeatTransferAlgorithmSurfaceListSurfaceItem(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -196,7 +206,7 @@ class SurfacePropertySurroundingSurfacesSurfacesItem(IDFBaseModel):
     )
 
     @property
-    def surrounding_surface_temperature_schedule(self) -> IDFBaseModel | None:
+    def surrounding_surface_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.surrounding_surface_temperature_schedule_name
         if not v:
             return None
@@ -224,7 +234,7 @@ class ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem(IDFBaseModel):
     )
 
     @property
-    def from_surface_ref(self) -> IDFBaseModel | None:
+    def from_surface_ref(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.from_surface
         if not v:
             return None
@@ -234,7 +244,7 @@ class ZonePropertyUserViewFactorsBySurfaceNameViewFactorsItem(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def to_surface_ref(self) -> IDFBaseModel | None:
+    def to_surface_ref(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.to_surface
         if not v:
             return None
@@ -295,7 +305,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
     )
 
     @property
-    def fenestration_surface_ref(self) -> IDFBaseModel | None:
+    def fenestration_surface_ref(self) -> SubSurfNamesTarget | None:
         v = self.fenestration_surface
         if not v:
             return None
@@ -315,7 +325,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['ComplexFenestrationStates'])
 
     @property
-    def layer_1_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+    def layer_1_solar_radiation_absorbed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.layer_1_solar_radiation_absorbed_schedule_name
         if not v:
             return None
@@ -325,7 +335,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def layer_2_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+    def layer_2_solar_radiation_absorbed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.layer_2_solar_radiation_absorbed_schedule_name
         if not v:
             return None
@@ -335,7 +345,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def layer_3_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+    def layer_3_solar_radiation_absorbed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.layer_3_solar_radiation_absorbed_schedule_name
         if not v:
             return None
@@ -345,7 +355,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def layer_4_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+    def layer_4_solar_radiation_absorbed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.layer_4_solar_radiation_absorbed_schedule_name
         if not v:
             return None
@@ -355,7 +365,7 @@ class ComplexFenestrationPropertySolarAbsorbedLayers(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def layer_5_solar_radiation_absorbed_schedule(self) -> IDFBaseModel | None:
+    def layer_5_solar_radiation_absorbed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.layer_5_solar_radiation_absorbed_schedule_name
         if not v:
             return None
@@ -477,7 +487,7 @@ class FoundationKiva(IDFBaseModel):
     blocks: list[FoundationKivaBlocksItem] | None = Field(default=None)
 
     @property
-    def interior_horizontal_insulation_material(self) -> IDFBaseModel | None:
+    def interior_horizontal_insulation_material(self) -> MaterialNameTarget | None:
         v = self.interior_horizontal_insulation_material_name
         if not v:
             return None
@@ -487,7 +497,7 @@ class FoundationKiva(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def interior_vertical_insulation_material(self) -> IDFBaseModel | None:
+    def interior_vertical_insulation_material(self) -> MaterialNameTarget | None:
         v = self.interior_vertical_insulation_material_name
         if not v:
             return None
@@ -497,7 +507,7 @@ class FoundationKiva(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def exterior_horizontal_insulation_material(self) -> IDFBaseModel | None:
+    def exterior_horizontal_insulation_material(self) -> MaterialNameTarget | None:
         v = self.exterior_horizontal_insulation_material_name
         if not v:
             return None
@@ -507,7 +517,7 @@ class FoundationKiva(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def exterior_vertical_insulation_material(self) -> IDFBaseModel | None:
+    def exterior_vertical_insulation_material(self) -> MaterialNameTarget | None:
         v = self.exterior_vertical_insulation_material_name
         if not v:
             return None
@@ -517,7 +527,7 @@ class FoundationKiva(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def footing_wall_construction(self) -> IDFBaseModel | None:
+    def footing_wall_construction(self) -> ConstructionNamesTarget | None:
         v = self.footing_wall_construction_name
         if not v:
             return None
@@ -527,7 +537,7 @@ class FoundationKiva(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def footing_material(self) -> IDFBaseModel | None:
+    def footing_material(self) -> MaterialNameTarget | None:
         v = self.footing_material_name
         if not v:
             return None
@@ -596,7 +606,7 @@ class SurfaceControlMovableInsulation(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -606,7 +616,7 @@ class SurfaceControlMovableInsulation(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def material(self) -> IDFBaseModel | None:
+    def material(self) -> MaterialNameTarget | None:
         v = self.material_name
         if not v:
             return None
@@ -616,7 +626,7 @@ class SurfaceControlMovableInsulation(IDFBaseModel):
         return idf._resolve_forward(v, ['MaterialName'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -2316,7 +2326,9 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
     )
 
     @property
-    def hc_function_of_temperature_difference_curve(self) -> IDFBaseModel | None:
+    def hc_function_of_temperature_difference_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.hc_function_of_temperature_difference_curve_name
         if not v:
             return None
@@ -2328,7 +2340,7 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
     @property
     def hc_function_of_temperature_difference_divided_by_height_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.hc_function_of_temperature_difference_divided_by_height_curve_name
         if not v:
             return None
@@ -2338,7 +2350,7 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def hc_function_of_air_change_rate_curve(self) -> IDFBaseModel | None:
+    def hc_function_of_air_change_rate_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.hc_function_of_air_change_rate_curve_name
         if not v:
             return None
@@ -2350,7 +2362,7 @@ class SurfaceConvectionAlgorithmInsideUserCurve(IDFBaseModel):
     @property
     def hc_function_of_air_system_volume_flow_rate_divided_by_zone_perimeter_length_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.hc_function_of_air_system_volume_flow_rate_divided_by_zone_perimeter_length_curve_name
         if not v:
             return None
@@ -2633,7 +2645,7 @@ class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
     )
 
     @property
-    def hf_function_of_wind_speed_curve(self) -> IDFBaseModel | None:
+    def hf_function_of_wind_speed_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.hf_function_of_wind_speed_curve_name
         if not v:
             return None
@@ -2643,7 +2655,9 @@ class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def hn_function_of_temperature_difference_curve(self) -> IDFBaseModel | None:
+    def hn_function_of_temperature_difference_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | None:
         v = self.hn_function_of_temperature_difference_curve_name
         if not v:
             return None
@@ -2655,7 +2669,7 @@ class SurfaceConvectionAlgorithmOutsideUserCurve(IDFBaseModel):
     @property
     def hn_function_of_temperature_difference_divided_by_height_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.hn_function_of_temperature_difference_divided_by_height_curve_name
         if not v:
             return None
@@ -2690,7 +2704,7 @@ class SurfacePropertiesVaporCoefficients(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -2858,7 +2872,7 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> AllHeatTranSurfNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -2868,7 +2882,7 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
         return idf._resolve_forward(v, ['AllHeatTranSurfNames'])
 
     @property
-    def convection_coefficient_1_schedule(self) -> IDFBaseModel | None:
+    def convection_coefficient_1_schedule(self) -> ScheduleNamesTarget | None:
         v = self.convection_coefficient_1_schedule_name
         if not v:
             return None
@@ -2894,7 +2908,7 @@ class SurfacePropertyConvectionCoefficients(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionModels'])
 
     @property
-    def convection_coefficient_2_schedule(self) -> IDFBaseModel | None:
+    def convection_coefficient_2_schedule(self) -> ScheduleNamesTarget | None:
         v = self.convection_coefficient_2_schedule_name
         if not v:
             return None
@@ -3089,7 +3103,7 @@ class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
     )
 
     @property
-    def convection_coefficient_1_schedule(self) -> IDFBaseModel | None:
+    def convection_coefficient_1_schedule(self) -> ScheduleNamesTarget | None:
         v = self.convection_coefficient_1_schedule_name
         if not v:
             return None
@@ -3115,7 +3129,7 @@ class SurfacePropertyConvectionCoefficientsMultipleSurface(IDFBaseModel):
         return idf._resolve_forward(v, ['UserConvectionModels'])
 
     @property
-    def convection_coefficient_2_schedule(self) -> IDFBaseModel | None:
+    def convection_coefficient_2_schedule(self) -> ScheduleNamesTarget | None:
         v = self.convection_coefficient_2_schedule_name
         if not v:
             return None
@@ -3295,7 +3309,7 @@ class SurfacePropertyHeatBalanceSourceTerm(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3305,7 +3319,7 @@ class SurfacePropertyHeatBalanceSourceTerm(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def inside_face_heat_source_term_schedule(self) -> IDFBaseModel | None:
+    def inside_face_heat_source_term_schedule(self) -> ScheduleNamesTarget | None:
         v = self.inside_face_heat_source_term_schedule_name
         if not v:
             return None
@@ -3315,7 +3329,7 @@ class SurfacePropertyHeatBalanceSourceTerm(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def outside_face_heat_source_term_schedule(self) -> IDFBaseModel | None:
+    def outside_face_heat_source_term_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outside_face_heat_source_term_schedule_name
         if not v:
             return None
@@ -3349,7 +3363,7 @@ class SurfacePropertyHeatTransferAlgorithm(IDFBaseModel):
     ) = Field(default='ConductionTransferFunction')
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3387,7 +3401,7 @@ class SurfacePropertyHeatTransferAlgorithmConstruction(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -3490,7 +3504,7 @@ class SurfacePropertyIncidentSolarMultiplier(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3500,7 +3514,7 @@ class SurfacePropertyIncidentSolarMultiplier(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def incident_solar_multiplier_schedule(self) -> IDFBaseModel | None:
+    def incident_solar_multiplier_schedule(self) -> ScheduleNamesTarget | None:
         v = self.incident_solar_multiplier_schedule_name
         if not v:
             return None
@@ -3555,7 +3569,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
     )
 
     @property
-    def exterior_surface(self) -> IDFBaseModel | None:
+    def exterior_surface(self) -> SurfaceNamesTarget | None:
         v = self.exterior_surface_name
         if not v:
             return None
@@ -3565,7 +3579,7 @@ class SurfacePropertyLocalEnvironment(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def sunlit_fraction_schedule(self) -> IDFBaseModel | None:
+    def sunlit_fraction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.sunlit_fraction_schedule_name
         if not v:
             return None
@@ -3681,7 +3695,7 @@ class SurfacePropertyOtherSideCoefficients(IDFBaseModel):
     )
 
     @property
-    def constant_temperature_schedule(self) -> IDFBaseModel | None:
+    def constant_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.constant_temperature_schedule_name
         if not v:
             return None
@@ -3739,7 +3753,7 @@ class SurfacePropertySolarIncidentInside(IDFBaseModel):
     )
 
     @property
-    def surface(self) -> IDFBaseModel | None:
+    def surface(self) -> SurfaceNamesTarget | None:
         v = self.surface_name
         if not v:
             return None
@@ -3749,7 +3763,7 @@ class SurfacePropertySolarIncidentInside(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -3761,7 +3775,7 @@ class SurfacePropertySolarIncidentInside(IDFBaseModel):
     @property
     def inside_surface_incident_sun_solar_radiation_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.inside_surface_incident_sun_solar_radiation_schedule_name
         if not v:
             return None
@@ -3802,7 +3816,7 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
     )
 
     @property
-    def sky_temperature_schedule(self) -> IDFBaseModel | None:
+    def sky_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.sky_temperature_schedule_name
         if not v:
             return None
@@ -3812,7 +3826,7 @@ class SurfacePropertySurroundingSurfaces(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ground_temperature_schedule(self) -> IDFBaseModel | None:
+    def ground_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ground_temperature_schedule_name
         if not v:
             return None
@@ -3847,7 +3861,7 @@ class SurfacePropertyUnderwater(IDFBaseModel):
     )
 
     @property
-    def free_stream_water_temperature_schedule_ref(self) -> IDFBaseModel | None:
+    def free_stream_water_temperature_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.free_stream_water_temperature_schedule
         if not v:
             return None
@@ -3857,7 +3871,7 @@ class SurfacePropertyUnderwater(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def free_stream_water_velocity_schedule_ref(self) -> IDFBaseModel | None:
+    def free_stream_water_velocity_schedule_ref(self) -> ScheduleNamesTarget | None:
         v = self.free_stream_water_velocity_schedule
         if not v:
             return None

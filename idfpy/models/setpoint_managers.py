@@ -20,6 +20,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .air_distribution import AirLoopHVAC
     from .curves import CurveQuadLinear
     from .misc import TableLookup
@@ -108,7 +109,7 @@ class SetpointManagerCondenserEnteringReset(IDFBaseModel):
     @property
     def default_condenser_entering_water_temperature_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.default_condenser_entering_water_temperature_schedule_name
         if not v:
             return None
@@ -663,7 +664,7 @@ class SetpointManagerOutdoorAirReset(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -703,7 +704,7 @@ class SetpointManagerReturnAirBypassFlow(IDFBaseModel):
         return idf._resolve_forward(v, ['AirPrimaryLoops'])
 
     @property
-    def temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.temperature_setpoint_schedule_name
         if not v:
             return None
@@ -773,7 +774,7 @@ class SetpointManagerReturnTemperatureChilledWater(IDFBaseModel):
     )
 
     @property
-    def return_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def return_temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.return_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -843,7 +844,7 @@ class SetpointManagerReturnTemperatureHotWater(IDFBaseModel):
     )
 
     @property
-    def return_temperature_setpoint_schedule(self) -> IDFBaseModel | None:
+    def return_temperature_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.return_temperature_setpoint_schedule_name
         if not v:
             return None
@@ -879,7 +880,7 @@ class SetpointManagerScheduled(IDFBaseModel):
     )
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -908,7 +909,7 @@ class SetpointManagerScheduledDualSetpoint(IDFBaseModel):
     )
 
     @property
-    def high_setpoint_schedule(self) -> IDFBaseModel | None:
+    def high_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.high_setpoint_schedule_name
         if not v:
             return None
@@ -918,7 +919,7 @@ class SetpointManagerScheduledDualSetpoint(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def low_setpoint_schedule(self) -> IDFBaseModel | None:
+    def low_setpoint_schedule(self) -> ScheduleNamesTarget | None:
         v = self.low_setpoint_schedule_name
         if not v:
             return None

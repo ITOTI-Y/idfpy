@@ -18,6 +18,7 @@ from idfpy.models.constructions import (
 
 if TYPE_CHECKING:
     from idfpy.models._base import IDFBaseModel
+    from idfpy.models._ref_targets import MaterialNameTarget
     from idfpy.models.constructions import Construction
 
 # Window-material layer types accepted by ``Construction`` layer fields.
@@ -39,7 +40,7 @@ def is_window_material(material: IDFBaseModel) -> bool:
     return isinstance(material, WINDOW_MATERIAL_TYPES)
 
 
-def construction_layers(construction: Construction) -> list[IDFBaseModel]:
+def construction_layers(construction: Construction) -> list[MaterialNameTarget]:
     """Resolve the layers of a bound construction.
 
     Args:
@@ -66,7 +67,7 @@ def construction_layers(construction: Construction) -> list[IDFBaseModel]:
         (c.layer_9, c.layer_9_ref),
         (c.layer_10, c.layer_10_ref),
     )
-    layers: list[IDFBaseModel] = []
+    layers: list[MaterialNameTarget] = []
     for name, material in slots:
         if not name:
             continue

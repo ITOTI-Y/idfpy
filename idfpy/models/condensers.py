@@ -28,6 +28,11 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ConstructionNamesTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+    )
     from .location import (
         SiteGroundTemperatureUndisturbedFiniteDifference,
         SiteGroundTemperatureUndisturbedKusudaAchenbach,
@@ -487,7 +492,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
     )
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -497,7 +502,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -809,7 +814,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
     )
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -819,7 +824,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -1058,7 +1063,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
     @property
     def fan_power_ratio_function_of_air_flow_rate_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fan_power_ratio_function_of_air_flow_rate_ratio_curve_name
         if not v:
             return None
@@ -1068,7 +1073,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1078,7 +1083,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -1386,7 +1391,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     @property
     def fan_power_modifier_function_of_air_flow_rate_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.fan_power_modifier_function_of_air_flow_rate_ratio_curve_name
         if not v:
             return None
@@ -1398,7 +1403,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     @property
     def u_factor_times_area_modifier_function_of_air_flow_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.u_factor_times_area_modifier_function_of_air_flow_ratio_curve_name
         if not v:
             return None
@@ -1410,7 +1415,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     @property
     def u_factor_times_area_modifier_function_of_wetbulb_temperature_difference_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.u_factor_times_area_modifier_function_of_wetbulb_temperature_difference_curve_name
         if not v:
             return None
@@ -1422,7 +1427,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     @property
     def u_factor_times_area_modifier_function_of_water_flow_ratio_curve(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> UnivariateFunctionsTarget | None:
         v = self.u_factor_times_area_modifier_function_of_water_flow_ratio_curve_name
         if not v:
             return None
@@ -1432,7 +1437,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
         return idf._resolve_forward(v, ['UnivariateFunctions'])
 
     @property
-    def basin_heater_operating_schedule(self) -> IDFBaseModel | None:
+    def basin_heater_operating_schedule(self) -> ScheduleNamesTarget | None:
         v = self.basin_heater_operating_schedule_name
         if not v:
             return None
@@ -1442,7 +1447,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -1608,7 +1613,7 @@ class EvaporativeFluidCoolerSingleSpeed(IDFBaseModel):
     )
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -1840,7 +1845,7 @@ class EvaporativeFluidCoolerTwoSpeed(IDFBaseModel):
     )
 
     @property
-    def blowdown_makeup_water_usage_schedule(self) -> IDFBaseModel | None:
+    def blowdown_makeup_water_usage_schedule(self) -> ScheduleNamesTarget | None:
         v = self.blowdown_makeup_water_usage_schedule_name
         if not v:
             return None
@@ -2397,7 +2402,7 @@ class GroundHeatExchangerSurface(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2851,7 +2856,7 @@ class HeatExchangerFluidToFluid(IDFBaseModel):
     )
 
     @property
-    def availability_schedule(self) -> IDFBaseModel | None:
+    def availability_schedule(self) -> ScheduleNamesTarget | None:
         v = self.availability_schedule_name
         if not v:
             return None

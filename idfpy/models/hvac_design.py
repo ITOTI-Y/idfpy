@@ -24,6 +24,7 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import ScheduleNamesTarget
     from .air_distribution import AirLoopHVAC
     from .misc import CondenserLoop, PlantLoop
     from .thermal_zones import Space, Zone, ZoneList
@@ -192,7 +193,7 @@ class DesignSpecificationOutdoorAir(IDFBaseModel):
     )
 
     @property
-    def outdoor_air_schedule(self) -> IDFBaseModel | None:
+    def outdoor_air_schedule(self) -> ScheduleNamesTarget | None:
         v = self.outdoor_air_schedule_name
         if not v:
             return None
@@ -204,7 +205,7 @@ class DesignSpecificationOutdoorAir(IDFBaseModel):
     @property
     def proportional_control_minimum_outdoor_air_flow_rate_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.proportional_control_minimum_outdoor_air_flow_rate_schedule_name
         if not v:
             return None
@@ -258,7 +259,9 @@ class DesignSpecificationZoneAirDistribution(IDFBaseModel):
     )
 
     @property
-    def zone_air_distribution_effectiveness_schedule(self) -> IDFBaseModel | None:
+    def zone_air_distribution_effectiveness_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_air_distribution_effectiveness_schedule_name
         if not v:
             return None
@@ -1162,7 +1165,7 @@ class SizingZone(IDFBaseModel):
     @property
     def zone_humidistat_dehumidification_set_point_schedule(
         self,
-    ) -> IDFBaseModel | None:
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_humidistat_dehumidification_set_point_schedule_name
         if not v:
             return None
@@ -1172,7 +1175,9 @@ class SizingZone(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def zone_humidistat_humidification_set_point_schedule(self) -> IDFBaseModel | None:
+    def zone_humidistat_humidification_set_point_schedule(
+        self,
+    ) -> ScheduleNamesTarget | None:
         v = self.zone_humidistat_humidification_set_point_schedule_name
         if not v:
             return None

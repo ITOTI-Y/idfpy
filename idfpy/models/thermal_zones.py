@@ -38,6 +38,15 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        AllShadingSurfNamesTarget,
+        ComplexFenestrationStatesTarget,
+        ConstructionNamesTarget,
+        OutFaceEnvNamesTarget,
+        ScheduleNamesTarget,
+        SubSurfNamesTarget,
+        SurfaceNamesTarget,
+    )
     from .constructions import (
         WindowMaterialBlind,
         WindowMaterialGlazing,
@@ -202,7 +211,7 @@ class BuildingSurfaceDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -232,7 +241,7 @@ class BuildingSurfaceDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -308,7 +317,7 @@ class CeilingAdiabatic(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -412,7 +421,7 @@ class CeilingInterzone(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -442,7 +451,7 @@ class CeilingInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -497,7 +506,7 @@ class Door(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -507,7 +516,7 @@ class Door(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -570,7 +579,7 @@ class DoorInterzone(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -580,7 +589,7 @@ class DoorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -590,7 +599,7 @@ class DoorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -673,7 +682,9 @@ class FenestrationSurfaceDetailed(FixedVertexGeometryMixin, IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(
+        self,
+    ) -> ComplexFenestrationStatesTarget | ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -685,7 +696,7 @@ class FenestrationSurfaceDetailed(FixedVertexGeometryMixin, IDFBaseModel):
         )
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -695,7 +706,7 @@ class FenestrationSurfaceDetailed(FixedVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -776,7 +787,7 @@ class FloorAdiabatic(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -880,7 +891,7 @@ class FloorDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -910,7 +921,7 @@ class FloorDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -981,7 +992,7 @@ class FloorGroundContact(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1079,7 +1090,7 @@ class FloorInterzone(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1109,7 +1120,7 @@ class FloorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -1192,7 +1203,7 @@ class GlazedDoor(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1202,7 +1213,7 @@ class GlazedDoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -1275,7 +1286,7 @@ class GlazedDoorInterzone(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1285,7 +1296,7 @@ class GlazedDoorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -1295,7 +1306,7 @@ class GlazedDoorInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -1377,7 +1388,7 @@ class InternalMass(IDFBaseModel):
     surface_area: float = Field(..., gt=0.0, json_schema_extra={'units': 'm2'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1471,7 +1482,7 @@ class Roof(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1573,7 +1584,7 @@ class RoofCeilingDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -1603,7 +1614,7 @@ class RoofCeilingDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -1674,7 +1685,7 @@ class ShadingBuildingDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def transmittance_schedule(self) -> IDFBaseModel | None:
+    def transmittance_schedule(self) -> ScheduleNamesTarget | None:
         v = self.transmittance_schedule_name
         if not v:
             return None
@@ -1734,7 +1745,7 @@ class ShadingFin(IDFBaseModel):
     )
 
     @property
-    def window_or_door(self) -> IDFBaseModel | None:
+    def window_or_door(self) -> SubSurfNamesTarget | None:
         v = self.window_or_door_name
         if not v:
             return None
@@ -1794,7 +1805,7 @@ class ShadingFinProjection(IDFBaseModel):
     )
 
     @property
-    def window_or_door(self) -> IDFBaseModel | None:
+    def window_or_door(self) -> SubSurfNamesTarget | None:
         v = self.window_or_door_name
         if not v:
             return None
@@ -1832,7 +1843,7 @@ class ShadingOverhang(IDFBaseModel):
     depth: float | None = Field(default=None, ge=0.0, json_schema_extra={'units': 'm'})
 
     @property
-    def window_or_door(self) -> IDFBaseModel | None:
+    def window_or_door(self) -> SubSurfNamesTarget | None:
         v = self.window_or_door_name
         if not v:
             return None
@@ -1873,7 +1884,7 @@ class ShadingOverhangProjection(IDFBaseModel):
     )
 
     @property
-    def window_or_door(self) -> IDFBaseModel | None:
+    def window_or_door(self) -> SubSurfNamesTarget | None:
         v = self.window_or_door_name
         if not v:
             return None
@@ -1908,7 +1919,7 @@ class ShadingPropertyReflectance(IDFBaseModel):
     )
 
     @property
-    def shading_surface(self) -> IDFBaseModel | None:
+    def shading_surface(self) -> AllShadingSurfNamesTarget | None:
         v = self.shading_surface_name
         if not v:
             return None
@@ -1977,7 +1988,7 @@ class ShadingSiteDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def transmittance_schedule(self) -> IDFBaseModel | None:
+    def transmittance_schedule(self) -> ScheduleNamesTarget | None:
         v = self.transmittance_schedule_name
         if not v:
             return None
@@ -2013,7 +2024,7 @@ class ShadingZoneDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def base_surface(self) -> IDFBaseModel | None:
+    def base_surface(self) -> SurfaceNamesTarget | None:
         v = self.base_surface_name
         if not v:
             return None
@@ -2023,7 +2034,7 @@ class ShadingZoneDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def transmittance_schedule(self) -> IDFBaseModel | None:
+    def transmittance_schedule(self) -> ScheduleNamesTarget | None:
         v = self.transmittance_schedule_name
         if not v:
             return None
@@ -2173,7 +2184,7 @@ class WallAdiabatic(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2277,7 +2288,7 @@ class WallDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
     vertices: list[BuildingSurfaceDetailedVerticesItem] | None = Field(default=None)
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2307,7 +2318,7 @@ class WallDetailed(ExtensibleVertexGeometryMixin, IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -2380,7 +2391,7 @@ class WallExterior(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2479,7 +2490,7 @@ class WallInterzone(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2509,7 +2520,7 @@ class WallInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SpaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -2581,7 +2592,7 @@ class WallUnderground(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2663,7 +2674,7 @@ class Window(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2673,7 +2684,7 @@ class Window(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -2745,7 +2756,7 @@ class WindowInterzone(IDFBaseModel):
     height: float | None = Field(default=None, json_schema_extra={'units': 'm'})
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -2755,7 +2766,7 @@ class WindowInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def building_surface(self) -> IDFBaseModel | None:
+    def building_surface(self) -> SurfaceNamesTarget | None:
         v = self.building_surface_name
         if not v:
             return None
@@ -2765,7 +2776,7 @@ class WindowInterzone(IDFBaseModel):
         return idf._resolve_forward(v, ['SurfaceNames'])
 
     @property
-    def outside_boundary_condition_object_ref(self) -> IDFBaseModel | None:
+    def outside_boundary_condition_object_ref(self) -> OutFaceEnvNamesTarget | None:
         v = self.outside_boundary_condition_object
         if not v:
             return None
@@ -2835,7 +2846,7 @@ class WindowPropertyAirflowControl(IDFBaseModel):
     )
 
     @property
-    def name_ref(self) -> IDFBaseModel | None:
+    def name_ref(self) -> SubSurfNamesTarget | None:
         v = self.name
         if not v:
             return None
@@ -2845,7 +2856,7 @@ class WindowPropertyAirflowControl(IDFBaseModel):
         return idf._resolve_forward(v, ['SubSurfNames'])
 
     @property
-    def airflow_multiplier_schedule(self) -> IDFBaseModel | None:
+    def airflow_multiplier_schedule(self) -> ScheduleNamesTarget | None:
         v = self.airflow_multiplier_schedule_name
         if not v:
             return None
@@ -3086,7 +3097,7 @@ class WindowPropertyStormWindow(IDFBaseModel):
     day_of_month_that_storm_glass_layer_is_taken_off: int = Field(..., ge=1, le=31)
 
     @property
-    def window(self) -> IDFBaseModel | None:
+    def window(self) -> SubSurfNamesTarget | None:
         v = self.window_name
         if not v:
             return None
@@ -3268,7 +3279,7 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def construction_with_shading(self) -> IDFBaseModel | None:
+    def construction_with_shading(self) -> ConstructionNamesTarget | None:
         v = self.construction_with_shading_name
         if not v:
             return None
@@ -3278,7 +3289,7 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['ConstructionNames'])
 
     @property
-    def schedule(self) -> IDFBaseModel | None:
+    def schedule(self) -> ScheduleNamesTarget | None:
         v = self.schedule_name
         if not v:
             return None
@@ -3300,7 +3311,7 @@ class WindowShadingControl(IDFBaseModel):
         return idf._resolve_forward(v, ['WindowShadesScreensAndBlinds'])
 
     @property
-    def slat_angle_schedule(self) -> IDFBaseModel | None:
+    def slat_angle_schedule(self) -> ScheduleNamesTarget | None:
         v = self.slat_angle_schedule_name
         if not v:
             return None

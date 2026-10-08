@@ -7,7 +7,6 @@ object specifications. Models are organized by EnergyPlus group categories.
 from __future__ import annotations
 
 import importlib
-import re
 from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
@@ -24,10 +23,12 @@ from .template_filters import (
     collect_nav_imports,
     collect_used_ref_types,
     extract_nested_classes,
+    ref_target_alias,
     set_nav_type_mapping,
     set_object_list_ref_types,
     set_object_type_to_class,
     set_reference_class_name_groups,
+    type_alias_name,
 )
 
 
@@ -164,6 +165,9 @@ class ModelGenerator:
                             )
         self._class_to_module = class_to_module
         set_nav_type_mapping(group_to_classes)
+        self._generate_ref_targets_file(
+            group_to_classes, class_to_module, schema_version
+        )
 
         all_classes: dict[str, list[str]] = {}
         all_nested_classes: dict[str, list[dict]] = {}
@@ -346,6 +350,35 @@ class ModelGenerator:
         class_names.extend(nc['name'] for nc in nested_classes)
 
         return class_names, nested_classes
+
+    def _generate_ref_targets_file(
+        self,
+        group_to_classes: dict[str, set[str]],
+        class_to_module: dict[str, str],
+        schema_version: str,
+    ) -> None:
+        """Generate _ref_targets.py with one class-union alias per reference group."""
+        targets = [
+            (ref_target_alias(group), sorted(group_to_classes[group]))
+            for group in sorted(group_to_classes)
+        ]
+        imports: dict[str, set[str]] = defaultdict(set)
+        for classes in group_to_classes.values():
+            for cls in classes:
+                imports[class_to_module[cls]].add(cls)
+
+        content = (
+            self._get_jinja_env()
+            .get_template('ref_targets_py.jinja2')
+            .render(
+                schema_version=schema_version,
+                targets=targets,
+                imports={m: sorted(imports[m]) for m in sorted(imports)},
+            )
+        )
+        output_path = self.output_dir / '_ref_targets.py'
+        output_path.write_text(content, encoding='utf-8')
+        logger.info('Generated _ref_targets.py with {} aliases', len(targets))
 
     def _generate_ref_meta_file(
         self,
@@ -590,10 +623,7 @@ class ModelGenerator:
         Returns:
             Type alias name (e.g., "ZoneNamesRef").
         """
-        name = re.sub(r'[^a-zA-Z0-9]', '', object_list)
-        if name and name[0].islower():
-            name = name[0].upper() + name[1:]
-        return f'{name}Ref'
+        return type_alias_name(object_list, 'Ref')
 
     def _generate_refs_file(
         self,

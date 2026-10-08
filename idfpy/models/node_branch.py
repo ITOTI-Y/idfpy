@@ -29,6 +29,13 @@ from ._refs import (
 )
 
 if TYPE_CHECKING:
+    from ._ref_targets import (
+        ConstructionNamesTarget,
+        ScheduleNamesTarget,
+        UnivariateFunctionsTarget,
+        ValidBranchEquipmentNamesTarget,
+        WPCValueNamesTarget,
+    )
     from .advanced_construction import SurfacePropertyOtherSideConditionsModel
     from .location import (
         SiteGroundTemperatureUndisturbedFiniteDifference,
@@ -51,7 +58,7 @@ class BranchComponentsItem(IDFBaseModel):
     component_outlet_node_name: str = Field(...)
 
     @property
-    def component(self) -> IDFBaseModel | None:
+    def component(self) -> ValidBranchEquipmentNamesTarget | None:
         v = self.component_name
         if not v:
             return None
@@ -188,7 +195,7 @@ class Branch(IDFBaseModel):
     components: list[BranchComponentsItem] | None = Field(default=None)
 
     @property
-    def pressure_drop_curve(self) -> IDFBaseModel | None:
+    def pressure_drop_curve(self) -> UnivariateFunctionsTarget | None:
         v = self.pressure_drop_curve_name
         if not v:
             return None
@@ -384,7 +391,7 @@ class OutdoorAirNode(IDFBaseModel):
     )
 
     @property
-    def drybulb_temperature_schedule(self) -> IDFBaseModel | None:
+    def drybulb_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.drybulb_temperature_schedule_name
         if not v:
             return None
@@ -394,7 +401,7 @@ class OutdoorAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def wetbulb_temperature_schedule(self) -> IDFBaseModel | None:
+    def wetbulb_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.wetbulb_temperature_schedule_name
         if not v:
             return None
@@ -404,7 +411,7 @@ class OutdoorAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def wind_speed_schedule(self) -> IDFBaseModel | None:
+    def wind_speed_schedule(self) -> ScheduleNamesTarget | None:
         v = self.wind_speed_schedule_name
         if not v:
             return None
@@ -414,7 +421,7 @@ class OutdoorAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def wind_direction_schedule(self) -> IDFBaseModel | None:
+    def wind_direction_schedule(self) -> ScheduleNamesTarget | None:
         v = self.wind_direction_schedule_name
         if not v:
             return None
@@ -424,7 +431,9 @@ class OutdoorAirNode(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def wind_pressure_coefficient_curve(self) -> IDFBaseModel | None:
+    def wind_pressure_coefficient_curve(
+        self,
+    ) -> UnivariateFunctionsTarget | WPCValueNamesTarget | None:
         v = self.wind_pressure_coefficient_curve_name
         if not v:
             return None
@@ -494,7 +503,7 @@ class PipeIndoor(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -514,7 +523,7 @@ class PipeIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ZoneNames'])
 
     @property
-    def ambient_temperature_schedule(self) -> IDFBaseModel | None:
+    def ambient_temperature_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_temperature_schedule_name
         if not v:
             return None
@@ -524,7 +533,7 @@ class PipeIndoor(IDFBaseModel):
         return idf._resolve_forward(v, ['ScheduleNames'])
 
     @property
-    def ambient_air_velocity_schedule(self) -> IDFBaseModel | None:
+    def ambient_air_velocity_schedule(self) -> ScheduleNamesTarget | None:
         v = self.ambient_air_velocity_schedule_name
         if not v:
             return None
@@ -554,7 +563,7 @@ class PipeOutdoor(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
@@ -599,7 +608,7 @@ class PipeUnderground(IDFBaseModel):
     )
 
     @property
-    def construction(self) -> IDFBaseModel | None:
+    def construction(self) -> ConstructionNamesTarget | None:
         v = self.construction_name
         if not v:
             return None
