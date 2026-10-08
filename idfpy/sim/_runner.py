@@ -17,7 +17,7 @@ from .config import SimJob
 from .result import SimResult
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
 
 def _build_cmd(
@@ -49,7 +49,7 @@ def _build_cmd(
 
 
 @contextmanager
-def _resolve_idf(idf: object) -> Iterator[Path]:
+def _resolve_idf(idf: object) -> Generator[Path]:
     """Resolve IDF object or Path to a file path.
 
     Context manager that yields the resolved path. When *idf* is an IDF
