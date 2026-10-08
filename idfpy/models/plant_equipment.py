@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Plant Heating and Cooling Equipment
 """
 
@@ -201,7 +201,6 @@ class CentralHeatPumpSystem(IDFBaseModel):
     _idf_object_type: ClassVar[str] = 'CentralHeatPumpSystem'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(...)
-    control_method: Literal['', 'SmartMixing'] | None = Field(default='SmartMixing')
     cooling_loop_inlet_node_name: str = Field(...)
     cooling_loop_outlet_node_name: str = Field(...)
     source_loop_inlet_node_name: str = Field(...)
@@ -1606,7 +1605,7 @@ class ChillerElectric(IDFBaseModel):
         default=None,
         json_schema_extra={
             'units': 'm3/s',
-            'note': 'This field is only used for Condenser Type = AirCooled or EvaporativelyCooled when Heat Recovery is specified',
+            'note': 'For Condenser Type = AirCooled or EvaporativelyCooled, this flow rate is used to calculate the condenser outlet node conditions. If this field is blank or Autosize, the flow rate is estimated using...',
         },
     )
     coefficient_1_of_capacity_ratio_curve: float | None = Field(default=None)
@@ -3446,9 +3445,6 @@ class ChillerHeaterPerformanceElectricEIR(IDFBaseModel):
             'note': 'Fraction of compressor electrical energy that must be rejected by the condenser. Enter 1.0 or leave this field blank for a hermetic compressor.'
         },
     )
-    condenser_type: Literal['', 'AirCooled', 'WaterCooled'] | None = Field(
-        default='WaterCooled'
-    )
     cooling_mode_temperature_curve_condenser_water_independent_variable: (
         Literal['', 'EnteringCondenser', 'LeavingCondenser'] | None
     ) = Field(
@@ -3826,7 +3822,7 @@ class HeatPumpAirToWater(IDFBaseModel):
         default=8.0,
         json_schema_extra={
             'units': 'C',
-            'note': 'inlet water temperature corresponding to rated performance (heating capacity, COP).',
+            'note': 'outlet water temperature corresponding to rated heat pump performance (cooling capacity, COP).',
         },
     )
     rated_water_flow_rate_in_cooling_mode: float | Literal['', 'Autosize'] | None = (

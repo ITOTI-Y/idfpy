@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Output Reporting
 """
 
@@ -569,7 +569,8 @@ class MeterCustom(IDFBaseModel):
     """Used to allow users to combine specific variables and/or meters into
     \"custom\" meter configurations. To access these meters by name, one must
     first run a simulation to generate the RDD/MDD files and names. A
-    Meter:Custom cannot reference another Meter:Custom."""
+    Meter:Custom cannot reference another Meter:Custom or a
+    Meter:CustomDecrement."""
 
     _idf_object_type: ClassVar[str] = 'Meter:Custom'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
@@ -600,7 +601,10 @@ class MeterCustom(IDFBaseModel):
 class MeterCustomDecrement(IDFBaseModel):
     """Used to allow users to combine specific variables and/or meters into
     \"custom\" meter configurations. To access these meters by name, one must
-    first run a simulation to generate the RDD/MDD files and names."""
+    first run a simulation to generate the RDD/MDD files and names. A
+    Meter:CustomDecrement cannot reference another Meter:CustomDecrement, either
+    as the Source Meter Name or in the Key Name/Output Variable or Meter Name
+    pairs, though it may reference a Meter:Custom."""
 
     _idf_object_type: ClassVar[str] = 'Meter:CustomDecrement'
     _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
@@ -625,7 +629,10 @@ class MeterCustomDecrement(IDFBaseModel):
         ]
         | None
     ) = Field(default=None)
-    source_meter_name: str = Field(...)
+    source_meter_name: str = Field(
+        ...,
+        json_schema_extra={'note': 'Cannot reference another Meter:CustomDecrement.'},
+    )
     variable_details: list[MeterCustomVariableDetailsItem] | None = Field(default=None)
 
 

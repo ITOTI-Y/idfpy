@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Surface Construction Elements
 """
 
@@ -24,6 +24,8 @@ from ._refs import (
     MaterialNameRef,
     ScheduleNamesRef,
     SpectralDataSetsRef,
+    SubSurfaceConstructionAssignmentNamesRef,
+    SurfaceConstructionAssignmentNamesRef,
     WindowComplexShadesRef,
     WindowEquivalentLayerMaterialNamesRef,
     WindowGapDeflectionStatesRef,
@@ -290,6 +292,156 @@ class ConstructionAirBoundary(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['ScheduleNames'])
+
+
+class ConstructionAssignmentSet(IDFBaseModel):
+    """Defines a set of construction assignments for surfaces and sub-surfaces
+    based on their type and outside boundary condition. Can be referenced by
+    Building or Space objects. Space-level assignments take precedence over
+    Building-level."""
+
+    _idf_object_type: ClassVar[str] = 'ConstructionAssignmentSet'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
+    name: str = Field(...)
+    exterior_surface_construction_assignments_name: (
+        SurfaceConstructionAssignmentNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['SurfaceConstructionAssignmentNames'],
+            'note': 'Constructions for exterior walls, floors, and roofs (Outside Boundary Condition = Outdoors).',
+        },
+    )
+    interior_surface_construction_assignments_name: (
+        SurfaceConstructionAssignmentNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['SurfaceConstructionAssignmentNames'],
+            'note': 'Constructions for interior surfaces (Outside Boundary Condition = Surface, Zone, or Space).',
+        },
+    )
+    ground_contact_surface_construction_assignments_name: (
+        SurfaceConstructionAssignmentNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['SurfaceConstructionAssignmentNames'],
+            'note': 'Constructions for ground-contact surfaces (Outside Boundary Condition = Ground*, Foundation).',
+        },
+    )
+    exterior_subsurface_construction_assignments_name: (
+        SubSurfaceConstructionAssignmentNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['SubSurfaceConstructionAssignmentNames'],
+            'note': 'Constructions for sub-surfaces on exterior base surfaces.',
+        },
+    )
+    interior_subsurface_construction_assignments_name: (
+        SubSurfaceConstructionAssignmentNamesRef | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['SubSurfaceConstructionAssignmentNames'],
+            'note': 'Constructions for sub-surfaces on interior base surfaces.',
+        },
+    )
+    interior_partition_construction_name: ConstructionNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ConstructionNames'],
+            'note': 'Construction for InternalMass objects in spaces referencing this set.',
+        },
+    )
+    adiabatic_surface_construction_name: ConstructionNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['ConstructionNames'],
+            'note': 'Construction for surfaces with Outside Boundary Condition = Adiabatic.',
+        },
+    )
+
+    @property
+    def exterior_surface_construction_assignments(
+        self,
+    ) -> SurfaceConstructionAssignments | None:
+        v = self.exterior_surface_construction_assignments_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceConstructionAssignmentNames'])
+
+    @property
+    def interior_surface_construction_assignments(
+        self,
+    ) -> SurfaceConstructionAssignments | None:
+        v = self.interior_surface_construction_assignments_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceConstructionAssignmentNames'])
+
+    @property
+    def ground_contact_surface_construction_assignments(
+        self,
+    ) -> SurfaceConstructionAssignments | None:
+        v = self.ground_contact_surface_construction_assignments_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SurfaceConstructionAssignmentNames'])
+
+    @property
+    def exterior_subsurface_construction_assignments(
+        self,
+    ) -> SubSurfaceConstructionAssignments | None:
+        v = self.exterior_subsurface_construction_assignments_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfaceConstructionAssignmentNames'])
+
+    @property
+    def interior_subsurface_construction_assignments(
+        self,
+    ) -> SubSurfaceConstructionAssignments | None:
+        v = self.interior_subsurface_construction_assignments_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['SubSurfaceConstructionAssignmentNames'])
+
+    @property
+    def interior_partition_construction(self) -> IDFBaseModel | None:
+        v = self.interior_partition_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def adiabatic_surface_construction(self) -> IDFBaseModel | None:
+        v = self.adiabatic_surface_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class ConstructionCfactorUndergroundWall(IDFBaseModel):
@@ -1074,6 +1226,30 @@ class Material(IDFBaseModel):
     thermal_absorptance: float | None = Field(default=0.9, le=0.99999, gt=0.0)
     solar_absorptance: float | None = Field(default=0.7, ge=0.0, le=1.0)
     visible_absorptance: float | None = Field(default=0.7, ge=0.0, le=1.0)
+    thermal_absorptance_inside_face: float | None = Field(
+        default=None,
+        le=0.99999,
+        gt=0.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Thermal Absorptance field above. When entered, the Thermal Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
+    solar_absorptance_inside_face: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Solar Absorptance field above. When entered, the Solar Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
+    visible_absorptance_inside_face: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Visible Absorptance field above. When entered, the Visible Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
 
 
 class MaterialAirGap(IDFBaseModel):
@@ -1116,6 +1292,30 @@ class MaterialNoMass(IDFBaseModel):
     thermal_absorptance: float | None = Field(default=0.9, le=0.99999, gt=0.0)
     solar_absorptance: float | None = Field(default=0.7, ge=0.0, le=1.0)
     visible_absorptance: float | None = Field(default=0.7, ge=0.0, le=1.0)
+    thermal_absorptance_inside_face: float | None = Field(
+        default=None,
+        le=0.99999,
+        gt=0.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Thermal Absorptance field above. When entered, the Thermal Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
+    solar_absorptance_inside_face: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Solar Absorptance field above. When entered, the Solar Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
+    visible_absorptance_inside_face: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        json_schema_extra={
+            'note': 'When blank, this value is equal to the Visible Absorptance field above. When entered, the Visible Absorptance field applies to the outside face and this field applies to the inside face.'
+        },
+    )
 
 
 class MaterialPropertyGlazingSpectralData(IDFBaseModel):
@@ -2552,7 +2752,6 @@ class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
     )
     peak_melting_temperature: float = Field(
         ...,
-        gt=0.0,
         json_schema_extra={
             'units': 'C',
             'note': 'The temperature at which the melting curve peaks',
@@ -2600,7 +2799,6 @@ class MaterialPropertyPhaseChangeHysteresis(IDFBaseModel):
     )
     peak_freezing_temperature: float = Field(
         ...,
-        gt=0.0,
         json_schema_extra={
             'units': 'C',
             'note': 'The temperature at which the freezing curve peaks',
@@ -2656,28 +2854,70 @@ class MaterialPropertyVariableAbsorptance(IDFBaseModel):
     ) = Field(
         default='SurfaceTemperature',
         json_schema_extra={
-            'note': 'the variable that drives the change in thermal/solar absorptance'
+            'note': 'the variable that drives the change in outside-face thermal/solar absorptance'
         },
     )
     thermal_absorptance_function_name: str | None = Field(
         default=None,
         json_schema_extra={
-            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal value and the surface thermal absorptance.'
+            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal value and the outside-face surface thermal absorptance.'
         },
     )
     thermal_absorptance_schedule_name: str | None = Field(
         default=None,
-        json_schema_extra={'note': 'only used when Control Signal = "Scheduled"'},
+        json_schema_extra={
+            'note': 'only used for the outside face when Control Signal = "Scheduled"'
+        },
     )
     solar_absorptance_function_name: str | None = Field(
         default=None,
         json_schema_extra={
-            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal value and the surface solar absorptance.'
+            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal value and the outside-face surface solar absorptance.'
         },
     )
     solar_absorptance_schedule_name: str | None = Field(
         default=None,
-        json_schema_extra={'note': 'only used when Control Signal = "Scheduled"'},
+        json_schema_extra={
+            'note': 'only used for the outside face when Control Signal = "Scheduled"'
+        },
+    )
+    control_signal_inside_face: (
+        Literal[
+            'Scheduled',
+            'SpaceHeatingCoolingMode',
+            'SurfaceReceivedSolarRadiation',
+            'SurfaceTemperature',
+        ]
+        | None
+    ) = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'the variable that drives the change in thermal/solar absorptance when this field is blank the inside-face absorptances remain at the constant values defined by the referenced material'
+        },
+    )
+    thermal_absorptance_function_name_inside_face: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal inside face value and the surface thermal absorptance.'
+        },
+    )
+    thermal_absorptance_schedule_name_inside_face: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'only used when Control Signal Inside Face = "Scheduled"'
+        },
+    )
+    solar_absorptance_function_name_inside_face: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'A Curve:* or Table:Lookup object encoding the relationship between the control signal inside face value and the surface solar absorptance.'
+        },
+    )
+    solar_absorptance_schedule_name_inside_face: str | None = Field(
+        default=None,
+        json_schema_extra={
+            'note': 'only used when Control Signal Inside Face = "Scheduled"'
+        },
     )
 
     @property
@@ -2851,6 +3091,169 @@ class MaterialRoofVegetation(IDFBaseModel):
             },
         )
     )
+
+
+class SubSurfaceConstructionAssignments(IDFBaseModel):
+    """Defines construction assignments for each sub-surface type for a single
+    boundary-condition category (exterior or interior). The generic Window type
+    (kept for backward compatibility) resolves via the Fixed Window slot."""
+
+    _idf_object_type: ClassVar[str] = 'SubSurfaceConstructionAssignments'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
+    name: str = Field(...)
+    fixed_window_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    operable_window_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    door_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    glass_door_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    overhead_door_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    skylight_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    tubular_daylight_dome_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    tubular_daylight_diffuser_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+
+    @property
+    def fixed_window_construction(self) -> IDFBaseModel | None:
+        v = self.fixed_window_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def operable_window_construction(self) -> IDFBaseModel | None:
+        v = self.operable_window_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def door_construction(self) -> IDFBaseModel | None:
+        v = self.door_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def glass_door_construction(self) -> IDFBaseModel | None:
+        v = self.glass_door_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def overhead_door_construction(self) -> IDFBaseModel | None:
+        v = self.overhead_door_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def skylight_construction(self) -> IDFBaseModel | None:
+        v = self.skylight_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def tubular_daylight_dome_construction(self) -> IDFBaseModel | None:
+        v = self.tubular_daylight_dome_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def tubular_daylight_diffuser_construction(self) -> IDFBaseModel | None:
+        v = self.tubular_daylight_diffuser_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+
+class SurfaceConstructionAssignments(IDFBaseModel):
+    """Defines construction assignments for the three opaque surface types (Floor,
+    Wall, Roof/Ceiling) for a single boundary-condition category (exterior,
+    interior, or ground-contact)."""
+
+    _idf_object_type: ClassVar[str] = 'SurfaceConstructionAssignments'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
+    name: str = Field(...)
+    floor_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    wall_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+    roof_ceiling_construction_name: ConstructionNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ConstructionNames']}
+    )
+
+    @property
+    def floor_construction(self) -> IDFBaseModel | None:
+        v = self.floor_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def wall_construction(self) -> IDFBaseModel | None:
+        v = self.wall_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
+
+    @property
+    def roof_ceiling_construction(self) -> IDFBaseModel | None:
+        v = self.roof_ceiling_construction_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ConstructionNames'])
 
 
 class WindowGapDeflectionState(IDFBaseModel):
