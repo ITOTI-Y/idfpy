@@ -22,7 +22,7 @@ canonical spelling:
 ```python
 from idfpy.models import Building
 
-Building(name='B', terrain='suburbs').terrain   # 'Suburbs'
+Building(name='B', terrain='suburbs').terrain  # 'Suburbs'
 ```
 
 ## Cross-object references
