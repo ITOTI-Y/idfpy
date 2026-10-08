@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![EnergyPlus 26.2](https://img.shields.io/badge/EnergyPlus-26.2-orange)](https://energyplus.net/)
 [![Autoupdate](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml/badge.svg)](https://github.com/ITOTI-Y/idfpy/actions/workflows/sync-energyplus.yml)
+[![Docs](https://github.com/ITOTI-Y/idfpy/actions/workflows/docs.yml/badge.svg)](https://itoti-y.github.io/idfpy/)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/itoti-y/idfpy)
 
 Type-safe [Pydantic](https://docs.pydantic.dev/) models for **all** [EnergyPlus](https://energyplus.net/) IDF object types, plus IDF file read/write and simulation execution, optimized for LLM tool calling and IDE auto-completion.
