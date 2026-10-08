@@ -835,14 +835,18 @@ class TestCopy:
     @pytest.mark.parametrize('clone', [_deepcopy_idf, _pickle_idf])
     def test_clone_edits_leave_original_untouched(self, clone):
         idf = IDF()
-        idf.add(_make_zone())
-        idf.add(_make_surface())
+        zone = _make_zone()
+        surface = _make_surface()
+        idf.add(zone)
+        idf.add(surface)
         new = clone(idf)
-        new.get(Zone, 'Zone1').name = 'Renamed'
-        assert new.get(BuildingSurfaceDetailed, 'Wall1').zone_name == 'Renamed'
-        surface = idf.get(BuildingSurfaceDetailed, 'Wall1')
+        new_zone = new.get(Zone, 'Zone1')
+        new_surface = new.get(BuildingSurfaceDetailed, 'Wall1')
+        assert new_zone is not None and new_surface is not None
+        new_zone.name = 'Renamed'
+        assert new_surface.zone_name == 'Renamed'
         assert surface.zone_name == 'Zone1'
-        assert idf.get(Zone, 'Zone1').referencing(BuildingSurfaceDetailed) == [surface]
+        assert zone.referencing(BuildingSurfaceDetailed) == [surface]
 
     @pytest.mark.parametrize('copier', [copy.copy, copy.deepcopy])
     def test_copied_object_is_unbound(self, copier):
