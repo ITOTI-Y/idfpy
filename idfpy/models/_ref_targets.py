@@ -1,7 +1,7 @@
 """Auto-generated unions of the classes each reference group can name.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 
 Navigation properties whose field can name many object types return these
 aliases. They are lazy ``type`` aliases, so the model imports below are only
@@ -71,7 +71,6 @@ if TYPE_CHECKING:
         CoilCoolingWaterToAirHeatPumpEquationFit,
         CoilCoolingWaterToAirHeatPumpParameterEstimation,
         CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
-        CoilDXASHRAE205Performance,
         CoilHeatingDesuperheater,
         CoilHeatingDXMultiSpeed,
         CoilHeatingDXSingleSpeed,
@@ -118,7 +117,6 @@ if TYPE_CHECKING:
         GroundHeatExchangerVerticalArray,
         GroundHeatExchangerVerticalProperties,
         GroundHeatExchangerVerticalSingle,
-        GroundHeatExchangerVerticalSizingRectangle,
         HeatExchangerFluidToFluid,
     )
     from .constructions import (
@@ -310,7 +308,6 @@ if TYPE_CHECKING:
         AirflowNetworkDistributionComponentOutdoorAirFlow,
         AirflowNetworkDistributionComponentReliefAirFlow,
         AirflowNetworkDistributionComponentTerminalUnit,
-        AirflowNetworkDistributionLinkage,
         AirflowNetworkDistributionNode,
         AirflowNetworkIntraZoneLinkage,
         AirflowNetworkIntraZoneNode,
@@ -408,7 +405,6 @@ if TYPE_CHECKING:
         DistrictCooling,
         DistrictHeatingSteam,
         DistrictHeatingWater,
-        HeatPumpAirToWater,
         HeatPumpAirToWaterFuelFiredCooling,
         HeatPumpAirToWaterFuelFiredHeating,
         HeatPumpPlantLoopEIRCooling,
@@ -538,11 +534,8 @@ if TYPE_CHECKING:
     from .water_heaters import (
         ThermalStorageChilledWaterMixed,
         ThermalStorageChilledWaterStratified,
-        ThermalStorageHotWaterStratified,
         ThermalStorageIceDetailed,
         ThermalStorageIceSimple,
-        ThermalStoragePCM,
-        ThermalStorageSizing,
         WaterHeaterHeatPumpPumpedCondenser,
         WaterHeaterHeatPumpWrappedCondenser,
         WaterHeaterMixed,
@@ -642,20 +635,14 @@ type AFNCoilNamesTarget = (
     | CoilCoolingDXSingleSpeedThermalStorage
     | CoilCoolingDXTwoSpeed
     | CoilCoolingDXTwoStageWithHumidityControlMode
-    | CoilCoolingDXVariableSpeed
     | CoilCoolingWater
     | CoilCoolingWaterDetailedGeometry
-    | CoilCoolingWaterToAirHeatPumpEquationFit
-    | CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit
     | CoilHeatingDXMultiSpeed
     | CoilHeatingDXSingleSpeed
-    | CoilHeatingDXVariableSpeed
     | CoilHeatingDesuperheater
     | CoilHeatingElectric
     | CoilHeatingFuel
     | CoilHeatingWater
-    | CoilHeatingWaterToAirHeatPumpEquationFit
-    | CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
 )
 
 type AFNHeatExchangerNamesTarget = (
@@ -720,8 +707,6 @@ type AirflowNetworkComponentNamesTarget = (
     | AirflowNetworkDistributionComponentReliefAirFlow
     | AirflowNetworkDistributionComponentTerminalUnit
 )
-
-type AirflowNetworkDistributionLinkageNamesTarget = AirflowNetworkDistributionLinkage
 
 type AirflowNetworkNodeAndZoneNamesTarget = AirflowNetworkDistributionNode | Zone
 
@@ -838,6 +823,8 @@ type AttachedShadingSurfNamesTarget = (
     | ShadingOverhangProjection
     | ShadingZoneDetailed
 )
+
+type BaseboardDesignObjectTarget = ZoneHVACBaseboardRadiantConvectiveWaterDesign
 
 type BivariateFunctionsTarget = (
     CurveBicubic
@@ -1027,9 +1014,7 @@ type DSOASpaceListNamesTarget = DesignSpecificationOutdoorAirSpaceList
 
 type DXCoolingOperatingModeNamesTarget = CoilCoolingDXCurveFitOperatingMode
 
-type DXCoolingPerformanceNamesTarget = (
-    CoilCoolingDXCurveFitPerformance | CoilDXASHRAE205Performance
-)
+type DXCoolingPerformanceNamesTarget = CoilCoolingDXCurveFitPerformance
 
 type DXCoolingSpeedNamesTarget = CoilCoolingDXCurveFitSpeed
 
@@ -1211,10 +1196,6 @@ type GroundHeatExchangerVerticalResponseFactorNamesTarget = (
 )
 
 type GroundHeatExchangerVerticalSingleNamesTarget = GroundHeatExchangerVerticalSingle
-
-type GroundHeatExchangerVerticalSizingNamesTarget = (
-    GroundHeatExchangerVerticalSizingRectangle
-)
 
 type GroundSurfacesNamesTarget = SurfacePropertyGroundSurfaces
 
@@ -1410,8 +1391,7 @@ type QuadvariateFunctionsTarget = CurveQuadLinear | TableLookup
 type QuintvariateFunctionsTarget = CurveQuintLinear | TableLookup
 
 type RadiantDesignObjectTarget = (
-    ZoneHVACBaseboardRadiantConvectiveWaterDesign
-    | ZoneHVACLowTemperatureRadiantConstantFlowDesign
+    ZoneHVACLowTemperatureRadiantConstantFlowDesign
     | ZoneHVACLowTemperatureRadiantVariableFlowDesign
 )
 
@@ -1516,8 +1496,6 @@ type ScheduleNamesTarget = (
 type ScheduleTypeLimitsNamesTarget = ScheduleTypeLimits
 
 type SimpleCoilsTarget = CoilCoolingWater | CoilHeatingWater
-
-type SizingPeriodWeatherFileDaysTarget = SizingPeriodWeatherFileDays
 
 type SpaceAndSpaceListNamesTarget = Space | SpaceList
 
@@ -1624,14 +1602,6 @@ type ThermalComfortControlTypeNamesTarget = (
     | ThermostatSetpointThermalComfortFangerSingleCooling
     | ThermostatSetpointThermalComfortFangerSingleHeating
     | ThermostatSetpointThermalComfortFangerSingleHeatingOrCooling
-)
-
-type ThermalStorageSizingTarget = ThermalStorageSizing
-
-type ThermalStorageWaterNamesTarget = (
-    ThermalStorageChilledWaterMixed
-    | ThermalStorageChilledWaterStratified
-    | ThermalStorageHotWaterStratified
 )
 
 type ThermostatOffsetFaultsTarget = FaultModelThermostatOffset
@@ -1891,9 +1861,6 @@ type ValidBranchEquipmentNamesTarget = (
     | HeatExchangerAirToAirSensibleAndLatent
     | HeatExchangerDesiccantBalancedFlow
     | HeatExchangerFluidToFluid
-    | HeatPumpAirToWater
-    | HeatPumpAirToWaterFuelFiredCooling
-    | HeatPumpAirToWaterFuelFiredHeating
     | HeatPumpPlantLoopEIRCooling
     | HeatPumpPlantLoopEIRHeating
     | HeatPumpWaterToWaterEquationFitCooling
@@ -1923,10 +1890,8 @@ type ValidBranchEquipmentNamesTarget = (
     | TemperingValve
     | ThermalStorageChilledWaterMixed
     | ThermalStorageChilledWaterStratified
-    | ThermalStorageHotWaterStratified
     | ThermalStorageIceDetailed
     | ThermalStorageIceSimple
-    | ThermalStoragePCM
     | WaterHeaterHeatPumpPumpedCondenser
     | WaterHeaterHeatPumpWrappedCondenser
     | WaterHeaterMixed
@@ -1968,7 +1933,6 @@ type ValidCondenserEquipmentNamesTarget = (
     | TemperingValve
     | ThermalStorageChilledWaterMixed
     | ThermalStorageChilledWaterStratified
-    | ThermalStorageHotWaterStratified
     | WaterHeaterMixed
     | WaterHeaterStratified
 )
@@ -2043,7 +2007,6 @@ type ValidPlantEquipmentNamesTarget = (
     | GroundHeatExchangerSurface
     | GroundHeatExchangerSystem
     | HeatExchangerFluidToFluid
-    | HeatPumpAirToWater
     | HeatPumpPlantLoopEIRCooling
     | HeatPumpPlantLoopEIRHeating
     | HeatPumpWaterToWaterEquationFitCooling
@@ -2059,9 +2022,7 @@ type ValidPlantEquipmentNamesTarget = (
     | TemperingValve
     | ThermalStorageChilledWaterMixed
     | ThermalStorageChilledWaterStratified
-    | ThermalStorageHotWaterStratified
     | ThermalStorageIceDetailed
-    | ThermalStoragePCM
     | WaterHeaterHeatPumpPumpedCondenser
     | WaterHeaterHeatPumpWrappedCondenser
     | WaterHeaterMixed

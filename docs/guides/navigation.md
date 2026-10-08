@@ -14,12 +14,12 @@ from idfpy.models import BuildingSurfaceDetailed, Zone
 
 surface = idf.get(BuildingSurfaceDetailed, 'Wall1')
 
-surface.zone_name        # 'Zone1', the raw string
-surface.zone             # the Zone object, or None if it is missing
-surface.construction     # the Construction object
+surface.zone_name  # 'Zone1', the raw string
+surface.zone  # the Zone object, or None if it is missing
+surface.construction  # the Construction object
 
-surface.referenced()     # every object this surface refers to
-surface.referenced(Zone) # only the zones
+surface.referenced()  # every object this surface refers to
+surface.referenced(Zone)  # only the zones
 ```
 
 ## Backward: who uses this object?
@@ -27,8 +27,8 @@ surface.referenced(Zone) # only the zones
 ```python
 zone = idf.get(Zone, 'Zone1')
 
-zone.referencing(BuildingSurfaceDetailed)   # surfaces in this zone
-zone.referencing('Lights')                  # lights objects in this zone
+zone.referencing(BuildingSurfaceDetailed)  # surfaces in this zone
+zone.referencing('Lights')  # lights objects in this zone
 ```
 
 Calls chain naturally:
@@ -49,7 +49,7 @@ the construction:
 from idfpy.models import Construction
 
 con = idf.get(Construction, 'ExtWall')
-con.layers                    # [Material, Material, ...] outside to inside
-con.is_window_construction    # True if the layers are window materials
+con.layers  # [Material, Material, ...] outside to inside
+con.is_window_construction  # True if the layers are window materials
 con.is_opaque_construction
 ```

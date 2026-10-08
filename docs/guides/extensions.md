@@ -12,11 +12,11 @@ method:
 ```python
 surface = idf.get('BuildingSurface:Detailed', 'Wall1')
 
-surface.area                # 30.0, in m²
-surface.normal              # (0.0, -1.0, 0.0), outward unit normal
-surface.centroid            # (5.0, 0.0, 1.5)
-surface.tilt                # 90.0, degrees from horizontal
-surface.azimuth             # 180.0, degrees clockwise from north
+surface.area  # 30.0, in m²
+surface.normal  # (0.0, -1.0, 0.0), outward unit normal
+surface.centroid  # (5.0, 0.0, 1.5)
+surface.tilt  # 90.0, degrees from horizontal
+surface.azimuth  # 180.0, degrees clockwise from north
 surface.perimeter
 surface.bounding_box
 surface.is_convex
