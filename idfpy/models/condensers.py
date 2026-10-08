@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Condenser Equipment and Heat Exchangers
 """
 
@@ -373,7 +373,7 @@ class CoolingTowerSingleSpeed(IDFBaseModel):
     )
     design_inlet_air_wet_bulb_temperature: float | None = Field(
         default=25.6,
-        ge=20.0,
+        ge=10.0,
         json_schema_extra={
             'units': 'C',
             'note': "Enter the tower's design inlet air wet-bulb temperature",
@@ -698,7 +698,7 @@ class CoolingTowerTwoSpeed(IDFBaseModel):
     )
     design_inlet_air_wet_bulb_temperature: float | None = Field(
         default=25.6,
-        ge=20.0,
+        ge=10.0,
         json_schema_extra={
             'units': 'C',
             'note': "Enter the tower's design inlet air wet-bulb temperature",
@@ -885,7 +885,7 @@ class CoolingTowerVariableSpeed(IDFBaseModel):
     )
     design_inlet_air_wet_bulb_temperature: float | None = Field(
         default=25.6,
-        ge=20.0,
+        ge=10.0,
         json_schema_extra={
             'units': 'C',
             'note': "Enter the tower's design inlet air wet-bulb temperature",
@@ -1273,7 +1273,7 @@ class CoolingTowerVariableSpeedMerkel(IDFBaseModel):
     )
     design_inlet_air_wet_bulb_temperature: float | None = Field(
         default=25.6,
-        ge=20.0,
+        ge=10.0,
         json_schema_extra={
             'units': 'C',
             'note': "Enter the tower's design inlet air wet-bulb temperature",

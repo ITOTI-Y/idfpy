@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Coils
 """
 
@@ -245,6 +245,9 @@ class CoilCoolingDXCurveFitOperatingMode(IDFBaseModel):
             'note': "The nominal time for condensate to begin leaving the coil's condensate drain line at the coil's rated air flow rate and temperature conditions. Nominal time is equal to the ratio of the energy of t...",
         },
     )
+    apply_part_load_fraction_to_speeds_greater_than_1: (
+        Literal['', 'No', 'Yes'] | None
+    ) = Field(default='No')
     apply_latent_degradation_to_speeds_greater_than_1: (
         Literal['', 'No', 'Yes'] | None
     ) = Field(default='No')

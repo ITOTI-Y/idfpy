@@ -10,10 +10,10 @@ from pathlib import Path
 
 from idfpy import IDF
 
-idf = IDF.load(Path('model.idf'))       # IDF text
-idf = IDF.load(Path('model.epjson'))    # epJSON, chosen by extension
+idf = IDF.load(Path('model.idf'))  # IDF text
+idf = IDF.load(Path('model.epjson'))  # epJSON, chosen by extension
 
-idf.save(Path('out.idf'))                         # default: IDF text
+idf.save(Path('out.idf'))  # default: IDF text
 idf.save(Path('out.epjson'), output_type='epjson')
 ```
 
@@ -22,14 +22,14 @@ idf.save(Path('out.epjson'), output_type='epjson')
 ```python
 from idfpy.models import Lights, Zone
 
-idf.add(Zone(name='Office'))            # ValueError if 'Office' already exists
+idf.add(Zone(name='Office'))  # ValueError if 'Office' already exists
 
-idf.get(Zone, 'Office')                 # Zone | None
-idf.has('Zone', 'Office')               # True
-idf.all_of_type(Lights)                 # dict[str, Lights], keyed by name
-list(idf.types())                       # object types present in the model
+idf.get(Zone, 'Office')  # Zone | None
+idf.has('Zone', 'Office')  # True
+idf.all_of_type(Lights)  # dict[str, Lights], keyed by name
+list(idf.types())  # object types present in the model
 
-idf.remove(Zone, 'Office')              # also unregisters its references
+idf.remove(Zone, 'Office')  # also unregisters its references
 ```
 
 Objects without a name field, such as `Version` or `Timestep`, receive an
@@ -65,7 +65,7 @@ call leaves the model untouched.
 ```python
 idf.merge_dict(
     {'Zone': {'Zone2': {'multiplier': 3}}},
-    on_conflict='replace',   # 'raise' (default), 'replace' or 'skip'
+    on_conflict='replace',  # 'raise' (default), 'replace' or 'skip'
 )
 ```
 

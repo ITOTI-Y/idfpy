@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Demand Limiting Controls
 """
 
@@ -24,7 +24,12 @@ from ._refs import (
 
 if TYPE_CHECKING:
     from ._ref_targets import ScheduleNamesTarget
-    from .internal_gains import ElectricEquipment, Lights
+    from .internal_gains import (
+        ElectricEquipment,
+        ElectricEquipmentInstance,
+        Lights,
+        LightsInstance,
+    )
     from .misc import ControllerOutdoorAir, ExteriorLights
     from .zone_controls import (
         ZoneControlThermostat,
@@ -81,7 +86,9 @@ class DemandManagerElectricEquipmentEquipmentItem(IDFBaseModel):
     )
 
     @property
-    def electric_equipment(self) -> ElectricEquipment | None:
+    def electric_equipment(
+        self,
+    ) -> ElectricEquipment | ElectricEquipmentInstance | None:
         v = self.electric_equipment_name
         if not v:
             return None
@@ -125,7 +132,7 @@ class DemandManagerLightsLightsItem(IDFBaseModel):
     )
 
     @property
-    def lights(self) -> Lights | None:
+    def lights(self) -> Lights | LightsInstance | None:
         v = self.lights_name
         if not v:
             return None
