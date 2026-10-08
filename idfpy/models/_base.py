@@ -65,6 +65,8 @@ class IDFBaseModel(BaseModel):
     _list_field_names: ClassVar[frozenset[str]] = frozenset()
     # Per-class: field names that are reference providers (triggers cascade on rename)
     _provider_fields: ClassVar[frozenset[str]] = frozenset()
+    # Per-class cache: field names that reference other objects (see __setattr__)
+    _consumer_field_names: ClassVar[frozenset[str]] = frozenset()
     _idf_ref: weakref.ref | None = PrivateAttr(default=None)
     _idf_obj_key: str = PrivateAttr(default='')
 
@@ -91,7 +93,28 @@ class IDFBaseModel(BaseModel):
                     super().__setattr__(name, value)
                     idf._after_provider_change(self, name, value)
                     return
+        elif name in self.__class__._get_consumer_field_names():
+            ref = getattr(self, '_idf_ref', None)
+            idf = ref() if ref is not None else None
+            if idf is not None and getattr(self, name, None) != value:
+                # Keep IDF.referencing() in step with the new reference.
+                obj_type = self.idf_object_type()
+                idf._unindex_consumer_refs(self, obj_type, self._idf_obj_key)
+                super().__setattr__(name, value)
+                idf._index_consumer_refs(self, obj_type, self._idf_obj_key)
+                return
         super().__setattr__(name, value)
+
+    @classmethod
+    def _get_consumer_field_names(cls) -> frozenset[str]:
+        """Get or build the cached set of reference (consumer) field names."""
+        if '_consumer_field_names' not in cls.__dict__:
+            from ._metadata import get_model_metadata
+
+            cls._consumer_field_names = frozenset(
+                get_model_metadata(cls).consumer_fields
+            )
+        return cls._consumer_field_names
 
     @classmethod
     def _get_list_field_names(cls) -> frozenset[str]:

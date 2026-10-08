@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from idfpy import IDF, RefValidationError
-from idfpy.models.constructions import Construction
+from idfpy.models.constructions import Construction, MaterialNoMass
 from idfpy.models.fluids import FluidPropertiesName, FluidPropertiesSaturated
 from idfpy.models.internal_gains import Lights
 from idfpy.models.misc import (
@@ -418,6 +418,40 @@ class TestRemove:
         idf.remove('BuildingSurface:Detailed', 'Wall1')
         assert surface._idf is None
         assert vert._idf is None
+
+
+class TestConsumerReassignment:
+    """Assigning a reference field on a bound object updates referencing()."""
+
+    def _wall(self) -> tuple[IDF, Construction]:
+        idf = IDF()
+        for name in ('Brick', 'Board'):
+            idf.add(
+                MaterialNoMass(name=name, roughness='Smooth', thermal_resistance=0.5)
+            )
+        wall = Construction(name='Wall', outside_layer='Brick', layer_2='Board')
+        idf.add(wall)
+        return idf, wall
+
+    def test_reassigned_reference_moves_to_new_target(self):
+        idf, wall = self._wall()
+
+        wall.outside_layer = 'Board'
+
+        brick = idf.get(MaterialNoMass, 'Brick')
+        board = idf.get(MaterialNoMass, 'Board')
+        assert brick is not None and board is not None
+        assert brick.referencing() == []
+        assert board.referencing() == [wall]
+
+    def test_cleared_reference_is_dropped(self):
+        idf, wall = self._wall()
+
+        wall.layer_2 = None
+
+        board = idf.get(MaterialNoMass, 'Board')
+        assert board is not None
+        assert board.referencing() == []
 
 
 class TestIntegration:
