@@ -2,8 +2,10 @@ name: Docs
 
 # Builds one documentation copy per release/ep-* branch and deploys the whole
 # site to GitHub Pages. Guides and configuration always come from master.
-# release-version.yml pushes with GITHUB_TOKEN, which does not trigger other
-# workflows, so new releases are picked up through workflow_run.
+# Both release workflows push with GITHUB_TOKEN, which does not trigger other
+# workflows, so new releases are picked up through workflow_run. The weekly
+# Sync EnergyPlus run also rebuilds when it finds nothing new; that costs a
+# minute or two and keeps the trigger free of extra permissions.
 on:
   push:
     branches: [master]
@@ -13,7 +15,7 @@ on:
       - "zensical.toml"
       - ".github/workflows/docs.yml"
   workflow_run:
-    workflows: ["Release EnergyPlus Version"]
+    workflows: ["Release EnergyPlus Version", "Sync EnergyPlus"]
     types: [completed]
   workflow_dispatch:
 
