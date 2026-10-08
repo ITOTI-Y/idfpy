@@ -1,0 +1,88 @@
+name: Docs
+
+# Builds one documentation copy per release/ep-* branch and deploys the whole
+# site to GitHub Pages. Guides and configuration always come from master.
+# Both release workflows push with GITHUB_TOKEN, which does not trigger other
+# workflows, so new releases are picked up through workflow_run. The weekly
+# Sync EnergyPlus run also rebuilds when it finds nothing new; that costs a
+# minute or two and keeps the trigger free of extra permissions.
+on:
+  push:
+    branches: [master]
+    paths:
+      - "docs/**"
+      - "scripts/docs/**"
+      - "zensical.toml"
+      - ".github/workflows/docs.yml"
+  workflow_run:
+    workflows: ["Release EnergyPlus Version", "Sync EnergyPlus"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v10
+
+      - name: List EnergyPlus versions
+        id: versions
+        run: |
+          list=$(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/release/ep-*' \
+            | sed 's#^origin/release/ep-##' | sort -V | tr '\n' ' ')
+          echo "list=${list% }" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: schemas
+          key: ep-schemas-${{ steps.versions.outputs.list }}
+          restore-keys: ep-schemas-
+
+      # Only Energy+.schema.epJSON is extracted from each EnergyPlus release
+      # archive; the cache avoids repeating the ~200 MB downloads.
+      - name: Download EnergyPlus schemas
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for version in ${{ steps.versions.outputs.list }}; do
+            dest="schemas/$version"
+            [ -f "$dest/Energy+.schema.epJSON" ] && continue
+            url=$(gh api "repos/NREL/EnergyPlus/releases/tags/v$version" --jq \
+              '[.assets[] | select(.name | test("Linux.*x86_64\\.tar\\.gz$"))][0].browser_download_url')
+            mkdir -p "$dest"
+            curl -fsSL "$url" | tar -xz --wildcards --strip-components=1 -C "$dest" '*/Energy+.schema.epJSON'
+          done
+
+      - run: uv sync --group docs
+
+      - name: Build site
+        run: uv run python scripts/docs/build_site.py --schema-pattern 'schemas/{version}/Energy+.schema.epJSON'
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

@@ -9,3 +9,10 @@ build/
 .claude/
 
 _dev/
+
+# Documentation build
+_site/
+site/
+docs/reference/
+.zensical-build.yml
+.cache/
