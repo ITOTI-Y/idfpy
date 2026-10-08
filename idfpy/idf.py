@@ -95,6 +95,15 @@ class IDF:
         # Reverse index: ref_group -> UPPER(value) -> [(consumer_obj_type, obj_name)]
         self._reverse_index: dict[str, dict[str, list[tuple[str, str]]]] = {}
 
+    def __setstate__(self, state: dict[str, Any]) -> None:
+        # copy.deepcopy and pickle both restore through here. Copied objects
+        # are unbound (see IDFBaseModel.__deepcopy__/__getstate__), so they
+        # are bound to this container rather than the original one.
+        self.__dict__.update(state)
+        for objects in self._objects.values():
+            for obj in objects.values():
+                self._bind_recursive(obj)
+
     @property
     def version(self) -> str:
         """Get EnergyPlus schema version from Version model default.

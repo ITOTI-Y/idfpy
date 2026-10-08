@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import copy
+import pickle
+
 import pytest
 
 from idfpy import IDF, RefValidationError
@@ -790,3 +793,62 @@ class TestClassNameLookup:
         assert idf.get('NonExistent', 'x', strict=False) is None
         assert not idf.has('NonExistent', 'x', strict=False)
         assert idf.all_of_type('NonExistent', strict=False) == {}
+
+
+def _deepcopy_idf(idf: IDF) -> IDF:
+    return copy.deepcopy(idf)
+
+
+def _pickle_idf(idf: IDF) -> IDF:
+    return pickle.loads(pickle.dumps(idf))
+
+
+class TestCopy:
+    @pytest.mark.parametrize('clone', [_deepcopy_idf, _pickle_idf])
+    def test_clone_binds_objects_to_new_container(self, clone):
+        idf = IDF()
+        idf.add(_make_zone())
+        idf.add(
+            BuildingSurfaceDetailed(
+                name='Wall1',
+                surface_type='Wall',
+                construction_name='Const1',
+                zone_name='Zone1',
+                outside_boundary_condition='Outdoors',
+                vertices=[
+                    BuildingSurfaceDetailedVerticesItem(
+                        vertex_x_coordinate=0,
+                        vertex_y_coordinate=0,
+                        vertex_z_coordinate=0,
+                    )
+                ],
+            )
+        )
+        new = clone(idf)
+        zone = new.get(Zone, 'Zone1')
+        surface = new.get(BuildingSurfaceDetailed, 'Wall1')
+        assert zone._idf is new and surface._idf is new
+        assert surface.vertices[0]._idf is new
+        assert surface.zone is zone
+        assert zone.referencing(BuildingSurfaceDetailed) == [surface]
+
+    @pytest.mark.parametrize('clone', [_deepcopy_idf, _pickle_idf])
+    def test_clone_edits_leave_original_untouched(self, clone):
+        idf = IDF()
+        idf.add(_make_zone())
+        idf.add(_make_surface())
+        new = clone(idf)
+        new.get(Zone, 'Zone1').name = 'Renamed'
+        assert new.get(BuildingSurfaceDetailed, 'Wall1').zone_name == 'Renamed'
+        surface = idf.get(BuildingSurfaceDetailed, 'Wall1')
+        assert surface.zone_name == 'Zone1'
+        assert idf.get(Zone, 'Zone1').referencing(BuildingSurfaceDetailed) == [surface]
+
+    @pytest.mark.parametrize('copier', [copy.copy, copy.deepcopy])
+    def test_copied_object_is_unbound(self, copier):
+        idf = IDF()
+        zone = _make_zone()
+        idf.add(zone)
+        clone = copier(zone)
+        assert clone._idf is None
+        assert zone._idf is idf
