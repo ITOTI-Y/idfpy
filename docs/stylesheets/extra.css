@@ -1,0 +1,75 @@
+/* Object reference tables: original IDD names and field badges. */
+.md-typeset .idf-idd {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85em;
+}
+
+.md-typeset .idf-req,
+.md-typeset .idf-badge {
+  display: inline-block;
+  padding: 0 0.4em;
+  border-radius: 0.2rem;
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1.6;
+  vertical-align: middle;
+}
+
+.md-typeset .idf-req {
+  color: var(--md-accent-fg-color);
+  border: 1px solid currentColor;
+}
+
+.md-typeset .idf-badge {
+  color: var(--md-primary-fg-color);
+  border: 1px solid currentColor;
+}
+
+/* Let field tables span the content width so long notes wrap instead of
+   pushing the Details column out of view. */
+.md-typeset__scrollwrap,
+.md-typeset__table {
+  width: 100%;
+}
+
+.md-typeset__table table:not([class]) {
+  display: table;
+  width: 100%;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  min-width: 0;
+  padding: 0.7em 0.8em;
+}
+
+.md-typeset table:not([class]) td:first-child {
+  min-width: 12rem;
+}
+
+/* Field names break only at the <wbr> after each underscore. */
+.md-typeset table:not([class]) td code {
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.md-typeset .idf-unit {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85em;
+}
+
+/* The theme makes top-level code blocks full-bleed on narrow screens by
+   pulling them into the page gutter. Keep them inset and rounded like the
+   rest of the content instead. */
+@media screen and (max-width: 44.984375em) {
+  .md-content__inner > pre,
+  .md-content__inner > .highlight {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .md-content__inner > pre code,
+  .md-content__inner > .highlight > pre > code {
+    border-radius: 0.1rem;
+  }
+}
