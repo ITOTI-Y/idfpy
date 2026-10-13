@@ -1,7 +1,7 @@
 """Auto-generated unions of the classes each reference group can name.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 
 Navigation properties whose field can name many object types return these
 aliases. They are lazy ``type`` aliases, so the model imports below are only

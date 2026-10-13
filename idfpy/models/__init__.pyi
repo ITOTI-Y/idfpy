@@ -1,6 +1,6 @@
 """Auto-generated type stubs for idfpy.models.
 
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.2.
 """
 
 from ._base import IDFBaseModel
