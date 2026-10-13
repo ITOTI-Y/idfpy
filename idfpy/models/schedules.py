@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Schedules
 """
 
@@ -15,6 +15,7 @@ from ._base import IDFBaseModel
 from ._refs import (
     DayScheduleNamesRef,
     ScheduleTypeLimitsNamesRef,
+    ScheduleYearRulesNamesRef,
     WeekScheduleNamesRef,
 )
 
@@ -68,6 +69,15 @@ class ScheduleWeekCompactDataItem(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['DayScheduleNames'])
+
+
+class ScheduleWeekRuleDateRangesItem(IDFBaseModel):
+    """Nested object type for array items."""
+
+    start_month: int | None = Field(default=1, ge=1, le=12)
+    start_day: int | None = Field(default=1, ge=1, le=31)
+    end_month: int | None = Field(default=12, ge=1, le=12)
+    end_day: int | None = Field(default=31, ge=1, le=31)
 
 
 class ScheduleYearScheduleWeeksItem(IDFBaseModel):
@@ -572,6 +582,60 @@ class ScheduleWeekDaily(IDFBaseModel):
         return idf._resolve_forward(v, ['DayScheduleNames'])
 
 
+class ScheduleWeekRule(IDFBaseModel):
+    """A Schedule:Week:Rule defines one override rule for a Schedule:Year:Rules.
+    Rules are evaluated in ascending Rule Priority Order; the first matching
+    rule wins. A rule matches a day if: (a) the day falls within the specified
+    date ranges, AND (b) the corresponding Apply <DayOfWeek> field is Yes."""
+
+    _idf_object_type: ClassVar[str] = 'Schedule:Week:Rule'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
+    name: str = Field(...)
+    schedule_year_rules_name: ScheduleYearRulesNamesRef = Field(
+        ..., json_schema_extra={'object_list': ['ScheduleYearRulesNames']}
+    )
+    rule_priority_order: int = Field(
+        ...,
+        ge=0,
+        json_schema_extra={
+            'note': 'Lower values have higher priority. Must be unique within a Schedule:Year:Rules.'
+        },
+    )
+    day_schedule_name: DayScheduleNamesRef = Field(
+        ..., json_schema_extra={'object_list': ['DayScheduleNames']}
+    )
+    apply_sunday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_monday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_tuesday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_wednesday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_thursday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_friday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    apply_saturday: Literal['', 'No', 'Yes'] | None = Field(default='No')
+    date_ranges: list[ScheduleWeekRuleDateRangesItem] | None = Field(default=None)
+
+    @property
+    def schedule_year_rules(self) -> ScheduleYearRules | None:
+        v = self.schedule_year_rules_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleYearRulesNames'])
+
+    @property
+    def day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+
 class ScheduleYear(IDFBaseModel):
     """A Schedule:Year contains from 1 to 52 week schedules"""
 
@@ -592,3 +656,139 @@ class ScheduleYear(IDFBaseModel):
         if idf is None:
             raise RuntimeError('Not bound to IDF')
         return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
+
+
+class ScheduleYearRules(IDFBaseModel):
+    """A Schedule:Year:Rules defines a yearly schedule using a default day profile
+    and a prioritized list of override rules (Schedule:Week:Rule objects). Rules
+    are evaluated in ascending Rule Priority Order; the first matching rule for
+    a given day is used. If no rule matches, the Default Day Schedule is used.
+    Exception: if no rule date range includes February 29, February 29 inherits
+    February 28."""
+
+    _idf_object_type: ClassVar[str] = 'Schedule:Year:Rules'
+    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
+    name: str = Field(...)
+    schedule_type_limits_name: ScheduleTypeLimitsNamesRef | None = Field(
+        default=None, json_schema_extra={'object_list': ['ScheduleTypeLimitsNames']}
+    )
+    default_day_schedule_name: DayScheduleNamesRef = Field(
+        ..., json_schema_extra={'object_list': ['DayScheduleNames']}
+    )
+    summer_design_day_schedule_name: DayScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['DayScheduleNames'],
+            'note': 'If blank, the Default Day Schedule is used for Summer Design Days.',
+        },
+    )
+    winter_design_day_schedule_name: DayScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['DayScheduleNames'],
+            'note': 'If blank, the Default Day Schedule is used for Winter Design Days.',
+        },
+    )
+    holiday_schedule_name: DayScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['DayScheduleNames'],
+            'note': 'If blank, the Default Day Schedule is used for Holidays.',
+        },
+    )
+    custom_day_1_schedule_name: DayScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['DayScheduleNames'],
+            'note': 'If blank, the Default Day Schedule is used for Custom Day 1.',
+        },
+    )
+    custom_day_2_schedule_name: DayScheduleNamesRef | None = Field(
+        default=None,
+        json_schema_extra={
+            'object_list': ['DayScheduleNames'],
+            'note': 'If blank, the Default Day Schedule is used for Custom Day 2.',
+        },
+    )
+
+    @property
+    def schedule_type_limits(self) -> ScheduleTypeLimits | None:
+        v = self.schedule_type_limits_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['ScheduleTypeLimitsNames'])
+
+    @property
+    def default_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.default_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def summer_design_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.summer_design_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def winter_design_day_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.winter_design_day_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def holiday_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.holiday_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def custom_day_1_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.custom_day_1_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])
+
+    @property
+    def custom_day_2_schedule(
+        self,
+    ) -> ScheduleDayHourly | ScheduleDayInterval | ScheduleDayList | None:
+        v = self.custom_day_2_schedule_name
+        if not v:
+            return None
+        idf = self._idf
+        if idf is None:
+            raise RuntimeError('Not bound to IDF')
+        return idf._resolve_forward(v, ['DayScheduleNames'])

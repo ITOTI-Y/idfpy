@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 Group: Zone HVAC Air Loop Terminal Units
 """
 
@@ -1072,7 +1072,10 @@ class AirTerminalSingleDuctParallelPIUReheat(IDFBaseModel):
             'note': 'flow through terminal at minimum fan speed is this ratio multiplied by Maximum Air Flow Rate',
         },
     )
-    heating_control_type: Literal['Modulated', 'Staged'] | None = Field(default=None)
+    heating_control_type: Literal['Modulated', 'Staged'] | None = Field(
+        default=None,
+        json_schema_extra={'note': 'Only used if Fan Control Type is VariableSpeed'},
+    )
     design_heating_discharge_air_temperature: float | None = Field(
         default=32.1,
         json_schema_extra={
@@ -1253,7 +1256,10 @@ class AirTerminalSingleDuctSeriesPIUReheat(IDFBaseModel):
             'note': 'flow through terminal at minimum fan speed is this ratio multiplied by Maximum Air Flow Rate',
         },
     )
-    heating_control_type: Literal['Modulated', 'Staged'] | None = Field(default=None)
+    heating_control_type: Literal['Modulated', 'Staged'] | None = Field(
+        default=None,
+        json_schema_extra={'note': 'Only used if Fan Control Type is VariableSpeed'},
+    )
     design_heating_discharge_air_temperature: float | None = Field(
         default=32.1,
         json_schema_extra={

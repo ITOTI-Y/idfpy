@@ -1,7 +1,7 @@
 """Auto-generated reference metadata for EnergyPlus validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 """
 
 from __future__ import annotations
@@ -561,6 +561,7 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'Construction:FfactorGroundFloor': [('name', ['ConstructionNames'])],
     'Construction:WindowDataFile': [('name', ['ConstructionNames'])],
     'Construction:WindowEquivalentLayer': [('name', ['ConstructionNames'])],
+    'ConstructionAssignmentSet': [('name', ['ConstructionAssignmentSetNames'])],
     'ConstructionProperty:InternalHeatSource': [('name', ['InternalHeatSourceNames'])],
     'Controller:MechanicalVentilation': [('name', ['ControllerMechanicalVentNames'])],
     'Controller:OutdoorAir': [('name', ['AirLoopControllers', 'OAControllerNames'])],
@@ -721,6 +722,32 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     ],
     'Duct': [('name', ['validBranchEquipmentNames'])],
     'ElectricEquipment': [('name', ['ElectricEquipmentNames'])],
+    'ElectricEquipment:Definition': [
+        ('name', ['ElectricEquipmentDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'ElectricEquipment:ITE:AirCooled:Definition': [
+        (
+            'name',
+            [
+                'ElectricEquipmentITEAirCooledDefinitionNames',
+                'SpaceComponentDefinitionNames',
+            ],
+        )
+    ],
+    'ElectricEquipment:ITE:AirCooled:Instance': [
+        ('name', ['SpaceComponentInstanceNames', 'SpaceItemNames', 'SpaceLoadNames'])
+    ],
+    'ElectricEquipment:Instance': [
+        (
+            'name',
+            [
+                'ElectricEquipmentNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'ElectricLoadCenter:Generators': [('name', ['GeneratorLists'])],
     'ElectricLoadCenter:Inverter:FunctionOfPower': [('name', ['InverterList'])],
     'ElectricLoadCenter:Inverter:LookUpTable': [('name', ['InverterList'])],
@@ -976,6 +1003,20 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'FluidProperties:Name': [('fluid_name', ['FluidAndGlycolNames', 'FluidNames'])],
     'FluidProperties:Temperatures': [('name', ['FluidPropertyTemperatures'])],
     'Foundation:Kiva': [('name', ['OutFaceEnvNames'])],
+    'GasEquipment:Definition': [
+        ('name', ['GasEquipmentDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'GasEquipment:Instance': [
+        (
+            'name',
+            [
+                'GasEquipmentNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'Generator:CombustionTurbine': [
         ('name', ['GeneratorNames', 'validBranchEquipmentNames'])
     ],
@@ -1262,6 +1303,20 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'HeatPump:WaterToWater:ParameterEstimation:Heating': [
         ('name', ['validBranchEquipmentNames', 'validPlantEquipmentNames'])
     ],
+    'HotWaterEquipment:Definition': [
+        ('name', ['HotWaterEquipmentDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'HotWaterEquipment:Instance': [
+        (
+            'name',
+            [
+                'HotWaterEquipmentNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'Humidifier:Steam:Electric': [
         ('name', ['validBranchEquipmentNames', 'validOASysEquipmentNames'])
     ],
@@ -1275,6 +1330,20 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         )
     ],
     'Lights': [('name', ['LightsNames'])],
+    'Lights:Definition': [
+        ('name', ['LightsDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'Lights:Instance': [
+        (
+            'name',
+            [
+                'LightsNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'LoadProfile:Plant': [('name', ['validBranchEquipmentNames'])],
     'Material': [('name', ['MaterialName'])],
     'Material:AirGap': [('name', ['MaterialName'])],
@@ -1283,10 +1352,38 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'Material:RoofVegetation': [('name', ['MaterialName'])],
     'MaterialProperty:GlazingSpectralData': [('name', ['SpectralDataSets'])],
     'Matrix:TwoDimension': [('name', ['DataMatrices'])],
+    'OtherEquipment:Definition': [
+        ('name', ['OtherEquipmentDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'OtherEquipment:Instance': [
+        (
+            'name',
+            [
+                'OtherEquipmentNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'OutdoorAir:Mixer': [('name', ['OutdoorAirMixers', 'validOASysEquipmentNames'])],
     'OutdoorAir:Node': [('name', ['OutdoorAirNodeNames'])],
     'OutputControl:SurfaceColorScheme': [('name', ['ColorSchemes'])],
     'People': [('name', ['PeopleNames'])],
+    'People:Definition': [
+        ('name', ['PeopleDefinitionNames', 'SpaceComponentDefinitionNames'])
+    ],
+    'People:Instance': [
+        (
+            'name',
+            [
+                'PeopleNames',
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+            ],
+        )
+    ],
     'PhotovoltaicPerformance:EquivalentOne-Diode': [('name', ['PVModules'])],
     'PhotovoltaicPerformance:Sandia': [('name', ['PVModules'])],
     'PhotovoltaicPerformance:Simple': [('name', ['PVModules'])],
@@ -1492,7 +1589,9 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'Schedule:File': [('name', ['ScheduleNames'])],
     'Schedule:Week:Compact': [('name', ['WeekScheduleNames'])],
     'Schedule:Week:Daily': [('name', ['WeekScheduleNames'])],
+    'Schedule:Week:Rule': [('name', ['ScheduleWeekRuleNames'])],
     'Schedule:Year': [('name', ['ScheduleNames'])],
+    'Schedule:Year:Rules': [('name', ['ScheduleNames', 'ScheduleYearRulesNames'])],
     'ScheduleTypeLimits': [('name', ['ScheduleTypeLimitsNames'])],
     'Shading:Building': [('name', ['AllShadingAndHTSurfNames', 'AllShadingSurfNames'])],
     'Shading:Building:Detailed': [
@@ -1621,6 +1720,26 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
                 'ZoneAndZoneListAndSpaceAndSpaceListNames',
             ],
         )
+    ],
+    'SteamEquipment:Definition': [
+        ('name', ['SpaceComponentDefinitionNames', 'SteamEquipmentDefinitionNames'])
+    ],
+    'SteamEquipment:Instance': [
+        (
+            'name',
+            [
+                'SpaceComponentInstanceNames',
+                'SpaceItemNames',
+                'SpaceLoadNames',
+                'SteamEquipmentNames',
+            ],
+        )
+    ],
+    'SubSurfaceConstructionAssignments': [
+        ('name', ['SubSurfaceConstructionAssignmentNames'])
+    ],
+    'SurfaceConstructionAssignments': [
+        ('name', ['SurfaceConstructionAssignmentNames'])
     ],
     'SurfaceConvectionAlgorithm:Inside:UserCurve': [
         ('name', ['UserConvectionInsideModels', 'UserConvectionModels'])
@@ -2421,6 +2540,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ConnectorList',
         }
     ),
+    'ConstructionAssignmentSetNames': frozenset(
+        {
+            'ConstructionAssignmentSet',
+        }
+    ),
     'ConstructionNames': frozenset(
         {
             'Construction',
@@ -2695,9 +2819,20 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ElectricLoadCenter:Storage:Simple',
         }
     ),
+    'ElectricEquipmentDefinitionNames': frozenset(
+        {
+            'ElectricEquipment:Definition',
+        }
+    ),
+    'ElectricEquipmentITEAirCooledDefinitionNames': frozenset(
+        {
+            'ElectricEquipment:ITE:AirCooled:Definition',
+        }
+    ),
     'ElectricEquipmentNames': frozenset(
         {
             'ElectricEquipment',
+            'ElectricEquipment:Instance',
         }
     ),
     'ErlProgramNames': frozenset(
@@ -2868,6 +3003,16 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
     'FluidPropertyTemperatures': frozenset(
         {
             'FluidProperties:Temperatures',
+        }
+    ),
+    'GasEquipmentDefinitionNames': frozenset(
+        {
+            'GasEquipment:Definition',
+        }
+    ),
+    'GasEquipmentNames': frozenset(
+        {
+            'GasEquipment:Instance',
         }
     ),
     'GenFuelSupNames': frozenset(
@@ -3083,6 +3228,16 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit',
         }
     ),
+    'HotWaterEquipmentDefinitionNames': frozenset(
+        {
+            'HotWaterEquipment:Definition',
+        }
+    ),
+    'HotWaterEquipmentNames': frozenset(
+        {
+            'HotWaterEquipment:Instance',
+        }
+    ),
     'IceThermalStorageEquipment': frozenset(
         {
             'ThermalStorage:Ice:Detailed',
@@ -3117,9 +3272,15 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ElectricLoadCenter:Inverter:Simple',
         }
     ),
+    'LightsDefinitionNames': frozenset(
+        {
+            'Lights:Definition',
+        }
+    ),
     'LightsNames': frozenset(
         {
             'Lights',
+            'Lights:Instance',
         }
     ),
     'MaterialName': frozenset(
@@ -3163,6 +3324,16 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
     'OSCMNames': frozenset(
         {
             'SurfaceProperty:OtherSideConditionsModel',
+        }
+    ),
+    'OtherEquipmentDefinitionNames': frozenset(
+        {
+            'OtherEquipment:Definition',
+        }
+    ),
+    'OtherEquipmentNames': frozenset(
+        {
+            'OtherEquipment:Instance',
         }
     ),
     'OutFaceEnvNames': frozenset(
@@ -3225,9 +3396,15 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'PhotovoltaicPerformance:Simple',
         }
     ),
+    'PeopleDefinitionNames': frozenset(
+        {
+            'People:Definition',
+        }
+    ),
     'PeopleNames': frozenset(
         {
             'People',
+            'People:Instance',
         }
     ),
     'PipingSystemUndergroundCircuitNames': frozenset(
@@ -3436,11 +3613,22 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Schedule:Constant',
             'Schedule:File',
             'Schedule:Year',
+            'Schedule:Year:Rules',
         }
     ),
     'ScheduleTypeLimitsNames': frozenset(
         {
             'ScheduleTypeLimits',
+        }
+    ),
+    'ScheduleWeekRuleNames': frozenset(
+        {
+            'Schedule:Week:Rule',
+        }
+    ),
+    'ScheduleYearRulesNames': frozenset(
+        {
+            'Schedule:Year:Rules',
         }
     ),
     'SimpleCoils': frozenset(
@@ -3460,9 +3648,57 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'SpaceList',
         }
     ),
+    'SpaceComponentDefinitionNames': frozenset(
+        {
+            'ElectricEquipment:Definition',
+            'ElectricEquipment:ITE:AirCooled:Definition',
+            'GasEquipment:Definition',
+            'HotWaterEquipment:Definition',
+            'Lights:Definition',
+            'OtherEquipment:Definition',
+            'People:Definition',
+            'SteamEquipment:Definition',
+        }
+    ),
+    'SpaceComponentInstanceNames': frozenset(
+        {
+            'ElectricEquipment:ITE:AirCooled:Instance',
+            'ElectricEquipment:Instance',
+            'GasEquipment:Instance',
+            'HotWaterEquipment:Instance',
+            'Lights:Instance',
+            'OtherEquipment:Instance',
+            'People:Instance',
+            'SteamEquipment:Instance',
+        }
+    ),
+    'SpaceItemNames': frozenset(
+        {
+            'ElectricEquipment:ITE:AirCooled:Instance',
+            'ElectricEquipment:Instance',
+            'GasEquipment:Instance',
+            'HotWaterEquipment:Instance',
+            'Lights:Instance',
+            'OtherEquipment:Instance',
+            'People:Instance',
+            'SteamEquipment:Instance',
+        }
+    ),
     'SpaceListNames': frozenset(
         {
             'SpaceList',
+        }
+    ),
+    'SpaceLoadNames': frozenset(
+        {
+            'ElectricEquipment:ITE:AirCooled:Instance',
+            'ElectricEquipment:Instance',
+            'GasEquipment:Instance',
+            'HotWaterEquipment:Instance',
+            'Lights:Instance',
+            'OtherEquipment:Instance',
+            'People:Instance',
+            'SteamEquipment:Instance',
         }
     ),
     'SpaceMixerNames': frozenset(
@@ -3491,6 +3727,16 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Site:SpectrumData',
         }
     ),
+    'SteamEquipmentDefinitionNames': frozenset(
+        {
+            'SteamEquipment:Definition',
+        }
+    ),
+    'SteamEquipmentNames': frozenset(
+        {
+            'SteamEquipment:Instance',
+        }
+    ),
     'SubSurfNames': frozenset(
         {
             'Door',
@@ -3500,6 +3746,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'GlazedDoor:Interzone',
             'Window',
             'Window:Interzone',
+        }
+    ),
+    'SubSurfaceConstructionAssignmentNames': frozenset(
+        {
+            'SubSurfaceConstructionAssignments',
         }
     ),
     'SupplyPathComponentNames': frozenset(
@@ -3542,6 +3793,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'AirflowNetwork:MultiZone:SpecifiedFlowRate',
             'AirflowNetwork:MultiZone:Surface:Crack',
             'AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea',
+        }
+    ),
+    'SurfaceConstructionAssignmentNames': frozenset(
+        {
+            'SurfaceConstructionAssignments',
         }
     ),
     'SurfaceLocalEnvironmentNames': frozenset(
@@ -4772,6 +5028,9 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
     'BranchListBranchesItem': {
         'branch_name': ['Branches'],
+    },
+    'Building': {
+        'construction_assignment_set_name': ['ConstructionAssignmentSetNames'],
     },
     'BuildingSurfaceDetailed': {
         'construction_name': ['ConstructionNames'],
@@ -6568,6 +6827,25 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     'ConstructionAirBoundary': {
         'simple_mixing_schedule_name': ['ScheduleNames'],
     },
+    'ConstructionAssignmentSet': {
+        'exterior_surface_construction_assignments_name': [
+            'SurfaceConstructionAssignmentNames'
+        ],
+        'interior_surface_construction_assignments_name': [
+            'SurfaceConstructionAssignmentNames'
+        ],
+        'ground_contact_surface_construction_assignments_name': [
+            'SurfaceConstructionAssignmentNames'
+        ],
+        'exterior_subsurface_construction_assignments_name': [
+            'SubSurfaceConstructionAssignmentNames'
+        ],
+        'interior_subsurface_construction_assignments_name': [
+            'SubSurfaceConstructionAssignmentNames'
+        ],
+        'interior_partition_construction_name': ['ConstructionNames'],
+        'adiabatic_surface_construction_name': ['ConstructionNames'],
+    },
     'ConstructionComplexFenestrationState': {
         'window_thermal_model': ['WindowThermalModelParameters'],
         'basis_matrix_name': ['DataMatrices'],
@@ -6869,6 +7147,41 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'supply_temperature_difference_schedule': ['ScheduleNames'],
         'return_temperature_difference_schedule': ['ScheduleNames'],
     },
+    'ElectricEquipmentITEAirCooledDefinition': {
+        'cpu_power_input_function_of_loading_and_air_temperature_curve_name': [
+            'BivariateFunctions'
+        ],
+        'air_flow_function_of_loading_and_air_temperature_curve_name': [
+            'BivariateFunctions'
+        ],
+        'fan_power_input_function_of_flow_curve_name': ['UnivariateFunctions'],
+        'recirculation_function_of_loading_and_supply_temperature_curve_name': [
+            'BivariateFunctions'
+        ],
+        'electric_power_supply_efficiency_function_of_part_load_ratio_curve_name': [
+            'UnivariateFunctions'
+        ],
+        'supply_temperature_difference_schedule': ['ScheduleNames'],
+        'return_temperature_difference_schedule': ['ScheduleNames'],
+    },
+    'ElectricEquipmentITEAirCooledInstance': {
+        'electricequipment_ite_aircooled_definition_name': [
+            'ElectricEquipmentITEAirCooledDefinitionNames'
+        ],
+        'zone_or_space_name': ['SpaceNames', 'ZoneNames'],
+        'design_power_input_schedule_name': ['ScheduleNames'],
+        'cpu_loading_schedule_name': ['ScheduleNames'],
+        'air_inlet_room_air_model_node_name': ['RoomAirNodes'],
+        'air_outlet_room_air_model_node_name': ['RoomAirNodes'],
+    },
+    'ElectricEquipmentInstance': {
+        'electric_equipment_definition_name': ['ElectricEquipmentDefinitionNames'],
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
     'ElectricLoadCenterDistribution': {
         'generator_list_name': ['GeneratorLists'],
         'generator_track_schedule_name_scheme_schedule_name': ['ScheduleNames'],
@@ -7036,7 +7349,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
     },
     'FanPerformanceNightVentilation': {
-        'fan_name': ['FansCVandVAV', 'FansComponentModel'],
+        'fan_name': ['FansCVandOnOffandVAV', 'FansZoneExhaust'],
     },
     'FanSystemModel': {
         'availability_schedule_name': ['ScheduleNames'],
@@ -7218,6 +7531,14 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'nuclear_low_level_emission_factor_schedule_name': ['ScheduleNames'],
     },
     'GasEquipment': {
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
+    'GasEquipmentInstance': {
+        'gas_equipment_definition_name': ['GasEquipmentDefinitionNames'],
         'zone_or_zonelist_or_space_or_spacelist_name': [
             'SpaceAndSpaceListNames',
             'ZoneAndZoneListNames',
@@ -8031,6 +8352,14 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
         'schedule_name': ['ScheduleNames'],
     },
+    'HotWaterEquipmentInstance': {
+        'hot_water_equipment_definition_name': ['HotWaterEquipmentDefinitionNames'],
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
     'HumidifierSteamElectric': {
         'availability_schedule_name': ['ScheduleNames'],
         'water_storage_tank_name': ['WaterStorageTankNames'],
@@ -8066,6 +8395,14 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'space_or_spacelist_name': ['SpaceAndSpaceListNames'],
     },
     'Lights': {
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
+    'LightsInstance': {
+        'lights_definition_name': ['LightsDefinitionNames'],
         'zone_or_zonelist_or_space_or_spacelist_name': [
             'SpaceAndSpaceListNames',
             'ZoneAndZoneListNames',
@@ -8116,6 +8453,14 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
         'schedule_name': ['ScheduleNames'],
     },
+    'OtherEquipmentInstance': {
+        'other_equipment_definition_name': ['OtherEquipmentDefinitionNames'],
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
     'OutdoorAirNode': {
         'drybulb_temperature_schedule_name': ['ScheduleNames'],
         'wetbulb_temperature_schedule_name': ['ScheduleNames'],
@@ -8142,6 +8487,21 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'schedule_name': ['ScheduleNames'],
     },
     'People': {
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'number_of_people_schedule_name': ['ScheduleNames'],
+        'activity_level_schedule_name': ['ScheduleNames'],
+        'surface_name_angle_factor_list_name': ['AllHeatTranAngFacNames'],
+        'work_efficiency_schedule_name': ['ScheduleNames'],
+        'clothing_insulation_calculation_method_schedule_name': ['ScheduleNames'],
+        'clothing_insulation_schedule_name': ['ScheduleNames'],
+        'air_velocity_schedule_name': ['ScheduleNames'],
+        'ankle_level_air_velocity_schedule_name': ['ScheduleNames'],
+    },
+    'PeopleInstance': {
+        'people_definition_name': ['PeopleDefinitionNames'],
         'zone_or_zonelist_or_space_or_spacelist_name': [
             'SpaceAndSpaceListNames',
             'ZoneAndZoneListNames',
@@ -8648,8 +9008,21 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'customday1_schedule_day_name': ['DayScheduleNames'],
         'customday2_schedule_day_name': ['DayScheduleNames'],
     },
+    'ScheduleWeekRule': {
+        'schedule_year_rules_name': ['ScheduleYearRulesNames'],
+        'day_schedule_name': ['DayScheduleNames'],
+    },
     'ScheduleYear': {
         'schedule_type_limits_name': ['ScheduleTypeLimitsNames'],
+    },
+    'ScheduleYearRules': {
+        'schedule_type_limits_name': ['ScheduleTypeLimitsNames'],
+        'default_day_schedule_name': ['DayScheduleNames'],
+        'summer_design_day_schedule_name': ['DayScheduleNames'],
+        'winter_design_day_schedule_name': ['DayScheduleNames'],
+        'holiday_schedule_name': ['DayScheduleNames'],
+        'custom_day_1_schedule_name': ['DayScheduleNames'],
+        'custom_day_2_schedule_name': ['DayScheduleNames'],
     },
     'ScheduleYearScheduleWeeksItem': {
         'schedule_week_name': ['WeekScheduleNames'],
@@ -8838,6 +9211,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
     'Space': {
         'zone_name': ['ZoneNames'],
+        'construction_assignment_set_name': ['ConstructionAssignmentSetNames'],
     },
     'SpaceHVACEquipmentConnections': {
         'space_name': ['SpaceNames'],
@@ -8872,6 +9246,29 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
             'ZoneAndZoneListNames',
         ],
         'schedule_name': ['ScheduleNames'],
+    },
+    'SteamEquipmentInstance': {
+        'steam_equipment_definition_name': ['SteamEquipmentDefinitionNames'],
+        'zone_or_zonelist_or_space_or_spacelist_name': [
+            'SpaceAndSpaceListNames',
+            'ZoneAndZoneListNames',
+        ],
+        'schedule_name': ['ScheduleNames'],
+    },
+    'SubSurfaceConstructionAssignments': {
+        'fixed_window_construction_name': ['ConstructionNames'],
+        'operable_window_construction_name': ['ConstructionNames'],
+        'door_construction_name': ['ConstructionNames'],
+        'glass_door_construction_name': ['ConstructionNames'],
+        'overhead_door_construction_name': ['ConstructionNames'],
+        'skylight_construction_name': ['ConstructionNames'],
+        'tubular_daylight_dome_construction_name': ['ConstructionNames'],
+        'tubular_daylight_diffuser_construction_name': ['ConstructionNames'],
+    },
+    'SurfaceConstructionAssignments': {
+        'floor_construction_name': ['ConstructionNames'],
+        'wall_construction_name': ['ConstructionNames'],
+        'roof_ceiling_construction_name': ['ConstructionNames'],
     },
     'SurfaceContaminantSourceAndSinkGenericBoundaryLayerDiffusion': {
         'surface_name': ['SurfaceNames'],
@@ -9108,7 +9505,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'incident_solar_multiplier_schedule_name': ['ScheduleNames'],
     },
     'SurfacePropertyLocalEnvironment': {
-        'exterior_surface_name': ['SurfaceNames'],
+        'exterior_surface_name': ['AllHeatTranSurfNames'],
         'sunlit_fraction_schedule_name': ['ScheduleNames'],
         'surrounding_surfaces_object_name': ['SurroundingSurfacesNames'],
         'outdoor_air_node_name': ['OutdoorAirNodeNames'],
@@ -9453,8 +9850,8 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
     'ZoneControlHumidistat': {
         'zone_name': ['ZoneNames'],
-        'humidifying_relative_humidity_setpoint_schedule_name': ['ScheduleNames'],
-        'dehumidifying_relative_humidity_setpoint_schedule_name': ['ScheduleNames'],
+        'humidifying_setpoint_schedule_name': ['ScheduleNames'],
+        'dehumidifying_setpoint_schedule_name': ['ScheduleNames'],
     },
     'ZoneControlThermostat': {
         'zone_or_zonelist_name': ['ZoneAndZoneListNames'],
@@ -9892,6 +10289,12 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
     'ZoneListZonesItem': {
         'zone_name': ['ZoneNames'],
+    },
+    'ZoneMRTCalculation': {
+        'zone_name': ['ZoneNames'],
+    },
+    'ZoneMRTCalculationPeopleNamesItem': {
+        'people_name': ['PeopleNames'],
     },
     'ZoneMixing': {
         'zone_or_space_name': ['SpaceNames', 'ZoneNames'],

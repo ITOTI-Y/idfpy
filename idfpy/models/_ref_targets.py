@@ -1,7 +1,7 @@
 """Auto-generated unions of the classes each reference group can name.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 
 Navigation properties whose field can name many object types return these
 aliases. They are lazy ``type`` aliases, so the model imports below are only
@@ -124,6 +124,7 @@ if TYPE_CHECKING:
     from .constructions import (
         Construction,
         ConstructionAirBoundary,
+        ConstructionAssignmentSet,
         ConstructionCfactorUndergroundWall,
         ConstructionComplexFenestrationState,
         ConstructionFfactorGroundFloor,
@@ -136,6 +137,8 @@ if TYPE_CHECKING:
         MaterialNoMass,
         MaterialPropertyGlazingSpectralData,
         MaterialRoofVegetation,
+        SubSurfaceConstructionAssignments,
+        SurfaceConstructionAssignments,
         WindowGapDeflectionState,
         WindowGapSupportPillar,
         WindowMaterialBlind,
@@ -284,8 +287,24 @@ if TYPE_CHECKING:
     from .internal_gains import (
         ComfortViewFactorAngles,
         ElectricEquipment,
+        ElectricEquipmentDefinition,
+        ElectricEquipmentInstance,
+        ElectricEquipmentITEAirCooledDefinition,
+        ElectricEquipmentITEAirCooledInstance,
+        GasEquipmentDefinition,
+        GasEquipmentInstance,
+        HotWaterEquipmentDefinition,
+        HotWaterEquipmentInstance,
         Lights,
+        LightsDefinition,
+        LightsInstance,
+        OtherEquipmentDefinition,
+        OtherEquipmentInstance,
         People,
+        PeopleDefinition,
+        PeopleInstance,
+        SteamEquipmentDefinition,
+        SteamEquipmentInstance,
         SwimmingPoolIndoor,
     )
     from .location import (
@@ -466,7 +485,9 @@ if TYPE_CHECKING:
         ScheduleTypeLimits,
         ScheduleWeekCompact,
         ScheduleWeekDaily,
+        ScheduleWeekRule,
         ScheduleYear,
+        ScheduleYearRules,
     )
     from .solar import (
         SolarCollectorFlatPlatePhotovoltaicThermal,
@@ -906,6 +927,8 @@ type CondenserOperationSchemesTarget = CondenserEquipmentOperationSchemes
 
 type ConnectorListsTarget = ConnectorList
 
+type ConstructionAssignmentSetNamesTarget = ConstructionAssignmentSet
+
 type ConstructionNamesTarget = (
     Construction
     | ConstructionAirBoundary
@@ -1089,7 +1112,13 @@ type ElecStorageListTarget = (
     | ElectricLoadCenterStorageSimple
 )
 
-type ElectricEquipmentNamesTarget = ElectricEquipment
+type ElectricEquipmentDefinitionNamesTarget = ElectricEquipmentDefinition
+
+type ElectricEquipmentITEAirCooledDefinitionNamesTarget = (
+    ElectricEquipmentITEAirCooledDefinition
+)
+
+type ElectricEquipmentNamesTarget = ElectricEquipment | ElectricEquipmentInstance
 
 type ErlProgramNamesTarget = (
     EnergyManagementSystemProgram | EnergyManagementSystemSubroutine
@@ -1175,6 +1204,10 @@ type FluidAndGlycolNamesTarget = (
 type FluidNamesTarget = FluidPropertiesName
 
 type FluidPropertyTemperaturesTarget = FluidPropertiesTemperatures
+
+type GasEquipmentDefinitionNamesTarget = GasEquipmentDefinition
+
+type GasEquipmentNamesTarget = GasEquipmentInstance
 
 type GenFuelSupNamesTarget = GeneratorFuelSupply
 
@@ -1299,6 +1332,10 @@ type HeatingCoilsWaterToAirVSHPTarget = (
     CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit
 )
 
+type HotWaterEquipmentDefinitionNamesTarget = HotWaterEquipmentDefinition
+
+type HotWaterEquipmentNamesTarget = HotWaterEquipmentInstance
+
 type IceThermalStorageEquipmentTarget = (
     ThermalStorageIceDetailed | ThermalStorageIceSimple
 )
@@ -1318,7 +1355,9 @@ type InverterListTarget = (
     | ElectricLoadCenterInverterSimple
 )
 
-type LightsNamesTarget = Lights
+type LightsDefinitionNamesTarget = LightsDefinition
+
+type LightsNamesTarget = Lights | LightsInstance
 
 type MaterialNameTarget = (
     Material
@@ -1346,6 +1385,10 @@ type MultivariateFunctionsTarget = TableLookup
 type OAControllerNamesTarget = ControllerOutdoorAir
 
 type OSCMNamesTarget = SurfacePropertyOtherSideConditionsModel
+
+type OtherEquipmentDefinitionNamesTarget = OtherEquipmentDefinition
+
+type OtherEquipmentNamesTarget = OtherEquipmentInstance
 
 type OutFaceEnvNamesTarget = (
     BuildingSurfaceDetailed
@@ -1387,7 +1430,9 @@ type PVModulesTarget = (
     | PhotovoltaicPerformanceSimple
 )
 
-type PeopleNamesTarget = People
+type PeopleDefinitionNamesTarget = PeopleDefinition
+
+type PeopleNamesTarget = People | PeopleInstance
 
 type PipingSystemUndergroundCircuitNamesTarget = PipingSystemUndergroundPipeCircuit
 
@@ -1511,9 +1556,14 @@ type ScheduleNamesTarget = (
     | ScheduleConstant
     | ScheduleFile
     | ScheduleYear
+    | ScheduleYearRules
 )
 
 type ScheduleTypeLimitsNamesTarget = ScheduleTypeLimits
+
+type ScheduleWeekRuleNamesTarget = ScheduleWeekRule
+
+type ScheduleYearRulesNamesTarget = ScheduleYearRules
 
 type SimpleCoilsTarget = CoilCoolingWater | CoilHeatingWater
 
@@ -1521,7 +1571,51 @@ type SizingPeriodWeatherFileDaysTarget = SizingPeriodWeatherFileDays
 
 type SpaceAndSpaceListNamesTarget = Space | SpaceList
 
+type SpaceComponentDefinitionNamesTarget = (
+    ElectricEquipmentDefinition
+    | ElectricEquipmentITEAirCooledDefinition
+    | GasEquipmentDefinition
+    | HotWaterEquipmentDefinition
+    | LightsDefinition
+    | OtherEquipmentDefinition
+    | PeopleDefinition
+    | SteamEquipmentDefinition
+)
+
+type SpaceComponentInstanceNamesTarget = (
+    ElectricEquipmentITEAirCooledInstance
+    | ElectricEquipmentInstance
+    | GasEquipmentInstance
+    | HotWaterEquipmentInstance
+    | LightsInstance
+    | OtherEquipmentInstance
+    | PeopleInstance
+    | SteamEquipmentInstance
+)
+
+type SpaceItemNamesTarget = (
+    ElectricEquipmentITEAirCooledInstance
+    | ElectricEquipmentInstance
+    | GasEquipmentInstance
+    | HotWaterEquipmentInstance
+    | LightsInstance
+    | OtherEquipmentInstance
+    | PeopleInstance
+    | SteamEquipmentInstance
+)
+
 type SpaceListNamesTarget = SpaceList
+
+type SpaceLoadNamesTarget = (
+    ElectricEquipmentITEAirCooledInstance
+    | ElectricEquipmentInstance
+    | GasEquipmentInstance
+    | HotWaterEquipmentInstance
+    | LightsInstance
+    | OtherEquipmentInstance
+    | PeopleInstance
+    | SteamEquipmentInstance
+)
 
 type SpaceMixerNamesTarget = SpaceHVACZoneEquipmentMixer | SpaceHVACZoneReturnMixer
 
@@ -1533,6 +1627,10 @@ type SpectralDataSetsTarget = MaterialPropertyGlazingSpectralData
 
 type SpectrumDataNamesTarget = SiteSpectrumData
 
+type SteamEquipmentDefinitionNamesTarget = SteamEquipmentDefinition
+
+type SteamEquipmentNamesTarget = SteamEquipmentInstance
+
 type SubSurfNamesTarget = (
     Door
     | DoorInterzone
@@ -1542,6 +1640,8 @@ type SubSurfNamesTarget = (
     | Window
     | WindowInterzone
 )
+
+type SubSurfaceConstructionAssignmentNamesTarget = SubSurfaceConstructionAssignments
 
 type SupplyPathComponentNamesTarget = AirLoopHVACSupplyPlenum | AirLoopHVACZoneSplitter
 
@@ -1578,6 +1678,8 @@ type SurfaceAirflowLeakageNamesTarget = (
     | AirflowNetworkMultiZoneSurfaceCrack
     | AirflowNetworkMultiZoneSurfaceEffectiveLeakageArea
 )
+
+type SurfaceConstructionAssignmentNamesTarget = SurfaceConstructionAssignments
 
 type SurfaceLocalEnvironmentNamesTarget = SurfacePropertyLocalEnvironment
 

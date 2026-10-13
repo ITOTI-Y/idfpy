@@ -1,7 +1,7 @@
 """Auto-generated reference types for EnergyPlus object validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 26.2.
 
 This module provides type aliases with runtime validation for object
 references. Use with validation context for reference checking.
@@ -142,6 +142,9 @@ CondenserOperationSchemesRef = Annotated[
     str, BeforeValidator(RefValidator('CondenserOperationSchemes'))
 ]
 ConnectorListsRef = Annotated[str, BeforeValidator(RefValidator('ConnectorLists'))]
+ConstructionAssignmentSetNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('ConstructionAssignmentSetNames'))
+]
 ConstructionNamesRef = Annotated[
     str, BeforeValidator(RefValidator('ConstructionNames'))
 ]
@@ -246,6 +249,12 @@ EarthTubeParameterNamesRef = Annotated[
     str, BeforeValidator(RefValidator('EarthTubeParameterNames'))
 ]
 ElecStorageListRef = Annotated[str, BeforeValidator(RefValidator('ElecStorageList'))]
+ElectricEquipmentDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('ElectricEquipmentDefinitionNames'))
+]
+ElectricEquipmentITEAirCooledDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('ElectricEquipmentITEAirCooledDefinitionNames'))
+]
 ElectricEquipmentNamesRef = Annotated[
     str, BeforeValidator(RefValidator('ElectricEquipmentNames'))
 ]
@@ -298,6 +307,9 @@ FluidAndGlycolNamesRef = Annotated[
 FluidNamesRef = Annotated[str, BeforeValidator(RefValidator('FluidNames'))]
 FluidPropertyTemperaturesRef = Annotated[
     str, BeforeValidator(RefValidator('FluidPropertyTemperatures'))
+]
+GasEquipmentDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('GasEquipmentDefinitionNames'))
 ]
 GenFuelSupNamesRef = Annotated[str, BeforeValidator(RefValidator('GenFuelSupNames'))]
 GeneratorListsRef = Annotated[str, BeforeValidator(RefValidator('GeneratorLists'))]
@@ -399,6 +411,9 @@ HeatingCoilsWaterToAirHPRef = Annotated[
 HeatingCoilsWaterToAirVSHPRef = Annotated[
     str, BeforeValidator(RefValidator('HeatingCoilsWaterToAirVSHP'))
 ]
+HotWaterEquipmentDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('HotWaterEquipmentDefinitionNames'))
+]
 IceThermalStorageEquipmentRef = Annotated[
     str, BeforeValidator(RefValidator('IceThermalStorageEquipment'))
 ]
@@ -412,6 +427,9 @@ IntegratedHeatPumpsRef = Annotated[
     str, BeforeValidator(RefValidator('IntegratedHeatPumps'))
 ]
 InverterListRef = Annotated[str, BeforeValidator(RefValidator('InverterList'))]
+LightsDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('LightsDefinitionNames'))
+]
 LightsNamesRef = Annotated[str, BeforeValidator(RefValidator('LightsNames'))]
 MaterialNameRef = Annotated[str, BeforeValidator(RefValidator('MaterialName'))]
 MicroCHPParametersNamesRef = Annotated[
@@ -427,6 +445,9 @@ OAControllerNamesRef = Annotated[
     str, BeforeValidator(RefValidator('OAControllerNames'))
 ]
 OSCMNamesRef = Annotated[str, BeforeValidator(RefValidator('OSCMNames'))]
+OtherEquipmentDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('OtherEquipmentDefinitionNames'))
+]
 OutFaceEnvNamesRef = Annotated[str, BeforeValidator(RefValidator('OutFaceEnvNames'))]
 OutdoorAirMixersRef = Annotated[str, BeforeValidator(RefValidator('OutdoorAirMixers'))]
 OutdoorAirNodeNamesRef = Annotated[
@@ -439,6 +460,9 @@ PLHPCoolingNamesRef = Annotated[str, BeforeValidator(RefValidator('PLHPCoolingNa
 PLHPHeatingNamesRef = Annotated[str, BeforeValidator(RefValidator('PLHPHeatingNames'))]
 PVGeneratorNamesRef = Annotated[str, BeforeValidator(RefValidator('PVGeneratorNames'))]
 PVModulesRef = Annotated[str, BeforeValidator(RefValidator('PVModules'))]
+PeopleDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('PeopleDefinitionNames'))
+]
 PeopleNamesRef = Annotated[str, BeforeValidator(RefValidator('PeopleNames'))]
 PipingSystemUndergroundCircuitNamesRef = Annotated[
     str, BeforeValidator(RefValidator('PipingSystemUndergroundCircuitNames'))
@@ -535,6 +559,9 @@ ScheduleNamesRef = Annotated[str, BeforeValidator(RefValidator('ScheduleNames'))
 ScheduleTypeLimitsNamesRef = Annotated[
     str, BeforeValidator(RefValidator('ScheduleTypeLimitsNames'))
 ]
+ScheduleYearRulesNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('ScheduleYearRulesNames'))
+]
 SimpleCoilsRef = Annotated[str, BeforeValidator(RefValidator('SimpleCoils'))]
 SizingPeriodWeatherFileDaysRef = Annotated[
     str, BeforeValidator(RefValidator('SizingPeriodWeatherFileDays'))
@@ -548,7 +575,13 @@ SpectralDataSetsRef = Annotated[str, BeforeValidator(RefValidator('SpectralDataS
 SpectrumDataNamesRef = Annotated[
     str, BeforeValidator(RefValidator('SpectrumDataNames'))
 ]
+SteamEquipmentDefinitionNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('SteamEquipmentDefinitionNames'))
+]
 SubSurfNamesRef = Annotated[str, BeforeValidator(RefValidator('SubSurfNames'))]
+SubSurfaceConstructionAssignmentNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('SubSurfaceConstructionAssignmentNames'))
+]
 SupplyPathComponentNamesRef = Annotated[
     str, BeforeValidator(RefValidator('SupplyPathComponentNames'))
 ]
@@ -557,6 +590,9 @@ SurfAndSubSurfNamesRef = Annotated[
 ]
 SurfaceAirflowLeakageNamesRef = Annotated[
     str, BeforeValidator(RefValidator('SurfaceAirflowLeakageNames'))
+]
+SurfaceConstructionAssignmentNamesRef = Annotated[
+    str, BeforeValidator(RefValidator('SurfaceConstructionAssignmentNames'))
 ]
 SurfaceNamesRef = Annotated[str, BeforeValidator(RefValidator('SurfaceNames'))]
 SurroundingSurfacesNamesRef = Annotated[
@@ -754,6 +790,7 @@ __all__ = [
     'ComplexFenestrationStatesRef',
     'CondenserOperationSchemesRef',
     'ConnectorListsRef',
+    'ConstructionAssignmentSetNamesRef',
     'ConstructionNamesRef',
     'ControlSchemeListRef',
     'ControlTypeNamesRef',
@@ -795,6 +832,8 @@ __all__ = [
     'DesuperHeatingWaterOnlySourcesRef',
     'EarthTubeParameterNamesRef',
     'ElecStorageListRef',
+    'ElectricEquipmentDefinitionNamesRef',
+    'ElectricEquipmentITEAirCooledDefinitionNamesRef',
     'ElectricEquipmentNamesRef',
     'ErlProgramNamesRef',
     'EvapCoolerNamesRef',
@@ -826,6 +865,7 @@ __all__ = [
     'FluidAndGlycolNamesRef',
     'FluidNamesRef',
     'FluidPropertyTemperaturesRef',
+    'GasEquipmentDefinitionNamesRef',
     'GenFuelSupNamesRef',
     'GeneratorListsRef',
     'GeneratorNamesRef',
@@ -863,11 +903,13 @@ __all__ = [
     'HeatingCoilsWaterRef',
     'HeatingCoilsWaterToAirHPRef',
     'HeatingCoilsWaterToAirVSHPRef',
+    'HotWaterEquipmentDefinitionNamesRef',
     'IceThermalStorageEquipmentRef',
     'IndependentVariableListNameRef',
     'IndependentVariableNameRef',
     'IntegratedHeatPumpsRef',
     'InverterListRef',
+    'LightsDefinitionNamesRef',
     'LightsNamesRef',
     'MaterialNameRef',
     'MicroCHPParametersNamesRef',
@@ -875,6 +917,7 @@ __all__ = [
     'MultivariateFunctionsRef',
     'OAControllerNamesRef',
     'OSCMNamesRef',
+    'OtherEquipmentDefinitionNamesRef',
     'OutFaceEnvNamesRef',
     'OutdoorAirMixersRef',
     'OutdoorAirNodeNamesRef',
@@ -883,6 +926,7 @@ __all__ = [
     'PLHPHeatingNamesRef',
     'PVGeneratorNamesRef',
     'PVModulesRef',
+    'PeopleDefinitionNamesRef',
     'PeopleNamesRef',
     'PipingSystemUndergroundCircuitNamesRef',
     'PipingSystemUndergroundSegmentNamesRef',
@@ -917,6 +961,7 @@ __all__ = [
     'RunPeriodsAndDesignDaysRef',
     'ScheduleNamesRef',
     'ScheduleTypeLimitsNamesRef',
+    'ScheduleYearRulesNamesRef',
     'SimpleCoilsRef',
     'SizingPeriodWeatherFileDaysRef',
     'SpaceAndSpaceListNamesRef',
@@ -924,10 +969,13 @@ __all__ = [
     'SpaceNamesRef',
     'SpectralDataSetsRef',
     'SpectrumDataNamesRef',
+    'SteamEquipmentDefinitionNamesRef',
     'SubSurfNamesRef',
+    'SubSurfaceConstructionAssignmentNamesRef',
     'SupplyPathComponentNamesRef',
     'SurfAndSubSurfNamesRef',
     'SurfaceAirflowLeakageNamesRef',
+    'SurfaceConstructionAssignmentNamesRef',
     'SurfaceNamesRef',
     'SurroundingSurfacesNamesRef',
     'SystemAvailabilityManagerListsRef',
