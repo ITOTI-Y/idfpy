@@ -1,7 +1,7 @@
 """Auto-generated EnergyPlus IDF models.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 Group: Output Reporting
 """
 
@@ -680,9 +680,6 @@ class OutputControlFiles(IDFBaseModel):
     output_tarcog: Literal['', 'No', 'Yes'] | None = Field(
         default='Yes', json_schema_extra={'note': 'Not Implemented Yet'}
     )
-    output_plant_component_sizing: Literal['', 'No', 'Yes'] | None = Field(
-        default='Yes', json_schema_extra={'note': 'epluspsz.csv'}
-    )
 
 
 class OutputControlReportingTolerances(IDFBaseModel):
@@ -1165,12 +1162,6 @@ class OutputControlTableStyle(IDFBaseModel):
         ]
         | None
     ) = Field(default='None')
-    format_numeric_values: Literal['', 'No', 'Yes'] | None = Field(
-        default='Yes',
-        json_schema_extra={
-            'note': 'If No, all digits are shown after the decimal point without any rounding (23.238769213). If Yes, values are rounded for readability (23.24).'
-        },
-    )
 
 
 class OutputControlTimestamp(IDFBaseModel):
@@ -1255,30 +1246,6 @@ class OutputJSON(IDFBaseModel):
     output_json: Literal['', 'No', 'Yes'] | None = Field(default='Yes')
     output_cbor: Literal['', 'No', 'Yes'] | None = Field(default='No')
     output_messagepack: Literal['', 'No', 'Yes'] | None = Field(default='No')
-    unit_conversion_for_tabular_data: (
-        Literal[
-            '',
-            'InchPound',
-            'InchPoundExceptElectricity',
-            'JtoGJ',
-            'JtoKWH',
-            'JtoMJ',
-            'None',
-            'UseOutputControlTableStyle',
-        ]
-        | None
-    ) = Field(
-        default='UseOutputControlTableStyle',
-        json_schema_extra={
-            'note': 'Unit conversion option used when writing JSON Tabular Data This option applies to TabularData and TabularDatawithString in the JSON file(s)'
-        },
-    )
-    format_numeric_values_for_tabular_data: Literal['', 'No', 'Yes'] | None = Field(
-        default='Yes',
-        json_schema_extra={
-            'note': 'If No, all digits are shown after the decimal point without any rounding (23.238769213). If Yes, values are rounded for readability (23.24).'
-        },
-    )
 
 
 class OutputMeter(IDFBaseModel):
@@ -1469,12 +1436,6 @@ class OutputSQLite(IDFBaseModel):
             'note': 'Unit conversion option used when writing SQLite Tabular Data This option applies to TabularData and TabularDatawithString in the SQLite file'
         },
     )
-    format_numeric_values_for_tabular_data: Literal['', 'No', 'Yes'] | None = Field(
-        default='Yes',
-        json_schema_extra={
-            'note': 'If No, all digits are shown after the decimal point without any rounding (23.238769213). If Yes, values are rounded for readability (23.24).'
-        },
-    )
 
 
 class OutputSchedules(IDFBaseModel):
@@ -1603,9 +1564,9 @@ class OutputTableReportPeriod(IDFBaseModel):
     tabular reports. Multiple reporting periods may be input."""
 
     _idf_object_type: ClassVar[str] = 'Output:Table:ReportPeriod'
-    _provider_fields: ClassVar[frozenset[str]] = frozenset({'name'})
     name: str = Field(
         ...,
+        validation_alias='name_',
         json_schema_extra={
             'note': 'descriptive name cannot be blank and must be unique'
         },
@@ -1620,6 +1581,7 @@ class OutputTableReportPeriod(IDFBaseModel):
         | None
     ) = Field(
         default=None,
+        validation_alias='report_name_',
         json_schema_extra={
             'note': 'currently only allow for these tables, could be extended in the future'
         },

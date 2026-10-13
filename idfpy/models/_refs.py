@@ -1,7 +1,7 @@
 """Auto-generated reference types for EnergyPlus object validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 
 This module provides type aliases with runtime validation for object
 references. Use with validation context for reference checking.
@@ -70,9 +70,6 @@ AirTerminalUnitNamesRef = Annotated[
 AirflowNetworkComponentNamesRef = Annotated[
     str, BeforeValidator(RefValidator('AirflowNetworkComponentNames'))
 ]
-AirflowNetworkDistributionLinkageNamesRef = Annotated[
-    str, BeforeValidator(RefValidator('AirflowNetworkDistributionLinkageNames'))
-]
 AirflowNetworkNodeAndZoneNamesRef = Annotated[
     str, BeforeValidator(RefValidator('AirflowNetworkNodeAndZoneNames'))
 ]
@@ -96,6 +93,12 @@ AllShadingSurfNamesRef = Annotated[
 ]
 AttachedShadingSurfNamesRef = Annotated[
     str, BeforeValidator(RefValidator('AttachedShadingSurfNames'))
+]
+BaseboardDesignObjectRef = Annotated[
+    str, BeforeValidator(RefValidator('BaseboardDesignObject'))
+]
+BiVariateFunctionsRef = Annotated[
+    str, BeforeValidator(RefValidator('BiVariateFunctions'))
 ]
 BivariateFunctionsRef = Annotated[
     str, BeforeValidator(RefValidator('BivariateFunctions'))
@@ -320,9 +323,6 @@ GroundHeatExchangerVerticalResponseFactorNamesRef = Annotated[
 GroundHeatExchangerVerticalSingleNamesRef = Annotated[
     str, BeforeValidator(RefValidator('GroundHeatExchangerVerticalSingleNames'))
 ]
-GroundHeatExchangerVerticalSizingNamesRef = Annotated[
-    str, BeforeValidator(RefValidator('GroundHeatExchangerVerticalSizingNames'))
-]
 GroundSurfacesNamesRef = Annotated[
     str, BeforeValidator(RefValidator('GroundSurfacesNames'))
 ]
@@ -536,9 +536,6 @@ ScheduleTypeLimitsNamesRef = Annotated[
     str, BeforeValidator(RefValidator('ScheduleTypeLimitsNames'))
 ]
 SimpleCoilsRef = Annotated[str, BeforeValidator(RefValidator('SimpleCoils'))]
-SizingPeriodWeatherFileDaysRef = Annotated[
-    str, BeforeValidator(RefValidator('SizingPeriodWeatherFileDays'))
-]
 SpaceAndSpaceListNamesRef = Annotated[
     str, BeforeValidator(RefValidator('SpaceAndSpaceListNames'))
 ]
@@ -571,12 +568,6 @@ SystemAvailabilityManagersRef = Annotated[
 ThermalComfortControlTypeNamesRef = Annotated[
     str, BeforeValidator(RefValidator('ThermalComfortControlTypeNames'))
 ]
-ThermalStorageSizingRef = Annotated[
-    str, BeforeValidator(RefValidator('ThermalStorageSizing'))
-]
-ThermalStorageWaterNamesRef = Annotated[
-    str, BeforeValidator(RefValidator('ThermalStorageWaterNames'))
-]
 ThermostatOffsetFaultsRef = Annotated[
     str, BeforeValidator(RefValidator('ThermostatOffsetFaults'))
 ]
@@ -587,6 +578,9 @@ TrivariateFunctionsRef = Annotated[
 UTSCNamesRef = Annotated[str, BeforeValidator(RefValidator('UTSCNames'))]
 UndisturbedGroundTempModelsRef = Annotated[
     str, BeforeValidator(RefValidator('UndisturbedGroundTempModels'))
+]
+UniVariateFunctionsRef = Annotated[
+    str, BeforeValidator(RefValidator('UniVariateFunctions'))
 ]
 UnitarySystemPerformanceNamesRef = Annotated[
     str, BeforeValidator(RefValidator('UnitarySystemPerformanceNames'))
@@ -724,7 +718,6 @@ __all__ = [
     'AirPrimaryLoopsRef',
     'AirTerminalUnitNamesRef',
     'AirflowNetworkComponentNamesRef',
-    'AirflowNetworkDistributionLinkageNamesRef',
     'AirflowNetworkNodeAndZoneNamesRef',
     'AirflowNetworkNodeNamesRef',
     'AirflowNetworkOccupantVentilationControlNamesRef',
@@ -733,6 +726,8 @@ __all__ = [
     'AllShadingAndHTSurfNamesRef',
     'AllShadingSurfNamesRef',
     'AttachedShadingSurfNamesRef',
+    'BaseboardDesignObjectRef',
+    'BiVariateFunctionsRef',
     'BivariateFunctionsRef',
     'BoilersRef',
     'BranchListsRef',
@@ -835,7 +830,6 @@ __all__ = [
     'GroundHeatExchangerVerticalPropertiesNamesRef',
     'GroundHeatExchangerVerticalResponseFactorNamesRef',
     'GroundHeatExchangerVerticalSingleNamesRef',
-    'GroundHeatExchangerVerticalSizingNamesRef',
     'GroundSurfacesNamesRef',
     'HVACTemplateConstantVolumeZonesRef',
     'HVACTemplateDOASSystemsRef',
@@ -918,7 +912,6 @@ __all__ = [
     'ScheduleNamesRef',
     'ScheduleTypeLimitsNamesRef',
     'SimpleCoilsRef',
-    'SizingPeriodWeatherFileDaysRef',
     'SpaceAndSpaceListNamesRef',
     'SpaceListNamesRef',
     'SpaceNamesRef',
@@ -933,13 +926,12 @@ __all__ = [
     'SystemAvailabilityManagerListsRef',
     'SystemAvailabilityManagersRef',
     'ThermalComfortControlTypeNamesRef',
-    'ThermalStorageSizingRef',
-    'ThermalStorageWaterNamesRef',
     'ThermostatOffsetFaultsRef',
     'TransformerNamesRef',
     'TrivariateFunctionsRef',
     'UTSCNamesRef',
     'UndisturbedGroundTempModelsRef',
+    'UniVariateFunctionsRef',
     'UnitarySystemPerformanceNamesRef',
     'UnivariateFunctionsRef',
     'UserConvectionInsideModelsRef',

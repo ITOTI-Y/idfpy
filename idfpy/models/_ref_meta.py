@@ -1,7 +1,7 @@
 """Auto-generated reference metadata for EnergyPlus validation.
 
 DO NOT EDIT MANUALLY.
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 """
 
 from __future__ import annotations
@@ -110,9 +110,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     ],
     'AirflowNetwork:Distribution:Component:TerminalUnit': [
         ('terminal_unit_name', ['AirflowNetworkComponentNames'])
-    ],
-    'AirflowNetwork:Distribution:Linkage': [
-        ('name', ['AirflowNetworkDistributionLinkageNames'])
     ],
     'AirflowNetwork:Distribution:Node': [('name', ['AirflowNetworkNodeAndZoneNames'])],
     'AirflowNetwork:IntraZone:Linkage': [('name', ['AirflowNetwork LinkageNames'])],
@@ -328,14 +325,7 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         ('name', ['CoolingCoilsDXVarRefrigFlowFluidTemperatureControl'])
     ],
     'Coil:Cooling:DX:VariableSpeed': [
-        (
-            'name',
-            [
-                'AFNCoilNames',
-                'CoolingCoilsDXVariableSpeed',
-                'DesuperHeatingCoilSources',
-            ],
-        )
+        ('name', ['CoolingCoilsDXVariableSpeed', 'DesuperHeatingCoilSources'])
     ],
     'Coil:Cooling:Water': [
         (
@@ -368,7 +358,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         (
             'name',
             [
-                'AFNCoilNames',
                 'CoolingCoilsWaterToAirHP',
                 'DesuperHeatingWaterOnlySources',
                 'validBranchEquipmentNames',
@@ -382,14 +371,12 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         (
             'name',
             [
-                'AFNCoilNames',
                 'CoolingCoilsWaterToAirVSHP',
                 'DesuperHeatingWaterOnlySources',
                 'validBranchEquipmentNames',
             ],
         )
     ],
-    'Coil:DX:ASHRAE205:Performance': [('name', ['DXCoolingPerformanceNames'])],
     'Coil:Heating:DX:MultiSpeed': [
         ('name', ['AFNCoilNames', 'HeatingCoilsDXMultiSpeed'])
     ],
@@ -409,9 +396,7 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'Coil:Heating:DX:VariableRefrigerantFlow:FluidTemperatureControl': [
         ('name', ['HeatingCoilsDXVarRefrigFlowFluidTemperatureControl'])
     ],
-    'Coil:Heating:DX:VariableSpeed': [
-        ('name', ['AFNCoilNames', 'HeatingCoilsDXVariableSpeed'])
-    ],
+    'Coil:Heating:DX:VariableSpeed': [('name', ['HeatingCoilsDXVariableSpeed'])],
     'Coil:Heating:Desuperheater': [
         (
             'name',
@@ -467,19 +452,13 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         )
     ],
     'Coil:Heating:WaterToAirHeatPump:EquationFit': [
-        (
-            'name',
-            ['AFNCoilNames', 'HeatingCoilsWaterToAirHP', 'validBranchEquipmentNames'],
-        )
+        ('name', ['HeatingCoilsWaterToAirHP', 'validBranchEquipmentNames'])
     ],
     'Coil:Heating:WaterToAirHeatPump:ParameterEstimation': [
         ('name', ['HeatingCoilsWaterToAirHP', 'validBranchEquipmentNames'])
     ],
     'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit': [
-        (
-            'name',
-            ['AFNCoilNames', 'HeatingCoilsWaterToAirVSHP', 'validBranchEquipmentNames'],
-        )
+        ('name', ['HeatingCoilsWaterToAirVSHP', 'validBranchEquipmentNames'])
     ],
     'Coil:UserDefined': [
         (
@@ -1116,9 +1095,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'GroundHeatExchanger:Vertical:Single': [
         ('name', ['GroundHeatExchangerVerticalSingleNames'])
     ],
-    'GroundHeatExchanger:Vertical:Sizing:Rectangle': [
-        ('name', ['GroundHeatExchangerVerticalSizingNames'])
-    ],
     'HVACTemplate:System:ConstantVolume': [
         ('name', ['CompactHVACSystemConstantVolume', 'HVACTemplateSystems'])
     ],
@@ -1201,20 +1177,11 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
             ],
         )
     ],
-    'HeatPump:AirToWater': [
-        ('name', ['validBranchEquipmentNames', 'validPlantEquipmentNames'])
-    ],
     'HeatPump:AirToWater:FuelFired:Cooling': [
-        (
-            'name',
-            ['HeatPumpAirToWaterFuelFiredCoolingNames', 'validBranchEquipmentNames'],
-        )
+        ('name', ['HeatPumpAirToWaterFuelFiredCoolingNames'])
     ],
     'HeatPump:AirToWater:FuelFired:Heating': [
-        (
-            'name',
-            ['HeatPumpAirToWaterFuelFiredHeatingNames', 'validBranchEquipmentNames'],
-        )
+        ('name', ['HeatPumpAirToWaterFuelFiredHeatingNames'])
     ],
     'HeatPump:PlantLoop:EIR:Cooling': [
         (
@@ -1564,9 +1531,7 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'Site:SpectrumData': [('name', ['SpectrumDataNames'])],
     'SizingPeriod:DesignDay': [('name', ['RunPeriodsAndDesignDays'])],
     'SizingPeriod:WeatherFileConditionType': [('name', ['RunPeriodsAndDesignDays'])],
-    'SizingPeriod:WeatherFileDays': [
-        ('name', ['RunPeriodsAndDesignDays', 'SizingPeriodWeatherFileDays'])
-    ],
+    'SizingPeriod:WeatherFileDays': [('name', ['RunPeriodsAndDesignDays'])],
     'SolarCollector:FlatPlate:PhotovoltaicThermal': [
         (
             'name',
@@ -1666,7 +1631,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         (
             'name',
             [
-                'ThermalStorageWaterNames',
                 'validBranchEquipmentNames',
                 'validCondenserEquipmentNames',
                 'validPlantEquipmentNames',
@@ -1677,18 +1641,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         (
             'name',
             [
-                'ThermalStorageWaterNames',
-                'validBranchEquipmentNames',
-                'validCondenserEquipmentNames',
-                'validPlantEquipmentNames',
-            ],
-        )
-    ],
-    'ThermalStorage:HotWater:Stratified': [
-        (
-            'name',
-            [
-                'ThermalStorageWaterNames',
                 'validBranchEquipmentNames',
                 'validCondenserEquipmentNames',
                 'validPlantEquipmentNames',
@@ -1708,10 +1660,6 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
     'ThermalStorage:Ice:Simple': [
         ('name', ['IceThermalStorageEquipment', 'validBranchEquipmentNames'])
     ],
-    'ThermalStorage:PCM': [
-        ('name', ['validBranchEquipmentNames', 'validPlantEquipmentNames'])
-    ],
-    'ThermalStorage:Sizing': [('name', ['ThermalStorageSizing'])],
     'ThermostatSetpoint:DualSetpoint': [('name', ['ControlTypeNames'])],
     'ThermostatSetpoint:SingleCooling': [('name', ['ControlTypeNames'])],
     'ThermostatSetpoint:SingleHeating': [('name', ['ControlTypeNames'])],
@@ -1959,7 +1907,7 @@ REF_PROVIDERS: dict[str, list[tuple[str, list[str]]]] = {
         ('name', ['ZoneEquipmentNames', 'validBranchEquipmentNames'])
     ],
     'ZoneHVAC:Baseboard:RadiantConvective:Water:Design': [
-        ('name', ['RadiantDesignObject'])
+        ('name', ['BaseboardDesignObject'])
     ],
     'ZoneHVAC:CoolingPanel:RadiantConvective:Water': [
         ('name', ['ZoneEquipmentNames', 'validBranchEquipmentNames'])
@@ -2049,20 +1997,14 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Coil:Cooling:DX:SingleSpeed:ThermalStorage',
             'Coil:Cooling:DX:TwoSpeed',
             'Coil:Cooling:DX:TwoStageWithHumidityControlMode',
-            'Coil:Cooling:DX:VariableSpeed',
             'Coil:Cooling:Water',
             'Coil:Cooling:Water:DetailedGeometry',
-            'Coil:Cooling:WaterToAirHeatPump:EquationFit',
-            'Coil:Cooling:WaterToAirHeatPump:VariableSpeedEquationFit',
             'Coil:Heating:DX:MultiSpeed',
             'Coil:Heating:DX:SingleSpeed',
-            'Coil:Heating:DX:VariableSpeed',
             'Coil:Heating:Desuperheater',
             'Coil:Heating:Electric',
             'Coil:Heating:Fuel',
             'Coil:Heating:Water',
-            'Coil:Heating:WaterToAirHeatPump:EquationFit',
-            'Coil:Heating:WaterToAirHeatPump:VariableSpeedEquationFit',
         }
     ),
     'AFNHeatExchangerNames': frozenset(
@@ -2158,11 +2100,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'AirflowNetwork:Distribution:Component:OutdoorAirFlow',
             'AirflowNetwork:Distribution:Component:ReliefAirFlow',
             'AirflowNetwork:Distribution:Component:TerminalUnit',
-        }
-    ),
-    'AirflowNetworkDistributionLinkageNames': frozenset(
-        {
-            'AirflowNetwork:Distribution:Linkage',
         }
     ),
     'AirflowNetworkNodeAndZoneNames': frozenset(
@@ -2293,6 +2230,11 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Shading:Overhang',
             'Shading:Overhang:Projection',
             'Shading:Zone:Detailed',
+        }
+    ),
+    'BaseboardDesignObject': frozenset(
+        {
+            'ZoneHVAC:Baseboard:RadiantConvective:Water:Design',
         }
     ),
     'BivariateFunctions': frozenset(
@@ -2599,7 +2541,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
     'DXCoolingPerformanceNames': frozenset(
         {
             'Coil:Cooling:DX:CurveFit:Performance',
-            'Coil:DX:ASHRAE205:Performance',
         }
     ),
     'DXCoolingSpeedNames': frozenset(
@@ -2925,11 +2866,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
     'GroundHeatExchangerVerticalSingleNames': frozenset(
         {
             'GroundHeatExchanger:Vertical:Single',
-        }
-    ),
-    'GroundHeatExchangerVerticalSizingNames': frozenset(
-        {
-            'GroundHeatExchanger:Vertical:Sizing:Rectangle',
         }
     ),
     'GroundSurfacesNames': frozenset(
@@ -3283,7 +3219,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
     ),
     'RadiantDesignObject': frozenset(
         {
-            'ZoneHVAC:Baseboard:RadiantConvective:Water:Design',
             'ZoneHVAC:LowTemperatureRadiant:ConstantFlow:Design',
             'ZoneHVAC:LowTemperatureRadiant:VariableFlow:Design',
         }
@@ -3449,11 +3384,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'Coil:Heating:Water',
         }
     ),
-    'SizingPeriodWeatherFileDays': frozenset(
-        {
-            'SizingPeriod:WeatherFileDays',
-        }
-    ),
     'SpaceAndSpaceListNames': frozenset(
         {
             'Space',
@@ -3604,18 +3534,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'ThermostatSetpoint:ThermalComfort:Fanger:SingleCooling',
             'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeating',
             'ThermostatSetpoint:ThermalComfort:Fanger:SingleHeatingOrCooling',
-        }
-    ),
-    'ThermalStorageSizing': frozenset(
-        {
-            'ThermalStorage:Sizing',
-        }
-    ),
-    'ThermalStorageWaterNames': frozenset(
-        {
-            'ThermalStorage:ChilledWater:Mixed',
-            'ThermalStorage:ChilledWater:Stratified',
-            'ThermalStorage:HotWater:Stratified',
         }
     ),
     'ThermostatOffsetFaults': frozenset(
@@ -4009,9 +3927,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'HeatExchanger:AirToAir:SensibleAndLatent',
             'HeatExchanger:Desiccant:BalancedFlow',
             'HeatExchanger:FluidToFluid',
-            'HeatPump:AirToWater',
-            'HeatPump:AirToWater:FuelFired:Cooling',
-            'HeatPump:AirToWater:FuelFired:Heating',
             'HeatPump:PlantLoop:EIR:Cooling',
             'HeatPump:PlantLoop:EIR:Heating',
             'HeatPump:WaterToWater:EquationFit:Cooling',
@@ -4041,10 +3956,8 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'TemperingValve',
             'ThermalStorage:ChilledWater:Mixed',
             'ThermalStorage:ChilledWater:Stratified',
-            'ThermalStorage:HotWater:Stratified',
             'ThermalStorage:Ice:Detailed',
             'ThermalStorage:Ice:Simple',
-            'ThermalStorage:PCM',
             'WaterHeater:HeatPump:PumpedCondenser',
             'WaterHeater:HeatPump:WrappedCondenser',
             'WaterHeater:Mixed',
@@ -4087,7 +4000,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'TemperingValve',
             'ThermalStorage:ChilledWater:Mixed',
             'ThermalStorage:ChilledWater:Stratified',
-            'ThermalStorage:HotWater:Stratified',
             'WaterHeater:Mixed',
             'WaterHeater:Stratified',
         }
@@ -4164,7 +4076,6 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'GroundHeatExchanger:Surface',
             'GroundHeatExchanger:System',
             'HeatExchanger:FluidToFluid',
-            'HeatPump:AirToWater',
             'HeatPump:PlantLoop:EIR:Cooling',
             'HeatPump:PlantLoop:EIR:Heating',
             'HeatPump:WaterToWater:EquationFit:Cooling',
@@ -4180,9 +4091,7 @@ REF_GROUP_PROVIDERS: dict[str, frozenset[str]] = {
             'TemperingValve',
             'ThermalStorage:ChilledWater:Mixed',
             'ThermalStorage:ChilledWater:Stratified',
-            'ThermalStorage:HotWater:Stratified',
             'ThermalStorage:Ice:Detailed',
-            'ThermalStorage:PCM',
             'WaterHeater:HeatPump:PumpedCondenser',
             'WaterHeater:HeatPump:WrappedCondenser',
             'WaterHeater:Mixed',
@@ -4564,8 +4473,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'zone_mixer_name': ['ZoneMixers'],
         'fan_name': ['FansCV', 'FansSystemModel'],
         'reheat_coil_name': ['HeatingCoilName'],
-        'backdraft_damper_leakage_fraction_curve_name': ['UnivariateFunctions'],
-        'backdraft_damper_leakage_zone_name': ['ZoneNames'],
     },
     'AirTerminalSingleDuctSeriesPIUReheat': {
         'availability_schedule_name': ['ScheduleNames'],
@@ -4897,12 +4804,12 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     },
     'ChillerConstantCOP': {
         'basin_heater_operating_schedule_name': ['ScheduleNames'],
-        'thermosiphon_capacity_fraction_curve_name': ['UnivariateFunctions'],
+        'thermosiphon_capacity_fraction_curve_name': ['UniVariateFunctions'],
     },
     'ChillerElectric': {
         'basin_heater_operating_schedule_name': ['ScheduleNames'],
         'heat_recovery_inlet_high_temperature_limit_schedule_name': ['ScheduleNames'],
-        'thermosiphon_capacity_fraction_curve_name': ['UnivariateFunctions'],
+        'thermosiphon_capacity_fraction_curve_name': ['UniVariateFunctions'],
     },
     'ChillerElectricASHRAE205': {
         'ambient_temperature_schedule_name': ['ScheduleNames'],
@@ -4922,7 +4829,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
             'UnivariateFunctions'
         ],
         'temperature_difference_across_condenser_schedule_name': ['ScheduleNames'],
-        'thermosiphon_capacity_fraction_curve_name': ['UnivariateFunctions'],
+        'thermosiphon_capacity_fraction_curve_name': ['UniVariateFunctions'],
     },
     'ChillerElectricReformulatedEIR': {
         'cooling_capacity_function_of_temperature_curve_name': ['BivariateFunctions'],
@@ -4938,7 +4845,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
             'UnivariateFunctions'
         ],
         'temperature_difference_across_condenser_schedule_name': ['ScheduleNames'],
-        'thermosiphon_capacity_fraction_curve_name': ['UnivariateFunctions'],
+        'thermosiphon_capacity_fraction_curve_name': ['UniVariateFunctions'],
     },
     'ChillerEngineDriven': {
         'fuel_use_curve_name': ['UnivariateFunctions'],
@@ -5370,7 +5277,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
     },
     'CoilCoolingDXVariableSpeed': {
-        'availability_schedule_name': ['ScheduleNames'],
         'energy_part_load_fraction_curve_name': ['UnivariateFunctions'],
         'crankcase_heater_capacity_function_of_temperature_curve_name': [
             'UnivariateFunctions'
@@ -5508,19 +5414,16 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'condensate_collection_water_storage_tank_name': ['WaterStorageTankNames'],
     },
     'CoilCoolingWaterToAirHeatPumpEquationFit': {
-        'availability_schedule_name': ['ScheduleNames'],
         'total_cooling_capacity_curve_name': ['QuadvariateFunctions'],
         'sensible_cooling_capacity_curve_name': ['QuintvariateFunctions'],
         'cooling_power_consumption_curve_name': ['QuadvariateFunctions'],
         'part_load_fraction_correlation_curve_name': ['UnivariateFunctions'],
     },
     'CoilCoolingWaterToAirHeatPumpParameterEstimation': {
-        'availability_schedule_name': ['ScheduleNames'],
         'refrigerant_type': ['FluidNames'],
         'part_load_fraction_correlation_curve_name': ['UnivariateFunctions'],
     },
     'CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit': {
-        'availability_schedule_name': ['ScheduleNames'],
         'energy_part_load_fraction_curve_name': ['UnivariateFunctions'],
         'speed_1_total_cooling_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
@@ -5859,7 +5762,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
     },
     'CoilHeatingDXVariableSpeed': {
-        'availability_schedule_name': ['ScheduleNames'],
         'energy_part_load_fraction_curve_name': ['UnivariateFunctions'],
         'defrost_energy_input_ratio_function_of_temperature_curve_name': [
             'BivariateFunctions'
@@ -5907,7 +5809,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_4_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_4_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_4_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_4_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5919,7 +5821,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_5_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_5_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_5_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_5_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5931,7 +5833,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_6_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_6_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_6_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_6_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5943,7 +5845,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_7_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_7_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_7_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_7_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5955,7 +5857,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_8_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_8_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_8_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_8_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5967,7 +5869,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_9_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_9_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_9_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_9_energy_input_ratio_function_of_temperature_curve_name': [
@@ -5979,7 +5881,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'speed_10_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'speed_10_total_heating_capacity_function_of_air_flow_fraction_curve_name': [
+        'speed_10_heating_capacity_function_of_air_flow_fraction_curve_name': [
             'UnivariateFunctions'
         ],
         'speed_10_energy_input_ratio_function_of_temperature_curve_name': [
@@ -6014,18 +5916,15 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'availability_schedule_name': ['ScheduleNames'],
     },
     'CoilHeatingWaterToAirHeatPumpEquationFit': {
-        'availability_schedule_name': ['ScheduleNames'],
         'heating_capacity_curve_name': ['QuadvariateFunctions'],
         'heating_power_consumption_curve_name': ['QuadvariateFunctions'],
         'part_load_fraction_correlation_curve_name': ['UnivariateFunctions'],
     },
     'CoilHeatingWaterToAirHeatPumpParameterEstimation': {
-        'availability_schedule_name': ['ScheduleNames'],
         'refrigerant_type': ['FluidNames'],
         'part_load_fraction_correlation_curve_name': ['UnivariateFunctions'],
     },
     'CoilHeatingWaterToAirHeatPumpVariableSpeedEquationFit': {
-        'availability_schedule_name': ['ScheduleNames'],
         'energy_part_load_fraction_curve_name': ['UnivariateFunctions'],
         'speed_1_heating_capacity_function_of_temperature_curve_name': [
             'BivariateFunctions'
@@ -6290,7 +6189,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'ambient_zone_name': ['ZoneNames'],
     },
     'CoilWaterHeatingAirToWaterHeatPumpPumped': {
-        'availability_schedule_name': ['ScheduleNames'],
         'crankcase_heater_capacity_function_of_temperature_curve_name': [
             'UnivariateFunctions'
         ],
@@ -6315,7 +6213,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'part_load_fraction_correlation_curve_name': ['UnivariateFunctions'],
     },
     'CoilWaterHeatingAirToWaterHeatPumpVariableSpeed': {
-        'availability_schedule_name': ['ScheduleNames'],
         'crankcase_heater_capacity_function_of_temperature_curve_name': [
             'UnivariateFunctions'
         ],
@@ -6464,7 +6361,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         ],
     },
     'CoilWaterHeatingAirToWaterHeatPumpWrapped': {
-        'availability_schedule_name': ['ScheduleNames'],
         'crankcase_heater_capacity_function_of_temperature_curve_name': [
             'UnivariateFunctions'
         ],
@@ -6495,8 +6391,107 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
             'DesuperHeatingWaterOnlySources',
         ],
     },
-    'ComfortViewFactorAnglesAnglesItem': {
-        'surface_name': ['AllHeatTranSurfNames'],
+    'ComfortViewFactorAngles': {
+        'surface_1_name': ['AllHeatTranSurfNames'],
+        'surface_2_name': ['AllHeatTranSurfNames'],
+        'surface_3_name': ['AllHeatTranSurfNames'],
+        'surface_4_name': ['AllHeatTranSurfNames'],
+        'surface_5_name': ['AllHeatTranSurfNames'],
+        'surface_6_name': ['AllHeatTranSurfNames'],
+        'surface_7_name': ['AllHeatTranSurfNames'],
+        'surface_8_name': ['AllHeatTranSurfNames'],
+        'surface_9_name': ['AllHeatTranSurfNames'],
+        'surface_10_name': ['AllHeatTranSurfNames'],
+        'surface_11_name': ['AllHeatTranSurfNames'],
+        'surface_12_name': ['AllHeatTranSurfNames'],
+        'surface_13_name': ['AllHeatTranSurfNames'],
+        'surface_14_name': ['AllHeatTranSurfNames'],
+        'surface_15_name': ['AllHeatTranSurfNames'],
+        'surface_16_name': ['AllHeatTranSurfNames'],
+        'surface_17_name': ['AllHeatTranSurfNames'],
+        'surface_18_name': ['AllHeatTranSurfNames'],
+        'surface_19_name': ['AllHeatTranSurfNames'],
+        'surface_20_name': ['AllHeatTranSurfNames'],
+        'surface_21_name': ['AllHeatTranSurfNames'],
+        'surface_22_name': ['AllHeatTranSurfNames'],
+        'surface_23_name': ['AllHeatTranSurfNames'],
+        'surface_24_name': ['AllHeatTranSurfNames'],
+        'surface_25_name': ['AllHeatTranSurfNames'],
+        'surface_26_name': ['AllHeatTranSurfNames'],
+        'surface_27_name': ['AllHeatTranSurfNames'],
+        'surface_28_name': ['AllHeatTranSurfNames'],
+        'surface_29_name': ['AllHeatTranSurfNames'],
+        'surface_30_name': ['AllHeatTranSurfNames'],
+        'surface_31_name': ['AllHeatTranSurfNames'],
+        'surface_32_name': ['AllHeatTranSurfNames'],
+        'surface_33_name': ['AllHeatTranSurfNames'],
+        'surface_34_name': ['AllHeatTranSurfNames'],
+        'surface_35_name': ['AllHeatTranSurfNames'],
+        'surface_36_name': ['AllHeatTranSurfNames'],
+        'surface_37_name': ['AllHeatTranSurfNames'],
+        'surface_38_name': ['AllHeatTranSurfNames'],
+        'surface_39_name': ['AllHeatTranSurfNames'],
+        'surface_40_name': ['AllHeatTranSurfNames'],
+        'surface_41_name': ['AllHeatTranSurfNames'],
+        'surface_42_name': ['AllHeatTranSurfNames'],
+        'surface_43_name': ['AllHeatTranSurfNames'],
+        'surface_44_name': ['AllHeatTranSurfNames'],
+        'surface_45_name': ['AllHeatTranSurfNames'],
+        'surface_46_name': ['AllHeatTranSurfNames'],
+        'surface_47_name': ['AllHeatTranSurfNames'],
+        'surface_48_name': ['AllHeatTranSurfNames'],
+        'surface_49_name': ['AllHeatTranSurfNames'],
+        'surface_50_name': ['AllHeatTranSurfNames'],
+        'surface_51_name': ['AllHeatTranSurfNames'],
+        'surface_52_name': ['AllHeatTranSurfNames'],
+        'surface_53_name': ['AllHeatTranSurfNames'],
+        'surface_54_name': ['AllHeatTranSurfNames'],
+        'surface_55_name': ['AllHeatTranSurfNames'],
+        'surface_56_name': ['AllHeatTranSurfNames'],
+        'surface_57_name': ['AllHeatTranSurfNames'],
+        'surface_58_name': ['AllHeatTranSurfNames'],
+        'surface_59_name': ['AllHeatTranSurfNames'],
+        'surface_60_name': ['AllHeatTranSurfNames'],
+        'surface_61_name': ['AllHeatTranSurfNames'],
+        'surface_62_name': ['AllHeatTranSurfNames'],
+        'surface_63_name': ['AllHeatTranSurfNames'],
+        'surface_64_name': ['AllHeatTranSurfNames'],
+        'surface_65_name': ['AllHeatTranSurfNames'],
+        'surface_66_name': ['AllHeatTranSurfNames'],
+        'surface_67_name': ['AllHeatTranSurfNames'],
+        'surface_68_name': ['AllHeatTranSurfNames'],
+        'surface_69_name': ['AllHeatTranSurfNames'],
+        'surface_70_name': ['AllHeatTranSurfNames'],
+        'surface_71_name': ['AllHeatTranSurfNames'],
+        'surface_72_name': ['AllHeatTranSurfNames'],
+        'surface_73_name': ['AllHeatTranSurfNames'],
+        'surface_74_name': ['AllHeatTranSurfNames'],
+        'surface_75_name': ['AllHeatTranSurfNames'],
+        'surface_76_name': ['AllHeatTranSurfNames'],
+        'surface_77_name': ['AllHeatTranSurfNames'],
+        'surface_78_name': ['AllHeatTranSurfNames'],
+        'surface_79_name': ['AllHeatTranSurfNames'],
+        'surface_80_name': ['AllHeatTranSurfNames'],
+        'surface_81_name': ['AllHeatTranSurfNames'],
+        'surface_82_name': ['AllHeatTranSurfNames'],
+        'surface_83_name': ['AllHeatTranSurfNames'],
+        'surface_84_name': ['AllHeatTranSurfNames'],
+        'surface_85_name': ['AllHeatTranSurfNames'],
+        'surface_86_name': ['AllHeatTranSurfNames'],
+        'surface_87_name': ['AllHeatTranSurfNames'],
+        'surface_88_name': ['AllHeatTranSurfNames'],
+        'surface_89_name': ['AllHeatTranSurfNames'],
+        'surface_90_name': ['AllHeatTranSurfNames'],
+        'surface_91_name': ['AllHeatTranSurfNames'],
+        'surface_92_name': ['AllHeatTranSurfNames'],
+        'surface_93_name': ['AllHeatTranSurfNames'],
+        'surface_94_name': ['AllHeatTranSurfNames'],
+        'surface_95_name': ['AllHeatTranSurfNames'],
+        'surface_96_name': ['AllHeatTranSurfNames'],
+        'surface_97_name': ['AllHeatTranSurfNames'],
+        'surface_98_name': ['AllHeatTranSurfNames'],
+        'surface_99_name': ['AllHeatTranSurfNames'],
+        'surface_100_name': ['AllHeatTranSurfNames'],
     },
     'ComplexFenestrationPropertySolarAbsorbedLayers': {
         'fenestration_surface': ['SubSurfNames'],
@@ -6818,27 +6813,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'construction_name': ['ConstructionNames'],
         'building_surface_name': ['SurfaceNames'],
         'outside_boundary_condition_object': ['OutFaceEnvNames'],
-    },
-    'DuctLossConduction': {
-        'airloophvac_name': ['AirPrimaryLoops'],
-        'airflownetwork_distribution_linkage_name': [
-            'AirflowNetworkDistributionLinkageNames'
-        ],
-        'ambient_zone_name': ['ZoneNames'],
-        'ambient_temperature_schedule_name': ['ScheduleNames'],
-        'ambient_humidity_ratio_schedule_name': ['ScheduleNames'],
-    },
-    'DuctLossLeakage': {
-        'airloophvac_name': ['AirPrimaryLoops'],
-        'airflownetwork_distribution_linkage_name': [
-            'AirflowNetworkDistributionLinkageNames'
-        ],
-    },
-    'DuctLossMakeupAir': {
-        'airloophvac_name': ['AirPrimaryLoops'],
-        'airflownetwork_distribution_linkage_name': [
-            'AirflowNetworkDistributionLinkageNames'
-        ],
     },
     'ElectricEquipment': {
         'zone_or_zonelist_or_space_or_spacelist_name': [
@@ -7371,7 +7345,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'ghe_vertical_responsefactors_object_name': [
             'GroundHeatExchangerVerticalResponseFactorNames'
         ],
-        'ghe_vertical_sizing_object_name': ['GroundHeatExchangerVerticalSizingNames'],
         'ghe_vertical_array_object_name': ['GroundHeatExchangerVerticalArrayNames'],
     },
     'GroundHeatExchangerSystemVerticalWellLocationsItem': {
@@ -7386,9 +7359,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'ghe_vertical_properties_object_name': [
             'GroundHeatExchangerVerticalPropertiesNames'
         ],
-    },
-    'GroundHeatExchangerVerticalSizingRectangle': {
-        'sizingperiod_weatherfiledays_name': ['SizingPeriodWeatherFileDays'],
     },
     'HVACTemplatePlantBoilerObjectReference': {
         'boiler_name': ['Boilers'],
@@ -7794,137 +7764,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
     'HeatExchangerFluidToFluid': {
         'availability_schedule_name': ['ScheduleNames'],
     },
-    'HeatPumpAirToWater': {
-        'availability_schedule_name_heating': ['ScheduleNames'],
-        'availability_schedule_name_cooling': ['ScheduleNames'],
-        'operating_mode_control_schedule_name': ['ScheduleNames'],
-        'minimum_leaving_water_temperature_curve_name_in_heating_mode': [
-            'UnivariateFunctions'
-        ],
-        'maximum_leaving_water_temperature_curve_name_in_heating_mode': [
-            'UnivariateFunctions'
-        ],
-        'minimum_leaving_water_temperature_curve_name_in_cooling_mode': [
-            'UnivariateFunctions'
-        ],
-        'maximum_leaving_water_temperature_curve_name_in_cooling_mode': [
-            'UnivariateFunctions'
-        ],
-        'defrost_energy_input_ratio_function_of_temperature_curve_name': [
-            'BivariateFunctions'
-        ],
-        'crankcase_heater_capacity_function_of_temperature_curve_name': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_at_speed_1': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_1': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_at_speed_1': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_at_speed_2': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_2': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_at_speed_2': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_at_speed_3': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_3': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_at_speed_3': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_at_speed_4': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_4': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_at_speed_4': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_at_speed_5': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_at_speed_5': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_at_speed_5': [
-            'UnivariateFunctions'
-        ],
-        'normalized_heating_capacity_function_of_temperature_curve_name_in_booster_mode': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode': [
-            'BivariateFunctions'
-        ],
-        'heating_energy_input_ratio_function_of_plr_curve_name_in_booster_mode': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_1': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_1': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_1': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_2': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_2': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_2': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_3': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_3': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_3': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_4': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_4': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_4': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_at_speed_5': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_at_speed_5': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_at_speed_5': [
-            'UnivariateFunctions'
-        ],
-        'normalized_cooling_capacity_function_of_temperature_curve_name_in_booster_mode': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_temperature_curve_name_in_booster_mode': [
-            'BivariateFunctions'
-        ],
-        'cooling_energy_input_ratio_function_of_plr_curve_name_in_booster_mode': [
-            'UnivariateFunctions'
-        ],
-    },
     'HeatPumpAirToWaterFuelFiredCooling': {
         'air_source_node_name': ['OutdoorAirNodeNames'],
         'companion_heating_heat_pump_name': ['HeatPumpAirToWaterFuelFiredHeatingNames'],
@@ -7971,47 +7810,47 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
             'BivariateFunctions'
         ],
         'electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name': [
-            'UnivariateFunctions'
+            'UniVariateFunctions'
         ],
-        'minimum_supply_water_temperature_curve_name': ['UnivariateFunctions'],
-        'maximum_supply_water_temperature_curve_name': ['UnivariateFunctions'],
+        'minimum_supply_water_temperature_curve_name': ['UniVariateFunctions'],
+        'maximum_supply_water_temperature_curve_name': ['UniVariateFunctions'],
         'heat_recovery_capacity_modifier_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
         'heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'thermosiphon_capacity_fraction_curve_name': ['UnivariateFunctions'],
+        'thermosiphon_capacity_fraction_curve_name': ['UniVariateFunctions'],
     },
     'HeatPumpPlantLoopEIRHeating': {
         'companion_heat_pump_name': ['PLHPCoolingNames'],
         'capacity_modifier_function_of_temperature_curve_name': ['BivariateFunctions'],
         'electric_input_to_output_ratio_modifier_function_of_temperature_curve_name': [
-            'BivariateFunctions'
+            'BiVariateFunctions'
         ],
         'electric_input_to_output_ratio_modifier_function_of_part_load_ratio_curve_name': [
             'UnivariateFunctions'
         ],
-        'minimum_supply_water_temperature_curve_name': ['UnivariateFunctions'],
-        'maximum_supply_water_temperature_curve_name': ['UnivariateFunctions'],
-        'dry_outdoor_correction_factor_curve_name': ['UnivariateFunctions'],
+        'minimum_supply_water_temperature_curve_name': ['UniVariateFunctions'],
+        'maximum_supply_water_temperature_curve_name': ['UniVariateFunctions'],
+        'dry_outdoor_correction_factor_curve_name': ['UniVariateFunctions'],
         'defrost_energy_input_ratio_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
-        'timed_empirical_defrost_frequency_curve_name': ['UnivariateFunctions'],
+        'timed_empirical_defrost_frequency_curve_name': ['UniVariateFunctions'],
         'timed_empirical_defrost_heat_load_penalty_curve_name': [
             'BivariateFunctions',
-            'UnivariateFunctions',
+            'UniVariateFunctions',
         ],
         'timed_empirical_defrost_heat_input_energy_fraction_curve_name': [
             'BivariateFunctions',
-            'UnivariateFunctions',
+            'UniVariateFunctions',
         ],
         'heat_recovery_capacity_modifier_function_of_temperature_curve_name': [
             'BivariateFunctions'
         ],
         'heat_recovery_electric_input_to_output_ratio_modifier_function_of_temperature_curve_name': [
-            'BivariateFunctions'
+            'BiVariateFunctions'
         ],
     },
     'HeatPumpWaterToWaterEquationFitCooling': {
@@ -8802,8 +8641,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'design_specification_zone_air_distribution_object_name': [
             'DesignSpecificationZoneAirDistributionNames'
         ],
-        'zone_humidistat_dehumidification_set_point_schedule_name': ['ScheduleNames'],
-        'zone_humidistat_humidification_set_point_schedule_name': ['ScheduleNames'],
     },
     'SolarCollectorFlatPlatePhotovoltaicThermal': {
         'surface_name': ['AllShadingAndHTSurfNames'],
@@ -9162,26 +8999,10 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'use_side_availability_schedule_name': ['ScheduleNames'],
         'source_side_availability_schedule_name': ['ScheduleNames'],
     },
-    'ThermalStorageHotWaterStratified': {
-        'top_setpoint_temperature_schedule_name': ['ScheduleNames'],
-        'bottom_setpoint_temperature_schedule_name': ['ScheduleNames'],
-        'ambient_temperature_schedule_name': ['ScheduleNames'],
-        'ambient_temperature_zone_name': ['ZoneNames'],
-        'use_side_availability_schedule_name': ['ScheduleNames'],
-        'source_side_availability_schedule_name': ['ScheduleNames'],
-    },
     'ThermalStorageIceDetailed': {
         'availability_schedule_name': ['ScheduleNames'],
         'discharging_curve_name': ['BivariateFunctions'],
         'charging_curve_name': ['BivariateFunctions'],
-        'thermal_storage_sizing_object_name': ['ThermalStorageSizing'],
-    },
-    'ThermalStorageIceSimple': {
-        'thermal_storage_sizing_object_name': ['ThermalStorageSizing'],
-    },
-    'ThermalStoragePCM': {
-        'availability_schedule_name': ['ScheduleNames'],
-        'pcm_material_name': ['MaterialName'],
     },
     'ThermostatSetpointDualSetpoint': {
         'heating_setpoint_temperature_schedule_name': ['ScheduleNames'],
@@ -9299,7 +9120,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'indirect_alternate_setpoint_temperature_schedule_name': ['ScheduleNames'],
     },
     'WaterHeaterSizing': {
-        'waterheater_name': ['ThermalStorageWaterNames', 'WaterHeaterNames'],
+        'waterheater_name': ['WaterHeaterNames'],
     },
     'WaterHeaterStratified': {
         'heater_1_setpoint_temperature_schedule_name': ['ScheduleNames'],
@@ -9536,7 +9357,7 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'availability_schedule_name': ['ScheduleNames'],
     },
     'ZoneHVACBaseboardRadiantConvectiveWater': {
-        'design_object': ['RadiantDesignObject'],
+        'design_object': ['BaseboardDesignObject'],
         'availability_schedule_name': ['ScheduleNames'],
     },
     'ZoneHVACCoolingPanelRadiantConvectiveWater': {
@@ -9665,8 +9486,6 @@ REF_CONSUMERS: dict[str, dict[str, list[str]]] = {
         'design_specification_zonehvac_sizing_object_name': [
             'DesignSpecificationZoneHVACSizingName'
         ],
-        'heating_fuel_efficiency_schedule_name': ['ScheduleNames'],
-        'cooling_fuel_efficiency_schedule_name': ['ScheduleNames'],
     },
     'ZoneHVACLowTemperatureRadiantConstantFlow': {
         'design_object': ['RadiantDesignObject'],
@@ -10067,9 +9886,6 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
             'HEATEXCHANGER:AIRTOAIR:SENSIBLEANDLATENT',
             'HEATEXCHANGER:DESICCANT:BALANCEDFLOW',
             'HEATEXCHANGER:FLUIDTOFLUID',
-            'HEATPUMP:AIRTOWATER',
-            'HEATPUMP:AIRTOWATER:FUELFIRED:COOLING',
-            'HEATPUMP:AIRTOWATER:FUELFIRED:HEATING',
             'HEATPUMP:PLANTLOOP:EIR:COOLING',
             'HEATPUMP:PLANTLOOP:EIR:HEATING',
             'HEATPUMP:WATERTOWATER:EQUATIONFIT:COOLING',
@@ -10099,10 +9915,8 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
             'TEMPERINGVALVE',
             'THERMALSTORAGE:CHILLEDWATER:MIXED',
             'THERMALSTORAGE:CHILLEDWATER:STRATIFIED',
-            'THERMALSTORAGE:HOTWATER:STRATIFIED',
             'THERMALSTORAGE:ICE:DETAILED',
             'THERMALSTORAGE:ICE:SIMPLE',
-            'THERMALSTORAGE:PCM',
             'WATERHEATER:HEATPUMP:PUMPEDCONDENSER',
             'WATERHEATER:HEATPUMP:WRAPPEDCONDENSER',
             'WATERHEATER:MIXED',
@@ -10145,7 +9959,6 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
             'TEMPERINGVALVE',
             'THERMALSTORAGE:CHILLEDWATER:MIXED',
             'THERMALSTORAGE:CHILLEDWATER:STRATIFIED',
-            'THERMALSTORAGE:HOTWATER:STRATIFIED',
             'WATERHEATER:MIXED',
             'WATERHEATER:STRATIFIED',
         }
@@ -10222,7 +10035,6 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
             'GROUNDHEATEXCHANGER:SURFACE',
             'GROUNDHEATEXCHANGER:SYSTEM',
             'HEATEXCHANGER:FLUIDTOFLUID',
-            'HEATPUMP:AIRTOWATER',
             'HEATPUMP:PLANTLOOP:EIR:COOLING',
             'HEATPUMP:PLANTLOOP:EIR:HEATING',
             'HEATPUMP:WATERTOWATER:EQUATIONFIT:COOLING',
@@ -10238,9 +10050,7 @@ REF_CLASS_NAME_TYPES: dict[str, frozenset[str]] = {
             'TEMPERINGVALVE',
             'THERMALSTORAGE:CHILLEDWATER:MIXED',
             'THERMALSTORAGE:CHILLEDWATER:STRATIFIED',
-            'THERMALSTORAGE:HOTWATER:STRATIFIED',
             'THERMALSTORAGE:ICE:DETAILED',
-            'THERMALSTORAGE:PCM',
             'WATERHEATER:HEATPUMP:PUMPEDCONDENSER',
             'WATERHEATER:HEATPUMP:WRAPPEDCONDENSER',
             'WATERHEATER:MIXED',

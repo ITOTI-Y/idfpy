@@ -1,6 +1,6 @@
 """Auto-generated type stubs for idfpy.models.
 
-Generated from Energy+.schema.epJSON version 26.1.
+Generated from Energy+.schema.epJSON version 25.1.
 """
 
 from ._base import IDFBaseModel
@@ -96,7 +96,6 @@ from .coils import (
     CoilCoolingWaterToAirHeatPumpEquationFit,
     CoilCoolingWaterToAirHeatPumpParameterEstimation,
     CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit,
-    CoilDXASHRAE205Performance,
     CoilHeatingDesuperheater,
     CoilHeatingDXMultiSpeed,
     CoilHeatingDXSingleSpeed,
@@ -146,7 +145,6 @@ from .condensers import (
     GroundHeatExchangerVerticalArray,
     GroundHeatExchangerVerticalProperties,
     GroundHeatExchangerVerticalSingle,
-    GroundHeatExchangerVerticalSizingRectangle,
     HeatExchangerFluidToFluid,
 )
 from .constructions import (
@@ -432,7 +430,6 @@ from .hvac_templates import (
 )
 from .internal_gains import (
     ComfortViewFactorAngles,
-    ComfortViewFactorAnglesAnglesItem,
     ElectricEquipment,
     ElectricEquipmentITEAirCooled,
     GasEquipment,
@@ -530,9 +527,6 @@ from .misc import (
     ControllerWaterCoil,
     DehumidifierDesiccantNoFans,
     DehumidifierDesiccantSystem,
-    DuctLossConduction,
-    DuctLossLeakage,
-    DuctLossMakeupAir,
     ExteriorFuelEquipment,
     ExteriorLights,
     ExteriorWaterEquipment,
@@ -696,7 +690,6 @@ from .plant_equipment import (
     DistrictCooling,
     DistrictHeatingSteam,
     DistrictHeatingWater,
-    HeatPumpAirToWater,
     HeatPumpAirToWaterFuelFiredCooling,
     HeatPumpAirToWaterFuelFiredHeating,
     HeatPumpPlantLoopEIRCooling,
@@ -929,11 +922,8 @@ from .user_defined import (
 from .water_heaters import (
     ThermalStorageChilledWaterMixed,
     ThermalStorageChilledWaterStratified,
-    ThermalStorageHotWaterStratified,
     ThermalStorageIceDetailed,
     ThermalStorageIceSimple,
-    ThermalStoragePCM,
-    ThermalStorageSizing,
     WaterHeaterHeatPumpPumpedCondenser,
     WaterHeaterHeatPumpWrappedCondenser,
     WaterHeaterMixed,
@@ -1205,7 +1195,6 @@ __all__ = [
     'CoilCoolingWaterToAirHeatPumpEquationFit',
     'CoilCoolingWaterToAirHeatPumpParameterEstimation',
     'CoilCoolingWaterToAirHeatPumpVariableSpeedEquationFit',
-    'CoilDXASHRAE205Performance',
     'CoilHeatingDXMultiSpeed',
     'CoilHeatingDXSingleSpeed',
     'CoilHeatingDXVariableRefrigerantFlow',
@@ -1234,7 +1223,6 @@ __all__ = [
     'CoilWaterHeatingAirToWaterHeatPumpWrapped',
     'CoilWaterHeatingDesuperheater',
     'ComfortViewFactorAngles',
-    'ComfortViewFactorAnglesAnglesItem',
     'ComplexFenestrationPropertySolarAbsorbedLayers',
     'ComplianceBuilding',
     'ComponentCostAdjustments',
@@ -1324,9 +1312,6 @@ __all__ = [
     'Door',
     'DoorInterzone',
     'Duct',
-    'DuctLossConduction',
-    'DuctLossLeakage',
-    'DuctLossMakeupAir',
     'ElectricEquipment',
     'ElectricEquipmentITEAirCooled',
     'ElectricLoadCenterDistribution',
@@ -1457,7 +1442,6 @@ __all__ = [
     'GroundHeatExchangerVerticalArray',
     'GroundHeatExchangerVerticalProperties',
     'GroundHeatExchangerVerticalSingle',
-    'GroundHeatExchangerVerticalSizingRectangle',
     'GroundHeatTransferBasementAutoGrid',
     'GroundHeatTransferBasementBldgData',
     'GroundHeatTransferBasementComBldg',
@@ -1526,7 +1510,6 @@ __all__ = [
     'HeatExchangerDesiccantBalancedFlow',
     'HeatExchangerDesiccantBalancedFlowPerformanceDataType1',
     'HeatExchangerFluidToFluid',
-    'HeatPumpAirToWater',
     'HeatPumpAirToWaterFuelFiredCooling',
     'HeatPumpAirToWaterFuelFiredHeating',
     'HeatPumpPlantLoopEIRCooling',
@@ -1874,11 +1857,8 @@ __all__ = [
     'TemperingValve',
     'ThermalStorageChilledWaterMixed',
     'ThermalStorageChilledWaterStratified',
-    'ThermalStorageHotWaterStratified',
     'ThermalStorageIceDetailed',
     'ThermalStorageIceSimple',
-    'ThermalStoragePCM',
-    'ThermalStorageSizing',
     'ThermostatSetpointDualSetpoint',
     'ThermostatSetpointSingleCooling',
     'ThermostatSetpointSingleHeating',
