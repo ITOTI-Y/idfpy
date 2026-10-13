@@ -14,7 +14,7 @@ import pytest
 
 from idfpy import IDF
 
-EP_DIR = Path('/usr/local/EnergyPlus-25-1-0')
+EP_DIR = Path('/usr/local/EnergyPlus-26-1-0')
 DOE_IDF = EP_DIR / 'ExampleFiles' / 'ASHRAE901_OfficeMedium_STD2019_Denver.idf'
 WEATHER = EP_DIR / 'WeatherData' / 'USA_CO_Golden-NREL.724666_TMY3.epw'
 
