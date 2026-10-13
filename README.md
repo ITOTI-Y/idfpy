@@ -69,6 +69,9 @@ idf.save(Path('output.epjson'), output_type='epjson')
 # Load (auto-detects format by extension)
 idf = IDF.load(Path('existing.idf'))      # IDF format
 idf = IDF.load(Path('existing.epjson'))    # epJSON format
+# Invalid objects raise, with the source line for IDF text;
+# strict=False skips them with a warning instead
+idf = IDF.load(Path('existing.idf'), strict=False)
 
 # Run simulation
 from idfpy.sim import simulate

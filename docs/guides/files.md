@@ -17,6 +17,24 @@ idf.save(Path('out.idf'))                         # default: IDF text
 idf.save(Path('out.epjson'), output_type='epjson')
 ```
 
+Loading is strict by default: the first object with an unknown type, an
+invalid field value, a duplicate name, or values beyond its schema fields
+raises. For IDF text the exception carries a note with the file path and the
+line where the object starts:
+
+```text
+pydantic_core._pydantic_core.ValidationError: 1 validation error for Zone
+...
+while parsing the object starting at model.idf:42
+```
+
+Pass `strict=False` to skip such objects with a warning log instead; surplus
+values are then truncated and the rest of the object is kept.
+
+```python
+idf = IDF.load(Path('model.idf'), strict=False)
+```
+
 ## Adding, querying and removing objects
 
 ```python

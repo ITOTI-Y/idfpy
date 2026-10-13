@@ -920,6 +920,7 @@ class IDF:
                     idf.add(obj)
                 except Exception as e:
                     if strict:
+                        e.add_note(f'while loading {object_type} "{obj_name}"')
                         raise
                     logger.warning(
                         'Failed to parse {} "{}": {}', object_type, obj_name, e
@@ -1056,63 +1057,80 @@ class IDF:
             self.add(obj)
 
     @classmethod
-    def load(cls, path: Path) -> IDF:
+    def load(cls, path: Path, *, strict: bool = True) -> IDF:
         """Load IDF/epJSON file and parse into object container.
 
         File format is auto-detected by extension:
         - .epjson / .json → epJSON format
         - others → IDF text format
 
-        Objects that fail validation are skipped with a warning log.
-
         Args:
             path: Path to IDF or epJSON file.
+            strict: When True (default), raise on the first object that has
+                an unknown type, fails validation, duplicates an existing
+                name, or carries values beyond its schema fields. IDF text
+                errors carry a note with the file path and the line where
+                the object starts. When False, skip invalid objects (and
+                truncate surplus values) with a warning log.
 
         Returns:
-            IDF instance with successfully parsed objects.
+            IDF instance with the parsed objects.
 
         Raises:
             FileNotFoundError: If file does not exist.
+            UnknownObjectTypeError: When ``strict=True`` and an object type
+                is not recognized.
+            ValueError: When ``strict=True`` and an object is invalid;
+                pydantic ``ValidationError`` is a subclass.
         """
         path = Path(path)
         if not path.exists():
             raise FileNotFoundError(f'IDF file not found: {path}')
 
         if path.suffix.lower() in ('.epjson', '.json'):
-            return cls._load_epjson(path)
+            data = json.loads(path.read_text(encoding='utf-8'))
+            return cls.from_dict(data, strict=strict)
 
         with path.open(encoding='utf-8') as f:
-            return cls._parse_idf_content(f)
+            return cls._parse_idf_content(f, strict=strict, source=str(path))
 
     @classmethod
-    def _load_epjson(cls, path: Path) -> IDF:
-        """Load epJSON file and parse into object container."""
-        content = path.read_text(encoding='utf-8')
-        data = json.loads(content)
-        return cls.from_dict(data, strict=False)
-
-    @classmethod
-    def _parse_idf_content(cls, lines: str | Iterable[str]) -> IDF:
+    def _parse_idf_content(
+        cls,
+        lines: str | Iterable[str],
+        *,
+        strict: bool = True,
+        source: str = '<string>',
+    ) -> IDF:
         """Parse IDF content from a string or line iterator.
 
         Single-pass parser: accumulates text chunks line by line,
         processes each complete object block when ';' is encountered.
         Accepts a string (split by lines) or any line iterable (file object,
         list of strings, etc.) for streaming support.
+
+        Args:
+            lines: IDF text or an iterable of its lines.
+            strict: Raise on the first invalid object instead of skipping it.
+            source: Name used with the line number to locate errors.
         """
         if isinstance(lines, str):
             lines = lines.splitlines()
 
         idf = cls()
         chunks: list[str] = []  # accumulated text between ';' terminators
+        block_line = 0  # line where the pending block starts
 
-        for raw_line in lines:
+        for line_no, raw_line in enumerate(lines, start=1):
             # Strip comments
             bang = raw_line.find('!')
             line = raw_line[:bang] if bang >= 0 else raw_line
             line = line.strip()
             if not line:
                 continue
+
+            if not chunks:
+                block_line = line_no
 
             # Consume all ';'-terminated objects on this line
             semi = line.find(';')
@@ -1129,11 +1147,17 @@ class IDF:
                     block = ' '.join(chunks)
                     fields = [f.strip() for f in block.split(',')]
                     if fields and fields[0]:
-                        cls._process_block(idf, fields)
+                        cls._process_block(
+                            idf,
+                            fields,
+                            strict=strict,
+                            location=f'{source}:{block_line}',
+                        )
                     chunks = []
 
                 line = line[semi + 1 :]
                 semi = line.find(';')
+                block_line = line_no
 
             remainder = line.strip()
             if remainder:
@@ -1144,36 +1168,48 @@ class IDF:
             block = ' '.join(chunks)
             fields = [f.strip() for f in block.split(',')]
             if fields and fields[0]:
-                cls._process_block(idf, fields)
+                cls._process_block(
+                    idf, fields, strict=strict, location=f'{source}:{block_line}'
+                )
 
         return idf
 
-    def _normalize_object_type(self, object_type: str) -> str | None:
-        return _OBJECT_TYPE_BY_LOWER.get(object_type.lower())
-
     @classmethod
-    def _process_block(cls, idf: IDF, fields: list[str]) -> None:
-        """Parse a single object block from accumulated fields."""
-        object_type = fields[0]
-        object_type = idf._normalize_object_type(object_type)
-        if object_type is None:
-            logger.warning('Unknown object type: {}', fields[0])
-            return
-        field_values = fields[1:]
+    def _process_block(
+        cls, idf: IDF, fields: list[str], *, strict: bool, location: str
+    ) -> None:
+        """Parse a single object block and add it to *idf*.
 
-        model_class = get_model_class(object_type)
-        if model_class is None:
-            logger.warning('No model class for: {}', object_type)
-            return
-
-        field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
-        field_dict = cls._build_field_dict(model_class, field_order, field_values)
-
+        In strict mode the error is re-raised with *location* attached as a
+        note; otherwise the object is skipped with a warning.
+        """
         try:
-            obj = model_class(**field_dict)
-            idf.add(obj)
-        except Exception as e:
-            logger.warning('Failed to parse {}: {}', object_type, e)
+            object_type = _OBJECT_TYPE_BY_LOWER.get(fields[0].lower())
+            model_class = get_model_class(object_type) if object_type else None
+            if object_type is None or model_class is None:
+                raise UnknownObjectTypeError(fields[0])
+            field_values = fields[1:]
+            field_order = FIELD_ORDER_REGISTRY.get(object_type, [])
+
+            # Values past the last schema field would be dropped silently;
+            # trailing empty values carry no data and are ignored.
+            meta = get_model_metadata(model_class)
+            if not meta.list_item_classes and any(field_values[len(field_order) :]):
+                message = (
+                    f'{object_type} has {len(field_values)} fields but the '
+                    f'schema defines {len(field_order)}'
+                )
+                if strict:
+                    raise ValueError(message)
+                logger.warning('Truncated object at {}: {}', location, message)
+
+            field_dict = cls._build_field_dict(model_class, field_order, field_values)
+            idf.add(model_class(**field_dict))
+        except ValueError as e:
+            if strict:
+                e.add_note(f'while parsing the object starting at {location}')
+                raise
+            logger.warning('Skipped object at {}: {}', location, e)
 
     @classmethod
     def _build_field_dict(
